@@ -1,18 +1,24 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::get('/', [WelcomeController::class, 'view'])->name('acceuil');
 
-Route::get('/', function() {
-    return Inertia::render('Client/Home');
-});
+Route::get('/services', [ServiceController::class, 'view'])->name('service.view');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/chambres', [RoomController::class, 'show'])->name('chambre.show');
+
+Route::get(
+    '/dashboard',
+    function () {
+        return Inertia::render('Dashboard');
+    }
+)->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -20,4 +26,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -24,16 +24,24 @@ class AuthenticatedSessionController extends Controller
         ]);
     }
 
+
     /**
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+
         $request->authenticate();
 
-        $request->session()->regenerate();
+        if (Auth::user()->role->nom_role == 'client') {
 
-        return redirect()->intended(route('dashboard', absolute: false));
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('profile.edit', absolute: false));
+        } 
+        Auth::guard('web')->logout();
+        return redirect()->intended(route('login', absolute: false));
+
     }
 
     /**
@@ -47,6 +55,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect(route('login'));
     }
 }
