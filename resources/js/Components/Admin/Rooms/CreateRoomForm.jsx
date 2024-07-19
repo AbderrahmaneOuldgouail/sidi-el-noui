@@ -1,15 +1,14 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { array, z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { cn } from "@/lib/utils";
+import { Link, usePage, useForm } from "@inertiajs/react";
+import { FileUploader } from "react-drag-drop-files";
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import TextInput from "@/Components/TextInput";
 import { Button } from "@/Components/ui/button";
-import { Link, usePage } from "@inertiajs/react";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import { Textarea } from "@/Components/ui/textarea";
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
+import { ToggleGroup, ToggleGroupItem } from "@/Components/ui/toggle-group";
 import {
     Command,
     CommandEmpty,
@@ -29,87 +28,80 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/Components/ui/accordion";
-import { ToggleGroup, ToggleGroupItem } from "@/Components/ui/toggle-group";
-import { router } from "@inertiajs/react";
-import { FileUploader } from "react-drag-drop-files";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/Components/ui/dialog";
+import { Toggle } from "@/Components/ui/toggle";
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
-const formSchema = z.object({
-    room_number: z.string().regex(/^(100|[1-4][0-1][0-9])$/, {
-        required_error: "Numéro de chambre est requis",
-        message: "Le numéro de chambre n'est pas valide",
-    }),
-    type_id: z.number({
-        message: "Le type est requis",
-    }),
-    room_descreption: z.string().nonempty("La descreption est requis"),
-    room_price: z.string().nonempty("Le prix est requis"),
-    features: z.array(z.number()).optional(),
-    assets: z.custom(
-        (value) => {
-            if (Object.keys(value).length <= 10) {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        {
-            message: "Vous pouvez télécharger jusqu'à 10 images",
-        }
-    ),
-});
 export default function CreateRoomForm({ types, categorys }) {
     const [type, setType] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const [searchValue, setSearchValue] = React.useState("");
-    const [selectedValues, setSelectedValues] = React.useState([]);
-    const [file, setFile] = React.useState(null);
+
     const props = usePage().props;
-console.log(props);
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        formState: { errors },
-        clearErrors,
-    } = useForm({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            room_number: "102",
-            type_id: "",
-            room_descreption: "descreption",
-            room_price: "5500",
-            features: [],
-            assets: {},
-        },
+
+    const { data, setData, post, errors } = useForm({
+        room_number: "",
+        room_price: "",
+        room_descreption: "",
+        type_id: "",
+        features: [],
+        assets: [],
     });
-    const onSubmit = (data) => {
-        data.features = selectedValues;
-        console.log(data);
-        router.post(route("rooms.store"), data);
-    };
-    const handleChange = (value) => {
-        setSelectedValues((prev) =>
-            prev.includes(value)
-                ? prev.filter((v) => v !== value)
-                : [...prev, value]
-        );
+
+    const submit = (e) => {
+        e.preventDefault();
+        // console.log(data);
+        post(route("rooms.store"));
     };
 
     const handleFiles = (file) => {
-        setFile(file);
-        setValue("assets", file);
+        setData("assets", file);
     };
+
+    const isPressedFn = (feature) =>
+        data.features.some((f) => f.id === feature.feature_id);
+
+    const handleFeatures = (pressed, feature) => {
+        setData((data) => {
+            if (pressed) {
+                data.features.push({
+                    id: feature.feature_id,
+                    name: feature.features_name,
+                    need_value: feature.need_value,
+                    value: "",
+                });
+            } else {
+                data.features.splice(
+                    data.features.indexOf(
+                        data.features.find((f) => f.id === feature.feature_id)
+                    ),
+                    1
+                );
+            }
+
+            return { ...data };
+        });
+    };
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={submit}>
             <div>
                 <InputLabel htmlFor="room_number" value="Numéro de chmabre" />
                 <TextInput
-                    {...register("room_number")}
                     className="mt-2"
                     placeholder="102"
                     id="room_number"
+                    value={data.room_number}
+                    onChange={(e) => setData("room_number", e.target.value)}
                 />
                 <InputError
                     message={errors.room_number?.message}
@@ -119,10 +111,11 @@ console.log(props);
             <div>
                 <InputLabel htmlFor="room_price" value="Prix de chmabre" />
                 <TextInput
-                    {...register("room_price")}
                     className="mt-2"
                     placeholder="5500 DA"
                     id="room_price"
+                    value={data.room_price}
+                    onChange={(e) => setData("room_price", e.target.value)}
                 />
                 <InputError
                     message={errors.room_price?.message}
@@ -170,10 +163,11 @@ console.log(props);
                                                 key={type_id}
                                                 value={type_designation}
                                                 onSelect={(currentValue) => {
-                                                    setValue(
-                                                        "type_id",
-                                                        type_id
-                                                    );
+                                                    // setValue(
+                                                    //     "type_id",
+                                                    //     type_id
+                                                    // );
+                                                    setData("type_id", type_id);
                                                     setType(
                                                         currentValue === type
                                                             ? ""
@@ -205,9 +199,12 @@ console.log(props);
             <div>
                 <InputLabel htmlFor="room_descreption" value="Descreption" />
                 <Textarea
-                    {...register("room_descreption")}
                     placeholder="Descreption sur la chmabre"
                     id="room_descreption"
+                    value={data.room_descreption}
+                    onChange={(e) =>
+                        setData("room_descreption", e.target.value)
+                    }
                 />
                 <InputError
                     message={errors.room_descreption?.message}
@@ -215,51 +212,77 @@ console.log(props);
                 />
             </div>
             <div>
-                <Accordion
-                    type="multiple"
-                    collapsible
-                    {...register("features")}
-                >
-                    {categorys.map((category) => (
-                        <AccordionItem
-                            key={category.categorie_id}
-                            value={category.categorie_name}
-                        >
-                            <AccordionTrigger>
-                                {category.categorie_name}
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <ToggleGroup type="multiple">
-                                    {category.feature.map((feature) => (
-                                        <ToggleGroupItem
-                                            key={feature.feature_id}
-                                            value={feature.feature_id}
-                                            aria-label={feature.feature_id}
-                                            onClick={() =>
-                                                handleChange(feature.feature_id)
+                <div className="flex">
+                    <Accordion type="multiple" className="w-2/3">
+                        {categorys.map((category) => (
+                            <AccordionItem
+                                key={category.categorie_id}
+                                value={category.categorie_name}
+                            >
+                                <AccordionTrigger>
+                                    {category.categorie_name}
+                                </AccordionTrigger>
+                                <AccordionContent className="space-y-4">
+                                    <div className="flex flex-wrap items-center gap-4">
+                                        {category.feature.map(
+                                            (feature, idx) => {
+                                                return (
+                                                    <Toggle
+                                                        key={idx}
+                                                        pressed={isPressedFn(
+                                                            feature
+                                                        )}
+                                                        onPressedChange={(p) =>
+                                                            handleFeatures(
+                                                                p,
+                                                                feature
+                                                            )
+                                                        }
+                                                    >
+                                                        {feature.features_name}
+                                                    </Toggle>
+                                                );
                                             }
-                                        >
-                                            {feature.features_name}
-                                        </ToggleGroupItem>
-                                    ))}
-                                </ToggleGroup>
-                            </AccordionContent>
-                        </AccordionItem>
-                    ))}
-                </Accordion>
-                <InputError
-                    message={errors.features?.message}
-                    className="mt-2"
-                />
+                                        )}
+                                    </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                        <InputError
+                            message={errors.features?.message}
+                            className="mt-2"
+                        />
+                    </Accordion>
+                    <div className="space-y-4 w-1/3 ">
+                        {data.features.map((feature, idx) =>
+                            feature.need_value ? (
+                                <div key={idx}>
+                                    <InputLabel>{feature.name}</InputLabel>
+                                    <TextInput
+                                        value={feature.value}
+                                        onChange={(e) => {
+                                            setData((data) => {
+                                                data.features[idx].value =
+                                                    e.target.value;
+                                                return { ...data };
+                                            });
+                                        }}
+                                    />
+                                </div>
+                            ) : null
+                        )}
+                    </div>
+                </div>
             </div>
-            <FileUploader
-                handleChange={handleFiles}
-                name="file"
-                types={fileTypes}
-                multiple={true}
-            />
-            <InputError message={errors.assets?.message} className="mt-2" />
-
+            <div>
+                <FileUploader
+                    handleChange={handleFiles}
+                    name="file"
+                    types={fileTypes}
+                    multiple={true}
+                />
+                <InputError message={errors.assets?.message} className="mt-2" />
+            </div>
             <Button type="submit" className="mt-2">
                 Submit
             </Button>

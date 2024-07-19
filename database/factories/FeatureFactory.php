@@ -19,6 +19,7 @@ class FeatureFactory extends Factory
         return [
             'categorie_id' => rand(1, 2),
             'features_name' => fake()->name(),
+            'need_value' => fake()->boolean(),
         ];
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Event extends Model
 {
     use HasFactory;
+    protected $table = 'evenement';
 
     public $timestamps = false;
     protected $primaryKey = 'event_id';

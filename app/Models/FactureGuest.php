@@ -8,5 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FactureGuest extends Model
 {
     use HasFactory;
+    protected $table = 'facture_invites';
+
     public $timestamps = false;
 }

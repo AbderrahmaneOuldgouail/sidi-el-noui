@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Consumption extends Model
 {
     use HasFactory;
+    protected $table = 'consommations';
     public $timestamps = false;
     protected $primaryKey = 'consumption_id';
 

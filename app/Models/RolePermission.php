@@ -9,5 +9,8 @@ class RolePermission extends Model
 {
     use HasFactory;
 
+    protected $table = 'role_posed_permissions';
+
+
     public $timestamps = false;
 }

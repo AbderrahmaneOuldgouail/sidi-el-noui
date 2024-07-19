@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('booking_consumptions', function (Blueprint $table) {
+        Schema::create('avoir_consommations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('booking_id')->constrained('bookings', 'booking_id')->cascadeOnDelete();
-            $table->foreignId('consumption_id')->constrained('consumptions', 'consumption_id')->cascadeOnDelete();        });
+            $table->foreignId('booking_id')->constrained('reservations', 'booking_id')->cascadeOnDelete();
+            $table->foreignId('consumption_id')->constrained('consommations', 'consumption_id')->cascadeOnDelete();        });
     }
 
     /**
@@ -22,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('booking_consumptions');
+        Schema::dropIfExists('avoir_consommations');
     }
 };

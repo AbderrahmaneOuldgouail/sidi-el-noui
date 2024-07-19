@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('room_features', function (Blueprint $table) {
+        Schema::create('avoir_caracteristique', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('room_id')->constrained('rooms', 'id')->cascadeOnDelete();
-            $table->foreignId('feature_id')->constrained('features', 'feature_id')->cascadeOnDelete();
+            $table->foreignId('room_id')->constrained('chambres', 'id')->cascadeOnDelete();
+            $table->foreignId('feature_id')->constrained('caracteristiques', 'feature_id')->cascadeOnDelete();
+            $table->string('valeur')->nullable();
         });
     }
 
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('room_features');
+        Schema::dropIfExists('avoir_caracteristique');
     }
 };

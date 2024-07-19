@@ -29,6 +29,11 @@ class Assets extends Model
         });
     }
 
+    public function getOriginalUrlAttribute()
+    {
+        return str_replace(url('storage/') . '/', '', $this->attributes['url']);
+    }
+
 
     public function imageable(): MorphTo
     {

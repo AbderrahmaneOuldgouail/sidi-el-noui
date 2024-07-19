@@ -31,6 +31,8 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
+        if (config('session.driver') === "database") return;
+
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
@@ -48,6 +50,8 @@ return new class extends Migration
     {
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
+        if (config('session.driver') === "database") return;
+
         Schema::dropIfExists('sessions');
     }
 };

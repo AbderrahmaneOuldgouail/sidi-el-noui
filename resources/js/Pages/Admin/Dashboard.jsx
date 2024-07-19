@@ -1,22 +1,41 @@
 import React, { useState } from "react";
-import AdminLayout from "@/Layouts/AdminLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
+import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
+import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbSeparator,
+} from "@/Components/ui/breadcrumb";
+
+import {
+    Tag,
+    // Users,
+    // Settings,
+    Bookmark,
+    SquarePen,
+    LayoutGrid,
+    Hotel,
+} from "lucide-react";
+import PageHeading from "@/Components/Admin/Shared/PageHeading";
 
 
 export default function Dashboard() {
-
     return (
-        <AdminLayout>
+        <AdminPanelLayout>
             <Head title="Dashboard" />
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            Dashboard
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </AdminLayout>
+            {/* <Breadcrumb>
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <Link href={route(route().current())}>Dashboard</Link>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb> */}
+            <PageHeading title={'Tablaux De Bord'}/>
+            <PlaceholderContent>
+                Dashboard
+            </PlaceholderContent>
+        </AdminPanelLayout>
     );
 }

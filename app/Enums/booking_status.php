@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum booking_status:string
 {
-    case Waiting = 'waiting';
-    case Confirmed = 'confirmed';
-    case Refuse = 'refuse';
+    case Waiting = 'en attente';
+    case Confirmed = 'confirmer';
+    case Refuse = 'refusé';
 }
