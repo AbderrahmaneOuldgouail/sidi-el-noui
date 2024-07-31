@@ -7,6 +7,7 @@ import { Button } from "@/Components/ui/button";
 import { useSidebarToggle } from "@/Hooks/useSidebarToggle";
 import { SidebarToggle } from "./SideBareToggle";
 import { Menu } from "./Menu";
+import { LangSwitch } from "./LangSwitch";
 
 export default function SideBar() {
     const sidebar = useStore(useSidebarToggle, (state) => state);
@@ -49,6 +50,7 @@ export default function SideBar() {
                         </h1>
                     </Link>
                 </Button>
+                <LangSwitch />
                 <Menu isOpen={sidebar?.isOpen} />
             </div>
         </aside>

@@ -17,10 +17,15 @@ class Service extends Model
 
 
     protected $fillable = [
-        'nom_service',
-        'descreption_s',
-        'active',
+        'service_name',
+        'service_descreption',
+        'availability',
     ];
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->with(['assets'])->where('service_id', $value)->first();
+    }
 
     public function consomation(): HasMany
     {

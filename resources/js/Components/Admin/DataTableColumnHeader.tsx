@@ -16,6 +16,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
+import { useTrans } from "@/Hooks/useTrans";
 
 interface DataTableColumnHeaderProps<TData, TValue>
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -56,20 +57,20 @@ export function DataTableColumnHeader<TData, TValue>({
                         onClick={() => column.toggleSorting(false)}
                     >
                         <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                        Asc
+                        Croissante
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={() => column.toggleSorting(true)}
                     >
                         <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                        Desc
+                        Décroissante
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         onClick={() => column.toggleVisibility(false)}
                     >
                         <EyeNoneIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                        Hide
+                        {useTrans("Cacher")}
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

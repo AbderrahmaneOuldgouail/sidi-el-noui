@@ -17,17 +17,19 @@ class RoomController extends Controller
     {
         $itemsPerPage = $request->input('pages', 10);
 
-        $rooms = Room::with('type')->paginate($itemsPerPage);
+        // $rooms = Room::with('type')->orderBy('room_number')->get();
+        $rooms = Room::with('type')->orderBy('room_number')->paginate($itemsPerPage);
 
         return Inertia::render('Admin/Rooms/Rooms', ['rooms' => $rooms]);
     }
 
-    public function show(Room $room)
+    public function show(Request $request)
     {
         // Cache::remember("room-$request->id", now()->addHour(), fn() =>  Room::with(['features', 'assets', 'type'])->where('room_number', $request->id)->first());
 
-        // $room = Room::with(['features', 'assets', 'type'])->where('room_number', $request->id)->first();
-        return Inertia::render('Admin/Rooms/Room', ['room' => $room]);
+        $room = Room::with(['features', 'assets', 'type'])->where('room_number', $request->room)->first();
+        $categorys = Category::all();
+        return Inertia::render('Admin/Rooms/Room', ['room' => $room, 'categorys' => $categorys]);
     }
 
     public function create()
@@ -46,6 +48,7 @@ class RoomController extends Controller
                 'type_id' => 'required',
                 'room_descreption' => 'required|string|max:255',
                 'room_price' => 'required',
+                'beeds_number' => 'required',
                 'features' => 'array',
                 'assets' => 'required|array',
                 'assets.*' => 'file|mimes:jpg,png,jpeg|max:2048',
@@ -59,10 +62,13 @@ class RoomController extends Controller
                 'type_id' => $request->type_id,
                 'room_descreption' => $request->room_descreption,
                 'room_price' => $request->room_price,
+                'beeds_number' => $request->beeds_number,
                 'room_status' => room_status::Free->value,
             ]);
-            foreach ($request->features as $feature) {
-                $room->features()->attach($feature['id'], ['valeur' => $feature['value']]);
+            if ($request->features) {
+                foreach ($request->features as $feature) {
+                    $room->features()->attach($feature['id'], ['valeur' => $feature['value']]);
+                }
             }
 
             foreach ($request->file('assets') as $key => $value) {
@@ -99,6 +105,7 @@ class RoomController extends Controller
                 'type_id' => 'required',
                 'room_descreption' => 'required|string|max:255',
                 'room_price' => 'required',
+                'beeds_number' => 'required',
                 'features' => 'array',
                 'features.*.feature_id' => 'required|integer',
                 'features.*.features_name' => 'required|string',
@@ -116,10 +123,11 @@ class RoomController extends Controller
                 'type_id' => $request->type_id,
                 'room_descreption' => $request->room_descreption,
                 'room_price' => $request->room_price,
+                'beeds_number' => $request->beeds_number,
+
             ]);
             if ($request->has('features')) {
                 $room->features()->detach();
-                // $room->features()->attach($request->features);
                 foreach ($request->features as $feature) {
                     $room->features()->attach($feature['feature_id'], ['valeur' => $feature['value']]);
                 }
@@ -149,6 +157,6 @@ class RoomController extends Controller
         $room->update([
             'room_status' => $request->room_status
         ]);
-        return redirect(route("rooms.index"));
+        return redirect()->back();
     }
 }

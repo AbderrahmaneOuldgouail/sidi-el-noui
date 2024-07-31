@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Consumption extends Model
 {
@@ -14,10 +14,20 @@ class Consumption extends Model
     public $timestamps = false;
     protected $primaryKey = 'consumption_id';
 
+    protected $fillable = [
+        'consumption_name',
+        'consumption_price',
+        'service_id',
+    ];
 
 
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class, "service_id");
+    }
+
+    public function bookings(): BelongsToMany
+    {
+        return $this->belongsToMany(Consumption::class, 'avoir_consommations', 'consumption_id', 'booking_id')->withPivot('quantity');
     }
 }

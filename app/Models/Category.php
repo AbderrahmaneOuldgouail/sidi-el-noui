@@ -13,6 +13,9 @@ class Category extends Model
     public $timestamps = false;
     protected $primaryKey = 'categorie_id';
 
+    protected $fillable = [
+        'categorie_name',
+    ];
 
 
     public function feature(): HasMany

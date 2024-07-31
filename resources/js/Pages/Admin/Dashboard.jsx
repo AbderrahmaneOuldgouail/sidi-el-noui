@@ -1,40 +1,32 @@
-import React, { useState } from "react";
-import { Head, Link } from "@inertiajs/react";
+import React from "react";
+import { Head } from "@inertiajs/react";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbList,
-    BreadcrumbSeparator,
-} from "@/Components/ui/breadcrumb";
 
+import PageHeading from "@/Components/ui/PageHeading";
+import { useTrans } from "@/Hooks/useTrans";
+import { LangSwitch } from "@/Components/Admin/Layout/LangSwitch";
 import {
-    Tag,
-    // Users,
-    // Settings,
-    Bookmark,
-    SquarePen,
-    LayoutGrid,
-    Hotel,
-} from "lucide-react";
-import PageHeading from "@/Components/Admin/Shared/PageHeading";
-
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/Components/ui/drawer";
+import { Button } from "@/Components/ui/button";
+import { DrawerDialogDemo } from "@/Components/Admin/Rooms/DrawerDialogDemo";
 
 export default function Dashboard() {
     return (
         <AdminPanelLayout>
             <Head title="Dashboard" />
-            {/* <Breadcrumb>
-                <BreadcrumbList>
-                    <BreadcrumbItem>
-                        <Link href={route(route().current())}>Dashboard</Link>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb> */}
-            <PageHeading title={'Tablaux De Bord'}/>
+            <PageHeading title={"Tablaux De Bord"} />
+            <LangSwitch />
             <PlaceholderContent>
-                Dashboard
+                <DrawerDialogDemo />
             </PlaceholderContent>
         </AdminPanelLayout>
     );

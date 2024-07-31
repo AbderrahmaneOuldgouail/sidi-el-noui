@@ -9,6 +9,7 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/Components/ui/sheet";
+import { LangSwitch } from "./LangSwitch";
 
 export function SheetMenu() {
     return (
@@ -37,6 +38,7 @@ export function SheetMenu() {
                         </Link>
                     </Button>
                 </SheetHeader>
+                <LangSwitch/>
                 <Menu isOpen />
             </SheetContent>
         </Sheet>

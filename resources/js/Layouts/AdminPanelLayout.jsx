@@ -5,6 +5,7 @@ import SideBar from "@/Components/Admin/Layout/SideBar";
 import { useSidebarToggle } from "@/Hooks/useSidebarToggle";
 import { Navbar } from "@/Components/Admin/Layout/NavBar";
 import { ThemeProvider } from "@/Providers/ThemeProvider";
+import { Toaster } from "@/Components/ui/toaster";
 
 export default function AdminPanelLayout({ children }) {
     const sidebar = useStore(useSidebarToggle, (state) => state);
@@ -23,6 +24,7 @@ export default function AdminPanelLayout({ children }) {
             >
                 {children}
             </main>
+            <Toaster />
         </ThemeProvider>
     );
 }

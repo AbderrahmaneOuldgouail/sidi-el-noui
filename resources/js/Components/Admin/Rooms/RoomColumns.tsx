@@ -15,6 +15,8 @@ import {
 import { Link } from "@inertiajs/react";
 import { router } from "@inertiajs/react";
 import { DataTableColumnHeader } from "../DataTableColumnHeader";
+import { Badge } from "@/Components/ui/badge";
+import { useTrans } from "@/Hooks/useTrans";
 
 export type Payment = {
     room_number: string;
@@ -29,67 +31,75 @@ export type Payment = {
 
 export const columns: ColumnDef<Payment>[] = [
     {
-        accessorKey: "room_number",
+        accessorKey: "Numéro de chmabre",
+        cell: ({ row }) => {
+            const room = row.original;
+            return <span> {room.room_number}</span>;
+        },
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Numéro de chambre" />
+            <DataTableColumnHeader
+                column={column}
+                title={useTrans("Numéro de chmabre")}
+            />
         ),
     },
     {
-        accessorKey: "room_type",
+        accessorKey: "Type",
         cell: ({ row }) => {
             const room = row.original;
             return <span> {room.type.type_designation} </span>;
         },
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Type" />
+            <DataTableColumnHeader column={column} title={useTrans("Type")} />
         ),
     },
     {
-        accessorKey: "room_descreption",
+        accessorKey: "Description",
+        cell: ({ row }) => {
+            const room = row.original;
+            return <span> {room.room_descreption}</span>;
+        },
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Descreption" />
+            <DataTableColumnHeader
+                column={column}
+                title={useTrans("Description")}
+            />
         ),
     },
     {
-        accessorKey: "room_status",
+        accessorKey: "Status",
         cell: ({ row }) => {
             const room = row.original;
             return (
-                <div className="flex items-center space-x-2">
-                    <span
-                        className={`w-2 h-2 rounded-full 
-            ${room.room_status === "hors service" ? "text-red-500" : ""}
-            ${room.room_status === "libre" ? "text-green-600" : ""}
-            ${room.room_status === "occupé" ? "text-orange-500" : ""}
-        `}
-                    >
-                        <Dot />
-                    </span>
-                    <span className="text-xs font-medium uppercase tracking-wider ">
-                        {room.room_status}
-                    </span>
+                <div className="flex items-center justify-center space-x-2">
+                    {room.room_status === "hors service" ? (
+                        <Badge variant="danger">{room.room_status} </Badge>
+                    ) : room.room_status === "libre" ? (
+                        <Badge variant="success">{room.room_status} </Badge>
+                    ) : (
+                        <Badge variant="warning">{room.room_status} </Badge>
+                    )}
                 </div>
             );
         },
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Status" />
+            <DataTableColumnHeader column={column} title={useTrans("Status")} />
         ),
     },
     {
-        accessorKey: "room_price",
+        accessorKey: "Prix",
         header: ({ column }) => (
             <DataTableColumnHeader
                 className="justify-end"
                 column={column}
-                title="Prix"
+                title={useTrans("Prix de chmabre")}
             />
         ),
         cell: ({ row }) => {
-            const room_price = parseFloat(row.getValue("room_price"));
             const formatted = new Intl.NumberFormat("fr-FR", {
                 style: "currency",
                 currency: "DZD",
-            }).format(room_price);
+            }).format(row.original.room_price);
 
             return <div className="text-right font-medium">{formatted}</div>;
         },
@@ -114,7 +124,7 @@ export const columns: ColumnDef<Payment>[] = [
                                 className="flex w-full"
                             >
                                 <Eye className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                Voir
+                                {useTrans("Voir")}
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
@@ -123,7 +133,7 @@ export const columns: ColumnDef<Payment>[] = [
                                 className="flex w-full"
                             >
                                 <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                Modifier
+                                {useTrans("Modifier")}
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator></DropdownMenuSeparator>
@@ -142,8 +152,8 @@ export const columns: ColumnDef<Payment>[] = [
                             />
                             <span className="ml-2 ">
                                 {room.room_status === "hors service"
-                                    ? "Marqué comme disponible"
-                                    : "Marqué comme hors service"}
+                                    ? useTrans("Marqué comme disponible")
+                                    : useTrans("Marqué comme hors service")}
                             </span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>

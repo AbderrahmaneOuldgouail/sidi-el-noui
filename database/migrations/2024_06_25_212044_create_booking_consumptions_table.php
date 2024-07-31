@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('avoir_consommations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('booking_id')->constrained('reservations', 'booking_id')->cascadeOnDelete();
-            $table->foreignId('consumption_id')->constrained('consommations', 'consumption_id')->cascadeOnDelete();        });
+            $table->foreignId('consumption_id')->constrained('consommations', 'consumption_id')->cascadeOnDelete();
+            $table->string('quantity');
+        });
     }
 
     /**

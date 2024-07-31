@@ -15,7 +15,11 @@ class Feature extends Model
     public $timestamps = false;
     protected $primaryKey = 'feature_id';
 
-
+    protected $fillable = [
+        'categorie_id',
+        'features_name',
+        'need_value',
+    ];
 
     public function category(): BelongsTo
     {

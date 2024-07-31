@@ -18,8 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users', 'id')->nullOnDelete();
             $table->date('check_in');
             $table->date('check_out');
-            $table->integer('nb_adult');
-            $table->integer('nb_teens');
+            $table->integer('guest_number');
             $table->enum('booking_status', [booking_status::Waiting->value, booking_status::Refuse->value, booking_status::Confirmed->value,]);
             $table->timestamps();
         });

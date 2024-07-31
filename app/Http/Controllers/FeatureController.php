@@ -3,49 +3,56 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Feature;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class FeatureController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $categorys = Category::with('feature')->get();
-        return Inertia::render('Admin/Rooms/Features', ['data' => $categorys]);
+        $features = Feature::with('category')->get();
+        return Inertia::render('Admin/Rooms/Features', ['features' => fn () => $features, 'categorys' => Inertia::lazy(fn () => Category::all())]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        request()->validate(
+            [
+                'features_name' => 'required|string',
+                'categorie_id' => 'required|integer',
+                'need_value' => 'boolean'
+            ]
+        );
+        Feature::create([
+            'features_name' => $request->features_name,
+            'categorie_id' => $request->categorie_id,
+            'need_value' => $request->need_value
+        ]);
+        return redirect(route('features.index'))->with('message', ['status' => 'success', 'message' => 'Caractéristique ajouter avec succès']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(Request $request)
     {
-        //
+        request()->validate(
+            [
+                'features_name' => 'required|string',
+                'need_value' => 'nullable|boolean'
+            ]
+        );
+
+        $feature = Feature::where('feature_id', $request->feature)->first();
+        $feature->update([
+            'features_name' => $request->features_name,
+            'need_value' => $request->need_value
+        ]);
+
+        return redirect(route('features.index'))->with('message', ['status' => 'success', 'message' => 'Caractéristique modifier avec succès']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        Feature::where('feature_id', $id)->delete();
+        return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Caractéristique supprimier avec succès']);
     }
 }

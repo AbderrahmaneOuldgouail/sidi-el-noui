@@ -1,53 +1,79 @@
-import React from "react";
-import { Head, Link } from "@inertiajs/react";
+import React, { useEffect } from "react";
+import { Head, router, usePage } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
-import PageHeading from "@/Components/Admin/Shared/PageHeading";
-import { Button } from "@/Components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
+import { DataTable } from "@/Components/Admin/DataTable";
+import { featuresColumns } from "@/Components/Admin/Rooms/FeaturesColumns";
 
-export default function Features({data}) {
-    console.log(data);
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
+import PageHeading from "@/Components/ui/PageHeading";
+import { useToast } from "@/Components/ui/use-toast";
+import { Card, CardContent, CardFooter } from "@/Components/ui/card";
+import FeatureCreateDialog from "@/Components/Admin/Rooms/FeatureCreateDialog";
+import { useTrans } from "@/Hooks/useTrans";
+import CategoryDialog from "@/Components/Admin/Rooms/CategoryDialog";
+import DeleteeDialog from "@/Components/Admin/Shared/DeleteDialog";
+import CategoryCard from "@/Components/Admin/Rooms/CategoryCard";
+
+export default function Features({ features, categorys }) {
+    const { toast } = useToast();
+    const flash = usePage().props.flash;
+
+    useEffect(() => {
+        if (flash.message) {
+            toast({ description: flash.message?.message });
+        }
+    }, [flash.message, toast]);
+
     return (
         <AdminPanelLayout>
             <Head title="Rooms" />
-            <PageHeading title={"Vos Caractéristiques"} />
+            <PageHeading title={useTrans("Caractéristiques")} />
             <Tabs defaultValue="features" className="mt-2">
-                <TabsList className="w-full flex justify-start bg-transparent border-b-2 rounded-none	">
-                    <div className="flex justify-start  ">
+                <TabsList className="w-full flex justify-start rtl:justify-end bg-transparent border-b-2 rounded-none	">
+                    <div className="flex justify-start">
                         <TabsTrigger
                             value="features"
                             className="mr-2 font-bold text-xl rounded-none bg-transparent data-[state=active]:bg-transparent data-[state=active]:border-b-2 border-primary data-[state=active]:text-primary shadow-none "
                         >
-                            Caractéristique
+                            {useTrans("Caractéristiques")}
                         </TabsTrigger>
                         <TabsTrigger
+                            onClick={() =>
+                                !categorys &&
+                                router.reload({ only: ["categorys"] })
+                            }
                             value="category"
                             className="mr-2 font-bold text-xl rounded-none bg-transparent shadow-none data-[state=active]:bg-transparent data-[state=active]:border-b-2 border-primary data-[state=active]:text-primary "
                         >
-                            Category
+                            {useTrans("Catégories")}
                         </TabsTrigger>
                     </div>
                 </TabsList>
                 <TabsContent value="features">
-                    <div className="flex justify-end mt-4">
-                        <Button variant="secondary">
-                            <Link href={route("rooms.create")}>
-                                Ajouter une Caractéristique
-                            </Link>
-                        </Button>
+                    <div className="flex justify-end rtl:justify-start ">
+                        <FeatureCreateDialog categorys={categorys} />
                     </div>
-                    <PlaceholderContent>Caractéristique</PlaceholderContent>
+                    <PlaceholderContent>
+                        <DataTable
+                            columns={featuresColumns}
+                            data={features}
+                            selection={true}
+                        />
+                    </PlaceholderContent>
                 </TabsContent>
                 <TabsContent value="category">
-                    <div className="flex justify-end mt-4">
-                        <Button variant="secondary">
-                            <Link href={route("rooms.create")}>
-                                Ajouter une category
-                            </Link>
-                        </Button>
+                    <div className="flex justify-end rtl:justify-start">
+                        <CategoryDialog mode="create" />
                     </div>
-                    <PlaceholderContent>Category</PlaceholderContent>
+                    <PlaceholderContent>
+                        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                            {categorys &&
+                                categorys.map((category) => (
+                                    <CategoryCard category={category} />
+                                ))}
+                        </div>
+                    </PlaceholderContent>
                 </TabsContent>
             </Tabs>
         </AdminPanelLayout>

@@ -3,16 +3,25 @@
 use App\Http\Controllers\AssetsController;
 use App\Http\Controllers\Auth\AuthenticatedAdminSessionController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\ConsumptionController;
+use App\Http\Controllers\FactureController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TypeController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\AdminGuest;
+use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(AdminGuest::class)->group(
@@ -29,6 +38,17 @@ Route::post('logout', [AuthenticatedAdminSessionController::class, 'destroy'])
 
 Route::middleware(['auth', Admin::class])->group(
   function () {
+
+
+    Route::get('switch-lang', function (Request $request) {
+
+      App::setlocale($request->lang);
+      Cache::put('user_locale_' . $request->ip(), $request->lang, 60 * 24 * 30);
+
+      return redirect()->back();
+    })->name('switch.lang');
+
+
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::post('/toggle-status', [RoomController::class, 'toggleStatus'])->name('rooms.toggle.status');
@@ -36,57 +56,32 @@ Route::middleware(['auth', Admin::class])->group(
     Route::resource('rooms', RoomController::class)->names("rooms")->except(['destroy', 'update']);
 
     Route::resource('types', TypeController::class)->names("types")->except(['destroy']);
-    
-    Route::resource('features', FeatureController::class)->names("features");
 
-    // Route::prefix('types')->controller(TypeController::class)->as('types.')->group(function () {
-    //   Route::get('/', 'index')->name('index');
-    //   Route::get('/create', 'create')->name('create');
-    //   Route::post('/create', 'store')->name('store');
-    //   Route::get('/edit/{id}', 'edit')->name('edit');
-    //   Route::post('/edit', 'update')->name('update');
-    // });
+    Route::resource('features', FeatureController::class)->names("features")->except(['create', 'edit', 'show']);
 
-    // Route::prefix('rooms')->controller(RoomController::class)->as('rooms.')->group(function () {
-    //   Route::get('/', 'index')->name('index');
-    //   Route::get('/show/{id}', 'show')->name('show');
-    //   Route::get('/create', 'create')->name('create');
-    //   Route::post('/create', 'store')->name('store');
-    //   Route::get('/edit/{id}', 'edit')->name('edit');
-    //   Route::post('/edit', 'update')->name('update');
-    // });
+    Route::resource('categorys', CategoryController::class)->names("categorys")->except(['create', 'edit', 'show']);
 
-    Route::prefix('services')->controller(ServiceController::class)->as('services.')->group(function () {
-      Route::get('/', 'index')->name('index');
-      Route::get('/create', 'create')->name('create');
-      Route::post('/create', 'store')->name('store');
-      Route::get('/edit/{id}', 'edit')->name('edit');
-      Route::post('/edit', 'update')->name('update');
-    });
+    Route::post('/toggle-availability', [ServiceController::class, 'toggleAvailability'])->name('services.toggle.availability');
+    Route::post('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
+    Route::resource('services', ServiceController::class)->names("services")->except(['update']);
 
-    Route::prefix('booking')->controller(BookingController::class)->as('booking.')->group(function () {
-      Route::get('/', 'index')->name('index');
-      Route::get('/create', 'create')->name('create');
-      Route::post('/create', 'store')->name('store');
-      Route::get('/edit/{id}', 'edit')->name('edit');
-      Route::post('/edit', 'update')->name('update');
-    });
+    Route::resource('consumptions', ConsumptionController::class)->names("consumptions")->except(['create', 'edit']);
 
-    Route::prefix('promotions')->controller(PromotionController::class)->as('promotions.')->group(function () {
-      Route::get('/', 'index')->name('index');
-      Route::get('/create', 'create')->name('create');
-      Route::post('/create', 'store')->name('store');
-      Route::get('/edit/{id}', 'edit')->name('edit');
-      Route::post('/edit', 'update')->name('update');
-    });
+    Route::post('/searsh-aviable-rooms', [BookingController::class, 'searchAviableRoom'])->name('bookings.searchAviableRoom');
+    Route::get('/show-aviable-rooms', [BookingController::class, 'showAviableRooms'])->name('bookings.showAviableRooms');
+    Route::resource('bookings', BookingController::class)->names("bookings")->except('destroy');
 
-    Route::prefix('events')->controller(EventController::class)->as('events.')->group(function () {
-      Route::get('/', 'index')->name('index');
-      Route::get('/create', 'create')->name('create');
-      Route::post('/create', 'store')->name('store');
-      Route::get('/edit/{id}', 'edit')->name('edit');
-      Route::post('/edit', 'update')->name('update');
-    });
+    Route::post('/events/{event}', [EventController::class, 'update'])->name('events.update');
+    Route::resource('events', EventController::class)->names("events")->except('update');
+
+    Route::post('/promotions/{promo}', [PromotionController::class, 'update'])->name('promotions.update');
+    Route::resource('promotions', PromotionController::class)->names("promotions");
+
+    Route::resource('factures', FactureController::class)->names("factures");
+
+    Route::resource('roles', RoleController::class)->names("roles");
+
+    Route::resource('users', UserController::class)->names("users");
 
     Route::prefix('assets')->controller(AssetsController::class)->as('assets.')->group(function () {
       Route::post('/create', 'store')->name('store');

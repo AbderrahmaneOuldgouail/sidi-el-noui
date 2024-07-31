@@ -14,7 +14,21 @@ class Event extends Model
     public $timestamps = false;
     protected $primaryKey = 'event_id';
 
-    public function images(): MorphMany
+    protected $fillable = [
+        'user_id',
+        'event_name',
+        'event_descreption',
+        'event_start_date',
+        'event_end_date',
+        'event_price',
+    ];
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->with(['assets'])->where('event_id', $value)->first();
+    }
+
+    public function assets(): MorphMany
     {
         return $this->morphMany(Assets::class, 'imageable');
     }

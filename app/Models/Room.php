@@ -21,14 +21,9 @@ class Room extends Model
         'type_id',
         'room_descreption',
         'room_price',
-        'room_status'
+        'room_status',
+        'beeds_number'
     ];
-
-    public function resolveRouteBinding($value, $field = null)
-    {
-        return Cache::remember("room-$value", now()->addHour(), fn () => $this->with(['features', 'assets', 'type'])->where('room_number', $value)->first());
-    }
-
 
 
     public function assets(): MorphMany
@@ -44,5 +39,10 @@ class Room extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(Type::class, 'type_id', 'type_id');
+    }
+
+    public function bookings(): BelongsToMany
+    {
+        return $this->belongsToMany(Booking::class, 'reservation_concerne_chambres', 'room_id', 'booking_id');
     }
 }

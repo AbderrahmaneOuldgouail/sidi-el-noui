@@ -11,6 +11,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
+import { useTrans } from "@/Hooks/useTrans";
 
 interface DataTableViewOptionsProps<TData> {
     table: Table<TData>;
@@ -28,11 +29,13 @@ export function DataTableViewOptions<TData>({
                     className="ml-auto h-8 lg:flex"
                 >
                     <MixerHorizontalIcon className="mr-2 h-4 w-4" />
-                    View
+                    {useTrans("Voir")}
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[150px]">
-                <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+                <DropdownMenuLabel>
+                    {useTrans("Basculer les colonnes")}
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {table
                     .getAllColumns()

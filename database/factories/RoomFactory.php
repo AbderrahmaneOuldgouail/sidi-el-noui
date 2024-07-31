@@ -19,9 +19,10 @@ class RoomFactory extends Factory
     public function definition(): array
     {
         return [
-            'room_number' => fake()->unique()->numberBetween(300,317),
-            'type_id' => rand(1,2),
+            'room_number' => fake()->unique()->numberBetween(101,160),
+            'type_id' => rand(1,4),
             'room_price' => rand(10, 10500),
+            'beeds_number' => rand(1, 4),
             'room_status' => room_status::Free->value,
             'room_descreption' => fake()->name(),
         ];

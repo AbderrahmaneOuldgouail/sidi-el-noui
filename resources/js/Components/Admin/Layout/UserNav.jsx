@@ -20,7 +20,7 @@ import {
 } from "@/Components/ui/dropdown-menu";
 
 export function UserNav() {
-  const user = usePage().props.auth.user;
+    const user = usePage().props.auth.user;
     return (
         <DropdownMenu>
             <TooltipProvider disableHoverableContent>
