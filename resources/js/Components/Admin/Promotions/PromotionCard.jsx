@@ -18,9 +18,10 @@ import { ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTrigger } from "@/Components/ui/dialog";
 import { Button } from "@/Components/ui/button";
-import EventCardFooter from "./EventCardFooter";
+import PromotionCardFooter from "./PromotionCardFooter";
+import { Badge } from "@/Components/ui/badge";
 
-export default function EventCard({ event }) {
+export default function PromotionCard({ promotion }) {
     const { width } = useWindowDimensions();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -41,7 +42,7 @@ export default function EventCard({ event }) {
             <div className={cn(isOpen ? "w-full" : "sm:w-1/2 w-full")}>
                 <Carousel>
                     <CarouselContent className="h-full ">
-                        {event.assets.map((asset, index) => (
+                        {promotion.assets.map((asset, index) => (
                             <CarouselItem
                                 key={index}
                                 className={cn(
@@ -78,48 +79,53 @@ export default function EventCard({ event }) {
                 )}
             >
                 <CardHeader className="text-lg font-bold text-xl flex flex-row items-center justify-between">
-                    <div>{event.event_name}</div>
-                    <div className="flex items-center gap-2 bg-muted p-2 rounded">
-                        <span>{useTrans("Prix")} </span>
-                        {":"}
-                        <span className="text-destructive text-2xl font-bold">
-                            {event.event_price}
-                        </span>{" "}
-                        <span>{useTrans("DA")} </span>
+                    <div className="text-destructive text-2xl font-bold">
+                        - {promotion.promo_value} {useTrans("DA")}{" "}
+                    </div>
+                    <div>
+                        {promotion.is_active ? (
+                            <Badge variant="success">
+                                {useTrans("Active")}
+                            </Badge>
+                        ) : (
+                            <Badge variant="danger">
+                                {useTrans("Désactivé")}
+                            </Badge>
+                        )}
                     </div>
                 </CardHeader>
                 <CardContent>
-                    {event.event_start_date == event.event_end_date ? (
+                    {promotion.promo_start_date == promotion.promo_end_date ? (
                         <div>
-                            {useTrans("Date d'évènement")} :{" "}
+                            {useTrans("Date de promotion")} :{" "}
                             <span className="font-bold text-lg">
-                                {event.event_start_date}
+                                {promotion.promo_start_date}
                             </span>
                         </div>
                     ) : (
                         <div>
                             <div>
-                                {useTrans("Date début d'évènement")} :{" "}
+                                {useTrans("Date début de promotion")} :{" "}
                                 <span className="font-bold text-lg">
-                                    {event.event_start_date}
+                                    {promotion.promo_start_date}
                                 </span>
                             </div>
                             <div>
-                                {useTrans("Date fin d'évènement")} :{" "}
+                                {useTrans("Date fin de promotion")} :{" "}
                                 <span className="font-bold text-lg">
-                                    {event.event_end_date}
+                                    {promotion.promo_end_date}
                                 </span>
                             </div>
                         </div>
                     )}
                     <div>
                         {isOpen
-                            ? truncateText(event.event_descreption, 150)
-                            : event.event_descreption}
+                            ? truncateText(promotion.promo_descreption, 150)
+                            : promotion.promo_descreption}
                     </div>
                 </CardContent>
                 <CardFooter className="justify-end">
-                    <EventCardFooter event={event} />
+                    <PromotionCardFooter promotion={promotion} />
                 </CardFooter>
             </div>
             {width >= 767 && (

@@ -4,7 +4,6 @@ import { addDays, format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { es } from "date-fns/locale";
 
-
 import { DateRange } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
@@ -15,6 +14,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/Components/ui/popover";
+import { useTrans } from "@/Hooks/useTrans";
 
 export function DatePickerWithRange({
     date,
@@ -48,7 +48,7 @@ export function DatePickerWithRange({
                                 format(date.from, "LLL dd, y")
                             )
                         ) : (
-                            <span>Pick a date</span>
+                            <span>{useTrans("Choisis une date")} </span>
                         )}
                     </Button>
                 </PopoverTrigger>

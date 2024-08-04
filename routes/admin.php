@@ -72,10 +72,11 @@ Route::middleware(['auth', Admin::class])->group(
     Route::resource('bookings', BookingController::class)->names("bookings")->except('destroy');
 
     Route::post('/events/{event}', [EventController::class, 'update'])->name('events.update');
-    Route::resource('events', EventController::class)->names("events")->except('update');
+    Route::resource('events', EventController::class)->names("events")->except(['update', 'show']);
 
+    Route::post('/toggle-Activity', [PromotionController::class, 'toggleActivity'])->name('promotions.toggle.activity');
     Route::post('/promotions/{promo}', [PromotionController::class, 'update'])->name('promotions.update');
-    Route::resource('promotions', PromotionController::class)->names("promotions");
+    Route::resource('promotions', PromotionController::class)->names("promotions")->except(['update', 'show']);
 
     Route::resource('factures', FactureController::class)->names("factures");
 
@@ -88,7 +89,6 @@ Route::middleware(['auth', Admin::class])->group(
       Route::get('/delete/{id}', 'destroy')->name('delete');
     });
 
-    //   Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
   }
 );
 

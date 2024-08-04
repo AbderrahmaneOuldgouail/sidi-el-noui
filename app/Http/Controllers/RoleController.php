@@ -2,26 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Permissions;
 use App\Enums\Roles;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use Spatie\Permission\Models\Permission;
+// use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role as ModelsRole;
 
 class RoleController extends Controller
 {
     public function index(Request $request)
     {
-
         $itemsPerPage = $request->input('pages', 10);
 
         $permissions = Permission::paginate($itemsPerPage);
-        $roles = ModelsRole::with('permissions')->paginate($itemsPerPage);
+        $roles = Role::with('permissions')->paginate($itemsPerPage);
 
-        return Inertia::render('Admin/Users/Roles', ['roles' => $roles, 'permissions' => $permissions]);
+        return Inertia::render('Admin/Roles/Roles', ['roles' => $roles, 'permissions' => $permissions]);
     }
 
     /**
@@ -29,7 +31,24 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Users/CreateRole', ['permissions' => Inertia::lazy(fn () => Permission::all())]);
+        $permissions = Permission::all();
+
+        // $permissions = Permission::select('entity', 'action', 'permission_id')
+        //     ->get()
+        //     ->groupBy('entity')
+        //     ->map(function ($group) {
+        //         return [
+        //             'entity' => $group->first()->entity,
+        //             'actions' => $group->map(function ($permission) {
+        //                 return [
+        //                     'permission_id' => $permission->permission_id,
+        //                     'action' => $permission->action,
+        //                 ];
+        //             })->toArray(),
+        //         ];
+        //     })->values();
+
+        return Inertia::render('Admin/Roles/CreateRole', ['permissions' => $permissions]);
     }
 
     /**
@@ -38,16 +57,31 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:' . ModelsRole::class,
+            'role_name' => 'required|unique:roles,role_name',
             'permissions' => 'required|array',
-            'permissions.*' => 'required|string'
+            'permissions.*' => 'required'
         ]);
 
-        ModelsRole::create([
-            'name' => $request->name,
-        ])->givePermissionTo($request->permissions);
+        DB::beginTransaction();
+        try {
+            $role = Role::create([
+                'role_name' => $request->role_name,
+            ]);
+            if ($request->permissions) {
+                foreach ($request->permissions as $permission) {
+                    foreach ($permission['actions'] as $id) {
+                        $role->permissions()->attach($id);
+                    }
+                }
+            }
 
-        return redirect()->route('roles.index');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
+        return redirect()->route('roles.index')->with('message', ['status' => 'success', 'message' => 'Rôle ajouter avec succès']);
     }
 
     /**
@@ -55,8 +89,8 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        $role = ModelsRole::with('permissions')->where('id', $id)->first();
-        return Inertia::render('Admin/Users/Role', ['role' => $role]);
+        $role = Role::with('permissions')->where('id', $id)->first();
+        return Inertia::render('Admin/Roles/Role', ['role' => $role]);
     }
 
     /**
@@ -64,13 +98,27 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        $role = ModelsRole::where('id', $id)->first();
+        $role = Role::where('role_id', $id)->first();
 
-        if ($role && Roles::exists($role->name)) {
-            return redirect()->back()->withErrors(['name' => 'Vous pouvez pas modifier ce role']);
+        if ($role && Roles::exists($role->role_name)) {
+            return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Vous pouvez pas modifier ce role']);
         }
-        $role = ModelsRole::with('permissions')->where('id', $id)->first();
-        return Inertia::render('Admin/Users/EditRole', ['role' => $role, 'permissions' => Inertia::lazy(fn () => Permission::all())]);
+        $role = Role::with('permissions')->where('role_id', $id)->first();
+        $permissions = Permission::select('entity', 'action', 'permission_id')
+            ->get()
+            ->groupBy('entity')
+            ->map(function ($group) {
+                return [
+                    'entity' => $group->first()->entity,
+                    'actions' => $group->map(function ($permission) {
+                        return [
+                            'permission_id' => $permission->permission_id,
+                            'action' => $permission->action,
+                        ];
+                    })->toArray(),
+                ];
+            })->values();
+        return Inertia::render('Admin/Roles/EditRole', ['role' => $role, 'permissions' =>  $permissions]);
     }
 
     /**
@@ -85,13 +133,31 @@ class RoleController extends Controller
             'permissions.*' => 'required|string'
         ]);
 
-        if (ModelsRole::where('name', $request->name)->exists() && $request->name !== $request->prevName) {
-            return redirect()->back()->withErrors(['name' => 'Role already exists']);
+        if (Role::where('role_name', $request->role_name)->exists() && $request->role_name !== $request->prevName) {
+            return redirect()->back()->withErrors(['role_name' => 'Role already exists']);
         }
-        $role = ModelsRole::where('id', $id)->first()->syncPermissions([$request->permissions]);
-        $role->update([
-            'name' => $request->name,
-        ]);
+        // $role = ModelsRole::where('id', $id)->first()->syncPermissions([$request->permissions]);
+
+        DB::beginTransaction();
+        try {
+            $$role = Role::where('role_id', $id)->first();
+            $role->update([
+                'role_name' => $request->role_name,
+            ]);
+
+            if ($request->has('permissions')) {
+                $role->permissions()->detach();
+                foreach ($request->permissions as $permission) {
+                    $role->permissions()->attach($permission['permission_id']);
+                }
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
         return redirect()->route('roles.index');
     }
 
@@ -111,17 +177,26 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        $role = ModelsRole::where('id', $id)->first();
+        $role = Role::where('role_id', $id)->first();
+        $role_name = $role->role_name;
 
-        if ($role && Roles::exists($role->name)) {
-            return redirect()->back()->withErrors(['name' => 'Vous pouvez pas supprimer ce role']);
+        if ($role && Roles::exists($role->role_name)) {
+            return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Vous pouvez pas supprimer ce role']);
         }
 
-        $users = User::role($role->name)->get();
+
+        $users = User::whereHas('role', function ($query) use ($role_name) {
+            $query->where('role_name', $role_name);
+        })->get();
+        // $users = User::role($role->role_name)->get();
         foreach ($users as $user) {
-            $user->assignRole(Roles::ADMIN->value);
+            // $user->assignRole(Roles::ADMIN->value);
+            $user->update([
+                'role_id' => Role::where("role_name", Roles::ADMIN->value)->first()->role_id,
+            ]);
         }
 
+        $role->permissions()->detach();
         $role->delete();
 
         return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Role supprimier avec succès']);

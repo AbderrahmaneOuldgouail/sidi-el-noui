@@ -17,7 +17,6 @@ import {
     DrawerTrigger,
 } from "@/Components/ui/drawer";
 import { Button } from "@/Components/ui/button";
-import { DrawerDialogDemo } from "@/Components/Admin/Rooms/DrawerDialogDemo";
 
 export default function Dashboard() {
     return (
@@ -26,7 +25,6 @@ export default function Dashboard() {
             <PageHeading title={"Tablaux De Bord"} />
             <LangSwitch />
             <PlaceholderContent>
-                <DrawerDialogDemo />
             </PlaceholderContent>
         </AdminPanelLayout>
     );

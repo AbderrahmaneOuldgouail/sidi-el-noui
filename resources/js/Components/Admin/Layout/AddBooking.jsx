@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { usePage } from "@inertiajs/react";
 import { useToast } from "@/Components/ui/use-toast";
 import { CalendarPlus } from "lucide-react";
-import { addDays } from "date-fns";
 
 import { Button } from "@/Components/ui/button";
 import {
@@ -23,8 +22,8 @@ import { Input } from "@/Components/ui/input";
 
 export function AddBooking() {
     const [dateRange, setDateRange] = useState({
-        from: new Date(),
-        to: addDays(new Date(), 3),
+        from: "",
+        to: "",
     });
     const [open, setOpen] = useState(false);
     const { data, post, setData, errors } = useForm({
@@ -90,7 +89,6 @@ export function AddBooking() {
                         date={dateRange}
                         onDateChange={handleDateChange}
                     />
-
                     <div className="mb-3">
                         <div className="flex items-center">
                             <InputLabel

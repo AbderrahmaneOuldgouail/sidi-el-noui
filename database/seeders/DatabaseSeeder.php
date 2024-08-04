@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Permissions;
+use App\Enums\permissions_actions;
+use App\Enums\Roles;
 use App\Models\Assets;
 use App\Models\Caracteristique;
 use App\Models\Categorie;
@@ -9,14 +12,16 @@ use App\Models\Category;
 use App\Models\Chambre;
 use App\Models\Event;
 use App\Models\Feature;
+use App\Models\Permission;
 use App\Models\Promotion;
+use App\Models\Role;
 use App\Models\Room;
 use App\Models\Service;
 use App\Models\Type;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
+// use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role as ModelsRole;
 
 class DatabaseSeeder extends Seeder
@@ -26,6 +31,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        foreach (Permissions::cases() as  $permission) {
+            foreach (permissions_actions::cases() as  $value) {
+                Permission::create(['entity' => $permission->name, 'action' => $value]);
+            }
+        }
+        foreach (Roles::cases() as $value) {
+            Role::create([
+                'role_name' => $value->value,
+            ]);
+        }
 
         // Permission::create(['name' => 'booking-create']);
         // Permission::create(['name' => 'booking-show']);
@@ -59,21 +75,21 @@ class DatabaseSeeder extends Seeder
         User::create([
             'first_name' => 'abdou',
             'last_name' => 'ould',
-            'email' => 'notadmin@gmail.com',
+            'email' => 'admin@gmail.com',
             'phone' => '0540100588',
             'access' => true,
             'password' => bcrypt('password'),
-            // 'role_id' => 1,
-        ])->assignRole('reciption');
-        User::create([
-            'first_name' => 'abdou',
-            'last_name' => 'ould',
-            'email' => 'user@gmail.com',
-            'phone' => '0540145577',
-            'access' => false,
-            'password' => bcrypt('password'),
-            // 'role_id' => 2,
-        ])->assignRole('gerant');
+            'role_id' => 1,
+        ]);
+        // User::create([
+        //     'first_name' => 'abdou',
+        //     'last_name' => 'ould',
+        //     'email' => 'user@gmail.com',
+        //     'phone' => '0540145577',
+        //     'access' => false,
+        //     'password' => bcrypt('password'),
+        //     // 'role_id' => 2,
+        // ])->assignRole('gerant');
         // User::factory(10)->create();
         // Room::factory(60)->create();
         // Service::factory(2)->create();

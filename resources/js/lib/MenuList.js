@@ -18,10 +18,14 @@ export function getMenuList(pathname) {
     ];
     const servicesPathnames = [
         "services.index",
-        "consumptions.index",
         "services.show",
+        "services.create",
+        "services.edit",
+        "consumptions.index",
     ];
     const facturePathnames = ["factures.index"];
+    const eventPathnames = ["events.index", "events.create", "events.edit"];
+    const promoPathnames = ["promotions.index", "promotions.create", "promotions.edit"];
     const usersPathnames = [
         "roles.index",
         "roles.create",
@@ -109,14 +113,14 @@ export function getMenuList(pathname) {
                 {
                     href: "events.index",
                     label: "Evènements",
-                    active: pathname == "events.index",
+                    active: eventPathnames.includes(pathname),
                     icon: Tag,
                     submenus: [],
                 },
                 {
                     href: "promotions.index",
                     label: "Promotions",
-                    active: pathname == "promotions.index",
+                    active: promoPathnames.includes(pathname),
                     icon: Tag,
                     submenus: [],
                 },
@@ -127,7 +131,7 @@ export function getMenuList(pathname) {
             menus: [
                 {
                     href: "roles.index",
-                    label: "Roles",
+                    label: "Utilisateurs",
                     active: facturePathnames.includes(pathname),
                     icon: Users,
                     submenus: [
@@ -138,7 +142,7 @@ export function getMenuList(pathname) {
                         },
                         {
                             href: "users.index",
-                            label: "Users",
+                            label: "Employés",
                             active: pathname === "users.index",
                         },
                     ],

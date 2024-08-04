@@ -30,7 +30,6 @@ import { Toggle } from "@/Components/ui/toggle";
 import { Input } from "@/Components/ui/input";
 import { Separator } from "@/Components/ui/separator";
 import LabelDescreption from "@/Components/LabelDescreption";
-import { ImagePlus, Trash } from "lucide-react";
 import { useTrans } from "@/Hooks/useTrans";
 import { ImagesViewer } from "../Shared/ImagesViewer";
 import MyFileUploader from "../Shared/MyFileUploader";

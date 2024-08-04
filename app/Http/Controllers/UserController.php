@@ -15,8 +15,7 @@ class UserController extends Controller
         $itemsPerPage = $request->input('pages', 10);
 
         $users = User::with('roles')->withoutRole([Roles::CLIENT->value, Roles::COMPANY->value])->paginate($itemsPerPage);
-        $roles = Role::all();
-        return Inertia::render('Admin/Users/Users/UsersList', ['users' => $users, 'roles' => $roles]);
+        return Inertia::render('Admin/Employes/Employees', ['users' => $users]);
     }
 
     /**
@@ -25,7 +24,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::whereNotIn('name', [Roles::CLIENT->value, Roles::COMPANY->value])->get();
-        return Inertia::render('Admin/Users/Users/CreateUser', ['roles' => $roles]);
+        return Inertia::render('Admin/Employes/CreateEmployes', ['roles' => $roles]);
     }
 
     /**
@@ -36,9 +35,9 @@ class UserController extends Controller
         $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'required|string',
-            'role' => 'string|exists:roles,name',
+            'email' => 'required|email|unique:users',
+            'phone' => 'required|string|unique:users',
+            'role' => 'required|string|exists:roles,name',
         ]);
 
         User::create([
@@ -50,7 +49,7 @@ class UserController extends Controller
             'password' => bcrypt('password'),
         ])->assignRole($request->role);
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('message', ['status' => 'success', 'message' => 'Employé ajouter avec succès']);
     }
 
     /**
@@ -67,7 +66,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::where('id', $id)->first();
-        return Inertia::render('Admin/Users/Users/EditUser', ['user' => $user]);
+        return Inertia::render('Admin/Employes/EditEmployesr', ['user' => $user]);
     }
 
     /**

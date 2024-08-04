@@ -1,16 +1,15 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import { Head, Link, usePage } from "@inertiajs/react";
-
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
-
-import { useToast } from "@/Components/ui/use-toast";
 import { Button } from "@/Components/ui/button";
+import { DataTable } from "@/Components/Admin/DataTable";
+import { userColumns } from "@/Components/Admin/Users/UserColumns";
 import { useTrans } from "@/Hooks/useTrans";
-import PromotionCard from "@/Components/Admin/Promotions/PromotionCard";
+import { useToast } from "@/Components/ui/use-toast";
 
-export default function Promotions({ promotions }) {
+export default function Employees({ users }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
 
@@ -19,24 +18,25 @@ export default function Promotions({ promotions }) {
             toast({ description: flash.message?.message });
         }
     }, [flash.message, toast]);
+
     return (
         <AdminPanelLayout>
-            <Head title="Promotions" />
-            <PageHeading title={useTrans("Promotions")} />
+            <Head title="Employees" />
+            <PageHeading title={useTrans("Employés")} />
             <div className="flex justify-end">
                 <Button variant="secondary">
-                    <Link href={route("promotions.create")}>
-                        {useTrans("Créer un promotion")}
+                    <Link href={route("users.create")}>
+                        {useTrans("Ajouter un employé")}{" "}
                     </Link>
                 </Button>
             </div>
             <PlaceholderContent>
-                <div className="font-bold p-4">
-                    {useTrans("List des promotions")} :
-                </div>
-                {promotions.map((promo) => (
-                    <PromotionCard promotion={promo} key={promo.promotion_id} />
-                ))}
+                <DataTable
+                    columns={userColumns}
+                    data={users.data}
+                    paginate={users}
+                    selection={false}
+                />
             </PlaceholderContent>
         </AdminPanelLayout>
     );

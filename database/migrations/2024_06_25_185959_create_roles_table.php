@@ -9,13 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    // public function up(): void
-    // {
-    //     Schema::create('roles', function (Blueprint $table) {
-    //         $table->id('role_id');
-    //         $table->string('role_name', 25);
-    //     });
-    // }
+    public function up(): void
+    {
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id('role_id');
+            $table->string('role_name', 30);
+        });
+    }
 
     /**
      * Reverse the migrations.

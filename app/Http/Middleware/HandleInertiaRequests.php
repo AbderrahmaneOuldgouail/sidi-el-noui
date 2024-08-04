@@ -41,7 +41,7 @@ class HandleInertiaRequests extends Middleware
 
         $file = lang_path("trans.json");
 
-        $request->user()?->roles->pluck('name');
+        // $request->user()?->roles->pluck('name');
         return [
             ...parent::share($request),
             'auth' => [

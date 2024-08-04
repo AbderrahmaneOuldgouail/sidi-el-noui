@@ -25,7 +25,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Events/CreateEvent');
     }
 
     /**
@@ -74,19 +74,12 @@ class EventController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Event $event)
-    {
-        return Inertia::render('Admin/Events/Event', ['event' => $event]);
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        dd('kaynaa');
+        $event = Event::with('assets')->where('event_id', $id)->first();
+        return Inertia::render('Admin/Events/EditEvent', ['event' => $event]);
     }
 
     /**

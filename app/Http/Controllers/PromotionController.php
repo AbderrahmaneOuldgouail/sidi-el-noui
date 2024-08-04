@@ -16,7 +16,7 @@ class PromotionController extends Controller
      */
     public function index()
     {
-        $promotions = Promotion::all();
+        $promotions = Promotion::with('assets')->get();
         return Inertia::render('Admin/Promotions/Promotions', ['promotions' => $promotions]);
     }
 
@@ -25,7 +25,7 @@ class PromotionController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Promotions/CreatePromotion');
     }
 
     /**
@@ -39,7 +39,6 @@ class PromotionController extends Controller
                 'promo_start_date' => 'required|date',
                 'promo_end_date' => 'required|date',
                 'promo_value' => 'required|numeric',
-                'is_active' => 'required|boolean',
                 'assets' => 'required|array',
                 'assets.*' => 'file|mimes:jpg,png,jpeg|max:2048',
             ]
@@ -54,7 +53,7 @@ class PromotionController extends Controller
                 'promo_start_date' => $request->promo_start_date,
                 'promo_end_date' => $request->promo_end_date,
                 'promo_value' => $request->promo_value,
-                'is_active' => $request->is_active,
+                'is_active' => true,
             ]);
 
             foreach ($request->file('assets') as $key => $value) {
@@ -73,26 +72,20 @@ class PromotionController extends Controller
         return redirect(route('promotions.index'))->with('message', ['status' => 'success', 'message' => 'Promotions crée avec succès']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Promotion $promotion)
-    {
-        return Inertia::render('Admin/Promotions/Promotion', ['promotion' => $promotion]);
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $promotion = Promotion::with(['assets'])->where('promotion_id', $id)->first();
+        return Inertia::render('Admin/Promotions/EditPromotion', ['promotion' => $promotion]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
         request()->validate(
             [
@@ -131,6 +124,13 @@ class PromotionController extends Controller
             throw $e;
         }
         return redirect(route('promotions.index'))->with('message', ['status' => 'success', 'message' => 'Promotion modifier avec succès']);
+    }
+
+    public function toggleActivity(Request $request)
+    {
+        $promo = Promotion::where('promotion_id', $request->promotion_id)->first();
+        $promo->update(['is_active' => !$promo->is_active]);
+        redirect()->back()->with('message', ['status' => 'success', 'message' => $promo->is_active ? "Promotion activé" : "Promotion désactivé"]);
     }
 
     /**
