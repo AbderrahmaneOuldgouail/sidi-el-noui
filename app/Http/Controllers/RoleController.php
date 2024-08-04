@@ -31,22 +31,22 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::all();
+        // $permissions = Permission::all();
 
-        // $permissions = Permission::select('entity', 'action', 'permission_id')
-        //     ->get()
-        //     ->groupBy('entity')
-        //     ->map(function ($group) {
-        //         return [
-        //             'entity' => $group->first()->entity,
-        //             'actions' => $group->map(function ($permission) {
-        //                 return [
-        //                     'permission_id' => $permission->permission_id,
-        //                     'action' => $permission->action,
-        //                 ];
-        //             })->toArray(),
-        //         ];
-        //     })->values();
+        $permissions = Permission::select('entity', 'action', 'permission_id')
+            ->get()
+            ->groupBy('entity')
+            ->map(function ($group) {
+                return [
+                    'entity' => $group->first()->entity,
+                    'actions' => $group->map(function ($permission) {
+                        return [
+                            'permission_id' => $permission->permission_id,
+                            'action' => $permission->action,
+                        ];
+                    })->toArray(),
+                ];
+            })->values();
 
         return Inertia::render('Admin/Roles/CreateRole', ['permissions' => $permissions]);
     }

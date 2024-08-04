@@ -87,7 +87,7 @@ export default function CreateRole({ permissions }) {
             <Head title="Rools" />
             <PageHeading title="Roles" />
             <PlaceholderContent>
-                <form>
+                {/* <form>
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
                             <InputLabel
@@ -117,16 +117,27 @@ export default function CreateRole({ permissions }) {
                             />
                         </div>
                     </div>
+
                     <div className="md:flex my-4">
-                        <div className="w-full md:w-1/3 pb-2">
-                            <InputLabel
-                                htmlFor="role_name"
-                                value={useTrans("Nom de rôle")}
-                            />
-                            <LabelDescreption>
-                                {useTrans("Le nom de rôle doit être unique")}
-                            </LabelDescreption>
-                        </div>
+                             <div className="mb-4 flex bg-card p-2 rounded">
+                                <InputLabel
+                                    htmlFor="permissions"
+                                    className="w-1/4 "
+                                    value={useTrans("List des permissions")}
+                                />
+                                <div className="flex justify-between w-3/4">
+                                    {permissions[0].actions.map((action) => (
+                                        <div
+                                            key={action.permission_id}
+                                            className="flex items-center mb-2"
+                                        >
+                                            <InputLabel htmlFor={action.action}>
+                                                {action.action}
+                                            </InputLabel>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                             <InputLabel
                                 htmlFor="role_name"
@@ -146,8 +157,8 @@ export default function CreateRole({ permissions }) {
                             />
                         </div>
                     </div>
-                </form>
-                {/* <form onSubmit={submit}>
+                </form> */}
+                <form onSubmit={submit}>
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
                             <InputLabel
@@ -279,7 +290,7 @@ export default function CreateRole({ permissions }) {
                             {useTrans("Créer")}
                         </Button>
                     </div>
-                </form> */}
+                </form>
             </PlaceholderContent>
         </AdminPanelLayout>
     );
