@@ -14,7 +14,16 @@ enum Permissions: string
         // case ServiceEdit = 'service@edit';
         // case ServiceDelete = 'service@delete';
 
-    case Room = ['create', 'edit', 'view', 'delete'];
-    case Service = ['create', 'edit', 'view', 'delete'];
-    // case Service = permissions_actions::cases();
+        // case Room = ['create', 'edit', 'view', 'delete'];
+        // case Service = ['create', 'edit', 'view', 'delete'];
+        // case Service = permissions_actions::cases();
+    case Room = 'Chambre';
+    case Service = 'Service';
+    case Consommation = 'Consommation';
+    case Event = 'Evenement';
+    case Promotion = 'Promotion';
+    case Booking = 'Réservation';
+    case Facture = 'Facture';
+    case Employ = 'Employ';
+    case Role = 'Rôle';
 }

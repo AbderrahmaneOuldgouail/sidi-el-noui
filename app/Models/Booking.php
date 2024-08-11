@@ -34,7 +34,7 @@ class Booking extends Model
 
     public function consomation(): BelongsToMany
     {
-        return $this->belongsToMany(Consumption::class, 'avoir_consommations', 'booking_id', 'consumption_id');
+        return $this->belongsToMany(Consumption::class, 'avoir_consommations', 'booking_id', 'consumption_id')->withPivot('quantity');
     }
 
     public function factures(): HasMany

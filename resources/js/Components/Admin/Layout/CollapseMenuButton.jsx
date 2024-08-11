@@ -85,33 +85,38 @@ export function CollapseMenuButton({
                 </Button>
             </CollapsibleTrigger>
             <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-                {submenus.map(({ href, label, active }, index) => (
-                    <Button
-                        key={index}
-                        variant={"ghost"}
-                        className={cn(
-                            "w-full justify-start h-10 mb-1 hover:border-2 hover:border-transparent",
-                            active ? "text-primary hover:text-primary" : ""
-                        )}
-                        asChild
-                    >
-                        <Link href={route(href)}>
-                            <span className="mr-4 ml-2">
-                                <Dot size={18} />
-                            </span>
-                            <p
+                {submenus.map(
+                    ({ href, label, active }, index, item) =>
+                        item[index] && (
+                            <Button
+                                key={index}
+                                variant={"ghost"}
                                 className={cn(
-                                    "max-w-[170px] truncate",
-                                    isOpen
-                                        ? "translate-x-0 opacity-100"
-                                        : "-translate-x-96 opacity-0"
+                                    "w-full justify-start h-10 mb-1 hover:border-2 hover:border-transparent",
+                                    active
+                                        ? "text-primary hover:text-primary"
+                                        : ""
                                 )}
+                                asChild
                             >
-                                {label}
-                            </p>
-                        </Link>
-                    </Button>
-                ))}
+                                <Link href={route(href)}>
+                                    <span className="mr-4 ml-2">
+                                        <Dot size={18} />
+                                    </span>
+                                    <p
+                                        className={cn(
+                                            "max-w-[170px] truncate",
+                                            isOpen
+                                                ? "translate-x-0 opacity-100"
+                                                : "-translate-x-96 opacity-0"
+                                        )}
+                                    >
+                                        {label}
+                                    </p>
+                                </Link>
+                            </Button>
+                        )
+                )}
             </CollapsibleContent>
         </Collapsible>
     ) : (

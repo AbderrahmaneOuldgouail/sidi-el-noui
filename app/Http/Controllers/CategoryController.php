@@ -18,7 +18,7 @@ class CategoryController extends Controller
         Category::create([
             'categorie_name' => $request->categorie_name,
         ]);
-        return redirect(route('features.index'))->with('message', ['status' => 'success', 'message' => 'Categorie ajouter avec succès']);
+        return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Categorie ajouter avec succès']);
     }
 
     /**

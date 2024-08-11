@@ -10,7 +10,6 @@ use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ConsumptionController;
 use App\Http\Controllers\FactureController;
-use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ServiceController;
@@ -18,11 +17,11 @@ use App\Http\Controllers\TypeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\AdminGuest;
-use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
 Route::middleware(AdminGuest::class)->group(
   function () {
@@ -36,15 +35,13 @@ Route::middleware(AdminGuest::class)->group(
 Route::post('logout', [AuthenticatedAdminSessionController::class, 'destroy'])
   ->name('admin.logout');
 
+
 Route::middleware(['auth', Admin::class])->group(
   function () {
 
-
     Route::get('switch-lang', function (Request $request) {
-
       App::setlocale($request->lang);
       Cache::put('user_locale_' . $request->ip(), $request->lang, 60 * 24 * 30);
-
       return redirect()->back();
     })->name('switch.lang');
 
@@ -69,6 +66,9 @@ Route::middleware(['auth', Admin::class])->group(
 
     Route::post('/searsh-aviable-rooms', [BookingController::class, 'searchAviableRoom'])->name('bookings.searchAviableRoom');
     Route::get('/show-aviable-rooms', [BookingController::class, 'showAviableRooms'])->name('bookings.showAviableRooms');
+    Route::get('/historique', [BookingController::class, 'historique'])->name('bookings.historique');
+    Route::get('/calendar', [BookingController::class, 'calendar'])->name('bookings.calendar');
+    Route::post('/change-status/{id}', [BookingController::class, 'changeStatus'])->name('bookings.change.status');
     Route::resource('bookings', BookingController::class)->names("bookings")->except('destroy');
 
     Route::post('/events/{event}', [EventController::class, 'update'])->name('events.update');
@@ -80,15 +80,18 @@ Route::middleware(['auth', Admin::class])->group(
 
     Route::resource('factures', FactureController::class)->names("factures");
 
-    Route::resource('roles', RoleController::class)->names("roles");
+    Route::resource('roles', RoleController::class)->names("roles")->except('show');
 
-    Route::resource('users', UserController::class)->names("users");
+    Route::resource('users', UserController::class)->names("users")->except(['show', 'edit', 'update']);
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('admin.profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
 
     Route::prefix('assets')->controller(AssetsController::class)->as('assets.')->group(function () {
       Route::post('/create', 'store')->name('store');
       Route::get('/delete/{id}', 'destroy')->name('delete');
     });
-
   }
 );
 

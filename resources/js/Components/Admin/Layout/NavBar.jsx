@@ -2,12 +2,12 @@ import { SheetMenu } from "./SheetMenu";
 import { UserNav } from "./UserNav";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
-import { CalendarPlus } from "lucide-react";
-import { Button } from "@/Components/ui/button";
 import { NotificationsNav } from "./NotificationsNav";
 import { AddBooking } from "./AddBooking";
+import { usePage } from "@inertiajs/react";
 
 export function Navbar({ title, isOpen }) {
+    const permissions = usePage().props.auth.permissions;
     return (
         <div
             className={cn(
@@ -21,9 +21,7 @@ export function Navbar({ title, isOpen }) {
                         <SheetMenu />
                         <h1 className="font-bold">{title}</h1>
                     </div>
-                    <div>
-                        <AddBooking/>
-                    </div>
+                    <div>{permissions.booking.create && <AddBooking />}</div>
                     <div className="flex items-center space-x-2 justify-end">
                         <NotificationsNav />
                         <ThemeToggle />

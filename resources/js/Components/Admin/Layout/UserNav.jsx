@@ -18,6 +18,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
+import { useTrans } from "@/Hooks/useTrans";
 
 export function UserNav() {
     const user = usePage().props.auth.user;
@@ -69,11 +70,11 @@ export function UserNav() {
                     </DropdownMenuItem>
                     <DropdownMenuItem className="hover:cursor-pointer" asChild>
                         <Link
-                            href={route("admin.dashboard")}
+                            href={route("admin.profile.edit")}
                             className="flex items-center"
                         >
                             <User className="w-4 h-4 mr-3 text-muted-foreground" />
-                            Account
+                            {useTrans("Compte")}
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>

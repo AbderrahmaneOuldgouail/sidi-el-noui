@@ -14,8 +14,9 @@ return new class extends Migration
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->id('permission_id');
-            $table->string('entity', 11);
-            $table->enum('action', [permissions_actions::View->value, permissions_actions::Create->value, permissions_actions::Edit->value, permissions_actions::Delete->value,]);
+            $table->string('permission_name');
+            // $table->string('entity', 11);
+            // $table->enum('action', [permissions_actions::View->value, permissions_actions::Create->value, permissions_actions::Edit->value, permissions_actions::Delete->value,]);
         });
     }
 

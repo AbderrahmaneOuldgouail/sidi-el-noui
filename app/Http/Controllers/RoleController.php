@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Permissions;
+use App\Enums\permissions_actions;
 use App\Enums\Roles;
 use App\Models\Permission;
 use App\Models\Role;
@@ -18,37 +19,28 @@ class RoleController extends Controller
 {
     public function index(Request $request)
     {
+        if ($request->user()->cannot('viewAny', Role::class) && ($request->user()->cannot('create', Role::class) || $request->user()->cannot('delete', Role::class) || $request->user()->cannot('update', Role::class))) {
+            return Inertia::render('Error/Error_403');
+        }
         $itemsPerPage = $request->input('pages', 10);
 
-        $permissions = Permission::paginate($itemsPerPage);
         $roles = Role::with('permissions')->paginate($itemsPerPage);
 
-        return Inertia::render('Admin/Roles/Roles', ['roles' => $roles, 'permissions' => $permissions]);
+        return Inertia::render('Admin/Roles/Roles', ['roles' => $roles]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        // $permissions = Permission::all();
+        if ($request->user()->cannot('create', Role::class)) {
+            return Inertia::render('Error/Error_403');
+        }
+        $permissions = Permission::all();
+        $permissions_actions = permissions_actions::cases();
 
-        $permissions = Permission::select('entity', 'action', 'permission_id')
-            ->get()
-            ->groupBy('entity')
-            ->map(function ($group) {
-                return [
-                    'entity' => $group->first()->entity,
-                    'actions' => $group->map(function ($permission) {
-                        return [
-                            'permission_id' => $permission->permission_id,
-                            'action' => $permission->action,
-                        ];
-                    })->toArray(),
-                ];
-            })->values();
-
-        return Inertia::render('Admin/Roles/CreateRole', ['permissions' => $permissions]);
+        return Inertia::render('Admin/Roles/CreateRole', ['permissions' => $permissions, 'permissions_actions' => $permissions_actions]);
     }
 
     /**
@@ -56,23 +48,21 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->user()->cannot('create', Role::class)) {
+            return Inertia::render('Error/Error_403');
+        }
         $request->validate([
             'role_name' => 'required|unique:roles,role_name',
             'permissions' => 'required|array',
             'permissions.*' => 'required'
         ]);
-
         DB::beginTransaction();
         try {
             $role = Role::create([
                 'role_name' => $request->role_name,
             ]);
             if ($request->permissions) {
-                foreach ($request->permissions as $permission) {
-                    foreach ($permission['actions'] as $id) {
-                        $role->permissions()->attach($id);
-                    }
-                }
+                $role->permissions()->attach($request->permissions);
             }
 
             DB::commit();
@@ -85,40 +75,22 @@ class RoleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $role = Role::with('permissions')->where('id', $id)->first();
-        return Inertia::render('Admin/Roles/Role', ['role' => $role]);
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, Request $request)
     {
+        if ($request->user()->cannot('update', Role::class)) {
+            return Inertia::render('Error/Error_403');
+        }
         $role = Role::where('role_id', $id)->first();
 
         if ($role && Roles::exists($role->role_name)) {
             return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Vous pouvez pas modifier ce role']);
         }
         $role = Role::with('permissions')->where('role_id', $id)->first();
-        $permissions = Permission::select('entity', 'action', 'permission_id')
-            ->get()
-            ->groupBy('entity')
-            ->map(function ($group) {
-                return [
-                    'entity' => $group->first()->entity,
-                    'actions' => $group->map(function ($permission) {
-                        return [
-                            'permission_id' => $permission->permission_id,
-                            'action' => $permission->action,
-                        ];
-                    })->toArray(),
-                ];
-            })->values();
-        return Inertia::render('Admin/Roles/EditRole', ['role' => $role, 'permissions' =>  $permissions]);
+        $permissions = Permission::all();
+        $permissions_actions = permissions_actions::cases();
+        return Inertia::render('Admin/Roles/EditRole', ['role' => $role, 'permissions' => $permissions, 'permissions_actions' => $permissions_actions]);
     }
 
     /**
@@ -126,17 +98,19 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if ($request->user()->cannot('update', Role::class)) {
+            return Inertia::render('Error/Error_403');
+        }
         $request->validate([
-            'name' => 'required|string',
+            'role_name' => 'required|string',
             'prevName' => 'string',
             'permissions' => 'required|array',
-            'permissions.*' => 'required|string'
+            'permissions.*' => 'required'
         ]);
 
         if (Role::where('role_name', $request->role_name)->exists() && $request->role_name !== $request->prevName) {
             return redirect()->back()->withErrors(['role_name' => 'Role already exists']);
         }
-        // $role = ModelsRole::where('id', $id)->first()->syncPermissions([$request->permissions]);
 
         DB::beginTransaction();
         try {
@@ -147,9 +121,7 @@ class RoleController extends Controller
 
             if ($request->has('permissions')) {
                 $role->permissions()->detach();
-                foreach ($request->permissions as $permission) {
-                    $role->permissions()->attach($permission['permission_id']);
-                }
+                $role->permissions()->attach($request->permissions);
             }
 
             DB::commit();
@@ -158,7 +130,7 @@ class RoleController extends Controller
             throw $e;
         }
 
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.index')->with('message', ['status' => 'success', 'message' => 'Rôle modifier avec succès']);
     }
 
     public function assingPermissions(Request $request, string $id)
@@ -168,15 +140,18 @@ class RoleController extends Controller
             'permissions.*' => 'required|string'
         ]);
 
-        ModelsRole::where('id', $id)->first()->syncPermissions([$request->permissions]);
+        // ModelsRole::where('id', $id)->first()->syncPermissions([$request->permissions]);
         return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, Request $request)
     {
+        if ($request->user()->cannot('delete', Role::class)) {
+            return Inertia::render('Error/Error_403');
+        }
         $role = Role::where('role_id', $id)->first();
         $role_name = $role->role_name;
 
@@ -188,9 +163,7 @@ class RoleController extends Controller
         $users = User::whereHas('role', function ($query) use ($role_name) {
             $query->where('role_name', $role_name);
         })->get();
-        // $users = User::role($role->role_name)->get();
         foreach ($users as $user) {
-            // $user->assignRole(Roles::ADMIN->value);
             $user->update([
                 'role_id' => Role::where("role_name", Roles::ADMIN->value)->first()->role_id,
             ]);

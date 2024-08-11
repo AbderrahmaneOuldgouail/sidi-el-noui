@@ -10,15 +10,6 @@ import {
     DialogTrigger,
 } from "@/Components/ui/dialog";
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/Components/ui/select";
-import {
     Drawer,
     DrawerClose,
     DrawerContent,
@@ -28,6 +19,19 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/Components/ui/drawer";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/Components/ui/command";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/Components/ui/popover";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import InputError from "@/Components/InputError";
@@ -36,9 +40,13 @@ import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import { Checkbox } from "@/Components/ui/checkbox";
 import { useTrans } from "@/Hooks/useTrans";
 import { router, useForm } from "@inertiajs/react";
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 
 export default function FeatureCreateDialog({ categorys }) {
+    const [selectedCategory, setSelectedCategory] = React.useState("");
     const [open, setOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [searchValue, setSearchValue] = React.useState("");
     const { width } = useWindowDimensions();
     const { data, setData, post, errors } = useForm({
         features_name: "",
@@ -53,6 +61,19 @@ export default function FeatureCreateDialog({ categorys }) {
                 setOpen(false);
             },
         });
+    };
+
+    const addToCategorys = (value) => {
+        router.post(
+            route("categorys.store"),
+            { categorie_name: value },
+            {
+                onSuccess: () => {
+                    setSearchValue("");
+                    setIsOpen(false);
+                },
+            }
+        );
     };
 
     if (width >= 767) {
@@ -107,37 +128,111 @@ export default function FeatureCreateDialog({ categorys }) {
                                 value={useTrans("Catégorie")}
                                 className="w-fit"
                             />
-                            <Select
-                                name="categorie_id"
-                                onValueChange={(value) => {
-                                    setData("categorie_id", value);
-                                }}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue
-                                        placeholder={useTrans(
-                                            "Selectionner un catégorie"
-                                        )}
-                                    />
-                                    {data.categorie_id}
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectLabel>Categorie</SelectLabel>
-                                        {categorys &&
-                                            categorys.map((category) => (
-                                                <SelectItem
-                                                    value={
-                                                        category.categorie_id
-                                                    }
-                                                    key={category.categorie_id}
-                                                >
-                                                    {category.categorie_name}
-                                                </SelectItem>
-                                            ))}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
+                            <Popover open={isOpen} onOpenChange={setIsOpen}>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        role="combobox"
+                                        aria-expanded={open}
+                                        className="w-full justify-between"
+                                    >
+                                        {selectedCategory
+                                            ? selectedCategory
+                                            : useTrans(
+                                                  "Selectioner un categorie..."
+                                              )}
+                                        <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent>
+                                    <Command>
+                                        <CommandInput
+                                            placeholder={useTrans(
+                                                "Chercher un categorie..."
+                                            )}
+                                            value={searchValue}
+                                            onValueChange={(newValue) =>
+                                                setSearchValue(newValue)
+                                            }
+                                        />
+                                        <CommandList>
+                                            <CommandEmpty>
+                                                {searchValue ? (
+                                                    <Button
+                                                        variant="outline"
+                                                        onClick={() =>
+                                                            addToCategorys(
+                                                                searchValue
+                                                            )
+                                                        }
+                                                    >
+                                                        <div>
+                                                            <div>Ajouter</div>
+                                                            <div className="font-bold">
+                                                                {searchValue}
+                                                            </div>
+                                                            <div>
+                                                                au categorie
+                                                            </div>
+                                                        </div>
+                                                    </Button>
+                                                ) : (
+                                                    <span>
+                                                        {useTrans(
+                                                            "Chercher un categorie..."
+                                                        )}
+                                                    </span>
+                                                )}
+                                            </CommandEmpty>
+                                            <CommandGroup>
+                                                {categorys &&
+                                                    categorys.map(
+                                                        (category) => (
+                                                            <CommandItem
+                                                                key={
+                                                                    category.categorie_id
+                                                                }
+                                                                value={
+                                                                    category.categorie_id
+                                                                }
+                                                                onSelect={(
+                                                                    currentValue
+                                                                ) => {
+                                                                    setData(
+                                                                        "categorie_id",
+                                                                        category.categorie_id
+                                                                    );
+                                                                    setSelectedCategory(
+                                                                        currentValue ===
+                                                                            category.categorie_id
+                                                                            ? ""
+                                                                            : currentValue
+                                                                    );
+                                                                    setIsOpen(
+                                                                        false
+                                                                    );
+                                                                }}
+                                                            >
+                                                                {
+                                                                    category.categorie_name
+                                                                }
+                                                                <CheckIcon
+                                                                    className={cn(
+                                                                        "ml-auto h-4 w-4",
+                                                                        selectedCategory ===
+                                                                            category.categorie_name
+                                                                            ? "opacity-100"
+                                                                            : "opacity-0"
+                                                                    )}
+                                                                />
+                                                            </CommandItem>
+                                                        )
+                                                    )}
+                                            </CommandGroup>
+                                        </CommandList>
+                                    </Command>
+                                </PopoverContent>
+                            </Popover>
                             <InputError
                                 message={errors.categorie_id}
                                 className="mt-2"
@@ -211,35 +306,105 @@ export default function FeatureCreateDialog({ categorys }) {
                             value={useTrans("Catégorie")}
                             className="w-fit"
                         />
-                        <Select
-                            name="categorie_id"
-                            onValueChange={(value) => {
-                                setData("categorie_id", value);
-                            }}
-                        >
-                            <SelectTrigger>
-                                <SelectValue
-                                    placeholder={useTrans(
-                                        "Selectionner un catégorie"
-                                    )}
-                                />
-                                {data.categorie_id}
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Categorie</SelectLabel>
-                                    {categorys &&
-                                        categorys.map((category) => (
-                                            <SelectItem
-                                                value={category.categorie_id}
-                                                key={category.categorie_id}
-                                            >
-                                                {category.categorie_name}
-                                            </SelectItem>
-                                        ))}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
+                        <Popover open={isOpen} onOpenChange={setIsOpen}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    aria-expanded={open}
+                                    className="w-full justify-between"
+                                >
+                                    {selectedCategory
+                                        ? selectedCategory
+                                        : useTrans(
+                                              "Selectioner un categorie..."
+                                          )}
+                                    <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                                <Command>
+                                    <CommandInput
+                                        placeholder={useTrans(
+                                            "Chercher un categorie..."
+                                        )}
+                                        value={searchValue}
+                                        onValueChange={(newValue) =>
+                                            setSearchValue(newValue)
+                                        }
+                                    />
+                                    <CommandList>
+                                        <CommandEmpty>
+                                            {searchValue ? (
+                                                <Button
+                                                    variant="outline"
+                                                    onClick={() =>
+                                                        addToCategorys(
+                                                            searchValue
+                                                        )
+                                                    }
+                                                >
+                                                    <div>
+                                                        <div>Ajouter</div>
+                                                        <div className="font-bold">
+                                                            {searchValue}
+                                                        </div>
+                                                        <div>au categorie</div>
+                                                    </div>
+                                                </Button>
+                                            ) : (
+                                                <span>
+                                                    {useTrans(
+                                                        "Chercher un categorie..."
+                                                    )}
+                                                </span>
+                                            )}
+                                        </CommandEmpty>
+                                        <CommandGroup>
+                                            {categorys &&
+                                                categorys.map((category) => (
+                                                    <CommandItem
+                                                        key={
+                                                            category.categorie_id
+                                                        }
+                                                        value={
+                                                            category.categorie_id
+                                                        }
+                                                        onSelect={(
+                                                            currentValue
+                                                        ) => {
+                                                            setData(
+                                                                "categorie_id",
+                                                                category.categorie_id
+                                                            );
+                                                            setSelectedCategory(
+                                                                currentValue ===
+                                                                    category.categorie_id
+                                                                    ? ""
+                                                                    : currentValue
+                                                            );
+                                                            setIsOpen(false);
+                                                        }}
+                                                    >
+                                                        {
+                                                            category.categorie_name
+                                                        }
+                                                        <CheckIcon
+                                                            className={cn(
+                                                                "ml-auto h-4 w-4",
+                                                                selectedCategory ===
+                                                                    category.categorie_name
+                                                                    ? "opacity-100"
+                                                                    : "opacity-0"
+                                                            )}
+                                                        />
+                                                    </CommandItem>
+                                                ))}
+                                        </CommandGroup>
+                                    </CommandList>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
                         <InputError
                             message={errors.categorie_id}
                             className="mt-2"

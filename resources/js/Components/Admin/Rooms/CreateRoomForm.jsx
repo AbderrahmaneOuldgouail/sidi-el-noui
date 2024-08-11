@@ -101,9 +101,6 @@ export default function CreateRoomForm({ types, categorys }) {
         setData("assets", file);
     };
 
-    const deleteImage = (index) => {
-        images.splice(index, 1);
-    };
     console.log(errors);
     return (
         <form onSubmit={submit}>

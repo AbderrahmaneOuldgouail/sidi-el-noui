@@ -27,7 +27,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { Badge } from "@/Components/ui/badge";
 import { useTrans } from "@/Hooks/useTrans";
@@ -40,8 +40,8 @@ export type Users = {
     email: string;
     phone: string;
     created_at: string;
-    roles: {
-        name: string;
+    role: {
+        role_name: string;
     };
 };
 
@@ -90,7 +90,7 @@ export const userColumns: ColumnDef<Users>[] = [
         accessorKey: "Role",
         cell: ({ row }) => {
             const user = row.original;
-            return <Badge>{user.roles[0].name} </Badge>;
+            return <Badge>{user.role.role_name} </Badge>;
         },
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title={useTrans("Role")} />
@@ -116,6 +116,7 @@ export const userColumns: ColumnDef<Users>[] = [
             const { width } = useWindowDimensions();
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
+            const permissions = usePage().props.auth.permissions;
 
             const handleDelete = () => {
                 router.delete(route("users.destroy", user.id), {
@@ -139,90 +140,110 @@ export const userColumns: ColumnDef<Users>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                            <span>{useTrans("Modifier")}</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            {width >= 767 ? (
-                                <Dialog open={isopen} onOpenChange={setIsOpen}>
-                                    <DialogTrigger
-                                        className={buttonVariants({
-                                            variant: "destructive",
-                                        })}
+                        {permissions.employ.update && (
+                            <DropdownMenuItem>
+                                <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                                <span>{useTrans("Modifier")}</span>
+                            </DropdownMenuItem>
+                        )}
+                        {permissions.employ.delete && (
+                            <DropdownMenuItem>
+                                {width >= 767 ? (
+                                    <Dialog
+                                        open={isopen}
+                                        onOpenChange={setIsOpen}
                                     >
-                                        <Trash className="mr-2 h-3.5 w-3.5 " />
-                                        {useTrans("Supprimer")}
-                                    </DialogTrigger>
-                                    <DialogContent>
-                                        <DialogHeader>
-                                            <DialogTitle>
-                                                {useTrans("Vous êtes sure?")}{" "}
-                                            </DialogTitle>
-                                            <DialogDescription>
-                                                {useTrans(
-                                                    "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce utilisateur"
-                                                )}
-                                            </DialogDescription>
-                                        </DialogHeader>
-                                        <DialogFooter className="gap-2 ">
-                                            <Button
-                                                variant="secondary"
-                                                onClick={() => setIsOpen(false)}
-                                            >
-                                                {useTrans("Annuler")}
-                                            </Button>
-                                            <Button
-                                                variant="destructive"
-                                                onClick={() => handleDelete()}
-                                                className="flex justify-center"
-                                            >
-                                                <Trash className="mx-2 h-3.5 w-3.5" />
-                                                {useTrans("Supprimer")}
-                                            </Button>
-                                        </DialogFooter>
-                                    </DialogContent>
-                                </Dialog>
-                            ) : (
-                                <Drawer open={isopen} onOpenChange={setIsOpen}>
-                                    <DrawerTrigger
-                                        className={buttonVariants({
-                                            variant: "destructive",
-                                        })}
-                                    >
-                                        <Trash className="mr-2 h-3.5 w-3.5 " />
-                                        {useTrans("Supprimer")}
-                                    </DrawerTrigger>
-                                    <DrawerContent>
-                                        <DrawerHeader className="text-left">
-                                            <DrawerTitle>
-                                                {useTrans("Vous êtes sure?")}{" "}
-                                            </DrawerTitle>
-                                            <DrawerDescription>
-                                                {useTrans(
-                                                    "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce utilisateur"
-                                                )}{" "}
-                                            </DrawerDescription>
-                                        </DrawerHeader>
-                                        <DrawerFooter className="pt-2">
-                                            <Button
-                                                variant="destructive"
-                                                onClick={() => handleDelete()}
-                                                className="flex justify-center"
-                                            >
-                                                <Trash className="mx-2 h-3.5 w-3.5" />
-                                                {useTrans("Supprimer")}
-                                            </Button>
-                                            <DrawerClose asChild>
-                                                <Button variant="outline">
+                                        <DialogTrigger
+                                            className={buttonVariants({
+                                                variant: "destructive",
+                                            })}
+                                        >
+                                            <Trash className="mr-2 h-3.5 w-3.5 " />
+                                            {useTrans("Supprimer")}
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>
+                                                    {useTrans(
+                                                        "Vous êtes sure?"
+                                                    )}{" "}
+                                                </DialogTitle>
+                                                <DialogDescription>
+                                                    {useTrans(
+                                                        "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce utilisateur"
+                                                    )}
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <DialogFooter className="gap-2 ">
+                                                <Button
+                                                    variant="secondary"
+                                                    onClick={() =>
+                                                        setIsOpen(false)
+                                                    }
+                                                >
                                                     {useTrans("Annuler")}
                                                 </Button>
-                                            </DrawerClose>
-                                        </DrawerFooter>
-                                    </DrawerContent>
-                                </Drawer>
-                            )}
-                        </DropdownMenuItem>
+                                                <Button
+                                                    variant="destructive"
+                                                    onClick={() =>
+                                                        handleDelete()
+                                                    }
+                                                    className="flex justify-center"
+                                                >
+                                                    <Trash className="mx-2 h-3.5 w-3.5" />
+                                                    {useTrans("Supprimer")}
+                                                </Button>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
+                                ) : (
+                                    <Drawer
+                                        open={isopen}
+                                        onOpenChange={setIsOpen}
+                                    >
+                                        <DrawerTrigger
+                                            className={buttonVariants({
+                                                variant: "destructive",
+                                            })}
+                                        >
+                                            <Trash className="mr-2 h-3.5 w-3.5 " />
+                                            {useTrans("Supprimer")}
+                                        </DrawerTrigger>
+                                        <DrawerContent>
+                                            <DrawerHeader className="text-left">
+                                                <DrawerTitle>
+                                                    {useTrans(
+                                                        "Vous êtes sure?"
+                                                    )}{" "}
+                                                </DrawerTitle>
+                                                <DrawerDescription>
+                                                    {useTrans(
+                                                        "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce utilisateur"
+                                                    )}{" "}
+                                                </DrawerDescription>
+                                            </DrawerHeader>
+                                            <DrawerFooter className="pt-2">
+                                                <Button
+                                                    variant="destructive"
+                                                    onClick={() =>
+                                                        handleDelete()
+                                                    }
+                                                    className="flex justify-center"
+                                                >
+                                                    <Trash className="mx-2 h-3.5 w-3.5" />
+                                                    {useTrans("Supprimer")}
+                                                </Button>
+                                                <DrawerClose asChild>
+                                                    <Button variant="outline">
+                                                        {useTrans("Annuler")}
+                                                    </Button>
+                                                </DrawerClose>
+                                            </DrawerFooter>
+                                        </DrawerContent>
+                                    </Drawer>
+                                )}
+                            </DropdownMenuItem>
+                        )}
                     </DropdownMenuContent>
                 </DropdownMenu>
             );

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { Head, Link, usePage } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
@@ -12,6 +12,7 @@ import { useToast } from "@/Components/ui/use-toast";
 export default function Employees({ users }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
+    const permissions = usePage().props.auth.permissions;
 
     useEffect(() => {
         if (flash.message) {
@@ -24,11 +25,13 @@ export default function Employees({ users }) {
             <Head title="Employees" />
             <PageHeading title={useTrans("Employés")} />
             <div className="flex justify-end">
-                <Button variant="secondary">
-                    <Link href={route("users.create")}>
-                        {useTrans("Ajouter un employé")}{" "}
-                    </Link>
-                </Button>
+                {permissions.employ.create && (
+                    <Button variant="secondary">
+                        <Link href={route("users.create")}>
+                            {useTrans("Ajouter un employé")}{" "}
+                        </Link>
+                    </Button>
+                )}
             </div>
             <PlaceholderContent>
                 <DataTable

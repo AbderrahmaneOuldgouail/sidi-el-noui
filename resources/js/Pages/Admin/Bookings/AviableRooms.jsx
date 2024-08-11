@@ -22,7 +22,9 @@ export default function AviableRooms({ rooms, bookingData, services }) {
     const { data, setData, post, errors } = useForm({
         rooms: [],
         consomation: [],
-        bookingData: bookingData,
+        check_in: bookingData.check_in,
+        check_out: bookingData.check_out,
+        guest_number: bookingData.guest_number,
         first_name: "",
         last_name: "",
         email: "",
@@ -91,7 +93,8 @@ export default function AviableRooms({ rooms, bookingData, services }) {
         e.preventDefault();
         post(route("bookings.store"));
     };
-    console.log(data.consomation);
+
+    console.log(errors);
     return (
         <AdminPanelLayout>
             <Head title="Chambres disponible" />

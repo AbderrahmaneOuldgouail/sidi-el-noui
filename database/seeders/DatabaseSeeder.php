@@ -33,14 +33,15 @@ class DatabaseSeeder extends Seeder
     {
 
         foreach (Permissions::cases() as  $permission) {
-            foreach (permissions_actions::cases() as  $value) {
-                Permission::create(['entity' => $permission->name, 'action' => $value]);
+            foreach (permissions_actions::cases() as  $permissions_actions) {
+                Permission::create(['permission_name' => $permission->value . '-' . $permissions_actions->value]);
             }
         }
         foreach (Roles::cases() as $value) {
-            Role::create([
+            $role = Role::create([
                 'role_name' => $value->value,
             ]);
+            $role->permissions()->attach(Permission::all());
         }
 
         // Permission::create(['name' => 'booking-create']);

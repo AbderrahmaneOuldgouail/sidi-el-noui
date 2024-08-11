@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\booking_status;
+use App\Enums\Roles;
 use App\Models\Booking;
+use App\Models\Role;
 use App\Models\Room;
 use App\Models\Service;
 use App\Models\User;
@@ -15,11 +17,36 @@ use Inertia\Inertia;
 
 class BookingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $bookings = Booking::with('user')->paginate(10);
+        if ($request->user()->cannot('viewAny', Booking::class)) {
+            return Inertia::render('Error/Error_403');
+        }
 
+        $bookings = Booking::with('user')->where('check_in', '>=', now())->paginate(10);
         return Inertia::render('Admin/Bookings/Bookings', ['bookings' => $bookings]);
+    }
+
+    public function historique(Request $request)
+    {
+        if ($request->user()->cannot('viewAny', Booking::class)) {
+            return Inertia::render('Error/Error_403');
+        }
+
+        $bookings = Booking::with('user')->where('check_in', '<', now())->paginate(10);
+        return Inertia::render('Admin/Bookings/Historique', ['bookings' => $bookings]);
+    }
+
+    public function calendar(Request $request)
+    {
+        if ($request->user()->cannot('viewAny', Booking::class)) {
+            return Inertia::render('Error/Error_403');
+        }
+
+        $rooms = Room::with(['bookings', 'assets', 'type'])->whereHas('bookings', function ($query) {
+            $query->where('check_in', '>=', now());
+        })->get();
+        return Inertia::render('Admin/Bookings/Calendar', ['rooms' => $rooms]);
     }
 
     /**
@@ -32,6 +59,10 @@ class BookingController extends Controller
 
     public function searchAviableRoom(Request $request)
     {
+        if ($request->user()->cannot('create', Booking::class)) {
+            return Inertia::render('Error/Error_403');
+        }
+
         $request->validate([
             'check_in' => 'required',
             'check_out' => 'required',
@@ -68,6 +99,9 @@ class BookingController extends Controller
 
     public function showAviableRooms(Request $request)
     {
+        if ($request->user()->cannot('create', Booking::class)) {
+            return Inertia::render('Error/Error_403');
+        }
         $cacheKey = $request->cacheKey;
         $data = Cache::get($cacheKey);
 
@@ -84,12 +118,31 @@ class BookingController extends Controller
         ]);
     }
 
+    public function changeStatus(Request $request)
+    {
+
+        if ($request->user()->cannot('update', Booking::class)) {
+            return Inertia::render('Error/Error_403');
+        }
+
+        $booking = Booking::where('booking_id', $request->id)->first();
+        $booking->update([
+            'booking_status' => $request->booking_status
+        ]);
+        return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Status changé']);
+    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        if ($request->user()->cannot('create', Booking::class)) {
+            return Inertia::render('Error/Error_403');
+        }
+
+
         $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
@@ -99,10 +152,9 @@ class BookingController extends Controller
             'consomation' => 'array',
             'consomation.*.consumption_id' => 'required|integer',
             'consomation.*.quantity' => 'required|integer',
-            'bookingData' => 'array',
-            'bookingData.*.check_in' => 'required|date',
-            'bookingData.*.check_out' => 'required|date',
-            'bookingData.*.guest_number' => 'required|numeric',
+            'check_in' => 'required|date',
+            'check_out' => 'required|date',
+            'guest_number' => 'required|numeric',
         ]);
 
         DB::beginTransaction();
@@ -116,16 +168,16 @@ class BookingController extends Controller
                     'last_name' => $request->last_name,
                     'email' => $request->email,
                     'access' => false,
-                    'role_id' => 2,
+                    'role_id' => Role::where('role_name', Roles::CLIENT->value)->first()->role_id,
                     'password' => bcrypt('password'),
                 ]
             );
 
             $booking = Booking::create([
                 'user_id' => $user->id,
-                'check_in' => $request->bookingData['check_in'],
-                'check_out' => $request->bookingData['check_out'],
-                'guest_number' => $request->bookingData['guest_number'],
+                'check_in' => $request->check_in,
+                'check_out' => $request->check_out,
+                'guest_number' => $request->guest_number,
                 "booking_status" => booking_status::Waiting->value,
                 'created_at' => now(),
             ]);
@@ -150,26 +202,12 @@ class BookingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
-        $booking = Booking::where('booking_id', $id)->first();
+        if ($request->user()->cannot('viewAny', Booking::class)) {
+            return Inertia::render('Error/Error_403');
+        }
+        $booking = Booking::with(['user', 'consomation', 'rooms'])->where('booking_id', $id)->first();
         return Inertia::render('Admin/Bookings/Booking', ['booking' => $booking]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
 }

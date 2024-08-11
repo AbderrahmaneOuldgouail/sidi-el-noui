@@ -37,7 +37,7 @@ export default function CreateEmployes({ roles }) {
         role: "",
     });
 
-    console.log(errors);
+    console.log(roles);
 
     const submit = (e) => {
         e.preventDefault();
@@ -46,7 +46,7 @@ export default function CreateEmployes({ roles }) {
     return (
         <AdminPanelLayout>
             <Head title="Employes" />
-            <PageHeading title="Inscription d'employé" />
+            <PageHeading title={useTrans("Inscription d'employé")} />
             <PlaceholderContent>
                 <form onSubmit={submit}>
                     <div className="md:flex my-4 gap-4">
@@ -157,7 +157,7 @@ export default function CreateEmployes({ roles }) {
                         <div className="w-full md:w-1/3 pb-2">
                             <InputLabel
                                 htmlFor="role"
-                                value={useTrans("Role")}
+                                value={useTrans("Rôle")}
                             />
                             <LabelDescreption>
                                 {useTrans("Assigne un role au ce employé")}
@@ -166,7 +166,7 @@ export default function CreateEmployes({ roles }) {
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                             <InputLabel
                                 htmlFor="role"
-                                value={useTrans("Role")}
+                                value={useTrans("Rôle")}
                                 className="mb-2"
                             />
                             <Popover open={open} onOpenChange={setOpen}>
@@ -200,21 +200,21 @@ export default function CreateEmployes({ roles }) {
                                                 {roles.map((role) => (
                                                     <CommandItem
                                                         key={role.id}
-                                                        value={role.name}
+                                                        value={role.role_name}
                                                         onSelect={() => {
                                                             setData(
                                                                 "role",
-                                                                role.name
+                                                                role.role_name
                                                             );
                                                             setOpen(false);
                                                         }}
                                                     >
-                                                        {role.name}
+                                                        {role.role_name}
                                                         <CheckIcon
                                                             className={cn(
                                                                 "ml-auto h-4 w-4",
                                                                 data.role ===
-                                                                    role.name
+                                                                    role.role_name
                                                                     ? "opacity-100"
                                                                     : "opacity-0"
                                                             )}

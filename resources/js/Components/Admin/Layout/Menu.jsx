@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { getMenuList } from "@/lib/MenuList";
 import { Button } from "@/Components/ui/button";
 import { ScrollArea } from "@/Components/ui/scroll-area";
-import { CollapsibleContent } from "@/Components/ui/collapsible";
 import {
     Tooltip,
     TooltipTrigger,
@@ -59,9 +58,11 @@ export function Menu({ isOpen }) {
                                         active,
                                         submenus,
                                     },
-                                    index
+                                    index,
+                                    item
                                 ) =>
-                                    submenus.length === 0 ? (
+                                    item[index] &&
+                                    (submenus.length === 0 ? (
                                         <div className="w-full" key={index}>
                                             <TooltipProvider
                                                 disableHoverableContent
@@ -129,7 +130,7 @@ export function Menu({ isOpen }) {
                                                 isOpen={isOpen}
                                             />
                                         </div>
-                                    )
+                                    ))
                             )}
                         </li>
                     ))}
