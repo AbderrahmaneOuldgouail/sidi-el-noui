@@ -50,7 +50,6 @@ export default function SideBar() {
                         </h1>
                     </Link>
                 </Button>
-                <LangSwitch />
                 <Menu isOpen={sidebar?.isOpen} />
             </div>
         </aside>

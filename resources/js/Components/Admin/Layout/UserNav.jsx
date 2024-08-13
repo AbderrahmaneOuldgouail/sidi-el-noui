@@ -1,5 +1,5 @@
-import { Link, usePage } from "@inertiajs/react";
-import { LayoutGrid, LogOut, User } from "lucide-react";
+import { Link, router, usePage } from "@inertiajs/react";
+import { LayoutGrid, LogOut, User, Languages } from "lucide-react";
 
 import { Button } from "@/Components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
@@ -19,6 +19,7 @@ import {
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 import { useTrans } from "@/Hooks/useTrans";
+import { LangSwitch } from "./LangSwitch";
 
 export function UserNav() {
     const user = usePage().props.auth.user;
@@ -77,14 +78,20 @@ export function UserNav() {
                             {useTrans("Compte")}
                         </Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <Languages className="w-4 h-4 mr-3 text-muted-foreground" />
+                        <LangSwitch />
+                    </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     className="hover:cursor-pointer"
-                    onClick={() => {}}
+                    onClick={() => {
+                        router.post(route("admin.logout"));
+                    }}
                 >
                     <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
-                    Sign out
+                    {useTrans("Se déconnecter")}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

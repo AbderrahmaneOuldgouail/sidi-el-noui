@@ -6,9 +6,12 @@ import { useSidebarToggle } from "@/Hooks/useSidebarToggle";
 import { Navbar } from "@/Components/Admin/Layout/NavBar";
 import { ThemeProvider } from "@/Providers/ThemeProvider";
 import { Toaster } from "@/Components/ui/toaster";
+import { usePage } from "@inertiajs/react";
 
 export default function AdminPanelLayout({ children }) {
     const sidebar = useStore(useSidebarToggle, (state) => state);
+    const props = usePage().props;
+    document.documentElement.dir = props.direction;
 
     if (!sidebar) return null;
 

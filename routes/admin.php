@@ -32,19 +32,14 @@ Route::middleware(AdminGuest::class)->group(
       ->name('admin.store');
   }
 );
-Route::post('logout', [AuthenticatedAdminSessionController::class, 'destroy'])
-  ->name('admin.logout');
-
 
 Route::middleware(['auth', Admin::class])->group(
   function () {
-
     Route::get('switch-lang', function (Request $request) {
       App::setlocale($request->lang);
       Cache::put('user_locale_' . $request->ip(), $request->lang, 60 * 24 * 30);
       return redirect()->back();
     })->name('switch.lang');
-
 
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
 
@@ -92,6 +87,9 @@ Route::middleware(['auth', Admin::class])->group(
       Route::post('/create', 'store')->name('store');
       Route::get('/delete/{id}', 'destroy')->name('delete');
     });
+
+    Route::post('logout', [AuthenticatedAdminSessionController::class, 'destroy'])
+      ->name('admin.logout');
   }
 );
 
