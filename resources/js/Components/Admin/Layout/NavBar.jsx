@@ -4,7 +4,8 @@ import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 import { NotificationsNav } from "./NotificationsNav";
 import { AddBooking } from "./AddBooking";
-import { usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
+import { Button } from "@/Components/ui/button";
 
 export function Navbar({ title, isOpen }) {
     const permissions = usePage().props.auth.permissions;
@@ -24,6 +25,12 @@ export function Navbar({ title, isOpen }) {
                     <div>{permissions.booking.create && <AddBooking />}</div>
                     <div className="flex items-center space-x-2 justify-end">
                         <NotificationsNav />
+                        <Link href={route("admin.dispach")}>New Booking</Link>
+                        {/* <Button
+                            onClick={() => router.post(route("admin.dispach"))}
+                        >
+                            trigger
+                        </Button> */}
                         <ThemeToggle />
                         <UserNav />
                     </div>

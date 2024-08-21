@@ -113,4 +113,6 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'bookingmail' => env('MAIL_BOOKING_ADDRESS')
+
 ];

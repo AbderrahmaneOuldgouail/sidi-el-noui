@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Consumption;
 use App\Models\Event;
 use App\Models\Facture;
+use App\Models\Message;
 use App\Models\Promotion;
 use App\Models\Role;
 use App\Models\Room;
@@ -50,7 +51,8 @@ class HandleInertiaRequests extends Middleware
 
         $file = lang_path("trans.json");
 
-        // $request->user()?->roles->pluck('name');
+
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -72,6 +74,12 @@ class HandleInertiaRequests extends Middleware
                         'create' => $request->user()?->can('create', Consumption::class),
                         'update' => $request->user()?->can('update', Consumption::class),
                         'delete' => $request->user()?->can('delete', Consumption::class),
+                    ],
+                    'message' => [
+                        'viewAny' => $request->user()?->can('viewAny', Message::class),
+                        'create' => $request->user()?->can('create', Message::class),
+                        'update' => $request->user()?->can('update', Message::class),
+                        'delete' => $request->user()?->can('delete', Message::class),
                     ],
                     'role' => [
                         'viewAny' => $request->user()?->can('viewAny', Role::class),
@@ -111,11 +119,13 @@ class HandleInertiaRequests extends Middleware
                 ],
             ],
             'flash' => [
-                'message' => fn () => $request->session()->get('message')
+                'message' => fn() => $request->session()->get('message')
             ],
             'direction' => $direction,
             'locale' => $locale,
-            'translations' => File::exists($file) ? File::json($file) : []
+            'translations' => File::exists($file) ? File::json($file) : [],
+            'notifs' => User::find($request->user()?->id)?->unreadNotifications,
+            'hasUnreadMessages' => Message::whereNull('read_at')->exists()
         ];
     }
 }

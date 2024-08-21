@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\Access\Authorizable;
-use Spatie\Permission\Traits\HasRoles;
 use App\Traits\HasPermissions;
 
 class User extends Authenticatable

@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\Chambre;
 use App\Models\Event;
 use App\Models\Feature;
+use App\Models\Message;
 use App\Models\Permission;
 use App\Models\Promotion;
 use App\Models\Role;
@@ -43,6 +44,27 @@ class DatabaseSeeder extends Seeder
             ]);
             $role->permissions()->attach(Permission::all());
         }
+
+        Message::create([
+            'client_email' => 'client@gmail.com',
+            'subject' => 'Réservations',
+            'message' => 'Message content '
+        ]);
+        Message::create([
+            'client_email' => 'client2@gmail.com',
+            'subject' => 'Occupation',
+            'message' => 'Message content '
+        ]);
+        Message::create([
+            'client_email' => 'client3@gmail.com',
+            'subject' => 'Services',
+            'message' => 'Message content '
+        ]);
+        Message::create([
+            'client_email' => 'client4@gmail.com',
+            'subject' => 'Evenement',
+            'message' => 'Message content '
+        ]);
 
         // Permission::create(['name' => 'booking-create']);
         // Permission::create(['name' => 'booking-show']);

@@ -157,12 +157,9 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                         {booking.booking_status == "confirmer" ? (
                             <DropdownMenuItem
                                 onClick={() =>
-                                    router.get(
-                                        route(
-                                            "bookings.show",
-                                            booking.booking_id
-                                        )
-                                    )
+                                    router.post(route("factures.store"), {
+                                        booking_id: booking.booking_id,
+                                    })
                                 }
                                 className="cursor-pointer flex"
                             >

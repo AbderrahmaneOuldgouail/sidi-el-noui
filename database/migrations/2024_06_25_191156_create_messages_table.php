@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('client_email', 40);
             $table->string('subject', 50);
             $table->string('message', 255);
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }

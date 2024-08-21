@@ -7,11 +7,20 @@ import { Navbar } from "@/Components/Admin/Layout/NavBar";
 import { ThemeProvider } from "@/Providers/ThemeProvider";
 import { Toaster } from "@/Components/ui/toaster";
 import { usePage } from "@inertiajs/react";
+import { useToast } from "@/Components/ui/use-toast";
 
 export default function AdminPanelLayout({ children }) {
     const sidebar = useStore(useSidebarToggle, (state) => state);
+    const { toast } = useToast();
     const props = usePage().props;
     document.documentElement.dir = props.direction;
+
+    Echo.channel(`booking-channel`).listen("NewBooking", (e) => {
+        toast({
+            description:
+                e.booking.user.first_name + " fait un nouvaux réservation",
+        });
+    });
 
     if (!sidebar) return null;
 

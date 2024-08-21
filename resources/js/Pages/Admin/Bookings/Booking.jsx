@@ -8,7 +8,6 @@ import { Separator } from "@/Components/ui/separator";
 import { useTrans } from "@/Hooks/useTrans";
 
 export default function Booking({ booking }) {
-    console.log(booking);
 
     return (
         <AdminPanelLayout>

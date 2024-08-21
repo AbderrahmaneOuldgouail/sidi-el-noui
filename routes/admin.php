@@ -10,6 +10,8 @@ use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ConsumptionController;
 use App\Http\Controllers\FactureController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ServiceController;
@@ -22,6 +24,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Broadcast;
 
 Route::middleware(AdminGuest::class)->group(
   function () {
@@ -33,6 +36,7 @@ Route::middleware(AdminGuest::class)->group(
   }
 );
 
+
 Route::middleware(['auth', Admin::class])->group(
   function () {
     Route::get('switch-lang', function (Request $request) {
@@ -42,6 +46,9 @@ Route::middleware(['auth', Admin::class])->group(
     })->name('switch.lang');
 
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+    Route::get('/dispach', [DashboardController::class, 'dispach'])->name("admin.dispach");
+
 
     Route::post('/toggle-status', [RoomController::class, 'toggleStatus'])->name('rooms.toggle.status');
     Route::post('/edit/{room}', [RoomController::class, 'update'])->name('rooms.update');
@@ -73,9 +80,17 @@ Route::middleware(['auth', Admin::class])->group(
     Route::post('/promotions/{promo}', [PromotionController::class, 'update'])->name('promotions.update');
     Route::resource('promotions', PromotionController::class)->names("promotions")->except(['update', 'show']);
 
+    Route::get('/factures/send/{id}', [FactureController::class, 'send'])->name('factures.send');
+    Route::get('/factures/download/{id}', [FactureController::class, 'download'])->name('factures.download');
+    Route::get('/factures/print/{id}', [FactureController::class, 'print'])->name('factures.print');
     Route::resource('factures', FactureController::class)->names("factures");
 
     Route::resource('roles', RoleController::class)->names("roles")->except('show');
+
+    Route::delete('/messages/delete', [MessageController::class, 'destroyAll'])->name('messages.destroyAll');
+    Route::get('/messages/read-all', [MessageController::class, 'readAll'])->name('messages.readAll');
+    Route::post('/messages/reply', [MessageController::class, 'reply'])->name('messages.reply');
+    Route::resource('messages', MessageController::class)->names("messages");
 
     Route::resource('users', UserController::class)->names("users")->except(['show', 'edit', 'update']);
 
@@ -87,6 +102,11 @@ Route::middleware(['auth', Admin::class])->group(
       Route::post('/create', 'store')->name('store');
       Route::get('/delete/{id}', 'destroy')->name('delete');
     });
+
+    Route::get('notifications', [NotificationController::class, 'index'])->name("notifications.index");
+    Route::get('read-all', [NotificationController::class, 'readAll'])->name("notifications.readAll");
+    Route::get('delete-all', [NotificationController::class, 'deleteAll'])->name("notifications.deleteAll");
+    Route::post('read-notification', [NotificationController::class, 'read'])->name("notifications.read");
 
     Route::post('logout', [AuthenticatedAdminSessionController::class, 'destroy'])
       ->name('admin.logout');

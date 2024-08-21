@@ -12,10 +12,16 @@ class Message extends Model
 
     protected $primaryKey = 'message_id';
 
+    protected $fillable = [
+        'user_id',
+        'client_email',
+        'subject',
+        'message',
+        'read_at',
+    ];
+
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withDefault([
-            'nom' => 'Guest Author',
-        ]);
+        return $this->belongsTo(User::class);
     }
 }

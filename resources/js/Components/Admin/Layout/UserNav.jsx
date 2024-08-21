@@ -1,5 +1,5 @@
 import { Link, router, usePage } from "@inertiajs/react";
-import { LayoutGrid, LogOut, User, Languages } from "lucide-react";
+import { LayoutGrid, LogOut, User, Languages, Inbox } from "lucide-react";
 
 import { Button } from "@/Components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
@@ -20,9 +20,12 @@ import {
 } from "@/Components/ui/dropdown-menu";
 import { useTrans } from "@/Hooks/useTrans";
 import { LangSwitch } from "./LangSwitch";
+import { RedBeadge } from "@/Components/ui/red-badge";
 
 export function UserNav() {
     const user = usePage().props.auth.user;
+    const permissions = usePage().props.auth.permissions;
+    const hasUnreadMessages = usePage().props.hasUnreadMessages;
     return (
         <DropdownMenu>
             <TooltipProvider disableHoverableContent>
@@ -33,13 +36,20 @@ export function UserNav() {
                                 variant="outline"
                                 className="relative h-8 w-8 rounded-full"
                             >
-                                <Avatar className="h-8 w-8">
+                                <Avatar className="h-8 w-8 relative">
                                     <AvatarImage src="#" alt="Avatar" />
                                     <AvatarFallback className="bg-transparent uppercase">
                                         {user.first_name.charAt(0)}
                                         {user.last_name.charAt(0)}
                                     </AvatarFallback>
                                 </Avatar>
+                                {hasUnreadMessages &&
+                                    (permissions.service.viewAny ||
+                                        permissions.service.update ||
+                                        permissions.service.delete ||
+                                        permissions.service.create) && (
+                                        <RedBeadge className="right-0" />
+                                    )}
                             </Button>
                         </DropdownMenuTrigger>
                     </TooltipTrigger>
@@ -69,6 +79,34 @@ export function UserNav() {
                             Dashboard
                         </Link>
                     </DropdownMenuItem>
+                    {(permissions.service.viewAny ||
+                        permissions.service.update ||
+                        permissions.service.delete ||
+                        permissions.service.create) && (
+                        <DropdownMenuItem
+                            className="hover:cursor-pointer"
+                            asChild
+                        >
+                            <Link
+                                href={route("messages.index")}
+                                className="flex items-center"
+                            >
+                                {hasUnreadMessages &&
+                                (permissions.service.viewAny ||
+                                    permissions.service.update ||
+                                    permissions.service.delete ||
+                                    permissions.service.create) ? (
+                                    <div className="relative">
+                                        <Inbox className="w-4 h-4 mr-3 text-muted-foreground" />
+                                        <RedBeadge className="right-1/3" />
+                                    </div>
+                                ) : (
+                                    <Inbox className="w-4 h-4 mr-3 text-muted-foreground" />
+                                )}
+                                {useTrans("Boîte de réception")}
+                            </Link>
+                        </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem className="hover:cursor-pointer" asChild>
                         <Link
                             href={route("admin.profile.edit")}

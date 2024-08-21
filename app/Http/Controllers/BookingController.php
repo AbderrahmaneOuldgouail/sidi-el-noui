@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Enums\booking_status;
 use App\Enums\Roles;
+use App\Events\NewBooking;
 use App\Models\Booking;
 use App\Models\Role;
 use App\Models\Room;
 use App\Models\Service;
 use App\Models\User;
+use App\Notifications\NewBookingNotif;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -162,11 +164,12 @@ class BookingController extends Controller
             $user = User::firstOrCreate(
                 [
                     'phone' => $request->phone,
+                    'email' => $request->email,
+
                 ],
                 [
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
-                    'email' => $request->email,
                     'access' => false,
                     'role_id' => Role::where('role_name', Roles::CLIENT->value)->first()->role_id,
                     'password' => bcrypt('password'),
@@ -195,6 +198,16 @@ class BookingController extends Controller
             DB::rollBack();
             throw $e;
         }
+
+        $booking = Booking::with('user')->where('booking_id', $booking->booking_id)->first();
+
+        event(new NewBooking($booking));
+        $users = User::where("role_id", 1)->get();
+        foreach ($users as $user) {
+            $user->notify(new NewBookingNotif($booking));
+        }
+
+
 
         return redirect(route('bookings.index'))->with('message', ['status' => 'success', 'message' => 'Réservation effectué avec succé']);
     }

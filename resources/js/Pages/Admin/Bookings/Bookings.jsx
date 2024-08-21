@@ -20,7 +20,6 @@ export default function Bookings({ bookings }) {
             toast({ description: flash.message?.message });
         }
     }, [flash.message, toast]);
-    console.log(bookings.data);
     return (
         <AdminPanelLayout>
             <Head title="Bookings" />

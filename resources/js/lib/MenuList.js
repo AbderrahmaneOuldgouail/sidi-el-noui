@@ -11,7 +11,6 @@ import {
 
 export function getMenuList(pathname) {
     const permissions = usePage().props.auth.permissions;
-    console.log(permissions);
     const roomsPathnames = [
         "rooms.index",
         "rooms.create",
@@ -35,8 +34,9 @@ export function getMenuList(pathname) {
         "roles.index",
         "roles.create",
         "roles.edit",
-        "roles.show",
         "users.index",
+        "users.create",
+        "users.edit",
     ];
     const facturePathnames = ["factures.index"];
     const eventPathnames = ["events.index", "events.create", "events.edit"];
@@ -167,7 +167,7 @@ export function getMenuList(pathname) {
                 {
                     href: "roles.index",
                     label: "Utilisateurs",
-                    active: facturePathnames.includes(pathname),
+                    active: usersPathnames.includes(pathname),
                     icon: Users,
                     submenus: [
                         (permissions.role.viewAny ||

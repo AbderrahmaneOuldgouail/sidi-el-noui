@@ -26,4 +26,5 @@ enum Permissions: string
     case Facture = 'Facture';
     case Employ = 'Employ';
     case Role = 'Rôle';
+    case Message = 'Message';
 }

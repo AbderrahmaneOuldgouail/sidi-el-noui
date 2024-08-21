@@ -12,7 +12,7 @@ export default function Home() {
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             Home
                         </div>
-                        <Link href={route("login")}>Login</Link>
+                        <Link href={route("dispach")}>New Booking</Link>
                     </div>
                 </div>
             </div>
