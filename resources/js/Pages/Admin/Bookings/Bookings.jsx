@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
 import { useToast } from "@/Components/ui/use-toast";
 
@@ -10,6 +10,7 @@ import PageHeading from "@/Components/ui/PageHeading";
 import { DataTable } from "@/Components/Admin/DataTable";
 import { historiqueColumns } from "@/Components/Admin/Bookings/HistoriqueColumns";
 import { useTrans } from "@/Hooks/useTrans";
+import { ToastAction } from "@/Components/ui/toast";
 
 export default function Bookings({ bookings }) {
     const { toast } = useToast();
@@ -17,7 +18,25 @@ export default function Bookings({ bookings }) {
 
     useEffect(() => {
         if (flash.message) {
-            toast({ description: flash.message?.message });
+            flash.message.status == "success"
+                ? toast({
+                      description: flash.message?.message,
+                  })
+                : toast({
+                      variant: "destructive",
+                      title: "Ereur !",
+                      description: flash.message?.message,
+                      action: (
+                          <ToastAction
+                              altText="Paramètre de facturation"
+                              onClick={() =>
+                                  router.get(route("factures.index"))
+                              }
+                          >
+                              Paramètre de facturation
+                          </ToastAction>
+                      ),
+                  });
         }
     }, [flash.message, toast]);
     return (

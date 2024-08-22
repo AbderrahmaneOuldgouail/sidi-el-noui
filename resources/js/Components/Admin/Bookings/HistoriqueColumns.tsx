@@ -1,6 +1,12 @@
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Eye, ReceiptText, Trash } from "lucide-react";
+import {
+    MoreHorizontal,
+    Eye,
+    ReceiptText,
+    HandCoins,
+    Ticket,
+} from "lucide-react";
 import { Button, buttonVariants } from "@/Components/ui/button";
 import {
     Dialog,
@@ -127,6 +133,8 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
             const booking = row.original;
             const { width } = useWindowDimensions();
             const [open, setopen] = React.useState(false);
+            const [isopen, setIsOpen] = React.useState(false);
+
             const permissions = usePage().props.auth.permissions;
 
             const handleBookingStatus = (status) => {
@@ -142,8 +150,20 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                     }
                 );
             };
+
+            const handleBill = (id, payment) => {
+                router.post(
+                    route("factures.store", {
+                        booking_id: id,
+                        payment: payment,
+                    })
+                );
+            };
             return (
-                <DropdownMenu open={open} onOpenChange={setopen}>
+                <DropdownMenu
+                    open={isopen ? true : open}
+                    onOpenChange={setopen}
+                >
                     <DropdownMenuTrigger
                         className={buttonVariants({
                             variant: "ghost",
@@ -155,16 +175,116 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         {booking.booking_status == "confirmer" ? (
-                            <DropdownMenuItem
-                                onClick={() =>
-                                    router.post(route("factures.store"), {
-                                        booking_id: booking.booking_id,
-                                    })
-                                }
-                                className="cursor-pointer flex"
-                            >
-                                <ReceiptText className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                <span>{useTrans("Facture")}</span>
+                            <DropdownMenuItem>
+                                {width >= 767 ? (
+                                    <Dialog
+                                        open={isopen}
+                                        onOpenChange={setIsOpen}
+                                    >
+                                        <DialogTrigger className="cursor-pointer flex">
+                                            <ReceiptText className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                                            <span>{useTrans("Facture")}</span>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>
+                                                    {useTrans(
+                                                        "Mode de payment"
+                                                    )}
+                                                </DialogTitle>
+                                                <DialogDescription>
+                                                    {useTrans(
+                                                        "Choisi le mode de payment pour cette facture"
+                                                    )}
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <DialogFooter className="gap-2 ">
+                                                <Button
+                                                    variant="secondary"
+                                                    onClick={() =>
+                                                        handleBill(
+                                                            booking.booking_id,
+                                                            "espece"
+                                                        )
+                                                    }
+                                                    className="flex justify-center"
+                                                    size="sm"
+                                                >
+                                                    <HandCoins className="mx-2 h-3.5 w-3.5" />
+                                                    {useTrans("Espece")}
+                                                </Button>
+                                                <Button
+                                                    variant="secondary"
+                                                    onClick={() =>
+                                                        handleBill(
+                                                            booking.booking_id,
+                                                            "check"
+                                                        )
+                                                    }
+                                                    className="flex justify-center"
+                                                    size="sm"
+                                                >
+                                                    <Ticket className="mx-2 h-3.5 w-3.5" />
+                                                    {useTrans("Chèque")}
+                                                </Button>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
+                                ) : (
+                                    <Drawer
+                                        open={isopen}
+                                        onOpenChange={setIsOpen}
+                                    >
+                                        <DrawerTrigger className="cursor-pointer flex">
+                                            <ReceiptText className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                                            <span>{useTrans("Facture")}</span>
+                                        </DrawerTrigger>
+                                        <DrawerContent>
+                                            <DrawerHeader className="text-left">
+                                                <DrawerTitle>
+                                                    {useTrans(
+                                                        "Mode de payment"
+                                                    )}
+                                                </DrawerTitle>
+                                                <DrawerDescription>
+                                                    {useTrans(
+                                                        "Choisi le mode de payment pour cette facture"
+                                                    )}
+                                                </DrawerDescription>
+                                            </DrawerHeader>
+                                            <DrawerFooter className="pt-2">
+                                                <Button
+                                                    variant="secondary"
+                                                    onClick={() =>
+                                                        handleBill(
+                                                            booking.booking_id,
+                                                            "espece"
+                                                        )
+                                                    }
+                                                    className="flex justify-center"
+                                                    size="sm"
+                                                >
+                                                    <HandCoins className="mx-2 h-3.5 w-3.5" />
+                                                    {useTrans("Espece")}
+                                                </Button>
+                                                <Button
+                                                    variant="secondary"
+                                                    onClick={() =>
+                                                        handleBill(
+                                                            booking.booking_id,
+                                                            "check"
+                                                        )
+                                                    }
+                                                    className="flex justify-center"
+                                                    size="sm"
+                                                >
+                                                    <Ticket className="mx-2 h-3.5 w-3.5" />
+                                                    {useTrans("Chèque")}
+                                                </Button>
+                                            </DrawerFooter>
+                                        </DrawerContent>
+                                    </Drawer>
+                                )}
                             </DropdownMenuItem>
                         ) : booking.booking_status == "en attente" &&
                           permissions.booking.update ? (

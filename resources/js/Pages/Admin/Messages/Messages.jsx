@@ -138,7 +138,7 @@ export default function messages({ messages, filter }) {
         <AdminPanelLayout>
             <Head title="Boîte de réception" />
             <PageHeading title={useTrans("Boîte de réception")} />
-            <div className="flex justify-end mt-2 -mb-4 gap-4">
+            <div className="flex justify-end mt-2 gap-4">
                 {permissions.message.update && (
                     <Button
                         disabled={messages.length < 1 || !hasUnreadMessages}

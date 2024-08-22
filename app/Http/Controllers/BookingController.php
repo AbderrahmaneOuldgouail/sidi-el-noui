@@ -11,7 +11,6 @@ use App\Models\Room;
 use App\Models\Service;
 use App\Models\User;
 use App\Notifications\NewBookingNotif;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +24,7 @@ class BookingController extends Controller
             return Inertia::render('Error/Error_403');
         }
 
-        $bookings = Booking::with('user')->where('check_in', '>=', now())->paginate(10);
+        $bookings = Booking::with('user')->where('check_out', '>=', now())->paginate(10);
         return Inertia::render('Admin/Bookings/Bookings', ['bookings' => $bookings]);
     }
 
@@ -35,7 +34,7 @@ class BookingController extends Controller
             return Inertia::render('Error/Error_403');
         }
 
-        $bookings = Booking::with('user')->where('check_in', '<', now())->paginate(10);
+        $bookings = Booking::with('user')->where('check_out', '<', now())->paginate(10);
         return Inertia::render('Admin/Bookings/Historique', ['bookings' => $bookings]);
     }
 

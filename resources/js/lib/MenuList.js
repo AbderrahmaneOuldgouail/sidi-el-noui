@@ -1,12 +1,15 @@
 import { usePage } from "@inertiajs/react";
 import {
-    Tag,
     Users,
-    // Settings,
-    Bookmark,
-    SquarePen,
+    CalendarDays,
+    HandPlatter,
+    BookmarkCheck,
     LayoutGrid,
     Hotel,
+    Archive,
+    ReceiptText,
+    Megaphone,
+    TicketMinus,
 } from "lucide-react";
 
 export function getMenuList(pathname) {
@@ -38,9 +41,10 @@ export function getMenuList(pathname) {
         "users.create",
         "users.edit",
     ];
-    const facturePathnames = ["factures.index"];
+    const rolesPathnames = ["roles.index", "roles.create", "roles.edit"];
+    const userPathnames = ["users.index", "users.create", "users.edit"];
+    const facturePathnames = ["factures.index", "factures.show"];
     const eventPathnames = ["events.index", "events.create", "events.edit"];
-    const bookingPathnames = ["bookings.index", "bookings.historique"];
     return [
         {
             groupLabel: "",
@@ -63,27 +67,27 @@ export function getMenuList(pathname) {
                     href: "bookings.calendar",
                     label: "Calendréier",
                     active: pathname == "bookings.calendar",
-                    icon: Tag,
+                    icon: CalendarDays,
                     submenus: [],
                 },
                 permissions.booking.viewAny && {
                     href: "bookings.index",
                     label: "Réservations",
                     active: pathname == "bookings.index",
-                    icon: Tag,
+                    icon: BookmarkCheck,
                     submenus: [],
                 },
                 permissions.booking.viewAny && {
                     href: "bookings.historique",
                     label: "Historique",
                     active: pathname == "bookings.historique",
-                    icon: Tag,
+                    icon: Archive,
                     submenus: [],
                 },
             ],
         },
         {
-            groupLabel: "",
+            groupLabel: "La propritaire",
             menus: [
                 (permissions.room.viewAny ||
                     permissions.room.update ||
@@ -109,7 +113,7 @@ export function getMenuList(pathname) {
                     href: "services.index",
                     label: "Services",
                     active: servicesPathnames.includes(pathname),
-                    icon: Bookmark,
+                    icon: HandPlatter,
                     submenus: [
                         (permissions.service.viewAny ||
                             permissions.service.update ||
@@ -126,18 +130,15 @@ export function getMenuList(pathname) {
                         },
                     ],
                 },
-                {
+                (permissions.facture.viewAny ||
+                    permissions.facture.update ||
+                    permissions.facture.delete ||
+                    permissions.facture.create) && {
                     href: "factures.index",
                     label: "Factures",
                     active: facturePathnames.includes(pathname),
-                    icon: Tag,
-                    submenus: [
-                        {
-                            href: "factures.index",
-                            label: "Factures",
-                            active: pathname === "factures.index",
-                        },
-                    ],
+                    icon: ReceiptText,
+                    submenus: [],
                 },
                 (permissions.event.viewAny ||
                     permissions.event.update ||
@@ -146,7 +147,7 @@ export function getMenuList(pathname) {
                     href: "events.index",
                     label: "Evènements",
                     active: eventPathnames.includes(pathname),
-                    icon: Tag,
+                    icon: Megaphone,
                     submenus: [],
                 },
                 (permissions.promotion.viewAny ||
@@ -156,13 +157,13 @@ export function getMenuList(pathname) {
                     href: "promotions.index",
                     label: "Promotions",
                     active: promoPathnames.includes(pathname),
-                    icon: Tag,
+                    icon: TicketMinus,
                     submenus: [],
                 },
             ],
         },
         {
-            groupLabel: "Settings",
+            groupLabel: "Managment",
             menus: [
                 {
                     href: "roles.index",
@@ -176,7 +177,7 @@ export function getMenuList(pathname) {
                             permissions.role.create) && {
                             href: "roles.index",
                             label: "Roles",
-                            active: pathname === "roles.index",
+                            active: rolesPathnames.includes(pathname),
                         },
                         (permissions.employ.viewAny ||
                             permissions.employ.update ||
@@ -184,7 +185,7 @@ export function getMenuList(pathname) {
                             permissions.employ.create) && {
                             href: "users.index",
                             label: "Employés",
-                            active: pathname === "users.index",
+                            active: userPathnames.includes(pathname),
                         },
                     ],
                 },

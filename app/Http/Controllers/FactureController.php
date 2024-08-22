@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Mail\FactureEmail;
 use App\Models\Booking;
 use App\Models\Facture;
+use App\Models\Type;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
-use Spatie\Browsershot\Browsershot;
 use Illuminate\Support\Facades\Mail;
 
 use function Spatie\LaravelPdf\Support\pdf;
@@ -18,11 +19,11 @@ class FactureController extends Controller
     public function index(Request $request)
     {
         $itemsPerPage = $request->input('pages', 10);
-
         $factures = Facture::orderBy('created_at')->paginate($itemsPerPage);
-        // dd($factures);
 
-        return Inertia::render('Admin/Factures/Factures', ['factures' => $factures]);
+
+        $bill_settings = Cache::get('bill-settings');
+        return Inertia::render('Admin/Factures/Factures', ['factures' => $factures, 'bill_settings' => $bill_settings]);
     }
 
     /**
@@ -40,10 +41,80 @@ class FactureController extends Controller
     {
         $request->validate([
             'booking_id' => 'required|integer',
+            'payment' => 'required'
         ]);
+        $bill_settings = Cache::get('bill-settings', false);
 
 
+        if (!$bill_settings) {
+            return redirect()->back()->with('message', ['status' => 'error', 'message' => 'Voulez sétez les paramètres de facturation avant générer les factures']);
+        }
         $booking = Booking::with(['user', 'consomation', 'rooms'])->where('booking_id', $request->booking_id)->first();
+
+        $rooms = [];
+        $rooms_total = 0;
+        $consomations = [];
+        $consomations_total = 0;
+        foreach ($booking->rooms as $room) {
+            if ($request->payment == 'espece') {
+                $prix_th = (($room->room_price / (1 + $bill_settings['timbre'] / 100)) - $bill_settings['tourist_tax'] * $booking->guest_number) / (1 + $bill_settings['tva'] / 100); //espece
+            } else {
+                $prix_th = ($room->room_price - $bill_settings['tourist_tax'] * $booking->guest_number) / (1 + $bill_settings['tva'] / 100);
+            }
+            $type = Type::where("type_id", $room->type_id)->first()->type_designation;
+            $existingKey = null;
+            foreach ($rooms as $key => $value) {
+                if (is_array($value) && $value['room'] == $type) {
+                    $existingKey = $key;
+                    break;
+                }
+            }
+            if ($existingKey !== null) {
+                $rooms[$existingKey]['quantity'] += 1;
+            } else {
+                $rooms[] = ['room' => $type, 'quantity' => 1, 'unitare_price' => round($prix_th, 2)];
+            }
+            $rooms_total += round($prix_th, 2);
+        }
+        foreach ($booking->consomation as $consomation) {
+            if ($request->payment == 'espece') {
+                $prix_th = ($consomation->consumption_price / (1 + $bill_settings['timbre'] / 100)) / (1 + $bill_settings['tva'] / 100); //espece
+
+            } else {
+                $prix_th = $consomation->consumption_price  / (1 + $bill_settings['tva'] / 100);
+            }
+            $consomations[] = ['consumption_name' => $consomation->consumption_name, 'quantity' => $consomation->pivot->quantity, 'unitare_price' => round($prix_th, 2)];
+            $consomations_total += round($prix_th, 2) * $consomation->pivot->quantity;
+        }
+
+        $total_ht = round($rooms_total, 2) + round($consomations_total, 2);
+        $total_tva = round($total_ht * ($bill_settings['tva'] / 100), 2);
+        $sous_total = round($total_ht + ($total_tva), 2);
+        $taxe_de_sejour = $bill_settings['tourist_tax'] * $booking->guest_number;
+        $droit_de_timbre = round((($sous_total) + ($taxe_de_sejour)) * ($bill_settings['timbre'] / 100), 2);
+        $total_ttc = round($droit_de_timbre + $taxe_de_sejour + $sous_total, 2);
+
+        $data = [
+            'rooms' => $rooms,
+            'consomations' => $consomations,
+            'user' => [
+                'first_name' => $booking->user->first_name,
+                'last_name' => $booking->user->last_name,
+                'email' => $booking->user->email
+            ],
+            'booking' => [
+                'check_in' => $booking->check_in,
+                'check_out' => $booking->check_out,
+                'created_at' => $booking->created_at,
+                'guest_number' => $booking->guest_number,
+            ],
+            'total_ht' => $total_ht,
+            'total_tva' => $total_tva,
+            'sous_total' => $sous_total,
+            'taxe_de_sejour' => $taxe_de_sejour,
+            'droit_de_timbre' => $request->payment == 'espece' ? $droit_de_timbre : 0,
+            'total_ttc' => $total_ttc,
+        ];
 
 
         $facture = Facture::firstOrCreate(
@@ -51,14 +122,34 @@ class FactureController extends Controller
                 'booking_id' => $request->booking_id,
             ],
             [
-                'data' => $booking,
-                'tourist_tax' => 200.00,
-                'tva' => 0.9,
-                'timbre' => 74.26,
+                'data' => $data,
+                'tourist_tax' => $bill_settings['tourist_tax'],
+                'tva' => $bill_settings['tva'],
+                'timbre' => $bill_settings['timbre'],
                 'created_at' => now(),
             ]
         );
+
+        if ($booking->check_out >= now()) {
+            $facture->update([
+                'data' => $data,
+                'tourist_tax' => $bill_settings['tourist_tax'],
+                'tva' => $bill_settings['tva'],
+                'timbre' => $bill_settings['timbre'],
+            ]);
+        }
         return redirect()->route('factures.show', $facture->facture_id)->with('message', ['status' => 'success', 'message' => 'Facture géniré avec succé']);
+    }
+
+    public function billSettings(Request $request)
+    {
+        $request->validate([
+            'tva' => 'required|numeric',
+            'timbre' => 'required|numeric',
+            'tourist_tax' => 'required|numeric'
+        ]);
+        Cache::put('bill-settings', ['tva' => $request->tva, 'timbre' => $request->timbre, 'tourist_tax' => $request->tourist_tax]);
+        return redirect(route('factures.index'))->with('message', ['status' => 'success', 'message' => 'Paramètre modifier !']);
     }
 
     /**
@@ -67,8 +158,9 @@ class FactureController extends Controller
     public function show(string $id)
     {
         $facture = Facture::where("facture_id", $id)->first();
-
-        return Inertia::render('Admin/Factures/Facture', ['facture' => $facture]);
+        $mail = config('mail.bookingmail');
+        $total_ttc = numberToWords($facture->data['total_ttc']);
+        return Inertia::render('Admin/Factures/Facture', ['facture' => $facture, 'mail' => $mail, 'total_ttc' => $total_ttc]);
     }
 
     public function print(string $id)
@@ -77,8 +169,6 @@ class FactureController extends Controller
 
         $pdf = PDF::loadView('facture', compact('facture'));
         return $pdf->stream('facture-' . $facture->facture_id . '.pdf');
-
-        // return Inertia::render('Admin/Factures/Facture', ['facture' => $facture]);
     }
 
     public function send(string $id)

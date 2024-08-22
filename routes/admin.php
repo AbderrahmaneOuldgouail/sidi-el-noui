@@ -83,6 +83,7 @@ Route::middleware(['auth', Admin::class])->group(
     Route::get('/factures/send/{id}', [FactureController::class, 'send'])->name('factures.send');
     Route::get('/factures/download/{id}', [FactureController::class, 'download'])->name('factures.download');
     Route::get('/factures/print/{id}', [FactureController::class, 'print'])->name('factures.print');
+    Route::post('/bill-settings', [FactureController::class, 'billSettings'])->name('factures.bill.settings');
     Route::resource('factures', FactureController::class)->names("factures");
 
     Route::resource('roles', RoleController::class)->names("roles")->except('show');

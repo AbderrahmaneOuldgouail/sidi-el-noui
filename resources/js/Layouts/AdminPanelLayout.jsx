@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/Providers/ThemeProvider";
 import { Toaster } from "@/Components/ui/toaster";
 import { usePage } from "@inertiajs/react";
 import { useToast } from "@/Components/ui/use-toast";
+import { BookmarkFilledIcon } from "@radix-ui/react-icons";
 
 export default function AdminPanelLayout({ children }) {
     const sidebar = useStore(useSidebarToggle, (state) => state);
