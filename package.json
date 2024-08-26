@@ -7,7 +7,7 @@
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
-        "@inertiajs/react": "^1.0.0",
+        "@inertiajs/react": "^1.2.0",
         "@tailwindcss/forms": "^0.5.3",
         "@vitejs/plugin-react": "^4.2.0",
         "autoprefixer": "^10.4.12",
@@ -22,8 +22,13 @@
         "vite": "^5.0"
     },
     "dependencies": {
+<<<<<<< HEAD
+        "@hookform/resolvers": "^3.9.0",
+        "@inertiajs/inertia": "^0.11.1",
+=======
         "@bitnoi.se/react-scheduler": "^0.2.0",
         "@hookform/resolvers": "^3.6.0",
+>>>>>>> 66b34ba96f44b8b56890a52d4c08669be71e3d91
         "@radix-ui/react-accordion": "^1.2.0",
         "@radix-ui/react-aspect-ratio": "^1.1.0",
         "@radix-ui/react-avatar": "^1.1.0",
@@ -53,16 +58,22 @@
         "date-fns": "^3.6.0",
         "dayjs": "^1.11.12",
         "embla-carousel-react": "^8.1.7",
+<<<<<<< HEAD
+        "lucide-react": "^0.435.0",
+        "react-day-picker": "^8.10.1",
+        "react-drag-drop-files": "^2.3.10",
+        "react-hook-form": "^7.52.0",
+        "react-icons": "^5.2.1",
+=======
         "lucide-react": "^0.395.0",
         "puppeteer": "^23.1.1",
         "react-day-picker": "^8.10.1",
         "react-drag-drop-files": "^2.3.10",
         "react-hook-form": "^7.52.0",
         "react-resizable-panels": "^2.1.0",
+>>>>>>> 66b34ba96f44b8b56890a52d4c08669be71e3d91
         "tailwind-merge": "^2.3.0",
         "tailwindcss-animate": "^1.0.7",
-        "vaul": "^0.9.1",
-        "zod": "^3.23.8",
-        "zustand": "^4.5.4"
+        "vaul": "^0.9.1"
     }
 }

@@ -6,6 +6,18 @@ use App\Mail\ReplyMessage;
 use App\Models\Message;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+<<<<<<< HEAD
+use Inertia\Inertia;
+;
+
+class MessageController extends Controller
+{
+        public function contactIndex(){
+
+        return Inertia::render('Client/Contact');
+    }
+
+=======
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
@@ -94,4 +106,5 @@ class MessageController extends Controller
         return redirect()->back()->with('message', ['status' => 'success', 'message'
         => 'Messages supprimé avec succès']);
     }
+>>>>>>> 66b34ba96f44b8b56890a52d4c08669be71e3d91
 }

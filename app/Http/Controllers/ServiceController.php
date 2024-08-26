@@ -9,7 +9,16 @@ use Inertia\Inertia;
 
 class ServiceController extends Controller
 {
+<<<<<<< HEAD
+    public function servicesIndex(){
+
+        return Inertia::render('Client/Services');
+    }
+
+    public function index()
+=======
     public function index(Request  $request)
+>>>>>>> 66b34ba96f44b8b56890a52d4c08669be71e3d91
     {
         if ($request->user()->cannot('viewAny', Service::class) && ($request->user()->cannot('create', Service::class) || $request->user()->cannot('delete', Service::class) || $request->user()->cannot('update', Service::class))) {
             return abort(403);
