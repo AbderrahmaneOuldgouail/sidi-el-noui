@@ -18,6 +18,7 @@ export default function Rooms() {
                                 </h2>
                                 <RoomCard />
                                 <ReservationForm />
+                                kjkd
                             </div>
                         </div>
                     </div>
