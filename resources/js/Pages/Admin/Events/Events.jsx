@@ -13,6 +13,7 @@ import { useTrans } from "@/Hooks/useTrans";
 export default function Events({ events }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
+    const permissions = usePage().props.auth.permissions;
 
     useEffect(() => {
         if (flash.message) {
@@ -25,11 +26,13 @@ export default function Events({ events }) {
             <Head title="Events" />
             <PageHeading title={useTrans("Evènements")} />
             <div className="flex justify-end">
-                <Button variant="secondary">
-                    <Link href={route("events.create")}>
-                        {useTrans("Créer un évènement")}
-                    </Link>
-                </Button>
+                {permissions.event.create && (
+                    <Button variant="secondary">
+                        <Link href={route("events.create")}>
+                            {useTrans("Créer un évènement")}
+                        </Link>
+                    </Button>
+                )}
             </div>
             <PlaceholderContent>
                 <div className="font-bold p-4">

@@ -8,6 +8,7 @@ import { useSidebarToggle } from "@/Hooks/useSidebarToggle";
 import { SidebarToggle } from "./SideBareToggle";
 import { Menu } from "./Menu";
 import { LangSwitch } from "./LangSwitch";
+import { AppLogo } from "@/Components/ui/app-logo";
 
 export default function SideBar() {
     const sidebar = useStore(useSidebarToggle, (state) => state);
@@ -36,8 +37,11 @@ export default function SideBar() {
                     variant="link"
                     asChild
                 >
-                    <Link href="/dashboard" className="flex items-center gap-2">
-                        <PanelsTopLeft className="w-6 h-6 mr-1" />
+                    <Link
+                        href={route("admin.dashboard")}
+                        className="flex items-center gap-2"
+                    >
+                        <AppLogo className="h-10 w-10" />
                         <h1
                             className={cn(
                                 "font-bold text-lg whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300",
@@ -46,11 +50,10 @@ export default function SideBar() {
                                     : "translate-x-0 opacity-100"
                             )}
                         >
-                            Brand
+                            Sidi El Noui
                         </h1>
                     </Link>
                 </Button>
-                <LangSwitch />
                 <Menu isOpen={sidebar?.isOpen} />
             </div>
         </aside>

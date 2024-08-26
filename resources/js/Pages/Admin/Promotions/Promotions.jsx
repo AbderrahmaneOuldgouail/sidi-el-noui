@@ -13,6 +13,7 @@ import PromotionCard from "@/Components/Admin/Promotions/PromotionCard";
 export default function Promotions({ promotions }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
+    const permissions = usePage().props.auth.permissions;
 
     useEffect(() => {
         if (flash.message) {
@@ -24,11 +25,13 @@ export default function Promotions({ promotions }) {
             <Head title="Promotions" />
             <PageHeading title={useTrans("Promotions")} />
             <div className="flex justify-end">
-                <Button variant="secondary">
-                    <Link href={route("promotions.create")}>
-                        {useTrans("Créer un promotion")}
-                    </Link>
-                </Button>
+                {permissions.promotion.create && (
+                    <Button variant="secondary">
+                        <Link href={route("promotions.create")}>
+                            {useTrans("Créer un promotion")}
+                        </Link>
+                    </Button>
+                )}
             </div>
             <PlaceholderContent>
                 <div className="font-bold p-4">

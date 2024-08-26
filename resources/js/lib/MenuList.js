@@ -1,14 +1,19 @@
+import { usePage } from "@inertiajs/react";
 import {
-    Tag,
     Users,
-    // Settings,
-    Bookmark,
-    SquarePen,
+    CalendarDays,
+    HandPlatter,
+    BookmarkCheck,
     LayoutGrid,
     Hotel,
+    Archive,
+    ReceiptText,
+    Megaphone,
+    TicketMinus,
 } from "lucide-react";
 
 export function getMenuList(pathname) {
+    const permissions = usePage().props.auth.permissions;
     const roomsPathnames = [
         "rooms.index",
         "rooms.create",
@@ -23,16 +28,23 @@ export function getMenuList(pathname) {
         "services.edit",
         "consumptions.index",
     ];
-    const facturePathnames = ["factures.index"];
-    const eventPathnames = ["events.index", "events.create", "events.edit"];
-    const promoPathnames = ["promotions.index", "promotions.create", "promotions.edit"];
+    const promoPathnames = [
+        "promotions.index",
+        "promotions.create",
+        "promotions.edit",
+    ];
     const usersPathnames = [
         "roles.index",
         "roles.create",
         "roles.edit",
-        "roles.show",
         "users.index",
+        "users.create",
+        "users.edit",
     ];
+    const rolesPathnames = ["roles.index", "roles.create", "roles.edit"];
+    const userPathnames = ["users.index", "users.create", "users.edit"];
+    const facturePathnames = ["factures.index", "factures.show"];
+    const eventPathnames = ["events.index", "events.create", "events.edit"];
     return [
         {
             groupLabel: "",
@@ -46,22 +58,40 @@ export function getMenuList(pathname) {
                 },
             ],
         },
-        {
-            groupLabel: "",
+        (permissions.booking.viewAny ||
+            permissions.booking.update ||
+            permissions.booking.create) && {
+            groupLabel: "Moteur de réservation",
             menus: [
-                {
-                    href: "bookings.index",
+                permissions.booking.viewAny && {
+                    href: "bookings.calendar",
                     label: "Calendréier",
+                    active: pathname == "bookings.calendar",
+                    icon: CalendarDays,
+                    submenus: [],
+                },
+                permissions.booking.viewAny && {
+                    href: "bookings.index",
+                    label: "Réservations",
                     active: pathname == "bookings.index",
-                    icon: Tag,
+                    icon: BookmarkCheck,
+                    submenus: [],
+                },
+                permissions.booking.viewAny && {
+                    href: "bookings.historique",
+                    label: "Historique",
+                    active: pathname == "bookings.historique",
+                    icon: Archive,
                     submenus: [],
                 },
             ],
         },
         {
-            groupLabel: "",
+            groupLabel: "La propritaire",
             menus: [
-                {
+                (permissions.room.viewAny ||
+                    permissions.room.update ||
+                    permissions.room.create) && {
                     href: "rooms.index",
                     label: "Chambres",
                     active: roomsPathnames.includes(pathname),
@@ -83,9 +113,12 @@ export function getMenuList(pathname) {
                     href: "services.index",
                     label: "Services",
                     active: servicesPathnames.includes(pathname),
-                    icon: Bookmark,
+                    icon: HandPlatter,
                     submenus: [
-                        {
+                        (permissions.service.viewAny ||
+                            permissions.service.update ||
+                            permissions.service.delete ||
+                            permissions.service.create) && {
                             href: "services.index",
                             label: "Tous Les Services",
                             active: pathname === "services.index",
@@ -97,53 +130,62 @@ export function getMenuList(pathname) {
                         },
                     ],
                 },
-                {
+                (permissions.facture.viewAny ||
+                    permissions.facture.update ||
+                    permissions.facture.delete ||
+                    permissions.facture.create) && {
                     href: "factures.index",
                     label: "Factures",
                     active: facturePathnames.includes(pathname),
-                    icon: Tag,
-                    submenus: [
-                        {
-                            href: "factures.index",
-                            label: "Factures",
-                            active: pathname === "factures.index",
-                        },
-                    ],
+                    icon: ReceiptText,
+                    submenus: [],
                 },
-                {
+                (permissions.event.viewAny ||
+                    permissions.event.update ||
+                    permissions.event.delete ||
+                    permissions.event.create) && {
                     href: "events.index",
                     label: "Evènements",
                     active: eventPathnames.includes(pathname),
-                    icon: Tag,
+                    icon: Megaphone,
                     submenus: [],
                 },
-                {
+                (permissions.promotion.viewAny ||
+                    permissions.promotion.update ||
+                    permissions.promotion.delete ||
+                    permissions.promotion.create) && {
                     href: "promotions.index",
                     label: "Promotions",
                     active: promoPathnames.includes(pathname),
-                    icon: Tag,
+                    icon: TicketMinus,
                     submenus: [],
                 },
             ],
         },
         {
-            groupLabel: "Settings",
+            groupLabel: "Managment",
             menus: [
                 {
                     href: "roles.index",
                     label: "Utilisateurs",
-                    active: facturePathnames.includes(pathname),
+                    active: usersPathnames.includes(pathname),
                     icon: Users,
                     submenus: [
-                        {
+                        (permissions.role.viewAny ||
+                            permissions.role.update ||
+                            permissions.role.delete ||
+                            permissions.role.create) && {
                             href: "roles.index",
                             label: "Roles",
-                            active: pathname === "roles.index",
+                            active: rolesPathnames.includes(pathname),
                         },
-                        {
+                        (permissions.employ.viewAny ||
+                            permissions.employ.update ||
+                            permissions.employ.delete ||
+                            permissions.employ.create) && {
                             href: "users.index",
                             label: "Employés",
-                            active: pathname === "users.index",
+                            active: userPathnames.includes(pathname),
                         },
                     ],
                 },

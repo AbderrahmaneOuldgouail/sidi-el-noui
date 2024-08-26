@@ -12,7 +12,7 @@ import {
     DropdownMenuRadioItem,
     DropdownMenuSeparator,
 } from "@/Components/ui/dropdown-menu";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { router } from "@inertiajs/react";
 import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { Badge } from "@/Components/ui/badge";
@@ -118,44 +118,56 @@ export const columns: ColumnDef<Payment>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            <Link
-                                href={route("rooms.show", room.room_number)}
-                                className="flex w-full"
-                            >
-                                <Eye className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                {useTrans("Voir")}
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Link
-                                href={route("rooms.edit", room.room_number)}
-                                className="flex w-full"
-                            >
-                                <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                {useTrans("Modifier")}
-                            </Link>
-                        </DropdownMenuItem>
+                        {usePage().props.auth.permissions.room.viewAny && (
+                            <DropdownMenuItem>
+                                <Link
+                                    href={route("rooms.show", room.room_number)}
+                                    className="flex w-full"
+                                >
+                                    <Eye className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                                    {useTrans("Voir")}
+                                </Link>
+                            </DropdownMenuItem>
+                        )}
+                        {usePage().props.auth.permissions.room.update && (
+                            <DropdownMenuItem>
+                                <Link
+                                    href={route("rooms.edit", room.room_number)}
+                                    className="flex w-full"
+                                >
+                                    <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                                    {useTrans("Modifier")}
+                                </Link>
+                            </DropdownMenuItem>
+                        )}
                         <DropdownMenuSeparator></DropdownMenuSeparator>
-                        <DropdownMenuItem>
-                            <Switch
-                                checked={room.room_status !== "hors service"}
-                                onCheckedChange={() => {
-                                    router.post(route("rooms.toggle.status"), {
-                                        room_number: room.room_number,
-                                        room_status:
-                                            room.room_status === "hors service"
-                                                ? "libre"
-                                                : "hors service",
-                                    });
-                                }}
-                            />
-                            <span className="ml-2 ">
-                                {room.room_status === "hors service"
-                                    ? useTrans("Marqué comme disponible")
-                                    : useTrans("Marqué comme hors service")}
-                            </span>
-                        </DropdownMenuItem>
+                        {usePage().props.auth.permissions.room.update && (
+                            <DropdownMenuItem>
+                                <Switch
+                                    checked={
+                                        room.room_status !== "hors service"
+                                    }
+                                    onCheckedChange={() => {
+                                        router.post(
+                                            route("rooms.toggle.status"),
+                                            {
+                                                room_number: room.room_number,
+                                                room_status:
+                                                    room.room_status ===
+                                                    "hors service"
+                                                        ? "libre"
+                                                        : "hors service",
+                                            }
+                                        );
+                                    }}
+                                />
+                                <span className="ml-2 ">
+                                    {room.room_status === "hors service"
+                                        ? useTrans("Marqué comme disponible")
+                                        : useTrans("Marqué comme hors service")}
+                                </span>
+                            </DropdownMenuItem>
+                        )}
                     </DropdownMenuContent>
                 </DropdownMenu>
             );

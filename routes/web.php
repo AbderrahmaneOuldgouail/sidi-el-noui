@@ -1,9 +1,11 @@
 <?php
 
+use App\Events\NewBooking;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\WelcomeController;
+use App\Models\Booking;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -12,6 +14,12 @@ Route::get('/', [WelcomeController::class, 'view'])->name('acceuil');
 Route::get('/services', [ServiceController::class, 'view'])->name('service.view');
 
 Route::get('/chambres', [RoomController::class, 'show'])->name('chambre.show');
+
+Route::get('/dispach', function () {
+    $booking = Booking::with('user')->where('booking_id', 1)->first();
+    NewBooking::dispatch($booking);
+})->name("dispach");
+
 
 Route::get(
     '/dashboard',

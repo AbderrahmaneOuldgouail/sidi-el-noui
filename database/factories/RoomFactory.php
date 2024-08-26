@@ -21,7 +21,7 @@ class RoomFactory extends Factory
         return [
             'room_number' => fake()->unique()->numberBetween(101,160),
             'type_id' => rand(1,4),
-            'room_price' => rand(10, 10500),
+            'room_price' => rand(400, 10500),
             'beeds_number' => rand(1, 4),
             'room_status' => room_status::Free->value,
             'room_descreption' => fake()->name(),

@@ -15,10 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('role_id')->constrained('roles', 'role_id');
             $table->string('first_name', 30);
-            $table->string('last_name', 30);
-            $table->string('email')->unique();
-            $table->string('phone')->unique();
+            $table->string('last_name', 30)->nullable();
+            $table->string('email', 50)->unique();
+            $table->string('phone', 13)->unique();
             $table->boolean('access');
+            $table->string('adresse', 50)->nullable();
+            $table->string('nif', 15)->nullable();
+            $table->string('nis', 14)->nullable();
+            $table->string('nrc', 11)->nullable();
+            $table->string('n_article', 12)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
