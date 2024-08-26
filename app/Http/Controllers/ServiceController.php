@@ -9,6 +9,11 @@ use Inertia\Inertia;
 
 class ServiceController extends Controller
 {
+    public function servicesIndex(){
+
+        return Inertia::render('Client/Services');
+    }
+
     public function index()
     {
 

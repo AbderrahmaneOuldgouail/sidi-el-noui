@@ -9,9 +9,9 @@ use Inertia\Inertia;
 
 class WelcomeController extends Controller
 {
-    public function view() {
-        $promotions = Promotion::all()->where('active', true);
-        $events = Event::all();
-        return Inertia::render('Client/Home', ['promtions' => $promotions,'events' => $events ]);
+    public function index() {
+        $promotions = Promotion::all();
+        $events = Event::with('assets')->get();
+        return Inertia::render('Client/Home', ['promotions' => $promotions,'events' => $events,]);
     }
 }

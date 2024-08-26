@@ -13,6 +13,13 @@ use Inertia\Inertia;
 
 class RoomController extends Controller
 {
+    
+
+    public function clientIndex(Request $request)
+    {
+        return Inertia::render('Client/Rooms');
+    }
+
     public function index(Request $request)
     {
         $itemsPerPage = $request->input('pages', 10);
