@@ -28,7 +28,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { Link, router } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { Badge } from "@/Components/ui/badge";
 import { useTrans } from "@/Hooks/useTrans";
@@ -40,9 +40,8 @@ import {
 } from "@/Components/ui/collapsible";
 
 export type Permission = {
-    id: number;
-    entity: string;
-    action: string;
+    permission_id: number;
+    permission_name: string;
 };
 
 export type Role = {
@@ -83,8 +82,8 @@ export const roleColumns: ColumnDef<Role>[] = [
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                         {role.permissions.map((permission) => (
-                            <div key={permission.id}>
-                                {permission.entity}-{permission.action}{" "}
+                            <div key={permission.permission_id}>
+                                {permission.permission_name}
                             </div>
                         ))}
                     </CollapsibleContent>
@@ -105,6 +104,7 @@ export const roleColumns: ColumnDef<Role>[] = [
             const { width } = useWindowDimensions();
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
+            const permissions = usePage().props.auth.permissions;
 
             const handleDelete = () => {
                 router.delete(route("roles.destroy", role.role_id), {
@@ -128,92 +128,112 @@ export const roleColumns: ColumnDef<Role>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            <Link href={route("roles.edit", role.role_id)}>
-                                <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                <span>{useTrans("Modifier")}</span>
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            {width >= 767 ? (
-                                <Dialog open={isopen} onOpenChange={setIsOpen}>
-                                    <DialogTrigger
-                                        className={buttonVariants({
-                                            variant: "destructive",
-                                        })}
+                        {permissions.role.update && (
+                            <DropdownMenuItem>
+                                <Link href={route("roles.edit", role.role_id)}>
+                                    <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                                    <span>{useTrans("Modifier")}</span>
+                                </Link>
+                            </DropdownMenuItem>
+                        )}
+                        {permissions.role.delete && (
+                            <DropdownMenuItem>
+                                {width >= 767 ? (
+                                    <Dialog
+                                        open={isopen}
+                                        onOpenChange={setIsOpen}
                                     >
-                                        <Trash className="mr-2 h-3.5 w-3.5 " />
-                                        {useTrans("Supprimer")}
-                                    </DialogTrigger>
-                                    <DialogContent>
-                                        <DialogHeader>
-                                            <DialogTitle>
-                                                {useTrans("Vous êtes sure?")}{" "}
-                                            </DialogTitle>
-                                            <DialogDescription>
-                                                {useTrans(
-                                                    "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions"
-                                                )}
-                                            </DialogDescription>
-                                        </DialogHeader>
-                                        <DialogFooter className="gap-2 ">
-                                            <Button
-                                                variant="secondary"
-                                                onClick={() => setIsOpen(false)}
-                                            >
-                                                {useTrans("Annuler")}
-                                            </Button>
-                                            <Button
-                                                variant="destructive"
-                                                onClick={() => handleDelete()}
-                                                className="flex justify-center"
-                                            >
-                                                <Trash className="mx-2 h-3.5 w-3.5" />
-                                                {useTrans("Supprimer")}
-                                            </Button>
-                                        </DialogFooter>
-                                    </DialogContent>
-                                </Dialog>
-                            ) : (
-                                <Drawer open={isopen} onOpenChange={setIsOpen}>
-                                    <DrawerTrigger
-                                        className={buttonVariants({
-                                            variant: "destructive",
-                                        })}
-                                    >
-                                        <Trash className="mr-2 h-3.5 w-3.5 " />
-                                        {useTrans("Supprimer")}
-                                    </DrawerTrigger>
-                                    <DrawerContent>
-                                        <DrawerHeader className="text-left">
-                                            <DrawerTitle>
-                                                {useTrans("Vous êtes sure?")}{" "}
-                                            </DrawerTitle>
-                                            <DrawerDescription>
-                                                {useTrans(
-                                                    "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions"
-                                                )}{" "}
-                                            </DrawerDescription>
-                                        </DrawerHeader>
-                                        <DrawerFooter className="pt-2">
-                                            <Button
-                                                variant="destructive"
-                                                onClick={() => handleDelete()}
-                                                className="flex justify-center"
-                                            >
-                                                <Trash className="mx-2 h-3.5 w-3.5" />
-                                                {useTrans("Supprimer")}
-                                            </Button>
-                                            <DrawerClose asChild>
-                                                <Button variant="outline">
+                                        <DialogTrigger
+                                            className={buttonVariants({
+                                                variant: "destructive",
+                                            })}
+                                        >
+                                            <Trash className="mr-2 h-3.5 w-3.5 " />
+                                            {useTrans("Supprimer")}
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>
+                                                    {useTrans(
+                                                        "Vous êtes sure?"
+                                                    )}{" "}
+                                                </DialogTitle>
+                                                <DialogDescription>
+                                                    {useTrans(
+                                                        "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions"
+                                                    )}
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <DialogFooter className="gap-2 ">
+                                                <Button
+                                                    variant="secondary"
+                                                    onClick={() =>
+                                                        setIsOpen(false)
+                                                    }
+                                                >
                                                     {useTrans("Annuler")}
                                                 </Button>
-                                            </DrawerClose>
-                                        </DrawerFooter>
-                                    </DrawerContent>
-                                </Drawer>
-                            )}
-                        </DropdownMenuItem>
+                                                <Button
+                                                    variant="destructive"
+                                                    onClick={() =>
+                                                        handleDelete()
+                                                    }
+                                                    className="flex justify-center"
+                                                >
+                                                    <Trash className="mx-2 h-3.5 w-3.5" />
+                                                    {useTrans("Supprimer")}
+                                                </Button>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
+                                ) : (
+                                    <Drawer
+                                        open={isopen}
+                                        onOpenChange={setIsOpen}
+                                    >
+                                        <DrawerTrigger
+                                            className={buttonVariants({
+                                                variant: "destructive",
+                                            })}
+                                        >
+                                            <Trash className="mr-2 h-3.5 w-3.5 " />
+                                            {useTrans("Supprimer")}
+                                        </DrawerTrigger>
+                                        <DrawerContent>
+                                            <DrawerHeader className="text-left">
+                                                <DrawerTitle>
+                                                    {useTrans(
+                                                        "Vous êtes sure?"
+                                                    )}{" "}
+                                                </DrawerTitle>
+                                                <DrawerDescription>
+                                                    {useTrans(
+                                                        "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions"
+                                                    )}{" "}
+                                                </DrawerDescription>
+                                            </DrawerHeader>
+                                            <DrawerFooter className="pt-2">
+                                                <Button
+                                                    variant="destructive"
+                                                    onClick={() =>
+                                                        handleDelete()
+                                                    }
+                                                    className="flex justify-center"
+                                                >
+                                                    <Trash className="mx-2 h-3.5 w-3.5" />
+                                                    {useTrans("Supprimer")}
+                                                </Button>
+                                                <DrawerClose asChild>
+                                                    <Button variant="outline">
+                                                        {useTrans("Annuler")}
+                                                    </Button>
+                                                </DrawerClose>
+                                            </DrawerFooter>
+                                        </DrawerContent>
+                                    </Drawer>
+                                )}
+                            </DropdownMenuItem>
+                        )}
                     </DropdownMenuContent>
                 </DropdownMenu>
             );

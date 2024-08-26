@@ -11,6 +11,17 @@ class Facture extends Model
     use HasFactory;
     protected $primaryKey = 'facture_id';
 
+    protected $fillable = [
+        'booking_id',
+        'data',
+        'tva',
+        'tourist_tax',
+        'timbre'
+    ];
+
+    protected $casts = [
+        'data' => 'json',
+    ];
 
     public function booking(): BelongsTo
     {

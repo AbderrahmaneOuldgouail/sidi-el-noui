@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { Head, Link, usePage } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
@@ -12,23 +12,25 @@ import { useToast } from "@/Components/ui/use-toast";
 export default function Roles({ roles }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
+    const permissions = usePage().props.auth.permissions;
 
     useEffect(() => {
         if (flash.message) {
             toast({ description: flash.message?.message });
         }
     }, [flash.message, toast]);
-    console.log(roles);
     return (
         <AdminPanelLayout>
             <Head title="Rools" />
             <PageHeading title={useTrans("Rôles")} />
             <div className="flex justify-end">
-                <Button variant="secondary">
-                    <Link href={route("roles.create")}>
-                        {useTrans("Ajouter un rôle")}
-                    </Link>
-                </Button>
+                {permissions.role.create && (
+                    <Button variant="secondary">
+                        <Link href={route("roles.create")}>
+                            {useTrans("Ajouter un rôle")}
+                        </Link>
+                    </Button>
+                )}
             </div>
             <PlaceholderContent>
                 <DataTable

@@ -9,6 +9,7 @@ use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class RoomController extends Controller
@@ -24,7 +25,6 @@ class RoomController extends Controller
     {
         $itemsPerPage = $request->input('pages', 10);
 
-        // $rooms = Room::with('type')->orderBy('room_number')->get();
         $rooms = Room::with('type')->orderBy('room_number')->paginate($itemsPerPage);
 
         return Inertia::render('Admin/Rooms/Rooms', ['rooms' => $rooms]);
@@ -32,15 +32,18 @@ class RoomController extends Controller
 
     public function show(Request $request)
     {
-        // Cache::remember("room-$request->id", now()->addHour(), fn() =>  Room::with(['features', 'assets', 'type'])->where('room_number', $request->id)->first());
 
         $room = Room::with(['features', 'assets', 'type'])->where('room_number', $request->room)->first();
         $categorys = Category::all();
         return Inertia::render('Admin/Rooms/Room', ['room' => $room, 'categorys' => $categorys]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->user()->cannot('create', Room::class)) {
+            return abort(403);
+        }
+
         $types = Type::all();
         $categorys = Category::with('feature')->get();
 
@@ -49,6 +52,9 @@ class RoomController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->user()->cannot('create', Room::class)) {
+            return abort(403);
+        }
         request()->validate(
             [
                 'room_number' => 'required|unique:' . Room::class,
@@ -97,6 +103,10 @@ class RoomController extends Controller
 
     public function edit(Request $request,)
     {
+        if ($request->user()->cannot('update', Room::class)) {
+            return abort(403);
+        }
+
         $types = Type::all();
         $categorys = Category::with('feature')->get();
         $room = Room::with(['features', 'assets', 'type'])->where('room_number', $request->room)->get();
@@ -105,7 +115,10 @@ class RoomController extends Controller
 
     public function update(Request $request)
     {
-        // dd($request->all());
+        if ($request->user()->cannot('update', Room::class)) {
+            return abort(403);
+        }
+
         request()->validate(
             [
                 'room_number' => 'required',

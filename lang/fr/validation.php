@@ -69,6 +69,7 @@ return [
         'string' => 'Le :attribute ne peut pas être supérieur à :max caractères.',
         'array' => 'Le :attribute ne peut pas avoir plus de :max éléments.',
     ],
+    'max_digits' => 'Le :attribute ne peut pas être supérieur à :max caractères.',
     'mimes' => 'Le :attribute doit être un fichier de type : :values.',
     'mimetypes' => 'Le :attribute doit être un fichier de type : :values.',
     'min' => [

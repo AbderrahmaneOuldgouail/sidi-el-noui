@@ -12,69 +12,64 @@ import InputError from "@/Components/InputError";
 import { Separator } from "@/Components/ui/separator";
 import { Checkbox } from "@/Components/ui/checkbox";
 
-export default function CreateRole({ permissions }) {
-    const [selectedPermissions, setSelectedPermissions] = useState([]);
+export default function CreateRole({ permissions, permissions_actions }) {
     const { data, setData, post, errors } = useForm({
         role_name: "",
         permissions: [],
     });
 
-    console.log(permissions);
-
-    const handleCheckboxChange = (entity, actionId, isChecked) => {
-        const updatedSelectedPermissions = [...selectedPermissions];
-        const permissionIndex = selectedPermissions.findIndex(
-            (perm) => perm.entity === entity
-        );
-        if (isChecked) {
-            if (permissionIndex === -1) {
-                updatedSelectedPermissions.push({
-                    entity,
-                    actions: [actionId],
-                });
-            } else {
-                updatedSelectedPermissions[permissionIndex].actions.push(
-                    actionId
-                );
-            }
+    const handleCheckboxChange = (id) => {
+        if (data.permissions.includes(id)) {
+            setData(
+                "permissions",
+                data.permissions.filter((permissionId) => permissionId !== id)
+            );
         } else {
-            if (permissionIndex !== -1) {
-                const actions = updatedSelectedPermissions[
-                    permissionIndex
-                ].actions.filter((id) => id !== actionId);
-                if (actions.length === 0) {
-                    updatedSelectedPermissions.splice(permissionIndex, 1);
-                } else {
-                    updatedSelectedPermissions[permissionIndex].actions =
-                        actions;
-                }
-            }
+            setData("permissions", [...data.permissions, id]);
         }
-
-        setSelectedPermissions(updatedSelectedPermissions);
-        setData("permissions", updatedSelectedPermissions);
     };
 
-    const handleEntityCheck = (entity, isChecked) => {
-        const updatedSelectedPermissions = [...selectedPermissions];
-        const permissionIndex = selectedPermissions.findIndex(
-            (perm) => perm.entity === entity
-        );
-        if (isChecked) {
-            if (permissionIndex !== -1) {
-                updatedSelectedPermissions.splice(permissionIndex, 1);
-            }
-            updatedSelectedPermissions.push({
-                entity,
-                actions: permissions
-                    .find((p) => p.entity == entity)
-                    .actions.map((a) => a.permission_id),
-            });
+    const handleAllPermissionsCheck = (entity, e) => {
+        if (e) {
+            permissions.map((permission) =>
+                permission.permission_name.split("-")[0] == entity &&
+                data.permissions.find((p) => p == permission.permission_id)
+                    ? setData((data) => {
+                          data.permissions.splice(
+                              data.permissions.findIndex(
+                                  (p) => p == permission.permission_id
+                              ),
+                              1
+                          );
+                          return { ...data };
+                      })
+                    : null
+            );
+            permissions.map((permission) =>
+                permission.permission_name.split("-")[0] == entity
+                    ? setData((data) => {
+                          data.permissions.push(permission.permission_id);
+                          return { ...data };
+                      })
+                    : null
+            );
         } else {
-            updatedSelectedPermissions.splice(permissionIndex, 1);
+            permissions.forEach(
+                (permission) =>
+                    permission.permission_name.split("-")[0] == entity &&
+                    setData((data) => {
+                        data.permissions.splice(
+                            data.permissions.indexOf(
+                                data.permissions.find(
+                                    (p) => p == permission.permission_id
+                                )
+                            ),
+                            1
+                        );
+                        return { ...data };
+                    })
+            );
         }
-        setSelectedPermissions(updatedSelectedPermissions);
-        setData("permissions", updatedSelectedPermissions);
     };
 
     const submit = (e) => {
@@ -82,72 +77,14 @@ export default function CreateRole({ permissions }) {
         post(route("roles.store"));
     };
 
+    console.log(permissions);
+
     return (
         <AdminPanelLayout>
             <Head title="Rools" />
             <PageHeading title="Roles" />
             <PlaceholderContent>
-                <form>
-                    <div className="md:flex my-4">
-                        <div className="w-full md:w-1/3 pb-2">
-                            <InputLabel
-                                htmlFor="role_name"
-                                value={useTrans("Nom de rôle")}
-                            />
-                            <LabelDescreption>
-                                {useTrans("Le nom de rôle doit être unique")}
-                            </LabelDescreption>
-                        </div>
-                        <div className="w-full md:w-2/3 bg-muted p-4 shadow">
-                            <InputLabel
-                                htmlFor="role_name"
-                                value={useTrans("Nom de rôle")}
-                            />
-                            <Input
-                                className="mt-2 w-full bg-card"
-                                id="role_name"
-                                value={data.role_name}
-                                onChange={(e) =>
-                                    setData("role_name", e.target.value)
-                                }
-                            />
-                            <InputError
-                                message={errors.role_name}
-                                className="mt-2"
-                            />
-                        </div>
-                    </div>
-                    <div className="md:flex my-4">
-                        <div className="w-full md:w-1/3 pb-2">
-                            <InputLabel
-                                htmlFor="role_name"
-                                value={useTrans("Nom de rôle")}
-                            />
-                            <LabelDescreption>
-                                {useTrans("Le nom de rôle doit être unique")}
-                            </LabelDescreption>
-                        </div>
-                        <div className="w-full md:w-2/3 bg-muted p-4 shadow">
-                            <InputLabel
-                                htmlFor="role_name"
-                                value={useTrans("Nom de rôle")}
-                            />
-                            <Input
-                                className="mt-2 w-full bg-card"
-                                id="role_name"
-                                value={data.role_name}
-                                onChange={(e) =>
-                                    setData("role_name", e.target.value)
-                                }
-                            />
-                            <InputError
-                                message={errors.role_name}
-                                className="mt-2"
-                            />
-                        </div>
-                    </div>
-                </form>
-                {/* <form onSubmit={submit}>
+                <form onSubmit={submit}>
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
                             <InputLabel
@@ -195,78 +132,102 @@ export default function CreateRole({ permissions }) {
                                     value={useTrans("List des permissions")}
                                 />
                                 <div className="flex justify-between w-3/4">
-                                    {permissions[0].actions.map((action) => (
+                                    {permissions_actions.map((action) => (
                                         <div
-                                            key={action.permission_id}
+                                            key={action}
                                             className="flex items-center mb-2"
                                         >
-                                            <InputLabel htmlFor={action.action}>
-                                                {action.action}
+                                            <InputLabel htmlFor={action}>
+                                                {action}
                                             </InputLabel>
                                         </div>
                                     ))}
                                 </div>
                             </div>
-                            {permissions.map((permission) => (
-                                <div
-                                    key={permission.entity}
-                                    className="mb-4 flex gap-2 bg-card p-2 rounded"
-                                >
-                                    <Checkbox
-                                        id={permission.entity}
-                                        checked={
-                                            selectedPermissions.find(
-                                                (perm) =>
-                                                    perm.entity ==
-                                                    permission.entity
-                                            )?.actions.length == 4
-                                        }
-                                        onCheckedChange={(e) =>
-                                            handleEntityCheck(
-                                                permission.entity,
-                                                e
-                                            )
-                                        }
-                                    />
-                                    <InputLabel
-                                        htmlFor={permission.entity}
-                                        className="w-1/4 "
-                                    >
-                                        {permission.entity}
-                                    </InputLabel>
-                                    <div className="flex justify-between w-3/4">
-                                        {permission.actions.map((action) => (
-                                            <div
-                                                key={action.permission_id}
-                                                className="flex items-center mb-2"
-                                            >
-                                                <Checkbox
-                                                    id={action.permission_id}
-                                                    checked={selectedPermissions.some(
+                            {permissions.map((permission, idx) => (
+                                <div key={idx}>
+                                    {permissions[idx] != 0 &&
+                                        permissions[
+                                            idx - 1
+                                        ]?.permission_name.split("-")[0] !=
+                                            permission.permission_name.split(
+                                                "-"
+                                            )[0] && (
+                                            <div className="mb-4 flex bg-card p-2 rounded">
+                                                <div className="flex gap-2 w-1/4">
+                                                    <Checkbox
+                                                        id={
+                                                            permission.permission_name
+                                                        }
+                                                        checked={permissions
+                                                            .filter(
+                                                                (per) =>
+                                                                    per.permission_name.split(
+                                                                        "-"
+                                                                    )[0] ==
+                                                                    permission.permission_name.split(
+                                                                        "-"
+                                                                    )[0]
+                                                            )
+                                                            .every((element) =>
+                                                                data.permissions.includes(
+                                                                    element.permission_id
+                                                                )
+                                                            )}
+                                                        onCheckedChange={(e) =>
+                                                            handleAllPermissionsCheck(
+                                                                permission.permission_name.split(
+                                                                    "-"
+                                                                )[0],
+                                                                e
+                                                            )
+                                                        }
+                                                    />
+                                                    <InputLabel
+                                                        htmlFor={
+                                                            permission.permission_name.split(
+                                                                "-"
+                                                            )[0]
+                                                        }
+                                                    >
+                                                        {
+                                                            permission.permission_name.split(
+                                                                "-"
+                                                            )[0]
+                                                        }
+                                                    </InputLabel>
+                                                </div>
+                                                <div className="flex justify-between w-3/4">
+                                                    {permissions.map(
                                                         (perm) =>
-                                                            perm.entity ===
-                                                                permission.entity &&
-                                                            perm?.actions.includes(
-                                                                action.permission_id
+                                                            perm.permission_name.split(
+                                                                "-"
+                                                            )[0] ==
+                                                                permission.permission_name.split(
+                                                                    "-"
+                                                                )[0] && (
+                                                                <div>
+                                                                    <Checkbox
+                                                                        id={
+                                                                            perm.permission_id
+                                                                        }
+                                                                        checked={data.permissions.includes(
+                                                                            perm.permission_id
+                                                                        )}
+                                                                        onCheckedChange={() =>
+                                                                            handleCheckboxChange(
+                                                                                perm.permission_id
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                </div>
                                                             )
                                                     )}
-                                                    onCheckedChange={(e) =>
-                                                        handleCheckboxChange(
-                                                            permission.entity,
-                                                            action.permission_id,
-                                                            e
-                                                        )
-                                                    }
-                                                />
+                                                </div>
                                             </div>
-                                        ))}
-                                    </div>
+                                        )}
                                 </div>
                             ))}
-                            <InputError
-                                message={errors.permissions}
-                                className="mt-2"
-                            />
                         </div>
                     </div>
                     <Separator />
@@ -279,7 +240,7 @@ export default function CreateRole({ permissions }) {
                             {useTrans("Créer")}
                         </Button>
                     </div>
-                </form> */}
+                </form>
             </PlaceholderContent>
         </AdminPanelLayout>
     );

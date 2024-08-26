@@ -165,7 +165,7 @@ export default function CreateService() {
                             className="mt-2 w-1/4"
                             variant="secondary"
                         >
-                            {useTrans("Crée")}
+                            {useTrans("Créer")}
                         </Button>
                     </div>
                 </form>

@@ -9,9 +9,7 @@ import {
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
-    PaginationLink,
 } from "@/Components/ui/pagination";
 
 import { Link, router } from "@inertiajs/react";
@@ -47,10 +45,6 @@ export function DataTablePagination({ tabledata }: DataTablePaginationProps) {
     };
     return (
         <div className="flex items-center justify-between px-2 mt-2">
-            {/* <div className="flex-1 text-sm text-muted-foreground">
-                {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                {table.getFilteredRowModel().rows.length} row(s) selected.
-            </div> */}
             <div className="flex text-sm text-muted-foreground">
                 {tabledata.to - tabledata.from + 1} / {tabledata.total}{" "}
                 {useTrans("ligne(s) afficher")}
@@ -128,7 +122,7 @@ export function DataTablePagination({ tabledata }: DataTablePaginationProps) {
                     </PaginationContent>
                 </Pagination>
             </div>
-            <div className="flex items-center justify-between space-x-6 lg:space-x-8">
+            {/* <div className="flex items-center justify-between space-x-6 lg:space-x-8">
                 <div className="flex items-center space-x-2">
                     <p className="text-sm font-medium">
                         {useTrans("Lignes par page")}
@@ -149,18 +143,18 @@ export function DataTablePagination({ tabledata }: DataTablePaginationProps) {
                                         })}
                                     >
                                         {pageSize}
-                                        {pageSize == tabledata.per_page ? (
+                                        {pageSize == tabledata.per_page && (
                                             <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
                                                 <CheckIcon className="h-4 w-4" />
                                             </span>
-                                        ) : null}
+                                        )}
                                     </Link>
                                 )
                             )}
                         </SelectContent>
                     </Select>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

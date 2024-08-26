@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\BookingPlaced;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +15,9 @@ class Booking extends Model
     protected $table = 'reservations';
 
     protected $primaryKey = 'booking_id';
+    // protected $dispatchesEvents = [
+    //     'created' => BookingPlaced::class,
+    // ];
     protected $fillable = [
         'user_id',
         'check_in',
@@ -34,7 +38,7 @@ class Booking extends Model
 
     public function consomation(): BelongsToMany
     {
-        return $this->belongsToMany(Consumption::class, 'avoir_consommations', 'booking_id', 'consumption_id');
+        return $this->belongsToMany(Consumption::class, 'avoir_consommations', 'booking_id', 'consumption_id')->withPivot('quantity');
     }
 
     public function factures(): HasMany

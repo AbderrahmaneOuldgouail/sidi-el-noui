@@ -12,7 +12,7 @@ class FeatureController extends Controller
     public function index()
     {
         $features = Feature::with('category')->get();
-        return Inertia::render('Admin/Rooms/Features', ['features' => fn () => $features, 'categorys' => Inertia::lazy(fn () => Category::all())]);
+        return Inertia::render('Admin/Rooms/Features', ['features' => fn () => $features, 'categorys' => fn () => Category::all()]);
     }
 
     public function store(Request $request)

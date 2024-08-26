@@ -69,6 +69,7 @@ return [
         'string' => 'قد لا يكون :attribute أكبر من :max حرفًا.',
         'array' => 'قد لا يحتوي :attribute على أكثر من :max عنصرًا.',
     ],
+    'max_digits' => 'قد لا يكون :attribute أكبر من :max حرفًا.',
     'mimes' => 'يجب أن يكون :attribute ملفًا من نوع: :values.',
     'mimetypes' => 'يجب أن يكون :attribute ملفًا من نوع: :values.',
     'min' => [

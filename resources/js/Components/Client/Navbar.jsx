@@ -13,6 +13,7 @@ import {
 import { Avatar, AvatarFallback } from "@/Components/ui/avatar";
 import Home from "./Home";
 
+<<<<<<< HEAD
 const navLinks = [
     { href: "client.index", label: "Accueil" },
     { href: "client.chambre.index", label: "Les Chambres" },
@@ -92,3 +93,9 @@ const NavBar = () => {
 };
 
 export default NavBar;
+=======
+export default function Navbar() {
+    return <div className="bg-gray-400">Navbar t3 jojo </div>;
+    
+}
+>>>>>>> 66b34ba96f44b8b56890a52d4c08669be71e3d91

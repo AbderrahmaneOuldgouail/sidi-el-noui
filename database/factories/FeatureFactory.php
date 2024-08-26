@@ -17,7 +17,7 @@ class FeatureFactory extends Factory
     public function definition(): array
     {
         return [
-            'categorie_id' => rand(1, 2),
+            'categorie_id' => rand(1, 4),
             'features_name' => fake()->name(),
             'need_value' => fake()->boolean(),
         ];
