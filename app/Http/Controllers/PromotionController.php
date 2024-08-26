@@ -17,7 +17,7 @@ class PromotionController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->cannot('viewAny', Promotion::class) && ($request->user()->cannot('create', Promotion::class) || $request->user()->cannot('delete', Promotion::class) || $request->user()->cannot('update', Promotion::class))) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $promotions = Promotion::with('assets')->get();
         return Inertia::render('Admin/Promotions/Promotions', ['promotions' => $promotions]);
@@ -29,7 +29,7 @@ class PromotionController extends Controller
     public function create(Request $request)
     {
         if ($request->user()->cannot('create', Promotion::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         return Inertia::render('Admin/Promotions/CreatePromotion');
     }
@@ -40,7 +40,7 @@ class PromotionController extends Controller
     public function store(Request $request)
     {
         if ($request->user()->cannot('create', Promotion::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         request()->validate(
             [
@@ -88,7 +88,7 @@ class PromotionController extends Controller
     public function edit(string $id, Request $request)
     {
         if ($request->user()->cannot('update', Promotion::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $promotion = Promotion::with(['assets'])->where('promotion_id', $id)->first();
         return Inertia::render('Admin/Promotions/EditPromotion', ['promotion' => $promotion]);
@@ -100,7 +100,7 @@ class PromotionController extends Controller
     public function update(Request $request)
     {
         if ($request->user()->cannot('update', Promotion::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         request()->validate(
             [
@@ -144,7 +144,7 @@ class PromotionController extends Controller
     public function toggleActivity(Request $request)
     {
         if ($request->user()->cannot('update', Promotion::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $promo = Promotion::where('promotion_id', $request->promotion_id)->first();
         $promo->update(['is_active' => !$promo->is_active]);
@@ -157,7 +157,7 @@ class PromotionController extends Controller
     public function destroy(string $id, Request $request)
     {
         if ($request->user()->cannot('delete', Promotion::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         Promotion::where('promotion_id', $id)->delete();
         return redirect()->back()->with('message', ['status' => 'success', 'message'

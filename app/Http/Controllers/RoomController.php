@@ -34,7 +34,7 @@ class RoomController extends Controller
     public function create(Request $request)
     {
         if ($request->user()->cannot('create', Room::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
 
         $types = Type::all();
@@ -46,7 +46,7 @@ class RoomController extends Controller
     public function store(Request $request)
     {
         if ($request->user()->cannot('create', Room::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         request()->validate(
             [
@@ -97,7 +97,7 @@ class RoomController extends Controller
     public function edit(Request $request,)
     {
         if ($request->user()->cannot('update', Room::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
 
         $types = Type::all();
@@ -109,7 +109,7 @@ class RoomController extends Controller
     public function update(Request $request)
     {
         if ($request->user()->cannot('update', Room::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
 
         request()->validate(

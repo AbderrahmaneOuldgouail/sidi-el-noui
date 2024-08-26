@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
@@ -47,48 +47,36 @@ export default function Factures({ factures, bill_settings }) {
         });
     };
 
-    const openSheet = () => {
-        setOpen(!open);
-        router.reload({ only: ["bill_settings"] });
-    };
-
     return (
         <AdminPanelLayout>
             <Head title="Factures" />
-            <PageHeading title={"Factures"} />
+            <PageHeading title={useTrans("Factures")} />
             {permissions.role.create && (
                 <div className="flex justify-end gap-2">
                     <Button variant="secondary" size="sm">
                         <Link href={route("bookings.index")}>
-                            {useTrans("Génirer pour une résrvation")}
+                            {useTrans("Générer pour une réservation")}
                         </Link>
                     </Button>
-                    <Button variant="secondary" size="sm">
-                        <Link href={route("factures.create")}>
-                            {useTrans("Créer un facture")}
-                        </Link>
-                    </Button>
-                    <Sheet
-                        open={open || !bill_settings}
-                        onOpenChange={() => openSheet()}
-                    >
+                    <Sheet open={open || !bill_settings} onOpenChange={setOpen}>
                         <SheetTrigger>
                             <Settings2 />
                         </SheetTrigger>
                         <SheetContent>
                             <SheetHeader>
-                                <SheetTitle>Parametre de facture</SheetTitle>
+                                <SheetTitle>
+                                    {useTrans("Parametre de facture")}
+                                </SheetTitle>
                                 <SheetDescription>
-                                    Modifier les constant de facturation içi
+                                    {useTrans(
+                                        "Modifier les constant de facturation içi"
+                                    )}
                                 </SheetDescription>
                                 <form onSubmit={submit}>
                                     <div className="w-full bg-muted p-4 shadow my-4">
-                                        <InputLabel
-                                            htmlFor="tva"
-                                            value={useTrans("TVA")}
-                                        />
+                                        <InputLabel htmlFor="tva" value="TVA" />
                                         <LabelDescreption>
-                                            La valeur de TVA en %
+                                            {useTrans("La valeur de TVA en %")}
                                         </LabelDescreption>
                                         <Input
                                             className="mt-2 w-full bg-card"
@@ -110,7 +98,9 @@ export default function Factures({ factures, bill_settings }) {
                                             value={useTrans("Taxe de séjour")}
                                         />
                                         <LabelDescreption>
-                                            La valeur de tibmre en %
+                                            {useTrans(
+                                                "la valeur de taxe de séjour en DA/personne"
+                                            )}
                                         </LabelDescreption>
                                         <Input
                                             className="mt-2 w-full bg-card"
@@ -132,11 +122,12 @@ export default function Factures({ factures, bill_settings }) {
                                     <div className="w-full bg-muted p-4 shadow my-4">
                                         <InputLabel
                                             htmlFor="timbre"
-                                            value={useTrans("Drois de tembre")}
+                                            value={useTrans("Droit de timbre")}
                                         />
                                         <LabelDescreption>
-                                            la valeur de taxe de séjour en
-                                            DA/personne
+                                            {useTrans(
+                                                "La valeur de tibmre en %"
+                                            )}
                                         </LabelDescreption>
                                         <Input
                                             className="mt-2 w-full bg-card"
@@ -159,7 +150,7 @@ export default function Factures({ factures, bill_settings }) {
                                         size="sm"
                                         className="w-full"
                                     >
-                                        Enregistrer
+                                        {useTrans("Enregistrer")}
                                     </Button>
                                 </form>
                             </SheetHeader>

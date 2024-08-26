@@ -23,14 +23,8 @@ export function Navbar({ title, isOpen }) {
                         <h1 className="font-bold">{title}</h1>
                     </div>
                     <div>{permissions.booking.create && <AddBooking />}</div>
-                    <div className="flex items-center space-x-2 justify-end">
+                    <div className="flex items-center gap-2 justify-end">
                         <NotificationsNav />
-                        <Link href={route("admin.dispach")}>New Booking</Link>
-                        {/* <Button
-                            onClick={() => router.post(route("admin.dispach"))}
-                        >
-                            trigger
-                        </Button> */}
                         <ThemeToggle />
                         <UserNav />
                     </div>

@@ -180,6 +180,19 @@
   "Capacité" : "قدرة",
   "List Des Consommations" : "قائمة الاستهلاكات",
   "Réservation de " : "حجز ",
+  "Choisi un ou plusieur chambres à réserver" : "اختر غرفة واحدة أو أكثر للحجز",
+  "Numéro de chambre" : "رقم الغرفة",
+  "Type de chambre" : "نوع الغرفة",
+  "Prix TTC" : "السعر شامل الضريبة",
+  "Ajouter les consommation de cetter réservation" : "أضف استهلاكات هذا الحجز",
+  "Adresse" : "العنوان",
+  "Numéro d'Identification Fiscale" : "رقم التعريف الضريبي",
+  "Numéro d'Identification Statistique" : "رقم التعريف الإحصائي",
+  "Numéro  de registre de commerce" : "رقم السجل التجاري",
+  "Numéro d'article" :"رقم السلعة",
+  "Réserver" : "حجز",
+  "Chambres disponible" : "الغرف متوفرة",
+  "Choisi cette option lors cette réservation est pour un société" : "اختر هذا الخيار عندما يكون هذا الحجز خاصًا بشركة",
 
   "nav bar" : "==============================================================================",
   "Compte" : "الحساب",
@@ -188,6 +201,9 @@
   "Nouvelle réservation" : "حجز جديد",
   "Tout notifications" : "جميع الإشعارات",
   "Boîte de réception" : "صندوق الوارد",
+  "Profile" : "الملف الشخصي",
+  "tableau de bord" : "لوحة القيادة",
+  "Changer le thème" : "تبديل الوضع",
 
   "notifs" : "====================================================================================",
   "Tout marquer comme lu" : "وضع علامة على الكل كمقروءة",
@@ -195,8 +211,6 @@
   "a fait une réservation de" : "قام بالحجز من",
   "vers" : "إلى",
   
-
-
 
   "user Profile" : "==============================================================================",
   "Votre adresse email n'est pas vérifiée." : "لم يتم التحقق من عنوان بريدك الإلكتروني.",
@@ -212,6 +226,29 @@
   "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver." : "بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته نهائيًا. قبل حذف حسابك، يرجى تنزيل أي بيانات أو معلومات ترغب في الاحتفاظ بها.",
   "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte." : "بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته بشكل دائم. يُرجى إدخال كلمة المرور الخاصة بك لتأكيد رغبتك في حذف حسابك بشكل دائم.",
   "Etes-vous sûr de vouloir supprimer votre compte ?" : "هل انت متأكد انك تريد حذف حسابك؟",
+
+
+  "facturess": "===========================================================================",
+  "Factures" : "الفواتير",
+  "Date" : "التاريخ",
+  "Générer pour une réservation" : "إنشاء للحجز",
+  "Imprimer" : "طباعة",
+  "Télécharger" : "تحميل",
+  "Parametre de facture" : "إعدادات الفاتورة",
+  "Modifier les constant de facturation içi" :"تعديل ثوابت الفوترة هنا",
+  "La valeur de TVA en %" : "قيمة ضريبة القيمة المضافة ب %",
+  "Taxe de séjour" : "الضريبة السياحية",
+  "la valeur de taxe de séjour en DA/personne" : "قيمة الضريبة السياحية بـ دج/شخص",
+  "La valeur de tibmre en %" : " قيمة الطوابع بـ %",
+  "Droit de timbre" : "واجب الطوابع",
+
+  "messages" : "===========================================================================",
+  "Tous" : "الكل",
+  "Non lu" : "الغير المقروءة",
+  "Reprendre avec votre adresse mail" : "استئناف مع عنوان البريد الإلكتروني الخاص بك",
+  "Aucun message a afficher" : "لا توجد رسائل لعرضها",
+  "Repondre à :" : "الرد على:",
+  "Envoyé" : "إرسال",
 
   "Data Tabeles" : "==========================================================================",
   "Contrôler la visibilité des colonnes" : "التحكم في رؤية الأعمدة",

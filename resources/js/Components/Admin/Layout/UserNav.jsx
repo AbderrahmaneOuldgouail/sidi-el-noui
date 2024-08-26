@@ -53,7 +53,9 @@ export function UserNav() {
                             </Button>
                         </DropdownMenuTrigger>
                     </TooltipTrigger>
-                    <TooltipContent side="bottom">Profile</TooltipContent>
+                    <TooltipContent side="bottom">
+                        {useTrans("Profile")}{" "}
+                    </TooltipContent>
                 </Tooltip>
             </TooltipProvider>
 
@@ -76,7 +78,7 @@ export function UserNav() {
                             className="flex items-center"
                         >
                             <LayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
-                            Dashboard
+                            {useTrans("tableau de bord")}
                         </Link>
                     </DropdownMenuItem>
                     {(permissions.service.viewAny ||

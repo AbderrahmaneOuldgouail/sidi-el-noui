@@ -12,7 +12,7 @@ class ServiceController extends Controller
     public function index(Request  $request)
     {
         if ($request->user()->cannot('viewAny', Service::class) && ($request->user()->cannot('create', Service::class) || $request->user()->cannot('delete', Service::class) || $request->user()->cannot('update', Service::class))) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
 
         $services = Service::with('assets')->get();
@@ -24,7 +24,7 @@ class ServiceController extends Controller
     public function create(Request $request)
     {
         if ($request->user()->cannot('create', Service::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         return Inertia::render('Admin/Services/CreateService');
     }
@@ -32,7 +32,7 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         if ($request->user()->cannot('create', Service::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         request()->validate(
             [
@@ -71,7 +71,7 @@ class ServiceController extends Controller
     public function edit(Service $service, Request $request)
     {
         if ($request->user()->cannot('update', Service::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         return Inertia::render('Admin/Services/EditService', ['service' => $service]);
     }
@@ -79,7 +79,7 @@ class ServiceController extends Controller
     public function update(Request $request)
     {
         if ($request->user()->cannot('update', Service::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         request()->validate(
             [
@@ -118,7 +118,7 @@ class ServiceController extends Controller
     public function toggleAvailability(Request $request)
     {
         if ($request->user()->cannot('update', Service::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $service = Service::where('service_id', $request->service_id)->first();
         $service->update([
@@ -130,7 +130,7 @@ class ServiceController extends Controller
     public function destroy(string $id, Request $request)
     {
         if ($request->user()->cannot('delete', Service::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         Service::where('service_id', $id)->delete();
         return redirect()->back()->with('message', ['status' => 'success', 'message'

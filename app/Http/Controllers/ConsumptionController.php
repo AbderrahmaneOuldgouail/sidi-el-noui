@@ -12,7 +12,7 @@ class ConsumptionController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->cannot('viewAny', Consumption::class) && ($request->user()->cannot('create', Consumption::class) || $request->user()->cannot('delete', Consumption::class) || $request->user()->cannot('update', Consumption::class))) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $consumptions = Consumption::with('service')->get();
         $services = Service::all();
@@ -22,7 +22,7 @@ class ConsumptionController extends Controller
     public function store(Request $request)
     {
         if ($request->user()->cannot('create', Consumption::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         request()->validate(
             [
@@ -42,7 +42,7 @@ class ConsumptionController extends Controller
     public function update(Request $request)
     {
         if ($request->user()->cannot('update', Consumption::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         request()->validate(
             [
@@ -65,7 +65,7 @@ class ConsumptionController extends Controller
     public function destroy(string $id, Request $request)
     {
         if ($request->user()->cannot('delete', Consumption::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         Consumption::where('consumption_id', $id)->delete();
         return redirect()->back()->with('message', ['status' => 'success', 'message'

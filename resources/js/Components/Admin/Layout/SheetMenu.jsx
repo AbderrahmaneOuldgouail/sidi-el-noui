@@ -38,7 +38,6 @@ export function SheetMenu() {
                         </Link>
                     </Button>
                 </SheetHeader>
-                <LangSwitch/>
                 <Menu isOpen />
             </SheetContent>
         </Sheet>

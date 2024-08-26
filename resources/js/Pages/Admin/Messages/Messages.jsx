@@ -260,8 +260,9 @@ export default function messages({ messages, filter }) {
                                                             message.client_email
                                                         }
                                                     >
-                                                        Répendre avec votre
-                                                        addresse mail
+                                                        {useTrans(
+                                                            "استئناف مع عنوان البريد الإلكتروني الخاص بك"
+                                                        )}
                                                     </a>
                                                 </Button>
                                                 {permissions.message.delete && (
@@ -274,7 +275,7 @@ export default function messages({ messages, filter }) {
                                                             )
                                                         }
                                                     >
-                                                        Supprimer
+                                                        {useTrans("Supprimer")}
                                                     </Button>
                                                 )}
                                             </CardFooter>
@@ -285,7 +286,10 @@ export default function messages({ messages, filter }) {
                         ) : (
                             <div className="flex justify-center items-center flex-col h-96 mt-2 ">
                                 <MessageSquareX size={70} />
-                                <div>Aucun message a affiché</div>
+                                <div>
+                                    {" "}
+                                    {useTrans("Aucun message a afficher")}{" "}
+                                </div>
                             </div>
                         )}
                     </ResizablePanel>
@@ -302,7 +306,7 @@ export default function messages({ messages, filter }) {
                                         : "Sujet"}
                                 </div>
                                 <div className="text-sm text-muted-foreground">
-                                    Repondre à :{" "}
+                                    {useTrans("Repondre à :")}{" "}
                                     {messages[selectedMessage]?.client_email
                                         ? messages[selectedMessage]
                                               ?.client_email
@@ -345,7 +349,7 @@ export default function messages({ messages, filter }) {
                                         size="sm"
                                         disabled={messages.length < 1}
                                     >
-                                        Envoyé
+                                        {useTrans("Envoyé")}
                                     </Button>
                                 </div>
                             </form>

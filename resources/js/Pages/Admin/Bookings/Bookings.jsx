@@ -26,7 +26,7 @@ export default function Bookings({ bookings }) {
                       variant: "destructive",
                       title: "Ereur !",
                       description: flash.message?.message,
-                      action: (
+                      action: flash.message?.action != null && (
                           <ToastAction
                               altText="Paramètre de facturation"
                               onClick={() =>

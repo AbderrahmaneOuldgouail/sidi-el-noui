@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Roles;
 use App\Mail\FactureEmail;
 use App\Models\Booking;
 use App\Models\Facture;
+use App\Models\Role;
 use App\Models\Type;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -18,27 +20,26 @@ class FactureController extends Controller
 {
     public function index(Request $request)
     {
+        if ($request->user()->cannot('viewAny', Facture::class) && ($request->user()->cannot('create', Facture::class) || $request->user()->cannot('delete', Facture::class) || $request->user()->cannot('update', Facture::class))) {
+            return abort(403);
+        }
         $itemsPerPage = $request->input('pages', 10);
         $factures = Facture::orderBy('created_at')->paginate($itemsPerPage);
-
 
         $bill_settings = Cache::get('bill-settings');
         return Inertia::render('Admin/Factures/Factures', ['factures' => $factures, 'bill_settings' => $bill_settings]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return Inertia::render('Admin/Factures/CreateFacture');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        if ($request->user()->cannot('create', Facture::class)) {
+            return abort(403);
+        }
         $request->validate([
             'booking_id' => 'required|integer',
             'payment' => 'required'
@@ -47,10 +48,10 @@ class FactureController extends Controller
 
 
         if (!$bill_settings) {
-            return redirect()->back()->with('message', ['status' => 'error', 'message' => 'Voulez sétez les paramètres de facturation avant générer les factures']);
+            return redirect()->back()->with('message', ['status' => 'error', 'message' => 'Voulez sétez les paramètres de facturation avant générer les factures', 'action' => "factures.index"]);
         }
         $booking = Booking::with(['user', 'consomation', 'rooms'])->where('booking_id', $request->booking_id)->first();
-
+        $is_company = Role::where('role_id', $booking->user->role_id)->first()->role_name == Roles::COMPANY->value;
         $rooms = [];
         $rooms_total = 0;
         $consomations = [];
@@ -100,7 +101,12 @@ class FactureController extends Controller
             'user' => [
                 'first_name' => $booking->user->first_name,
                 'last_name' => $booking->user->last_name,
-                'email' => $booking->user->email
+                'email' => $booking->user->email,
+                'adresse' => $is_company ? $booking->user->adresse : "",
+                'nif' => $is_company ? $booking->user->nis : "",
+                'nis' => $is_company ? $booking->user->nis : "",
+                'nrc' => $is_company ? $booking->user->nrc : "",
+                'n_article' => $is_company ? $booking->user->n_article : ""
             ],
             'booking' => [
                 'check_in' => $booking->check_in,
@@ -152,10 +158,7 @@ class FactureController extends Controller
         return redirect(route('factures.index'))->with('message', ['status' => 'success', 'message' => 'Paramètre modifier !']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
         $facture = Facture::where("facture_id", $id)->first();
         $mail = config('mail.bookingmail');

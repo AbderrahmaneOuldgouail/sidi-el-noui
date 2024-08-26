@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { usePage } from "@inertiajs/react";
 import { useToast } from "@/Components/ui/use-toast";
-import { CalendarPlus } from "lucide-react";
+import { CalendarPlus, CirclePlus, CircleMinus } from "lucide-react";
 
-import { Button } from "@/Components/ui/button";
+import { Button, buttonVariants } from "@/Components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -31,19 +31,21 @@ import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import { DatePickerWithRange } from "@/Components/ui/DatePickerWithRange";
 import { Input } from "@/Components/ui/input";
 import { useTrans } from "@/Hooks/useTrans";
+import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group";
+import { Checkbox } from "@/Components/ui/checkbox";
 
 export function AddBooking() {
     const [dateRange, setDateRange] = useState({
         from: "",
         to: "",
     });
-    const [open, setOpen] = useState(false);
-    const { data, post, setData, errors } = useForm({
+    const { data, post, setData, errors } = useForm("Layout/AddBooking", {
         check_in: "",
         check_out: "",
-        guest_number: "",
-        room_number: "",
+        guest_number: 0,
+        is_company: false,
     });
+    const [open, setOpen] = useState(false);
     const { width } = useWindowDimensions();
     const { toast } = useToast();
     const flash = usePage().props.flash;
@@ -64,6 +66,16 @@ export function AddBooking() {
         return formattedDate;
     }
 
+    const incriment = () => {
+        setData("guest_number", data.guest_number + 1);
+    };
+
+    const dicriment = () => {
+        if (data.guest_number > 0) {
+            setData("guest_number", data.guest_number - 1);
+        }
+    };
+
     const handleDateChange = (range) => {
         if (range?.from) {
             const formattedDate = formatDate(range.from);
@@ -80,6 +92,7 @@ export function AddBooking() {
         e.preventDefault();
         post(route("bookings.searchAviableRoom"));
     };
+
     if (width >= 767) {
         return (
             <Dialog open={open} onOpenChange={() => setOpen(!open)}>
@@ -89,7 +102,7 @@ export function AddBooking() {
                         {useTrans("Ajouter une réservation")}
                     </Button>
                 </DialogTrigger>
-                <DialogContent >
+                <DialogContent>
                     <DialogHeader>
                         <DialogTitle>
                             {useTrans("Ajouter une réservation")}
@@ -119,45 +132,44 @@ export function AddBooking() {
                                 className="mt-2"
                             />
                         </div>
-                        <div className="grid gap-2">
-                            <InputLabel
-                                htmlFor="guest_number"
-                                value={useTrans("Nombre des personne")}
-                            />
-                            <Input
-                                type="number"
-                                min={1}
-                                id="guest_number"
-                                value={data.guest_number}
-                                onChange={(e) =>
-                                    setData("guest_number", e.target.value)
-                                }
-                            />
+                        <div>
+                            <div className="flex justify-between items-center">
+                                <InputLabel
+                                    htmlFor="guest_number"
+                                    value={useTrans("Nombre des personne")}
+                                />
+                                <div className="flex items-center justify-center w-1/4 border rounded p-1 bg-muted">
+                                    <CircleMinus
+                                        onClick={() => dicriment()}
+                                        className="cursor-pointer hover:text-secondary"
+                                    />
+                                    <span className="w-1/2 flex justify-center">
+                                        {data.guest_number}
+                                    </span>
+                                    <CirclePlus
+                                        onClick={() => incriment()}
+                                        className="cursor-pointer hover:text-secondary"
+                                    />
+                                </div>
+                            </div>
                             <InputError
                                 message={errors.guest_number}
                                 className="mt-2"
                             />
                         </div>
-                        <div className="grid gap-2">
-                            <InputLabel
-                                htmlFor="room_number"
-                                value={useTrans("Nombre des chambres")}
-                            />
-                            <Input
-                                disabled={data.guest_number > 1 ? false : true}
-                                type="number"
-                                min={2}
-                                max={data.guest_number}
-                                className="ml-4 w-full"
-                                id="room_number"
-                                value={data.room_number}
-                                onChange={(e) =>
-                                    setData("room_number", e.target.value)
+                        <div className="flex gap-2 items-center">
+                            <Checkbox
+                                id="need_value"
+                                checked={data.is_company}
+                                onCheckedChange={() =>
+                                    setData("is_company", !data.is_company)
                                 }
                             />
-                            <InputError
-                                message={errors.room_number}
-                                className="mt-2"
+                            <InputLabel
+                                htmlFor="need_value"
+                                value={useTrans(
+                                    "Choisi cette option lors cette réservation est pour un société"
+                                )}
                             />
                         </div>
                         <DialogFooter>
@@ -175,7 +187,6 @@ export function AddBooking() {
             <DrawerTrigger asChild>
                 <Button variant="link">
                     <CalendarPlus size={18} className="mx-2" />
-                    {useTrans("Ajouter une réservation")}
                 </Button>
             </DrawerTrigger>
             <DrawerContent>
@@ -226,26 +237,19 @@ export function AddBooking() {
                             className="mt-2"
                         />
                     </div>
-                    <div className="grid gap-2">
-                        <InputLabel
-                            htmlFor="room_number"
-                            value={useTrans("Nombre des chambres")}
-                        />
-                        <Input
-                            disabled={data.guest_number > 1 ? false : true}
-                            type="number"
-                            min={2}
-                            max={data.guest_number}
-                            className="ml-4 w-full"
-                            id="room_number"
-                            value={data.room_number}
-                            onChange={(e) =>
-                                setData("room_number", e.target.value)
+                    <div className="flex gap-2 items-center">
+                        <Checkbox
+                            id="need_value"
+                            checked={data.is_company}
+                            onCheckedChange={() =>
+                                setData("is_company", !data.is_company)
                             }
                         />
-                        <InputError
-                            message={errors.room_number}
-                            className="mt-2"
+                        <InputLabel
+                            htmlFor="need_value"
+                            value={useTrans(
+                                "Choisi cette option lors cette réservation est pour un société"
+                            )}
                         />
                     </div>
                     <DialogFooter>

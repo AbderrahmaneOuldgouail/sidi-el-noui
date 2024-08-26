@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Caracteristique>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RoomFeature>
  */
-class FeatureFactory extends Factory
+class RoomFeatureFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +17,9 @@ class FeatureFactory extends Factory
     public function definition(): array
     {
         return [
-            'categorie_id' => rand(1, 4),
-            'features_name' => fake()->name(),
-            'need_value' => fake()->boolean(),
+            'room_id' => rand(101, 160),
+            'feature_id' => rand(1, 20),
+            'valeur' => fake()->name(),
         ];
     }
 }

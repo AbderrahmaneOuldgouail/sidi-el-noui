@@ -56,6 +56,11 @@
             padding: 5px;
             margin-top: 10px;
             height: 150px;
+            
+        }
+        .client span{
+            width: 100%;
+            text-align: center;
         }
         .tables {
             margin-top: 20px;
@@ -131,6 +136,16 @@
             <div>Doit</div>
             <div class="client">
                 <span>{{ $facture->data['user']['first_name'] }} {{ $facture->data['user']['last_name'] }} </span>
+                /
+                <span>{{ $facture->data['user']['adresse'] ?  "adresse : " . $facture->data['user']['adresse'] : ""}} </span>
+                /
+                <span>{{ $facture->data['user']['nif'] ?  "Numéro d'Identification Fiscale : " . $facture->data['user']['nif'] : ""}} </span>
+                /
+                <span>{{ $facture->data['user']['nis'] ?  "Numéro d'Identification Statistique : " . $facture->data['user']['nis'] : ""}} </span>
+                /
+                <span>{{ $facture->data['user']['nrc'] ?  "Numéro  de registre de commerce : " . $facture->data['user']['nrc'] : ""}} </span>
+                /
+                <span>{{ $facture->data['user']['n_article'] ?  "Numéro d'article : " . $facture->data['user']['n_article'] : ""}} </span>
             </div>
         </div>
         <div class="tables">

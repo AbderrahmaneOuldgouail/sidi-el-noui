@@ -9,6 +9,7 @@ import {
     TooltipTrigger,
     TooltipProvider,
 } from "@/Components/ui/tooltip";
+import { useTrans } from "@/Hooks/useTrans";
 
 export function ThemeToggle() {
     const { setTheme, theme } = useTheme();
@@ -31,7 +32,9 @@ export function ThemeToggle() {
                         <span className="sr-only">Switch Theme</span>
                     </Button>
                 </TooltipTrigger>
-                <TooltipContent side="bottom">Switch Theme</TooltipContent>
+                <TooltipContent side="bottom">
+                    {useTrans("Changer le thème")}{" "}
+                </TooltipContent>
             </Tooltip>
         </TooltipProvider>
     );

@@ -26,7 +26,12 @@ class User extends Authenticatable
         'phone',
         'password',
         'role_id',
-        'access'
+        'access',
+        'nif',
+        'nis',
+        'nrc',
+        'adresse',
+        'n_article',
     ];
 
     /**

@@ -21,9 +21,6 @@ class CategoryController extends Controller
         return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Categorie ajouter avec succès']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request)
     {
         request()->validate(
@@ -39,9 +36,6 @@ class CategoryController extends Controller
         return redirect(route('features.index'))->with('message', ['status' => 'success', 'message' => 'Categorie modifier avec succès']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         Category::where('categorie_id', $id)->delete();

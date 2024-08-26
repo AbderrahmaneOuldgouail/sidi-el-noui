@@ -20,7 +20,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->cannot('viewAny', Role::class) && ($request->user()->cannot('create', Role::class) || $request->user()->cannot('delete', Role::class) || $request->user()->cannot('update', Role::class))) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $itemsPerPage = $request->input('pages', 10);
 
@@ -35,7 +35,7 @@ class RoleController extends Controller
     public function create(Request $request)
     {
         if ($request->user()->cannot('create', Role::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $permissions = Permission::all();
         $permissions_actions = permissions_actions::cases();
@@ -49,13 +49,17 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         if ($request->user()->cannot('create', Role::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
+
+
         $request->validate([
             'role_name' => 'required|unique:roles,role_name',
             'permissions' => 'required|array',
             'permissions.*' => 'required'
         ]);
+
+        DB::transaction(function () use ($request) {});
         DB::beginTransaction();
         try {
             $role = Role::create([
@@ -71,7 +75,7 @@ class RoleController extends Controller
             throw $e;
         }
 
-        return redirect()->route('roles.index')->with('message', ['status' => 'success', 'message' => 'Rôle ajouter avec succès']);
+        return redirect('roles.index')->with('message', ['status' => 'success', 'message' => 'Rôle ajouter avec succès']);
     }
 
     /**
@@ -80,7 +84,7 @@ class RoleController extends Controller
     public function edit(string $id, Request $request)
     {
         if ($request->user()->cannot('update', Role::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $role = Role::where('role_id', $id)->first();
 
@@ -99,7 +103,7 @@ class RoleController extends Controller
     public function update(Request $request, string $id)
     {
         if ($request->user()->cannot('update', Role::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $request->validate([
             'role_name' => 'required|string',
@@ -150,7 +154,7 @@ class RoleController extends Controller
     public function destroy(string $id, Request $request)
     {
         if ($request->user()->cannot('delete', Role::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $role = Role::where('role_id', $id)->first();
         $role_name = $role->role_name;

@@ -18,6 +18,7 @@ export default function Facture({ facture, mail, total_ttc }) {
             toast({ description: flash.message?.message });
         }
     }, [flash.message, toast]);
+    console.log(facture.data.user);
     return (
         <AdminPanelLayout>
             <Head title="Facture" />
@@ -59,7 +60,7 @@ export default function Facture({ facture, mail, total_ttc }) {
                 </a>
             </div>
             <PlaceholderContent>
-                <div className="p-10 text-gray-800 font-sans">
+                <div className="p-10 font-sans">
                     <header className="flex justify-between mb-4">
                         <div>Hôtel Sidi El Noui</div>
                         <div>
@@ -102,15 +103,45 @@ export default function Facture({ facture, mail, total_ttc }) {
                         </div>
                         <div className="text-left my-4">
                             <div>Doit</div>
-                            <div className="border-2 border-black p-2 mt-2 h-36">
-                                {facture.data.user.first_name}{" "}
-                                {facture.data.user.last_name}
+                            <div className="border-2 border-black p-2 mt-2 h-36 flex flex-wrap gap-4">
+                                <span>{facture.data.user.first_name}</span>
+                                <span>{facture.data.user.last_name}</span>
+                                {" / "}
+                                <span>
+                                    {facture.data.user.adresse &&
+                                        "Adresse : " +
+                                            facture.data.user.adresse}
+                                </span>
+                                {" / "}
+                                <span>
+                                    {facture.data.user.nif &&
+                                        "Numéro d'Identification Fiscale : " +
+                                            facture.data.user.nif}
+                                </span>
+                                {" / "}
+                                <span>
+                                    {facture.data.user.nis &&
+                                        "Numéro d'Identification Statistique : " +
+                                            facture.data.user.nis}
+                                </span>
+                                {" / "}
+                                <span>
+                                    {facture.data.user.nrc &&
+                                        "Numéro  de registre de commerce : " +
+                                            facture.data.user.nrc}
+                                </span>
+                                {" / "}
+                                <span>
+                                    {facture.data.user.n_article &&
+                                        "Numéro d'article : " +
+                                            facture.data.user.n_article}
+                                </span>
                             </div>
                         </div>
                         <div className="mt-5">
                             <table className="w-full border-collapse border border-black mb-6">
                                 <thead>
-                                    <tr className="bg-gray-200">
+                                    <tr className="bg-muted text-muted-foreground">
                                         <th className="border border-black p-2">
                                             Description
                                         </th>
@@ -195,7 +226,7 @@ export default function Facture({ facture, mail, total_ttc }) {
                             <table className="w-2/5 ml-auto border-collapse border border-black">
                                 <tbody>
                                     <tr>
-                                        <th className="border border-black p-2 bg-gray-200">
+                                        <th className="border border-black p-2 bg-muted text-muted-foreground">
                                             Total HT
                                         </th>
                                         <td className="border border-black p-2">
@@ -203,7 +234,7 @@ export default function Facture({ facture, mail, total_ttc }) {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th className="border border-black p-2 bg-gray-200">
+                                        <th className="border border-black p-2 bg-muted text-muted-foreground">
                                             Total TVA {facture.tva}%
                                         </th>
                                         <td className="border border-black p-2">

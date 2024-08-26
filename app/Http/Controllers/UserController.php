@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->cannot('viewAny', User::class) && ($request->user()->cannot('create', User::class) || $request->user()->cannot('delete', User::class) || $request->user()->cannot('update', User::class))) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $itemsPerPage = $request->input('pages', 10);
 
@@ -34,7 +34,7 @@ class UserController extends Controller
     public function create(Request $request)
     {
         if ($request->user()->cannot('create', User::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $roles = Role::whereNotIn('role_name', [Roles::CLIENT->value, Roles::COMPANY->value])->get();
         return Inertia::render('Admin/Employes/CreateEmployes', ['roles' => $roles]);
@@ -46,7 +46,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         if ($request->user()->cannot('create', User::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $request->validate([
             'first_name' => 'required|string',
@@ -104,7 +104,7 @@ class UserController extends Controller
     public function destroy(string $id, Request $request)
     {
         if ($request->user()->cannot('delete', User::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $user = User::where('id', $id)->first();
         $role = Role::where('role_id', $user->role->role_id)->first();

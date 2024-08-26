@@ -17,13 +17,11 @@ use App\Models\Permission;
 use App\Models\Promotion;
 use App\Models\Role;
 use App\Models\Room;
+use App\Models\RoomFeature;
 use App\Models\Service;
 use App\Models\Type;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-// use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role as ModelsRole;
 
 class DatabaseSeeder extends Seeder
 {
@@ -45,56 +43,39 @@ class DatabaseSeeder extends Seeder
             $role->permissions()->attach(Permission::all());
         }
 
-        Message::create([
-            'client_email' => 'client@gmail.com',
-            'subject' => 'Réservations',
-            'message' => 'Message content '
-        ]);
-        Message::create([
-            'client_email' => 'client2@gmail.com',
-            'subject' => 'Occupation',
-            'message' => 'Message content '
-        ]);
-        Message::create([
-            'client_email' => 'client3@gmail.com',
-            'subject' => 'Services',
-            'message' => 'Message content '
-        ]);
-        Message::create([
-            'client_email' => 'client4@gmail.com',
-            'subject' => 'Evenement',
-            'message' => 'Message content '
-        ]);
+        // Message::create([
+        //     'client_email' => 'client@gmail.com',
+        //     'subject' => 'Réservations',
+        //     'message' => 'Message content '
+        // ]);
+        // Message::create([
+        //     'client_email' => 'client2@gmail.com',
+        //     'subject' => 'Occupation',
+        //     'message' => 'Message content '
+        // ]);
+        // Message::create([
+        //     'client_email' => 'client3@gmail.com',
+        //     'subject' => 'Services',
+        //     'message' => 'Message content '
+        // ]);
+        // Message::create([
+        //     'client_email' => 'client4@gmail.com',
+        //     'subject' => 'Evenement',
+        //     'message' => 'Message content '
+        // ]);
 
-        // Permission::create(['name' => 'booking-create']);
-        // Permission::create(['name' => 'booking-show']);
-        // Permission::create(['name' => 'booking-edit']);
-        // Permission::create(['name' => 'booking-delete']);
-        // ModelsRole::create([
-        //     'name' => 'gerant'
-        // ])->givePermissionTo('create room');
-        // ModelsRole::create([
-        //     'name' => 'employ'
-        // ])->givePermissionTo(['show room', 'edit room', 'delete room']);
-        // ModelsRole::create(['name' => 'super-admin'])->givePermissionTo(Permission::all());
-        // Role::create([
-        //     'role_name' => 'admin',
-        // ]);
-        // Role::create([
-        //     'role_name' => 'client',
-        // ]);
-        // Type::create([
-        //     'type_designation' => 'double'
-        // ]);
-        // Type::create([
-        //     'type_designation' => 'suite'
-        // ]);
-        // Type::create([
-        //     'type_designation' => 'single'
-        // ]);
-        // Type::create([
-        //     'type_designation' => 'triple'
-        // ]);
+        Type::create([
+            'type_designation' => 'double'
+        ]);
+        Type::create([
+            'type_designation' => 'suite'
+        ]);
+        Type::create([
+            'type_designation' => 'single'
+        ]);
+        Type::create([
+            'type_designation' => 'triple'
+        ]);
         User::create([
             'first_name' => 'abdou',
             'last_name' => 'ould',
@@ -104,32 +85,23 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
             'role_id' => 1,
         ]);
-        // User::create([
-        //     'first_name' => 'abdou',
-        //     'last_name' => 'ould',
-        //     'email' => 'user@gmail.com',
-        //     'phone' => '0540145577',
-        //     'access' => false,
-        //     'password' => bcrypt('password'),
-        //     // 'role_id' => 2,
-        // ])->assignRole('gerant');
-        // User::factory(10)->create();
-        // Room::factory(60)->create();
-        // Service::factory(2)->create();
-        // Event::factory(1)->create();
-        // Promotion::factory(1)->create();
-        // Category::create([
-        //     'categorie_name' => 'categorie 1'
-        // ]);
-        // Category::create([
-        //     'categorie_name' => 'categorie 2'
-        // ]);
-        // Category::create([
-        //     'categorie_name' => 'categorie 3'
-        // ]);
-        // Category::create([
-        //     'categorie_name' => 'categorie 4'
-        // ]);
-        // Feature::factory(10)->create();
+        Room::factory(60)->create();
+        Service::factory(2)->create();
+        Event::factory(1)->create();
+        Promotion::factory(1)->create();
+        Category::create([
+            'categorie_name' => 'Connection internet'
+        ]);
+        Category::create([
+            'categorie_name' => 'Général'
+        ]);
+        Category::create([
+            'categorie_name' => 'Cuisine'
+        ]);
+        Category::create([
+            'categorie_name' => 'autre'
+        ]);
+        Feature::factory(20)->create();
+        // RoomFeature::factory(100)->create();
     }
 }

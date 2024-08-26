@@ -16,7 +16,7 @@ class MessageController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->cannot('viewAny', Message::class) && ($request->user()->cannot('create', Message::class) || $request->user()->cannot('delete', Message::class) || $request->user()->cannot('update', Message::class))) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         if ($request->filter == 'unread') {
             $messages = Message::with('user')->where('read_at', null)->latest()->get();
@@ -49,7 +49,7 @@ class MessageController extends Controller
     public function update(string $id, Request $request)
     {
         if ($request->user()->cannot('update', Message::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $message = Message::where('message_id', $id)->first();
         $message->update(['read_at' => now()]);
@@ -62,7 +62,7 @@ class MessageController extends Controller
     public function readAll(Request $request)
     {
         if ($request->user()->cannot('update', Message::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         Message::query()->update(['read_at' => now()]);
         return redirect()->back();
@@ -74,7 +74,7 @@ class MessageController extends Controller
     public function destroy(string $id, Request $request)
     {
         if ($request->user()->cannot('delete', Message::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         $message = Message::find($id);
         $message->delete();
@@ -88,7 +88,7 @@ class MessageController extends Controller
     public function destroyAll(Request $request)
     {
         if ($request->user()->cannot('delete', Message::class)) {
-            return Inertia::render('Error/Error_403');
+            return abort(403);
         }
         DB::table('messages')->delete();
         return redirect()->back()->with('message', ['status' => 'success', 'message'
