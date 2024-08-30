@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('factures', function (Blueprint $table) {
             $table->id('facture_id');
-            $table->foreignId('booking_id')->constrained('reservations', 'booking_id');
+            $table->foreignId('booking_id')->constrained('bookings', 'booking_id');
             $table->decimal('tva', 4, 2);
             $table->decimal('tourist_tax', 8, 2);
             $table->decimal('timbre', 6, 2);

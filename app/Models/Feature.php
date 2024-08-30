@@ -11,7 +11,7 @@ class Feature extends Model
 {
     use HasFactory;
 
-    protected $table = 'caracteristiques';
+    // protected $table = 'caracteristiques';
     public $timestamps = false;
     protected $primaryKey = 'feature_id';
 
@@ -28,6 +28,6 @@ class Feature extends Model
 
     public function rooms(): BelongsToMany
     {
-        return $this->belongsToMany(Room::class, 'avoir_caracteristique', 'feature_id', 'room_id')->withPivot('valeur');
+        return $this->belongsToMany(Room::class, 'room_features', 'feature_id', 'room_id')->withPivot('valeur');
     }
 }

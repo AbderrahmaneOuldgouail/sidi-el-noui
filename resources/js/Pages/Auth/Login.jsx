@@ -1,11 +1,12 @@
-import { useEffect } from 'react';
-import Checkbox from '@/Components/Checkbox';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { useEffect } from "react";
+import Checkbox from "@/Components/Checkbox";
+import GuestLayout from "@/Layouts/GuestLayout";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import { useToast } from "@/Components/ui/use-toast";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,17 +14,25 @@ export default function Login({ status, canResetPassword }) {
         password: "",
         remember: false,
     });
+    const { toast } = useToast();
+    const flash = usePage().props.flash;
+    useEffect(() => {
+        if (flash.message) {
+            toast({ description: flash.message?.message });
+        }
+    }, [flash.message, toast]);
 
     useEffect(() => {
         return () => {
-            reset('password');
+            reset("password");
         };
     }, []);
+    console.log(flash);
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('login'));
+        post(route("login"));
     };
 
     return (

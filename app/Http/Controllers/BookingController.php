@@ -251,6 +251,7 @@ class BookingController extends Controller
                 'room_price',
             ]);
 
+
         if ($rooms->isNotEmpty()) {
             $booking_data = [
                 'check_in' => $request->check_in,

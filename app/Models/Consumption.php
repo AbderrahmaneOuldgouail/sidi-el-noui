@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Consumption extends Model
 {
     use HasFactory;
-    protected $table = 'consommations';
+    // protected $table = 'consommations';
     public $timestamps = false;
     protected $primaryKey = 'consumption_id';
 
@@ -28,6 +28,6 @@ class Consumption extends Model
 
     public function bookings(): BelongsToMany
     {
-        return $this->belongsToMany(Consumption::class, 'avoir_consommations', 'consumption_id', 'booking_id')->withPivot('quantity');
+        return $this->belongsToMany(Consumption::class, 'booking_consumptions', 'consumption_id', 'booking_id')->withPivot('quantity');
     }
 }

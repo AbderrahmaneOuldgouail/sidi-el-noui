@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('n_article', 12)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->timestamp('deleted_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -32,6 +32,7 @@ class User extends Authenticatable
         'nrc',
         'adresse',
         'n_article',
+        'deleted_at'
     ];
 
     /**

@@ -94,9 +94,9 @@ Route::middleware(['auth', Admin::class])->group(
 
     Route::resource('users', UserController::class)->names("users")->except(['show', 'edit', 'update']);
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('admin.profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
+    Route::get('/admin-profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::patch('/admin-profile', [ProfileController::class, 'update'])->name('admin.profile.update');
+    Route::delete('/admin-profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
 
     Route::prefix('assets')->controller(AssetsController::class)->as('assets.')->group(function () {
       Route::post('/create', 'store')->name('store');

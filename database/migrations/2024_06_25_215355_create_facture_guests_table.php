@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('facture_invite', function (Blueprint $table) {
+        Schema::create('facture_guests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('guest_id')->constrained('invites', 'guest_id')->cascadeOnDelete();
+            $table->foreignId('guest_id')->constrained('guests', 'guest_id')->cascadeOnDelete();
             $table->foreignId('facture_id')->constrained('factures', 'facture_id')->cascadeOnDelete();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('facture_invite');
+        Schema::dropIfExists('facture_guests');
     }
 };

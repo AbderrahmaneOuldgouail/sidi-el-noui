@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RoomFeature extends Model
 {
     use HasFactory;
-    protected $table = 'avoir_caracteristique';
+    // protected $table = 'avoir_caracteristique';
     public $timestamps = false;
 
 }

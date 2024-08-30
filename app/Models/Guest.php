@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Guest extends Model
 {
     use HasFactory;
-    protected $table = 'invites';
+    // protected $table = 'invites';
     public $timestamps = false;
     protected $primaryKey = 'guest_id';
 

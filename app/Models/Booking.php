@@ -12,12 +12,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Booking extends Model
 {
     use HasFactory;
-    protected $table = 'reservations';
+    // protected $table = 'reservations';
 
     protected $primaryKey = 'booking_id';
-    // protected $dispatchesEvents = [
-    //     'created' => BookingPlaced::class,
-    // ];
     protected $fillable = [
         'user_id',
         'check_in',
@@ -33,12 +30,12 @@ class Booking extends Model
 
     public function rooms(): BelongsToMany
     {
-        return $this->belongsToMany(Room::class, 'reservation_concerne_chambres', 'booking_id', 'room_id');
+        return $this->belongsToMany(Room::class, 'room_bookings', 'booking_id', 'room_id');
     }
 
     public function consomation(): BelongsToMany
     {
-        return $this->belongsToMany(Consumption::class, 'avoir_consommations', 'booking_id', 'consumption_id')->withPivot('quantity');
+        return $this->belongsToMany(Consumption::class, 'booking_consumptions', 'booking_id', 'consumption_id')->withPivot('quantity');
     }
 
     public function factures(): HasMany

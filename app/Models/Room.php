@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Room extends Model
 {
     use HasFactory;
-    protected $table = 'chambres';
+    // protected $table = 'chambres';
     public $timestamps = false;
 
     protected $fillable = [
@@ -33,7 +33,7 @@ class Room extends Model
 
     public function features(): BelongsToMany
     {
-        return $this->belongsToMany(Feature::class, 'avoir_caracteristique', 'room_id', 'feature_id')->withPivot('valeur');
+        return $this->belongsToMany(Feature::class, 'room_features', 'room_id', 'feature_id')->withPivot('valeur');
     }
 
     public function type(): BelongsTo
@@ -43,6 +43,6 @@ class Room extends Model
 
     public function bookings(): BelongsToMany
     {
-        return $this->belongsToMany(Booking::class, 'reservation_concerne_chambres', 'room_id', 'booking_id');
+        return $this->belongsToMany(Booking::class, 'room_bookings', 'room_id', 'booking_id');
     }
 }

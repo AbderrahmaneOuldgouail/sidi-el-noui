@@ -8,6 +8,7 @@ import {
 } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Editor } from "@/Components/Admin/Shared/Editor";
+import { router } from "@inertiajs/react";
 
 export default function Events({ event }) {
     return (
@@ -58,7 +59,7 @@ export default function Events({ event }) {
                         length={200}
                     />
                 </CardContent>
-                <CardFooter className="justify-start z-[1] ">
+                <CardFooter className="justify-start z-[1]">
                     <Button variant="secondary" size="sm">
                         Voir Plus
                     </Button>

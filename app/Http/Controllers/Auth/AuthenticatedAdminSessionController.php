@@ -28,11 +28,17 @@ class AuthenticatedAdminSessionController extends Controller
     public function adminstore(AdminLoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-        
+
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.dashboard', absolute: false));
+        if (Auth::user()->access == true) {
 
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('admin.dashboard', absolute: false));
+        }
+        Auth::guard('web')->logout();
+        return redirect()->intended(route('admin.login', absolute: false))->with('message', ['status' => 'error', 'message' => "Vous n'avez pas l'autorisation pour acces à cette section"]);
     }
 
     /**

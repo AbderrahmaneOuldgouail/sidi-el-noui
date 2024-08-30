@@ -67,8 +67,8 @@ export default function Home({ events, promotions, rooms, services }) {
                     <Events event={events[0]} />
                 </div>
             )}
-            <Rooms rooms={rooms} />
-            <Services services={services} />
+            {rooms.length > 0 && <Rooms rooms={rooms} />}
+            {services.length > 0 && <Services services={services} />}
             <Contact rooms={rooms} />
         </ClientLayout>
     );

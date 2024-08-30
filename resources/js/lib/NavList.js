@@ -1,4 +1,5 @@
 export function getNavList(activeSection) {
+    const current = route().current();
     return [
         {
             label: "Acceuil",

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import logo from "../assets/logo.png";
 import { Button } from "@/Components/ui/button";
 import NavLinks from "./NavLinks";
@@ -26,7 +26,11 @@ export default function NavBar() {
                     {user ? (
                         <UserNav />
                     ) : (
-                        <Button size="sm" variant="secondary">
+                        <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => router.get(route("login"))}
+                        >
                             Se Connecter
                         </Button>
                     )}

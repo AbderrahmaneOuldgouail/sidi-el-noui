@@ -36,9 +36,8 @@ export function UserNav() {
                                 <Avatar className="h-8 w-8 relative">
                                     <AvatarImage src="#" alt="Avatar" />
                                     <AvatarFallback className="bg-transparent uppercase">
-                                        {/* {user.first_name.charAt(0)}
-                                        {user.last_name.charAt(0)} */}
-                                        AO
+                                        {user.first_name.charAt(0)}
+                                        {user.last_name.charAt(0)}
                                     </AvatarFallback>
                                 </Avatar>
                             </Button>
@@ -65,7 +64,7 @@ export function UserNav() {
                 <DropdownMenuGroup>
                     <DropdownMenuItem className="hover:cursor-pointer" asChild>
                         <Link
-                            href={route("admin.profile.edit")}
+                            href={route("client.profile.edit")}
                             className="flex items-center"
                         >
                             <User className="w-4 h-4 mr-3 text-muted-foreground" />
@@ -74,7 +73,7 @@ export function UserNav() {
                     </DropdownMenuItem>
                     <DropdownMenuItem className="hover:cursor-pointer" asChild>
                         <Link
-                            href={route("admin.profile.edit")}
+                            href={route("client.profile.edit")}
                             className="flex items-center"
                         >
                             <BookmarkCheck className="w-4 h-4 mr-3 text-muted-foreground" />

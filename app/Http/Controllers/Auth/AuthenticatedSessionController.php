@@ -30,18 +30,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-
         $request->authenticate();
 
-        if (Auth::user()->role->nom_role == 'client') {
-
+        if (Auth::user()->access == false) {
+            if (Auth::user()->deleted_at != null) {
+                Auth::guard('web')->logout();
+                return redirect()->intended(route('login', absolute: false))->with('message', ['status' => 'error', 'message' => 'Ce compte est supprimier, essayer avec autre compte']);
+            }
             $request->session()->regenerate();
 
-            return redirect()->intended(route('profile.edit', absolute: false));
-        } 
+            return redirect()->intended(route('client.profile.edit', absolute: false));
+        }
         Auth::guard('web')->logout();
-        return redirect()->intended(route('login', absolute: false));
-
+        return redirect()->intended(route('login', absolute: false))->with('message', ['status' => 'error', 'message' => "Vous n'avez pas l'autorisation pour acces à cette section"]);
     }
 
     /**
