@@ -15,9 +15,9 @@ import { Separator } from "@/Components/ui/separator";
 import { Button } from "@/Components/ui/button";
 import { Pencil } from "lucide-react";
 import { useTrans } from "@/Hooks/useTrans";
+import { Editor } from "@/Components/Admin/Shared/Editor";
 
 export default function Room({ room, categorys }) {
-
     const categoryExists = (features, category_id) => {
         return features.some((item) => item.categorie_id === category_id);
     };
@@ -27,9 +27,9 @@ export default function Room({ room, categorys }) {
             <PageHeading
                 title={useTrans("La Chambre N°") + " " + room.room_number}
             />
-            <PlaceholderContent className="flex">
+            <PlaceholderContent>
                 <Carousel>
-                    <CarouselContent className="h-1/2">
+                    <CarouselContent>
                         {room.assets.map((asset, index) => (
                             <CarouselItem
                                 key={index}
@@ -38,7 +38,7 @@ export default function Room({ room, categorys }) {
                                 <img
                                     src={asset.url}
                                     alt={`Selected ${index}`}
-                                    className="rounded-md object-cover aspect-video"
+                                    className="rounded-md object-cover aspect-video w-full"
                                 />
                             </CarouselItem>
                         ))}
@@ -99,6 +99,19 @@ export default function Room({ room, categorys }) {
                             </div>
                         ))}
                     </div>
+                    <div>
+                        <div className="font-bold text-lg my-4">
+                            {useTrans("Description")} :{" "}
+                        </div>
+                        <Editor
+                            autofocus={false}
+                            editable={false}
+                            content={room.room_descreption}
+                            onContentChange={({ html }) => {
+                                setData("room_descreption", html);
+                            }}
+                        />
+                    </div>
                 </div>
                 <div className="flex justify-end mt-4">
                     <Button variant="outline">
@@ -106,8 +119,7 @@ export default function Room({ room, categorys }) {
                             href={route("rooms.edit", room.room_number)}
                             className="flex w-full"
                         >
-                            {useTrans("Modifier")}
-                            {" "}
+                            {useTrans("Modifier")}{" "}
                             <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                         </Link>
                     </Button>

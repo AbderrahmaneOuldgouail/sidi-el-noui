@@ -6,6 +6,8 @@ import InputLabel from "@/Components/InputLabel";
 import { Textarea } from "@/Components/ui/textarea";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { ImagePlus, Trash } from "lucide-react";
+import { Editor } from "@/Components/Admin/Shared/Editor";
+
 
 import { cn } from "@/lib/utils";
 import {
@@ -316,14 +318,12 @@ export default function EditRoomForm({ types, categorys, room }) {
                         htmlFor="room_descreption"
                         value={useTrans("Description")}
                     />
-                    <Textarea
-                        className="mt-2 w-full bg-card dark:bg-card"
-                        placeholder={useTrans("Description sur la chambre")}
-                        id="room_descreption"
-                        value={data.room_descreption}
-                        onChange={(e) =>
-                            setData("room_descreption", e.target.value)
-                        }
+                    <Editor
+                        autofocus={false}
+                        content={data.room_descreption}
+                        onContentChange={({ html }) => {
+                            setData("room_descreption", html);
+                        }}
                     />
                     <InputError
                         message={errors.room_descreption}

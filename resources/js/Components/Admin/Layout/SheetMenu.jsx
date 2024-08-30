@@ -9,7 +9,6 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/Components/ui/sheet";
-import { LangSwitch } from "./LangSwitch";
 
 export function SheetMenu() {
     return (

@@ -6,7 +6,7 @@ import { DataTable } from "@/Components/Admin/DataTable";
 import PageHeading from "@/Components/ui/PageHeading";
 import { columns } from "@/Components/Admin/Rooms/RoomColumns";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
-import RoomCard from "@/Components/Admin/Services/RoomCard";
+import RoomCard from "@/Components/Admin/Rooms/RoomCard";
 import TopButton from "@/Components/Admin/Layout/TopButton";
 import MobilePagination from "@/Components/Admin/Shared/MobilePagination";
 import { useTrans } from "@/Hooks/useTrans";

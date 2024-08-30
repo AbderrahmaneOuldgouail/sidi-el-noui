@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id('service_id');
             $table->string('service_name',30);
-            $table->string('service_descreption',255);
+            $table->longText('service_descreption');
             $table->boolean('availability');
         });
     }

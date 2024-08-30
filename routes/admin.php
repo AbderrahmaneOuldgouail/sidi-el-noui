@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Broadcast;
 
 Route::middleware(AdminGuest::class)->group(
   function () {

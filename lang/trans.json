@@ -263,5 +263,17 @@
   "Marqué comme hors service" : "وضع علامة خارج الخدمة",
   "ligne(s) afficher" : "سطر (سطور) معروضة.",
   "Lignes par page" : "صفوف لكل صفحة",
-  "ligne(s) sélectionné(s)." : "سطر (سطور) محددة."
+  "ligne(s) sélectionné(s)." : "سطر (سطور) محددة.",
+
+  "Mes réservations" : "حجوزاتي",
+  "De" : "من",
+  "Jusqu'a" : "إلى",
+  "Le" : "",
+
+  "Sidi El Noui" : "سيدي النوي",
+  "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable." : "مرحبًا بكم في سيدي النوي - ملجأكم الفاخر في قلب مدينة شراقة اكتشف راحة لا مثيل لها وأناقة راقية في قلب الجزائر العاصمة. يوفر فندقنا إطلالات خلابة ووسائل راحة متميزة وخدمة استثنائية لجعل إقامتك لا تُنسى.",
+  "nombre des bébé" : "عدد الأطفال",
+  "Rechercher" : "بحث",
+  "dates" : "تاريخ الدخول و الخروج"
+
 }

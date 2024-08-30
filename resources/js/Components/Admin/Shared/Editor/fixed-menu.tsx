@@ -21,9 +21,9 @@ import {
 import { Toggle } from "@/Components/ui/toggle";
 import * as Dropdown from "@/Components/ui/dropdown-menu";
 import { Button } from "@/Components/ui/button";
-import { cn } from "@/Utils/utils";
+import { cn } from "@/lib/utils";
 import * as Popover from "@/Components/ui/popover";
-import Field from "@/Libs/FormBuilder/components/Field";
+import { Input } from "@/Components/ui/input";
 
 interface FixedMenuProps extends React.HTMLAttributes<HTMLDivElement> {
     editor: Editor;
@@ -206,8 +206,7 @@ const LinkButton = ({ editor }: { editor: Editor }) => {
                 </Button>
             </Popover.PopoverTrigger>
             <Popover.PopoverContent className="flex items-center gap-2 p-2">
-                <Field
-                    type="text"
+                <Input
                     value={href}
                     onValueChange={(value) => setHref(value)}
                     placeholder="https://google.dz"

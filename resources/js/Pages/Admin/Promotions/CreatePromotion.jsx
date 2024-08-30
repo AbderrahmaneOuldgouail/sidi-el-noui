@@ -16,6 +16,7 @@ import { useTrans } from "@/Hooks/useTrans";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Separator } from "@/Components/ui/separator";
 import { DatePickerWithRange } from "@/Components/ui/DatePickerWithRange";
+import { Editor } from "@/Components/Admin/Shared/Editor";
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
@@ -166,13 +167,12 @@ export default function CreatePromotion() {
                                 htmlFor="promo_descreption"
                                 value={useTrans("Description")}
                             />
-                            <Input
-                                className="mt-2 w-full bg-card"
-                                id="promo_descreption"
-                                value={data.promo_descreption}
-                                onChange={(e) =>
-                                    setData("promo_descreption", e.target.value)
-                                }
+                            <Editor
+                                autofocus={false}
+                                content={data.promo_descreption}
+                                onContentChange={({ html }) => {
+                                    setData("promo_descreption", html);
+                                }}
                             />
                             <InputError
                                 message={errors.promo_descreption}

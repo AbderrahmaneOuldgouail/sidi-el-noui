@@ -51,7 +51,7 @@ export function getMenuList(pathname) {
             menus: [
                 {
                     href: "admin.dashboard",
-                    label: "Dashboard",
+                    label: "Tableux de bord",
                     active: pathname === "admin.dashboard",
                     icon: LayoutGrid,
                     submenus: [],
@@ -63,13 +63,13 @@ export function getMenuList(pathname) {
             permissions.booking.create) && {
             groupLabel: "Moteur de réservation",
             menus: [
-                permissions.booking.viewAny && {
-                    href: "bookings.calendar",
-                    label: "Calendréier",
-                    active: pathname == "bookings.calendar",
-                    icon: CalendarDays,
-                    submenus: [],
-                },
+                // permissions.booking.viewAny && {
+                //     href: "bookings.calendar",
+                //     label: "Calendréier",
+                //     active: pathname == "bookings.calendar",
+                //     icon: CalendarDays,
+                //     submenus: [],
+                // },
                 permissions.booking.viewAny && {
                     href: "bookings.index",
                     label: "Réservations",

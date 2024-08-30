@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users', 'id')->nullOnDelete();
             $table->date('promo_start_date');
             $table->date('promo_end_date');
-            $table->unsignedSmallInteger('promo_value');
-            $table->string('promo_descreption',255);
+            $table->integer('promo_value');
+            $table->longText('promo_descreption');
             $table->boolean('is_active');
         });
     }

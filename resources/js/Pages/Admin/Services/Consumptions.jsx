@@ -18,11 +18,10 @@ export default function Consumptions({ consumptions, services }) {
         }
     }, [flash.message, toast]);
 
-    console.log(consumptions);
     return (
         <AdminPanelLayout>
             <Head title="Consumptions" />
-            <PageHeading title={"Consumptions"} />
+            <PageHeading title={"Consommations"} />
             <div className="flex justify-end">
                 <ConsommationDialog services={services} mode="create" />
             </div>

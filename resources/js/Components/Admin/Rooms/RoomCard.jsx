@@ -19,13 +19,12 @@ export default function RoomCard({ room }) {
             <CardContent className="p-6 flex justify-between items-center">
                 <div>
                     <CardTitle>
+                        {useTrans("La Chambre N°")}{" "}
                         {room.room_number}
                         {" / "}
                         {room.type.type_designation}
                     </CardTitle>
                     <CardDescription>
-                        {useTrans("Description")} : {room.room_descreption}{" "}
-                        <br />
                         {useTrans("Prix de chmabre")} : {room.room_price}{" "}
                         {useTrans("DA")}
                     </CardDescription>

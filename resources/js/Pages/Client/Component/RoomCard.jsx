@@ -1,7 +1,6 @@
-import { Inertia } from "@inertiajs/inertia";
 import { Button } from "@/Components/ui/button";
 import React from "react";
-import { FaWifi, FaTv, FaBed } from "react-icons/fa"; // Example icons
+// import { FaWifi, FaTv, FaBed } from "react-icons/fa"; // Example icons
 
 export default function RoomCard() {
     // Define the rooms array
@@ -46,7 +45,7 @@ export default function RoomCard() {
 
     const handleClick = (roomId) => {
         // Navigate to the room detail page
-        Inertia.visit(`/rooms/${roomId}`);
+        // Inertia.visit(`/rooms/${roomId}`);
     };
 
     return (
@@ -66,7 +65,7 @@ export default function RoomCard() {
                         <h2 className="text-2xl font-semibold mb-2">
                             {room.name}
                         </h2>
-                        <div className="flex items-center space-x-4 mb-4">
+                        {/* <div className="flex items-center space-x-4 mb-4">
                             {room.features.includes("wifi") && (
                                 <FaWifi className="text-gray-600" />
                             )}
@@ -76,7 +75,7 @@ export default function RoomCard() {
                             {room.features.includes("bed") && (
                                 <FaBed className="text-gray-600" />
                             )}
-                        </div>
+                        </div> */}
                         <p className="text-gray-700 text-base">
                             {room.description}
                         </p>

@@ -9,7 +9,7 @@ export default function ServiceCardFooter({ service }) {
     const permissions = usePage().props.auth.permissions;
 
     return (
-        <div className="flex justify-between items-center gap-4 ">
+        <>
             {permissions.service.update && (
                 <div>
                     <Switch
@@ -48,6 +48,6 @@ export default function ServiceCardFooter({ service }) {
                     />
                 )}
             </div>
-        </div>
+        </>
     );
 }

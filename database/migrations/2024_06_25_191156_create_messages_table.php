@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users', 'id')->nullOnDelete();
             $table->string('client_email', 40);
             $table->string('subject', 50);
-            $table->string('message', 255);
+            $table->string('message', 500);
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });

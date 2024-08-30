@@ -17,6 +17,7 @@ import { router } from "@inertiajs/react";
 import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { Badge } from "@/Components/ui/badge";
 import { useTrans } from "@/Hooks/useTrans";
+import { Editor } from "@/Components/Admin/Shared/Editor";
 
 export type Payment = {
     room_number: string;
@@ -53,19 +54,33 @@ export const columns: ColumnDef<Payment>[] = [
             <DataTableColumnHeader column={column} title={useTrans("Type")} />
         ),
     },
-    {
-        accessorKey: "Description",
-        cell: ({ row }) => {
-            const room = row.original;
-            return <span> {room.room_descreption}</span>;
-        },
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Description")}
-            />
-        ),
-    },
+    // {
+    //     accessorKey: "Description",
+    //     cell: ({ row }) => {
+    //         const room = row.original;
+    //         const truncateText = (text, length) => {
+    //             if (text.length <= length) {
+    //                 return text;
+    //             }
+    //             return text.slice(0, length) + "...";
+    //         };
+    //         // return <span> {room.room_descreption}</span>;
+    //         return (
+    //             <Editor
+    //                 autofocus={false}
+    //                 editable={false}
+    //                 content={room.room_descreption}
+    //                 classNames={{ content: "resize-none" }}
+    //             />
+    //         );
+    //     },
+    //     header: ({ column }) => (
+    //         <DataTableColumnHeader
+    //             column={column}
+    //             title={useTrans("Description")}
+    //         />
+    //     ),
+    // },
     {
         accessorKey: "Status",
         cell: ({ row }) => {

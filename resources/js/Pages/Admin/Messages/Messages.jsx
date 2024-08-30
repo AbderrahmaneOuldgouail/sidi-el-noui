@@ -261,7 +261,7 @@ export default function messages({ messages, filter }) {
                                                         }
                                                     >
                                                         {useTrans(
-                                                            "استئناف مع عنوان البريد الإلكتروني الخاص بك"
+                                                            "Reprendre avec votre adresse mail"
                                                         )}
                                                     </a>
                                                 </Button>

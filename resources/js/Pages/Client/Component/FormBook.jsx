@@ -46,7 +46,7 @@ export default function FormBook() {
     };
 
     return (
-        <div className="  absolute bottom-4 left-28   backdrop-blur-sm bg-white/70   w-5/6 p-4  mx-auto text-lg rounded-lg  b">
+        <div className="absolute bottom-16 left-28   backdrop-blur-sm bg-white/70   w-5/6 p-4  mx-auto text-lg rounded-lg  b">
             <h1 className="font-bold text-secondary text-4xl flex justify-center  py-4 font-serif italic mb-4">
                 Reserver maintente
             </h1>

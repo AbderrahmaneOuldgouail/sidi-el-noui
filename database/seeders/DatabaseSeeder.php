@@ -43,38 +43,33 @@ class DatabaseSeeder extends Seeder
             $role->permissions()->attach(Permission::all());
         }
 
-        // Message::create([
-        //     'client_email' => 'client@gmail.com',
-        //     'subject' => 'Réservations',
-        //     'message' => 'Message content '
-        // ]);
-        // Message::create([
-        //     'client_email' => 'client2@gmail.com',
-        //     'subject' => 'Occupation',
-        //     'message' => 'Message content '
-        // ]);
-        // Message::create([
-        //     'client_email' => 'client3@gmail.com',
-        //     'subject' => 'Services',
-        //     'message' => 'Message content '
-        // ]);
-        // Message::create([
-        //     'client_email' => 'client4@gmail.com',
-        //     'subject' => 'Evenement',
-        //     'message' => 'Message content '
-        // ]);
+        Message::create([
+            'client_email' => 'ademamin@gmail.com',
+            'subject' => 'Réservations',
+            'message' => 'Comment je peux faire une réservation a travert le site web '
+        ]);
+        Message::create([
+            'client_email' => 'islamaei@gmail.com',
+            'subject' => 'Services',
+            'message' => 'Quel sont les services disponible dans un suite'
+        ]);
+        Message::create([
+            'client_email' => 'farid_mazi@gmail.com',
+            'subject' => 'Evenement',
+            'message' => "Comment je peux réserver pour l'évènement prochainre"
+        ]);
 
         Type::create([
-            'type_designation' => 'double'
+            'type_designation' => 'Single'
         ]);
         Type::create([
-            'type_designation' => 'suite'
+            'type_designation' => 'Double'
         ]);
         Type::create([
-            'type_designation' => 'single'
+            'type_designation' => 'Triple'
         ]);
         Type::create([
-            'type_designation' => 'triple'
+            'type_designation' => 'Suite'
         ]);
         User::create([
             'first_name' => 'abdou',
@@ -85,23 +80,23 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
             'role_id' => 1,
         ]);
-        Room::factory(60)->create();
-        Service::factory(2)->create();
-        Event::factory(1)->create();
-        Promotion::factory(1)->create();
-        Category::create([
-            'categorie_name' => 'Connection internet'
-        ]);
-        Category::create([
-            'categorie_name' => 'Général'
-        ]);
-        Category::create([
-            'categorie_name' => 'Cuisine'
-        ]);
-        Category::create([
-            'categorie_name' => 'autre'
-        ]);
-        Feature::factory(20)->create();
+        // Room::factory(60)->create();
+        // Service::factory(2)->create();
+        // Event::factory(1)->create();
+        // Promotion::factory(1)->create();
+        // Category::create([
+        //     'categorie_name' => 'Connection internet'
+        // ]);
+        // Category::create([
+        //     'categorie_name' => 'Général'
+        // ]);
+        // Category::create([
+        //     'categorie_name' => 'Cuisine'
+        // ]);
+        // Category::create([
+        //     'categorie_name' => 'Sale de bain'
+        // ]);
+        // Feature::factory(20)->create();
         // RoomFeature::factory(100)->create();
     }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { useCurrentEditor } from "@tiptap/react";
-import { cn } from "@/Utils/utils";
+import { cn } from "@/lib/utils";
 
 const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
     className,

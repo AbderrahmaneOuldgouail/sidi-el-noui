@@ -39,7 +39,7 @@ export default function Events({ events }) {
                     {useTrans("List des évènements")} :
                 </div>
                 {events.map((event) => (
-                    <EventCard event={event} />
+                    <EventCard event={event} key={event.event_id}/>
                 ))}
             </PlaceholderContent>
         </AdminPanelLayout>

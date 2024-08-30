@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { NotificationsNav } from "./NotificationsNav";
 import { AddBooking } from "./AddBooking";
 import { Link, router, usePage } from "@inertiajs/react";
-import { Button } from "@/Components/ui/button";
 
 export function Navbar({ title, isOpen }) {
     const permissions = usePage().props.auth.permissions;

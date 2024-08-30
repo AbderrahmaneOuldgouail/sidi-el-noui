@@ -1,25 +1,20 @@
-<<<<<<< HEAD
-import Navbar from "@/Components/Client/Navbar";
+import Navbar from "@/Components/Client/Layout/Navbar";
 import Footer from "@/Components/Client/Footer";
+import { ThemeProvider } from "@/Providers/ThemeProvider";
+import { Toaster } from "@/Components/ui/toaster";
 
 export default function ClientLayout({ children }) {
+    const locale = localStorage.getItem("locale") || "fr";
+    document.documentElement.dir = locale == "ar" ? "rtl" : "ltr";
+
     return (
-        <div className="min-h-screen flex flex-col bg-muted">
-            <div className="w-full mx-auto bg-primary flex-grow">
+        <ThemeProvider>
+            <div className="bg-muted -z-[2]">
                 <Navbar />
-                <div className="bg-muted dark:bg-gray-800 overflow-hidden">
-                    {children}
-                </div>
-=======
-import React from "react";
-
-export default function ClientLayout({ children }) {
-    return (
-        <div>
-            <div className=" bg-white dark:bg-gray-800  overflow-hidden ">
-                {children}
->>>>>>> 66b34ba96f44b8b56890a52d4c08669be71e3d91
+                <main className=" lg:mx-28 min-h-screen ">{children}</main>
+                <Footer />
             </div>
-        </div>
+            <Toaster />
+        </ThemeProvider>
     );
 }

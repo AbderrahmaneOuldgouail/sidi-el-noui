@@ -12,7 +12,6 @@ export default function Error({ status }) {
         404: "Sorry, the page you are looking for could not be found.",
         403: "Sorry, you are forbidden from accessing this page.",
     }[status];
-    console.log(status);
     return (
         <div>
             <h1>{title}</h1>

@@ -18,10 +18,10 @@ import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 
-import { cn } from "@/Utils/utils";
-import { FixedMenu } from "./partials/fixed-menu";
+import { cn } from "@/lib/utils";
+import { FixedMenu } from "./fixed-menu";
 import { EditorProps } from "@tiptap/pm/view";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/Components/ui/skeleton";
 
 type ClassNames = {
     root: string;
@@ -52,6 +52,7 @@ interface RichEditorProps {
     slotAfter?: (editor: Editor) => React.ReactNode;
     autofocus?: FocusPosition;
     spellCheck?: boolean;
+    length?: number;
 }
 
 /**
@@ -88,6 +89,7 @@ const RichEditor: React.FC<RichEditorProps> = ({
     slotAfter,
     autofocus,
     spellCheck = true,
+    length = 0,
 }) => {
     const extensionFn = (): Extensions => {
         if (!extensions) return baseExtensions;
@@ -105,6 +107,7 @@ const RichEditor: React.FC<RichEditorProps> = ({
 
     const slotBeforeFn: SlotFn = (editor) => {
         if (slotBefore) return slotBefore(editor);
+        if (!editable) return <div></div>;
         if (menu === "top")
             return (
                 <FixedMenu
@@ -156,6 +159,14 @@ const RichEditor: React.FC<RichEditorProps> = ({
         autofocus: autofocus,
         editorProps: editorPropsFn(),
     });
+
+    if (length > 0) {
+        const textContent = editor.getText().trim();
+        if (textContent.length <= length) {
+            return textContent;
+        }
+        return textContent.slice(0, length) + "...";
+    }
 
     if (!editor) {
         return <Skeleton className="h-40 w-full" />;

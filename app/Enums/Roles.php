@@ -7,7 +7,7 @@ enum Roles: string
     case SUPPERADMIN = 'supper-admin';
     case ADMIN = 'admin';
     case CLIENT = 'client';
-    case COMPANY = 'company';
+    case COMPANY = 'sositée';
 
     public static function exists(string $value): bool
     {

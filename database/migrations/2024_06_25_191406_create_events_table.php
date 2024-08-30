@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('event_id');
             $table->foreignId('user_id')->nullable()->constrained('users', 'id')->nullOnDelete();
             $table->string('event_name', 50);
-            $table->string('event_descreption', 255);
+            $table->longText('event_descreption');
             $table->date('event_start_date');
             $table->date('event_end_date');
             $table->integer('event_price');

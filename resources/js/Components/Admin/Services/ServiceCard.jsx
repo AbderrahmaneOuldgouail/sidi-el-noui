@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Badge } from "@/Components/ui/badge";
-import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import { useTrans } from "@/Hooks/useTrans";
 import {
     Card,
@@ -15,56 +14,34 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/Components/ui/carousel";
+import ServiceCardFooter from "@/Components/Admin/Services/ServiceCardFooter";
+import { Editor } from "@/Components/Admin/Shared/Editor";
+import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
+import { buttonVariants } from "@/Components/ui/button";
 import { ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Dialog, DialogContent, DialogTrigger } from "@/Components/ui/dialog";
-import ServiceCardFooter from "@/Components/Admin/Services/ServiceCardFooter";
-import { Button } from "@/Components/ui/button";
 
-export default function ServiceCard({service}) {
+export default function ServiceCard({ service }) {
     const { width } = useWindowDimensions();
     const [isOpen, setIsOpen] = useState(false);
-
-    const truncateText = (text, length) => {
-        if (text.length <= length) {
-            return text;
-        }
-        return text.slice(0, length) + "...";
-    };
     return (
         <Card
-            className={cn(
-                "transition-transform ease-in-out duration-700 relative my-6 ",
-                isOpen ? "block" : " sm:flex block"
-            )}
+            className="transition-transform ease-in-out duration-700 relative my-6 "
             key={service.service_id}
         >
-            <div className={cn(isOpen ? "w-full" : "sm:w-1/2 w-full")}>
+            <div className="w-full">
                 <Carousel>
                     <CarouselContent className="h-full ">
                         {service.assets.map((asset, index) => (
                             <CarouselItem
                                 key={index}
-                                className={cn(
-                                    isOpen ? "md:basis-1/2 lg:basis-1/3" : ""
-                                )}
+                                className="md:basis-1/2 lg:basis-1/3"
                             >
-                                <Dialog>
-                                    <DialogTrigger>
-                                        <img
-                                            src={asset.url}
-                                            alt={`Selected ${index}`}
-                                            className="rounded-md object-cover aspect-video"
-                                        />
-                                    </DialogTrigger>
-                                    <DialogContent className="p-0">
-                                        <img
-                                            src={asset.url}
-                                            alt={`Selected ${index}`}
-                                            className="rounded-md object-cover aspect-video"
-                                        />
-                                    </DialogContent>
-                                </Dialog>
+                                <img
+                                    src={asset.url}
+                                    alt={`Selected ${index}`}
+                                    className="rounded-md object-cover aspect-video w-full"
+                                />
                             </CarouselItem>
                         ))}
                     </CarouselContent>
@@ -72,15 +49,10 @@ export default function ServiceCard({service}) {
                     <CarouselNext className="bg-secondary right-0 text-secondary-foreground" />
                 </Carousel>
             </div>
-            <div
-                className={cn(
-                    "flex flex-col justify-between ",
-                    isOpen ? " w-full" : "sm:w-1/2 w-full"
-                )}
-            >
-                <CardHeader className="text-lg font-bold text-xl flex flex-row items-center justify-between">
+            <div className="flex flex-col justify-between w-full">
+                <CardHeader className="text-lg font-bold text-xl flex flex-row items-start justify-between">
                     <div>{service.service_name}</div>
-                    <div>
+                    <div className="m-0">
                         {service.availability ? (
                             <Badge variant="success">
                                 {useTrans("Disponible")}
@@ -92,30 +64,40 @@ export default function ServiceCard({service}) {
                         )}
                     </div>
                 </CardHeader>
-                <CardContent>
-                    {isOpen
-                        ? truncateText(service.service_descreption, 150)
-                        : service.service_descreption}
-                </CardContent>
-                <CardFooter>
-                    <ServiceCardFooter service={service} />
-                </CardFooter>
+                {isOpen && (
+                    <>
+                        <CardContent>
+                            <div className="font-bold text-lg my-4">
+                                {useTrans("Description")} :{" "}
+                            </div>
+                            <Editor
+                                autofocus={false}
+                                editable={false}
+                                content={service.service_descreption}
+                            />
+                        </CardContent>
+                        <CardFooter className="justify-end gap-4 ">
+                            <ServiceCardFooter service={service} />
+                        </CardFooter>
+                    </>
+                )}
             </div>
             {width >= 767 && (
                 <div className="absolute -bottom-4 right-1/2 translate-x-1/2 z-20">
-                    <Button
-                        className="rounded-md w-8 h-8"
-                        variant="outline"
-                        size="icon"
+                    <div
+                        className={buttonVariants({
+                            variant: "outline",
+                            size: "icon",
+                        })}
                         onClick={() => setIsOpen(!isOpen)}
                     >
                         <ChevronUp
                             className={cn(
-                                "h-4 w-4 transition-transform ease-in-out duration-700",
+                                "h-4 w-4 transition-transform ease-in-out duration-700 ",
                                 isOpen === false ? "rotate-180" : "rotate-0"
                             )}
                         />
-                    </Button>
+                    </div>
                 </div>
             )}
         </Card>

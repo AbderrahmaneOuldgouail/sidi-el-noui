@@ -35,7 +35,7 @@ class EventController extends Controller
         request()->validate(
             [
                 'event_name' => 'required|string',
-                'event_descreption' => 'required|string|max:255',
+                'event_descreption' => 'required|string',
                 'event_start_date' => 'required|date',
                 'event_end_date' => 'required|date',
                 'event_price' => 'required|numeric',
@@ -89,7 +89,7 @@ class EventController extends Controller
         request()->validate(
             [
                 'event_name' => 'required|string',
-                'event_descreption' => 'required|string|max:255',
+                'event_descreption' => 'required|string',
                 'event_start_date' => 'required|date',
                 'event_end_date' => 'required|date',
                 'event_price' => 'required|numeric',

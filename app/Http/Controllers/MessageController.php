@@ -6,22 +6,10 @@ use App\Mail\ReplyMessage;
 use App\Models\Message;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 use Inertia\Inertia;
-;
 
-class MessageController extends Controller
-{
-        public function contactIndex(){
-
-        return Inertia::render('Client/Contact');
-    }
-
-=======
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
 
 class MessageController extends Controller
 {
@@ -53,11 +41,6 @@ class MessageController extends Controller
         => 'Message envoyé avec succès']);
     }
 
-
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(string $id, Request $request)
     {
         if ($request->user()->cannot('update', Message::class)) {
@@ -68,9 +51,6 @@ class MessageController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function readAll(Request $request)
     {
         if ($request->user()->cannot('update', Message::class)) {
@@ -80,9 +60,6 @@ class MessageController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id, Request $request)
     {
         if ($request->user()->cannot('delete', Message::class)) {
@@ -94,9 +71,6 @@ class MessageController extends Controller
         => 'Message supprimé avec succès']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroyAll(Request $request)
     {
         if ($request->user()->cannot('delete', Message::class)) {
@@ -106,5 +80,22 @@ class MessageController extends Controller
         return redirect()->back()->with('message', ['status' => 'success', 'message'
         => 'Messages supprimé avec succès']);
     }
->>>>>>> 66b34ba96f44b8b56890a52d4c08669be71e3d91
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'client_email' => 'required|email',
+            'subject' => 'required|string',
+            'message' => 'required|string',
+        ]);
+
+        Message::create([
+            'client_email' => $request->client_email,
+            'subject' => $request->subject,
+            'message' => $request->message,
+            'read_at' => null,
+        ]);
+
+        return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Message envoyé avec sucssé']);
+    }
 }

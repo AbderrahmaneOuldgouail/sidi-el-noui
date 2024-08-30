@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('beeds_number');
             $table->unsignedInteger('room_price');
             $table->enum('room_status', [room_status::Busy->value, room_status::Free->value, room_status::Out_of_service->value,]);
-            $table->string('room_descreption', 255);
+            $table->longText('room_descreption');
         });
     }
 

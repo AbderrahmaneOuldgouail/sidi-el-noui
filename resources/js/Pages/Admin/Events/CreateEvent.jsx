@@ -16,6 +16,7 @@ import { useTrans } from "@/Hooks/useTrans";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Separator } from "@/Components/ui/separator";
 import { DatePickerWithRange } from "@/Components/ui/DatePickerWithRange";
+import { Editor } from "@/Components/Admin/Shared/Editor";
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
@@ -34,7 +35,7 @@ export default function CreateEvent() {
         event_price: "",
         assets: [],
     });
-console.log(errors);
+    console.log(errors);
     const submit = (e) => {
         e.preventDefault();
         post(route("events.store"));
@@ -201,13 +202,12 @@ console.log(errors);
                                 htmlFor="event_descreption"
                                 value={useTrans("Description")}
                             />
-                            <Input
-                                className="mt-2 w-full bg-card"
-                                id="event_descreption"
-                                value={data.event_descreption}
-                                onChange={(e) =>
-                                    setData("event_descreption", e.target.value)
-                                }
+                            <Editor
+                                autofocus={false}
+                                content={data.event_descreption}
+                                onContentChange={({ html }) => {
+                                    setData("event_descreption", html);
+                                }}
                             />
                             <InputError
                                 message={errors.event_descreption}

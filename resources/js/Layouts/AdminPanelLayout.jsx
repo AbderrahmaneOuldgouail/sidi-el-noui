@@ -8,13 +8,13 @@ import { ThemeProvider } from "@/Providers/ThemeProvider";
 import { Toaster } from "@/Components/ui/toaster";
 import { usePage } from "@inertiajs/react";
 import { useToast } from "@/Components/ui/use-toast";
-import { BookmarkFilledIcon } from "@radix-ui/react-icons";
 
 export default function AdminPanelLayout({ children }) {
     const sidebar = useStore(useSidebarToggle, (state) => state);
     const { toast } = useToast();
     const props = usePage().props;
     document.documentElement.dir = props.direction;
+
 
     Echo.channel(`booking-channel`).listen("NewBooking", (e) => {
         toast({
@@ -23,12 +23,14 @@ export default function AdminPanelLayout({ children }) {
         });
     });
 
+    React.useEffect(() => console.log("mount"), []);
+
     if (!sidebar) return null;
 
     return (
         <ThemeProvider>
             <SideBar />
-            <Navbar title="Dashboard" isOpen={sidebar?.isOpen} />
+            <Navbar title="Tableux de bord" isOpen={sidebar?.isOpen} />
             <main
                 className={cn(
                     "min-h-[calc(100vh_-_56px)] bg-zinc-50 md:p-10 p-2  dark:bg-zinc-900 transition-[margin-left] ease-in-out duration-300",

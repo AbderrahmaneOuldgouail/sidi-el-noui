@@ -14,11 +14,21 @@ use Inertia\Inertia;
 
 class RoomController extends Controller
 {
-    
+
 
     public function clientIndex(Request $request)
     {
-        return Inertia::render('Client/Rooms');
+        $rooms = Type::withCount('rooms')->with(['rooms' => function ($query) {
+            $query->orderBy('id')->take(1);
+        }, 'rooms.assets', 'rooms.features'])->get()->map(function ($type) {
+            return $type->rooms->map(function ($room) use ($type) {
+                $room->type_designation = $type->type_designation;
+                $room->rooms_count = $type->rooms_count;
+
+                return $room;
+            });
+        })->flatten();;
+        return Inertia::render('Client/Rooms', ['rooms' => $rooms]);
     }
 
     public function index(Request $request)
@@ -60,8 +70,8 @@ class RoomController extends Controller
                 'room_number' => 'required|unique:' . Room::class,
                 'type_id' => 'required',
                 'room_descreption' => 'required|string|max:255',
-                'room_price' => 'required',
-                'beeds_number' => 'required',
+                'room_price' => 'required|numeric',
+                'beeds_number' => 'required|numeric',
                 'features' => 'array',
                 'assets' => 'required|array',
                 'assets.*' => 'file|mimes:jpg,png,jpeg|max:2048',
@@ -124,8 +134,8 @@ class RoomController extends Controller
                 'room_number' => 'required',
                 'type_id' => 'required',
                 'room_descreption' => 'required|string|max:255',
-                'room_price' => 'required',
-                'beeds_number' => 'required',
+                'room_price' => 'required|numeric',
+                'beeds_number' => 'required|numeric',
                 'features' => 'array',
                 'features.*.feature_id' => 'required|integer',
                 'features.*.features_name' => 'required|string',

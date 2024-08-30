@@ -101,7 +101,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
         accessorKey: "Date de réservation",
         cell: ({ row }) => {
             const booking = row.original;
-            return <span>{booking.created_at} </span>;
+            return <span>{booking.created_at.split("T")[0]} </span>;
         },
         header: ({ column }) => (
             <DataTableColumnHeader

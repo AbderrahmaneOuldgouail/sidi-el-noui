@@ -9,16 +9,13 @@ use Inertia\Inertia;
 
 class ServiceController extends Controller
 {
-<<<<<<< HEAD
-    public function servicesIndex(){
+    public function servicesIndex()
+    {
 
         return Inertia::render('Client/Services');
     }
 
-    public function index()
-=======
     public function index(Request  $request)
->>>>>>> 66b34ba96f44b8b56890a52d4c08669be71e3d91
     {
         if ($request->user()->cannot('viewAny', Service::class) && ($request->user()->cannot('create', Service::class) || $request->user()->cannot('delete', Service::class) || $request->user()->cannot('update', Service::class))) {
             return abort(403);
@@ -121,7 +118,7 @@ class ServiceController extends Controller
             DB::rollBack();
             throw $e;
         }
-        return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Service modifier avec succès']);
+        return redirect(route("services.index"))->with('message', ['status' => 'success', 'message' => 'Service modifier avec succès']);
     }
 
     public function toggleAvailability(Request $request)

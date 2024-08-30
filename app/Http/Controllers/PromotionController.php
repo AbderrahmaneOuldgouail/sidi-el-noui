@@ -44,7 +44,7 @@ class PromotionController extends Controller
         }
         request()->validate(
             [
-                'promo_descreption' => 'required|string|max:255',
+                'promo_descreption' => 'required|string',
                 'promo_start_date' => 'required|date',
                 'promo_end_date' => 'required|date',
                 'promo_value' => 'required|numeric',
@@ -104,7 +104,7 @@ class PromotionController extends Controller
         }
         request()->validate(
             [
-                'promo_descreption' => 'required|string|max:255',
+                'promo_descreption' => 'required|string',
                 'promo_start_date' => 'required|date',
                 'promo_end_date' => 'required|date',
                 'promo_value' => 'required|numeric',

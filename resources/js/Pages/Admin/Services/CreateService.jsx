@@ -15,6 +15,7 @@ import { Input } from "@/Components/ui/input";
 import { useTrans } from "@/Hooks/useTrans";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Separator } from "@/Components/ui/separator";
+import { Editor } from "@/Components/Admin/Shared/Editor";
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
@@ -106,16 +107,12 @@ export default function CreateService() {
                                 htmlFor="service_descreption"
                                 value={useTrans("Description")}
                             />
-                            <Input
-                                className="mt-2 w-full bg-card"
-                                id="service_descreption"
-                                value={data.service_descreption}
-                                onChange={(e) =>
-                                    setData(
-                                        "service_descreption",
-                                        e.target.value
-                                    )
-                                }
+                            <Editor
+                                autofocus={false}
+                                content={data.service_descreption}
+                                onContentChange={({ html }) => {
+                                    setData("service_descreption", html);
+                                }}
                             />
                             <InputError
                                 message={errors.service_descreption}

@@ -33,6 +33,7 @@ import LabelDescreption from "@/Components/LabelDescreption";
 import { useTrans } from "@/Hooks/useTrans";
 import { ImagesViewer } from "../Shared/ImagesViewer";
 import MyFileUploader from "../Shared/MyFileUploader";
+import { Editor } from "@/Components/Admin/Shared/Editor";
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
@@ -101,7 +102,6 @@ export default function CreateRoomForm({ types, categorys }) {
         setData("assets", file);
     };
 
-    console.log(errors);
     return (
         <form onSubmit={submit}>
             <div className="md:flex my-4">
@@ -306,7 +306,14 @@ export default function CreateRoomForm({ types, categorys }) {
                         htmlFor="room_descreption"
                         value={useTrans("Description")}
                     />
-                    <Textarea
+                    <Editor
+                        autofocus={false}
+                        content={data.room_descreption}
+                        onContentChange={({ html }) => {
+                            setData("room_descreption", html);
+                        }}
+                    />
+                    {/* <Textarea
                         className="mt-2 w-full bg-card dark:bg-card"
                         placeholder={useTrans("Description sur la chambre")}
                         id="room_descreption"
@@ -314,7 +321,7 @@ export default function CreateRoomForm({ types, categorys }) {
                         onChange={(e) =>
                             setData("room_descreption", e.target.value)
                         }
-                    />
+                    /> */}
                     <InputError
                         message={errors.room_descreption}
                         className="mt-2"
