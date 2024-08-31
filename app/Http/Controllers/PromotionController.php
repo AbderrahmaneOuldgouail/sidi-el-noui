@@ -11,6 +11,12 @@ use Inertia\Inertia;
 class PromotionController extends Controller
 {
 
+    public function show(Request $request)
+    {
+        $promotion = Promotion::with("assets")->where('user_id', $request->id)->first();
+        return Inertia::render('Client/Promotions/Show', ['promotion' => $promotion]);
+    }
+
     /**
      * Display a listing of the resource.
      */

@@ -73,11 +73,11 @@ Route::middleware(['auth', Admin::class])->group(
     Route::resource('bookings', BookingController::class)->names("bookings")->except('destroy');
 
     Route::post('/events/{event}', [EventController::class, 'update'])->name('events.update');
-    Route::resource('events', EventController::class)->names("events")->except(['update', 'show']);
+    Route::resource('events', EventController::class)->names("events")->except(['update']);
 
     Route::post('/toggle-Activity', [PromotionController::class, 'toggleActivity'])->name('promotions.toggle.activity');
     Route::post('/promotions/{promo}', [PromotionController::class, 'update'])->name('promotions.update');
-    Route::resource('promotions', PromotionController::class)->names("promotions")->except(['update', 'show']);
+    Route::resource('promotions', PromotionController::class)->names("promotions")->except(['update']);
 
     Route::get('/factures/send/{id}', [FactureController::class, 'send'])->name('factures.send');
     Route::get('/factures/download/{id}', [FactureController::class, 'download'])->name('factures.download');

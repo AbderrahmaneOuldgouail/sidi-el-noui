@@ -1,23 +1,24 @@
+import { useTrans } from "@/Hooks/useTrans";
+
 export function getNavList(activeSection) {
-    const current = route().current();
     return [
         {
-            label: "Acceuil",
+            label: useTrans("Accueil"),
             href: "#home-section",
             active: activeSection === "home-section",
         },
         {
-            label: "Nos Chambres",
+            label: useTrans("Nos Chambres"),
             href: "#rooms-section",
             active: activeSection === "rooms-section",
         },
         {
-            label: "Services",
+            label: useTrans("Services"),
             href: "#services-section",
             active: activeSection === "services-section",
         },
         {
-            label: "Contact",
+            label: useTrans("contactez-nous"),
             href: "#contact-section",
             active: activeSection === "contact-section",
         },

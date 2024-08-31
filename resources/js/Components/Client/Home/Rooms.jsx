@@ -2,20 +2,23 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import RoomCard from "./RoomCard";
 import { ScrollArea, ScrollBar } from "@/Components/ui/scroll-area";
+import { useTrans } from "@/Hooks/useTrans";
 
 export default function Rooms({ rooms }) {
     return (
-        <div className="relative flex flex-col justify-center items-center min-h-screen max-h-sceen" id="rooms-section">
+        <div
+            className="relative flex flex-col justify-center items-center min-h-screen max-h-sceen"
+            id="rooms-section"
+        >
             <div className="absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <div className="font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ">
-                Nos Chambres
+                {useTrans("Nos Chambres")}
             </div>
             <div className="flex justify-center">
                 <div className="text-muted-foreground p-6 sm:w-2/3  text-center">
-                    Découvrez nos chambres spacieuses et décorées avec goût,
-                    offrant tout le confort moderne pour un séjour des plus
-                    agréables. Que vous voyagiez seul, en couple ou en famille,
-                    nous avons la chambre parfaite pour vous.
+                    {useTrans(
+                        "Découvrez nos chambres spacieuses et décorées avec, offrant tout le confort moderne pour un séjour des plus agréables. Que vous voyagiez seul, en couple ou en famille, nous avons la chambre parfaite pour vous."
+                    )}
                 </div>
             </div>
             <Tabs

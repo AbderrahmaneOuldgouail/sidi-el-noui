@@ -10,20 +10,18 @@ export default function AviableRooms({ rooms, booking_data, services }) {
     const [total, setTotal] = useState(0);
     const [beedsNumber, setBeedsNumber] = useState(0);
     const [final, setFinal] = useState(false);
+    const auth = usePage().props.auth;
     const { data, setData, post, errors } = useForm({
         rooms: [],
         consomation: [],
         check_in: booking_data.check_in,
         check_out: booking_data.check_out,
         guest_number: booking_data.guest_number,
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
+        first_name: auth ? auth.user.first_name : "",
+        last_name: auth ? auth.user.last_name : "",
+        email: auth ? auth.user.email : "",
+        phone: auth ? auth.user.phone : "",
     });
-
-    const props = usePage().props;
-    console.log(props);
 
     const handleSetData = (field, value) => {
         setData((prevData) => ({
@@ -79,6 +77,7 @@ export default function AviableRooms({ rooms, booking_data, services }) {
 
                     <BookingsCard
                         setFinal={setFinal}
+                        booking_data={booking_data}
                         data={data}
                         setData={setData}
                         total={total}

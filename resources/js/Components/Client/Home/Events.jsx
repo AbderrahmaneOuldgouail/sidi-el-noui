@@ -60,8 +60,16 @@ export default function Events({ event }) {
                     />
                 </CardContent>
                 <CardFooter className="justify-start z-[1]">
-                    <Button variant="secondary" size="sm">
-                        Voir Plus
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() =>
+                            router.get(
+                                route("client.event.show", event.event_id)
+                            )
+                        }
+                    >
+                        {useTrans("Voir Plus")}
                     </Button>
                 </CardFooter>
             </div>

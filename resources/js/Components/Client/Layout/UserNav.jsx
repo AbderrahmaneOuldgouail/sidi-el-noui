@@ -73,16 +73,12 @@ export function UserNav() {
                     </DropdownMenuItem>
                     <DropdownMenuItem className="hover:cursor-pointer" asChild>
                         <Link
-                            href={route("client.profile.edit")}
+                            href={route("client.bookings.index")}
                             className="flex items-center"
                         >
                             <BookmarkCheck className="w-4 h-4 mr-3 text-muted-foreground" />
                             {useTrans("Mes réservations")}
                         </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Languages className="w-4 h-4 mr-3 text-muted-foreground" />
-                        <LangSwitch />
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

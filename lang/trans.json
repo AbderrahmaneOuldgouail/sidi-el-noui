@@ -265,6 +265,10 @@
   "Lignes par page" : "صفوف لكل صفحة",
   "ligne(s) sélectionné(s)." : "سطر (سطور) محددة.",
 
+
+  "client side " : "============",
+
+  "Changer la langue" : "تغيير اللغة",
   "Mes réservations" : "حجوزاتي",
   "De" : "من",
   "Jusqu'a" : "إلى",
@@ -274,6 +278,44 @@
   "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable." : "مرحبًا بكم في سيدي النوي - ملجأكم الفاخر في قلب مدينة شراقة اكتشف راحة لا مثيل لها وأناقة راقية في قلب الجزائر العاصمة. يوفر فندقنا إطلالات خلابة ووسائل راحة متميزة وخدمة استثنائية لجعل إقامتك لا تُنسى.",
   "nombre des bébé" : "عدد الأطفال",
   "Rechercher" : "بحث",
-  "dates" : "تاريخ الدخول و الخروج"
+  "dates" : "تاريخ الدخول و الخروج",
 
+  "Offres Exclusives pour un Séjour Inoubliable Profitez de nos promotions exceptionnelles et réservez votre séjour à un prix avantageux. Découvrez nos offres spéciales et bénéficiez de réductions sur les chambres, les forfaits bien-être, et bien plus encore." : "عروض حصرية لإقامة لا تُنسى استفد من عروضنا الترويجية الاستثنائية واحجز إقامتك بسعر مناسب. اكتشف عروضنا الخاصة واستفد من الخصومات على الغرف وباقات الصحة وغير ذلك الكثير.",
+  "Réduction de" : "تخفيض بقيمة ",
+  "Voir Plus" : "رؤية المزيد",
+  "Des Événements Inoubliables au Cœur d'Alger, Vivez des moments uniques en participant à nos événements exclusifs. Que ce soit pour des soirées thématiques, des concerts, ou des festivals locaux, notre hôtel est le point de départ idéal pour toutes vosaventures." : "أحداث لا تُنسى في قلب الجزائر العاصمة، استمتع بلحظات فريدة من خلال المشاركة في فعالياتنا الحصرية. سواء كانت الأمسيات ذات الطابع الخاص، أو الحفلات الموسيقية، أو المهرجانات المحلية، فإن فندقنا هو نقطة الانطلاق المثالية لجميع مغامراتك.",
+
+  "Nos Chambres" : "غرفنا",
+  "Découvrez nos chambres spacieuses et décorées avec, offrant tout le confort moderne pour un séjour des plus agréables. Que vous voyagiez seul, en couple ou en famille, nous avons la chambre parfaite pour vous." : "اكتشف غرفنا الفسيحة والمزينة، والتي توفر جميع وسائل الراحة الحديثة لإقامة ممتعة. سواء كنت مسافرًا بمفردك أو كزوجين أو مع العائلة، فلدينا الغرفة المثالية لك.",
+  "Caractéristique de la chambre" : "مميزات الغرفة",
+  "Réserver maintenant" : "احجز الآن",
+
+  "Nous offrons une gamme de services conçus pour rendre votre séjour aussi agréable que possible. Que vous souhaitiez vous détendre, savourer de délicieux repas, ou profiter de commodités supplémentaires, nous sommes là pour répondre à tous vos besoins." : "نحن نقدم مجموعة من الخدمات المصممة لجعل إقامتك ممتعة قدر الإمكان. سواء كنت ترغب في الاسترخاء، أو الاستمتاع بوجبات لذيذة، أو الاستمتاع بوسائل الراحة الإضافية، فنحن هنا لتلبية جميع احتياجاتك.",
+
+  "contactez-nous" : "اتصل بنا",
+  "Sujet" : "الموضوع",
+  "Message" : "الرسالة",
+  "Vous pouvez nous envoyer un message via ce formulaire de contact. Nous ferons de notre mieux pour répondre à toutes vos questions dans les plus brefs délais." : "يمكنك أن ترسل لنا رسالة عبر نموذج الاتصال هذا. سنبذل قصارى جهدنا للإجابة على جميع أسئلتك في أسرع وقت ممكن.",
+
+  "Liens" : "روابط",
+  "Réseaux Sociaux" : "الشبكات الاجتماعية",
+  "Accueil" : "الرئيسية",
+
+  "Ref" : "رقم الحجز",
+  "Chambre" : "غرفة",
+  "chambre" : "غرفة",
+  "date d'entrée / sortie" : "تاريخ الدخول / الخروج",
+  "Vous êtes sur que vous voulez annuler cette réservation" : "أنت متأكد من أنك تريد إلغاء هذا الحجز",
+
+  "Informations personnels" : "معلومات شخصية",
+  "Voir le profile" : "عرض الملف الشخصي",
+  "Détails de votre réservation" : "تفاصيل الحجز الخاص بك",
+  "Arrivée" : "الوصول",
+  "Départ" : "المغادرة",
+  "Durée de séjour" : "مدة الإقامة",
+  "nuit" : "ليلة",
+  "Récapitulatif du montant" : "ملخص المبلغ",
+  "Ce prix avec tout tax inclus" : "هذا السعر شامل الضريبة",
+
+  "" : ""
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('check_in');
             $table->date('check_out');
             $table->integer('guest_number');
-            $table->enum('booking_status', [booking_status::Waiting->value, booking_status::Refuse->value, booking_status::Confirmed->value,]);
+            $table->enum('booking_status', [booking_status::Waiting->value, booking_status::Refuse->value, booking_status::Confirmed->value, booking_status::Cancled->value]);
             $table->timestamps();
         });
     }

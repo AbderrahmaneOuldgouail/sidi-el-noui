@@ -8,6 +8,7 @@ import {
     CardHeader,
 } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
+import { usePage } from "@inertiajs/react";
 
 export default function UserDataForm({
     booking_data,
@@ -16,7 +17,7 @@ export default function UserDataForm({
     errors,
     handleSetData,
     data,
-    submit
+    submit,
 }) {
     const totalPrice = (rooms) => {
         let total = 0;
@@ -29,6 +30,8 @@ export default function UserDataForm({
         });
         return total;
     };
+    const auth = usePage().props.auth;
+
     return (
         <div className="relative flex gap-2 m-6">
             <div className="w-1/3 flex flex-col gap-2">
@@ -78,9 +81,18 @@ export default function UserDataForm({
                         {selectedRooms.map((room) => (
                             <div
                                 key={room.room_number}
-                                className="shadow rounded-lg py-1 px-2 mb-1"
+                                className="shadow rounded-lg py-1 px-2 mb-1 flex justify-between"
                             >
-                                Un chambre {room.type.type_designation}{" "}
+                                <div>
+                                    Un chambre {room.type.type_designation}{" "}
+                                </div>
+                                <div className="font-bold text-primary">
+                                    {room.room_price} DA x{" "}
+                                    {(new Date(booking_data.check_out) -
+                                        new Date(booking_data.check_in)) /
+                                        (1000 * 60 * 60 * 24)}{" "}
+                                    nuit
+                                </div>
                             </div>
                         ))}
                     </CardContent>
@@ -112,6 +124,7 @@ export default function UserDataForm({
                             data={data.first_name}
                             setData={handleSetData}
                             fieldName="first_name"
+                            disabled={auth.user != null}
                         />
                         <FormInput
                             label="Prénom"
@@ -120,6 +133,7 @@ export default function UserDataForm({
                             data={data.last_name}
                             setData={handleSetData}
                             fieldName="last_name"
+                            disabled={auth.user != null}
                         />
                     </div>
                     <Separator />
@@ -130,6 +144,7 @@ export default function UserDataForm({
                         data={data.email}
                         setData={handleSetData}
                         fieldName="email"
+                        disabled={auth.user != null}
                     />
                     <Separator />
                     <FormInput
@@ -139,6 +154,7 @@ export default function UserDataForm({
                         data={data.phone}
                         setData={handleSetData}
                         fieldName="phone"
+                        disabled={auth.user != null}
                     />
                     <div className="flex justify-end">
                         <Button variant="secondary" className="w-1/4">

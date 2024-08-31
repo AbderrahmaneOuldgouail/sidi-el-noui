@@ -8,6 +8,7 @@ import {
 } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Editor } from "@/Components/Admin/Shared/Editor";
+import { router } from "@inertiajs/react";
 
 export default function Promotion({ promotion }) {
     return (
@@ -21,7 +22,8 @@ export default function Promotion({ promotion }) {
             <div className="flex flex-col justify-between md:w-1/2 w-full ">
                 <CardHeader className="text-lg font-bold text-xl flex flex-row items-center justify-end">
                     <div className="text-primary text-2xl ">
-                        Réduction de {promotion.promo_value} {useTrans("DA")}{" "}
+                        {useTrans("Réduction de")} {promotion.promo_value}{" "}
+                        {useTrans("DA")}{" "}
                     </div>
                 </CardHeader>
                 <CardContent className="text-muted-foreground">
@@ -57,8 +59,19 @@ export default function Promotion({ promotion }) {
                     />
                 </CardContent>
                 <CardFooter className="justify-end">
-                    <Button variant="secondary" size="sm">
-                        Voir Plus
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() =>
+                            router.get(
+                                route(
+                                    "client.promotion.show",
+                                    promotion.promotion_id
+                                )
+                            )
+                        }
+                    >
+                        {useTrans("Voir Plus")}
                     </Button>
                 </CardFooter>
             </div>

@@ -11,7 +11,7 @@ export default function ClientLayout({ children }) {
         <ThemeProvider>
             <div className="bg-muted -z-[2]">
                 <Navbar />
-                <main className=" lg:mx-28 min-h-screen ">{children}</main>
+                <main className="m-3 sm:m-10 lg:mx-28 min-h-screen ">{children}</main>
                 <Footer />
             </div>
             <Toaster />

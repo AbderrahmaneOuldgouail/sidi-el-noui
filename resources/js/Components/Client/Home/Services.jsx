@@ -2,6 +2,7 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/Components/ui/scroll-area";
 import ServiceCard from "./ServiceCard";
+import { useTrans } from "@/Hooks/useTrans";
 
 export default function Services({ services }) {
     return (
@@ -9,17 +10,15 @@ export default function Services({ services }) {
             className="relative flex flex-col justify-center items-center min-h-screen max-h-sceen"
             id="services-section"
         >
-            <div className="absolute z-[0] w-[57rem] h-[57rem] left-[calc(20%-28.5rem)] bottom-[-10%] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
+            <div className="absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[-10%] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <div className="font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ">
-                Services
+                {useTrans("Services")}
             </div>
             <div className="flex justify-center">
                 <div className="text-muted-foreground p-6 sm:w-2/3  text-center">
-                    Nous offrons une gamme de services conçus pour rendre votre
-                    séjour aussi agréable que possible. Que vous souhaitiez vous
-                    détendre, savourer de délicieux repas, ou profiter de
-                    commodités supplémentaires, nous sommes là pour répondre à
-                    tous vos besoins.
+                    {useTrans(
+                        "Nous offrons une gamme de services conçus pour rendre votre séjour aussi agréable que possible. Que vous souhaitiez vous détendre, savourer de délicieux repas, ou profiter de commodités supplémentaires, nous sommes là pour répondre à tous vos besoins."
+                    )}
                 </div>
             </div>
             <Tabs

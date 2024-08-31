@@ -9,6 +9,12 @@ use Inertia\Inertia;
 
 class ServiceController extends Controller
 {
+
+    public function show(string $id)
+    {
+        $service = Service::with('assets', 'consomation')->where('service_id', $id)->first();
+        return Inertia::render('Client/Services/Show', ['service' => $service]);
+    }
     public function servicesIndex()
     {
 
@@ -25,7 +31,6 @@ class ServiceController extends Controller
 
         return Inertia::render('Admin/Services/Services', ['services' => $services]);
     }
-
 
     public function create(Request $request)
     {

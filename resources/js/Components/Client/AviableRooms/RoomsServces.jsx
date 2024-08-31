@@ -24,7 +24,9 @@ export default function RoomsServces({
     setBeedsNumber,
 }) {
     const addRoom = (room) => {
-        setTotal(total + room.room_price);
+        let nights = (new Date(booking_data.check_out) - new Date(booking_data.check_in)) /
+            (1000 * 60 * 60 * 24);
+        setTotal(total + room.room_price * nights);
         setBeedsNumber(beedsNumber + Number(room.beeds_number));
         setSelectedRooms([...selectedRooms, room]);
         setData((prevData) => {

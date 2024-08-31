@@ -10,6 +10,14 @@ use Inertia\Inertia;
 
 class EventController extends Controller
 {
+
+    public function show(string $id)
+    {
+
+        $event = Event::with("assets")->where('event_id', $id)->first();
+        return Inertia::render('Client/Events/Show', ['event' => $event]);
+    }
+
     public function index(Request $request)
     {
         if ($request->user()->cannot('viewAny', Event::class) && ($request->user()->cannot('create', Event::class) || $request->user()->cannot('delete', Event::class) || $request->user()->cannot('update', Event::class))) {

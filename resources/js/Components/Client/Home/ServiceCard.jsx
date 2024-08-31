@@ -8,6 +8,8 @@ import {
 import React from "react";
 import { Button } from "@/Components/ui/button";
 import { Editor } from "@/Components/Admin/Shared/Editor";
+import { router } from "@inertiajs/react";
+import { useTrans } from "@/Hooks/useTrans";
 
 export default function ServiceCard({ service }) {
     return (
@@ -40,7 +42,17 @@ export default function ServiceCard({ service }) {
                     </CardDescription>
                 </CardContent>
                 <CardFooter className="justify-start">
-                    <Button variant="secondary">Voir Plus</Button>
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() =>
+                            router.get(
+                                route("client.service.show", service.service_id)
+                            )
+                        }
+                    >
+                        {useTrans("Voir Plus")}
+                    </Button>
                 </CardFooter>
             </div>
         </Card>

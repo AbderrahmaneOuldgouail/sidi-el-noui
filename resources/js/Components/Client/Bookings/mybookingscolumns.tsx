@@ -34,10 +34,10 @@ import {
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 import { Link, router, usePage } from "@inertiajs/react";
-import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { Badge } from "@/Components/ui/badge";
 import { useTrans } from "@/Hooks/useTrans";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
+import { DataTableColumnHeader } from "@/Components/Admin/DataTableColumnHeader";
 
 export type Bookings = {
     booking_id: number;
@@ -46,54 +46,60 @@ export type Bookings = {
     guest_number: number;
     created_at: string;
     booking_status: "en attente" | "confirmer" | "refusé" | "annuler";
-    user: {
-        first_name: string;
-        last_name: string;
-        email: string;
+    rooms: {
+        room_price: number;
+        type: {
+            type_designation: string;
+        };
     };
 };
 
-export const historiqueColumns: ColumnDef<Bookings>[] = [
+export const mybookingscolumns: ColumnDef<Bookings>[] = [
     {
-        accessorKey: "Client",
+        accessorKey: "Ref",
         cell: ({ row }) => {
             const booking = row.original;
             return (
-                <div>
-                    <div className="font-bold text-base">
-                        {booking.user.first_name} {booking.user.last_name}
-                    </div>
-                    {booking.user.email}
-                </div>
+                <div className="font-bold text-base">{booking.booking_id}</div>
             );
         },
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title={useTrans("Client")} />
+            <DataTableColumnHeader column={column} title={useTrans("Ref")} />
         ),
     },
     {
-        accessorKey: "Check in",
+        accessorKey: "Chambre",
         cell: ({ row }) => {
             const booking = row.original;
-            return <span>{booking.check_in}</span>;
+            console.log(booking.rooms);
+            return (
+                <span>
+                    {booking.rooms.length} {useTrans("chambre")}
+                    {booking.rooms.length > 1 && "s"}{" "}
+                </span>
+            );
         },
         header: ({ column }) => (
             <DataTableColumnHeader
                 column={column}
-                title={useTrans("Check in")}
+                title={useTrans("Chambres")}
             />
         ),
     },
     {
-        accessorKey: "Check out",
+        accessorKey: "date d'entrée - date de sortie",
         cell: ({ row }) => {
             const booking = row.original;
-            return <span>{booking.check_out}</span>;
+            return (
+                <span>
+                    {booking.check_in} - {booking.check_out}{" "}
+                </span>
+            );
         },
         header: ({ column }) => (
             <DataTableColumnHeader
                 column={column}
-                title={useTrans("Check out")}
+                title={useTrans("date d'entrée / sortie")}
             />
         ),
     },
@@ -135,30 +141,6 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
 
-            const permissions = usePage().props.auth.permissions;
-
-            const handleBookingStatus = (status) => {
-                router.post(
-                    route("bookings.change.status", booking.booking_id),
-                    { booking_status: status },
-                    {
-                        preserveScroll: true,
-                        preserveState: true,
-                        onSuccess: () => {
-                            setopen(false);
-                        },
-                    }
-                );
-            };
-
-            const handleBill = (id, payment) => {
-                router.post(
-                    route("factures.store", {
-                        booking_id: id,
-                        payment: payment,
-                    })
-                );
-            };
             return (
                 <DropdownMenu
                     open={isopen ? true : open}
@@ -174,58 +156,66 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                         <MoreHorizontal className="h-4 w-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        {booking.booking_status == "confirmer" ? (
-                            <DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                router.get(
+                                    route(
+                                        "client.bookings.show",
+                                        booking.booking_id
+                                    )
+                                )
+                            }
+                            className="cursor-pointer"
+                        >
+                            <Eye className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+                            <span>{useTrans("Voir")} </span>
+                        </DropdownMenuItem>
+                        {booking.booking_status == "en attente" ||
+                        booking.booking_status == "confirmer" ? (
+                            <DropdownMenuItem className="cursor-pointer flex bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90">
                                 {width >= 767 ? (
                                     <Dialog
                                         open={isopen}
                                         onOpenChange={setIsOpen}
                                     >
-                                        <DialogTrigger className="cursor-pointer flex">
-                                            <ReceiptText className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                            <span>{useTrans("Facture")}</span>
+                                        <DialogTrigger className="w-full">
+                                            {useTrans("Annuler")}
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
                                                 <DialogTitle>
                                                     {useTrans(
-                                                        "Mode de payment"
+                                                        "Vous êtes sure?"
                                                     )}
                                                 </DialogTitle>
                                                 <DialogDescription>
                                                     {useTrans(
-                                                        "Choisi le mode de payment pour cette facture"
+                                                        "Vous êtes sur que vous voulez annuler cette réservation"
                                                     )}
                                                 </DialogDescription>
                                             </DialogHeader>
                                             <DialogFooter className="gap-2 ">
                                                 <Button
-                                                    variant="secondary"
+                                                    variant="destructive"
                                                     onClick={() =>
-                                                        handleBill(
-                                                            booking.booking_id,
-                                                            "espece"
+                                                        router.post(
+                                                            route(
+                                                                "client.bookings.cancel",
+                                                                booking.booking_id
+                                                            )
                                                         )
                                                     }
-                                                    className="flex justify-center"
-                                                    size="sm"
                                                 >
-                                                    <HandCoins className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Espece")}
+                                                    {useTrans("Oui")}
                                                 </Button>
                                                 <Button
                                                     variant="secondary"
-                                                    onClick={() =>
-                                                        handleBill(
-                                                            booking.booking_id,
-                                                            "check"
-                                                        )
-                                                    }
-                                                    className="flex justify-center"
-                                                    size="sm"
+                                                    onClick={() => {
+                                                        setopen(false);
+                                                        setIsOpen(false);
+                                                    }}
                                                 >
-                                                    <Ticket className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Chèque")}
+                                                    {useTrans("Non")}
                                                 </Button>
                                             </DialogFooter>
                                         </DialogContent>
@@ -236,88 +226,52 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                         onOpenChange={setIsOpen}
                                     >
                                         <DrawerTrigger className="cursor-pointer flex">
-                                            <ReceiptText className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                            <span>{useTrans("Facture")}</span>
+                                            <Button variant="destructive">
+                                                Annuler
+                                            </Button>
                                         </DrawerTrigger>
                                         <DrawerContent>
                                             <DrawerHeader className="text-left">
                                                 <DrawerTitle>
                                                     {useTrans(
-                                                        "Mode de payment"
+                                                        "Vous êtes sure?"
                                                     )}
                                                 </DrawerTitle>
                                                 <DrawerDescription>
                                                     {useTrans(
-                                                        "Choisi le mode de payment pour cette facture"
+                                                        "Vous êtes sur que vous voulez annuler cette réservation"
                                                     )}
                                                 </DrawerDescription>
                                             </DrawerHeader>
                                             <DrawerFooter className="pt-2">
                                                 <Button
-                                                    variant="secondary"
+                                                    variant="destructive"
                                                     onClick={() =>
-                                                        handleBill(
-                                                            booking.booking_id,
-                                                            "espece"
+                                                        router.post(
+                                                            route(
+                                                                "client.bookings.cancel",
+                                                                booking.booking_id
+                                                            )
                                                         )
                                                     }
-                                                    className="flex justify-center"
-                                                    size="sm"
                                                 >
-                                                    <HandCoins className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Espece")}
+                                                    {useTrans("Oui")}
                                                 </Button>
                                                 <Button
                                                     variant="secondary"
-                                                    onClick={() =>
-                                                        handleBill(
-                                                            booking.booking_id,
-                                                            "check"
-                                                        )
-                                                    }
-                                                    className="flex justify-center"
-                                                    size="sm"
+                                                    onClick={() => {
+                                                        setopen(false);
+                                                        setIsOpen(false);
+                                                    }}
                                                 >
-                                                    <Ticket className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Chèque")}
+                                                    {useTrans("Non")}
                                                 </Button>
                                             </DrawerFooter>
                                         </DrawerContent>
                                     </Drawer>
                                 )}
                             </DropdownMenuItem>
-                        ) : booking.booking_status == "en attente" &&
-                          permissions.booking.update ? (
-                            <DropdownMenuItem className="flex gap-2">
-                                <Button
-                                    variant="secondary"
-                                    onClick={() =>
-                                        handleBookingStatus("confirmer")
-                                    }
-                                >
-                                    Confirmer
-                                </Button>
-                                <Button
-                                    variant="destructive"
-                                    onClick={() =>
-                                        handleBookingStatus("refusé")
-                                    }
-                                >
-                                    Refusé
-                                </Button>
-                            </DropdownMenuItem>
                         ) : null}
-                        <DropdownMenuItem
-                            onClick={() =>
-                                router.get(
-                                    route("bookings.show", booking.booking_id)
-                                )
-                            }
-                            className="cursor-pointer"
-                        >
-                            <Eye className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                            <span>{useTrans("Voir")} </span>
-                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             );

@@ -30,7 +30,9 @@ export default function RoomCard({ room }) {
                     </div>
                 </CardHeader>
                 <CardContent className="text-muted-foreground">
-                    <div className="my-2">Caractéristique de la chambre :</div>
+                    <div className="my-2">
+                        {useTrans("Caractéristique de la chambre")} :
+                    </div>
                     <CardDescription className="flex gap-2 flex-wrap">
                         {room.features.slice(0, 8).map((feature) => (
                             <Badge
@@ -46,7 +48,9 @@ export default function RoomCard({ room }) {
                 </CardContent>
                 <CardFooter className="justify-end">
                     <a href="#booking-form">
-                        <Button variant="secondary">Réserver maintenant</Button>
+                        <Button variant="secondary">
+                            {useTrans("Réserver maintenant")}{" "}
+                        </Button>
                     </a>
                 </CardFooter>
             </div>

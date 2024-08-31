@@ -13,6 +13,7 @@ export default function FormInput({
     data,
     setData,
     fieldName,
+    ...props
 }) {
     return (
         <div className="md:flex my-4 w-full">
@@ -32,6 +33,7 @@ export default function FormInput({
                     id={label}
                     value={data}
                     onChange={(e) => setData(fieldName, e.target.value)}
+                    {...props}
                 />
                 <InputError message={error} className="mt-2" />
             </div>

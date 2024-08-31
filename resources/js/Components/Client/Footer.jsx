@@ -2,11 +2,12 @@ import React from "react";
 import { Link } from "@inertiajs/react";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { getNavList } from "@/lib/NavList";
-import { cn } from "@/lib/utils";
 import { AppLogo } from "@/Components/ui/app-logo";
+import { useTrans } from "@/Hooks/useTrans";
 
 export default function Footer() {
     const menuList = getNavList();
+    const current = route().current();
 
     return (
         <footer className="relative">
@@ -21,7 +22,7 @@ export default function Footer() {
                         </div>
                         <div className="flex sm:flex-col gap-4 sm:gap-1 ">
                             <div className="text-xs text-muted-foreground">
-                                N° téléphone :{" "}
+                                {useTrans("N° téléphone")} :{" "}
                             </div>
                             <div className="text-sm font-medium ">
                                 0540304050
@@ -37,7 +38,7 @@ export default function Footer() {
                         </div>
                         <div className="flex sm:flex-col gap-4 sm:gap-1">
                             <div className="text-xs text-muted-foreground">
-                                Email :{" "}
+                                {useTrans("Email")} :{" "}
                             </div>
                             <div className="text-sm font-medium">
                                 sidielnoui@gmail.com
@@ -53,10 +54,10 @@ export default function Footer() {
                         </div>
                         <div className="flex sm:flex-col gap-4 sm:gap-1">
                             <div className="text-xs text-muted-foreground">
-                                Adresse :{" "}
+                                {useTrans("Adresse")} :{" "}
                             </div>
                             <div className="text-sm font-medium">
-                                cheraga alger, Algerie
+                                chéraga alger, Algerie
                             </div>
                         </div>
                     </a>
@@ -64,37 +65,32 @@ export default function Footer() {
                 <div className="flex sm:flex-row flex-col items-start gap-4 ">
                     <div className="flex items-start justify-center gap-4 sm:w-2/4 w-full">
                         <div className="flex flex-col gap-2 w-1/2">
-                            <span className="text-lg font-bold">Liens</span>
-                            {menuList.map((link, idx) => (
-                                <a
-                                    key={idx}
-                                    className={cn(
-                                        "hover:text-primary",
-                                        link.active
-                                            ? "text-primary hover:text-primary "
-                                            : ""
-                                    )}
-                                    href={link.href}
-                                >
-                                    {link.label}
-                                </a>
-                            ))}
-                            {/* <Link
-                                    key={idx}
-                                    className={cn(
-                                        "hover:text-primary w-fit",
-                                        link.active
-                                            ? "text-primary hover:text-primary "
-                                            : ""
-                                    )}
-                                    href={route(link.href)}
-                                >
-                                    {link.label}
-                                </Link> */}
+                            <span className="text-lg font-bold">
+                                {useTrans("Liens")}{" "}
+                            </span>
+                            {current != "client.index"
+                                ? menuList.map((link, idx) => (
+                                      <Link
+                                          href={route("client.index")}
+                                          key={idx}
+                                          className="hover:text-primary "
+                                      >
+                                          {link.label}
+                                      </Link>
+                                  ))
+                                : menuList.map((link, idx) => (
+                                      <a
+                                          key={idx}
+                                          className="hover:text-primary"
+                                          href={link.href}
+                                      >
+                                          {link.label}
+                                      </a>
+                                  ))}
                         </div>
                         <div className="flex flex-col justify-center items-center gap-4 w-1/2">
                             <span className="text-lg font-bold">
-                                Réseaux Sosiaux
+                                {useTrans("Réseaux Sociaux")}
                             </span>
                             <a
                                 href="phone:04505050"
@@ -120,9 +116,13 @@ export default function Footer() {
                             </a>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-2 w-2/4">
+                    <div className="flex items-center gap-2 w-2/4">
                         <AppLogo className="w-20 h-20" />
-                        <div>lorem ispum kda mena melhik</div>
+                        <div>
+                            {useTrans(
+                                "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable."
+                            )}{" "}
+                        </div>
                     </div>
                 </div>
             </div>

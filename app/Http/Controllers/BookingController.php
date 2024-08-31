@@ -331,4 +331,27 @@ class BookingController extends Controller
         }
         return redirect(route('client.index'))->with('message', ['status' => 'success', 'message' => 'Réservation effectué avec succé']);
     }
+
+    public function myBookings(Request $request)
+    {
+        $bookings = Booking::with(['rooms', 'rooms.type'])->where('user_id', $request->user()->id)->paginate(10);
+        return Inertia::render('Client/Bookings/MyBookings', ['bookings' => $bookings]);
+    }
+
+    public function myBookingshow(string $id)
+    {
+        $booking = Booking::with(['user', 'rooms', 'consomation', 'factures', 'rooms.type', 'rooms.features', 'rooms.assets'])->where('booking_id', $id)->first();
+        return Inertia::render('Client/Bookings/Booking', ['booking' => $booking]);
+    }
+
+    public function cancleBooking(string $id)
+    {
+        $booking = Booking::where('booking_id', $id)->first();
+
+        $booking->update([
+            'booking_status' => booking_status::Cancled->value,
+        ]);
+        
+        return redirect()->back()->with('message' ,  ['status' => 'success' , 'message' => 'Réservation annuler']);
+    }
 }
