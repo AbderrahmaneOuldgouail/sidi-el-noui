@@ -7,9 +7,7 @@ use App\Models\Category;
 use App\Models\Room;
 use App\Models\Type;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class RoomController extends Controller
@@ -69,7 +67,7 @@ class RoomController extends Controller
             [
                 'room_number' => 'required|unique:' . Room::class,
                 'type_id' => 'required',
-                'room_descreption' => 'required|string|max:255',
+                'room_descreption' => 'required|string',
                 'room_price' => 'required|numeric',
                 'beeds_number' => 'required|numeric',
                 'features' => 'array',
@@ -133,7 +131,7 @@ class RoomController extends Controller
             [
                 'room_number' => 'required',
                 'type_id' => 'required',
-                'room_descreption' => 'required|string|max:255',
+                'room_descreption' => 'required|string',
                 'room_price' => 'required|numeric',
                 'beeds_number' => 'required|numeric',
                 'features' => 'array',

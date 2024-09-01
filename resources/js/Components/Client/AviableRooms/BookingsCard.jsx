@@ -17,6 +17,9 @@ import {
     CarouselPrevious,
 } from "@/Components/ui/carousel";
 import { Badge } from "@/Components/ui/badge";
+import { Editor } from "@/Components/Admin/Shared/Editor";
+
+import { useTrans } from "@/Hooks/useTrans";
 
 export default function BookingsCard({
     setFinal,
@@ -30,11 +33,9 @@ export default function BookingsCard({
     setData,
     booking_data,
 }) {
-
-        let nights =
-            (new Date(booking_data.check_out) -
-                new Date(booking_data.check_in)) /
-            (1000 * 60 * 60 * 24);
+    let nights =
+        (new Date(booking_data.check_out) - new Date(booking_data.check_in)) /
+        (1000 * 60 * 60 * 24);
     const unselectRoom = (room) => {
         setTotal(total - room.room_price * nights);
         setBeedsNumber(beedsNumber - Number(room.beeds_number));
@@ -71,11 +72,13 @@ export default function BookingsCard({
                         selectedRooms == false && data?.consomation == false
                     }
                 >
-                    Dernier étape <ChevronRight />
+                    {useTrans("Dernière étape")} <ChevronRight />
                 </Button>
                 {total > 0 && (
                     <div>
-                        <p className="text-lg font-bold">Total: {total} DA</p>
+                        <p className="text-lg font-bold">
+                            {useTrans("Total")} : {total} {useTrans("DA")}{" "}
+                        </p>
                     </div>
                 )}
                 <div>
@@ -86,14 +89,19 @@ export default function BookingsCard({
                         >
                             <Dialog>
                                 <DialogTrigger className="hover:underline">
-                                    Chambre N°: {room.room_number}
+                                    {useTrans("Chambre N°")} :{" "}
+                                    {room.room_number}
                                 </DialogTrigger>
                                 <DialogContent>
                                     <DialogHeader>
                                         <DialogTitle>
-                                            Chambre {room.type.type_designation}{" "}
-                                            avec {room.beeds_number} lits pour{" "}
-                                            {room.room_price} DA
+                                            {useTrans("Chambre")}{" "}
+                                            {room.type.type_designation}{" "}
+                                            {useTrans("avec")}{" "}
+                                            {room.beeds_number}{" "}
+                                            {useTrans("lits")}{" "}
+                                            {useTrans("Pour : ")}{" "}
+                                            {room.room_price} {useTrans("DA")}
                                         </DialogTitle>
                                         {room.assets.length > 0 && (
                                             <Carousel>
@@ -121,8 +129,8 @@ export default function BookingsCard({
                                             </Carousel>
                                         )}
                                         {room.features.length > 0 && (
-                                            <div className="font-bold">
-                                                Caractéristiques :{" "}
+                                            <div className="font-bold flex">
+                                                {useTrans("Caractéristiques")} :{" "}
                                             </div>
                                         )}
                                         <div>
@@ -141,10 +149,17 @@ export default function BookingsCard({
                                             ))}
                                         </div>
                                         <DialogDescription>
-                                            This action cannot be undone. This
-                                            will permanently delete your account
-                                            and remove your data from our
-                                            servers.
+                                            <Editor
+                                                className="bg-transparent border-none"
+                                                classNames={{
+                                                    content:
+                                                        "text-ellipsis overflow-hidden ... ",
+                                                }}
+                                                autofocus={false}
+                                                editable={false}
+                                                content={room.room_descreption}
+                                                length={200}
+                                            />
                                         </DialogDescription>
                                     </DialogHeader>
                                 </DialogContent>

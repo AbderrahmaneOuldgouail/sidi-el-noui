@@ -37,24 +37,25 @@ class DatabaseSeeder extends Seeder
             $role = Role::create([
                 'role_name' => $value->value,
             ]);
+            if($role->role_name == Roles::SUPPERADMIN->value || $role->role_name == Roles::ADMIN->value)
             $role->permissions()->attach(Permission::all());
         }
 
-        Message::create([
-            'client_email' => 'ademamin@gmail.com',
-            'subject' => 'Réservations',
-            'message' => 'Comment je peux faire une réservation a travert le site web '
-        ]);
-        Message::create([
-            'client_email' => 'islamaei@gmail.com',
-            'subject' => 'Services',
-            'message' => 'Quel sont les services disponible dans un suite'
-        ]);
-        Message::create([
-            'client_email' => 'farid_mazi@gmail.com',
-            'subject' => 'Evenement',
-            'message' => "Comment je peux réserver pour l'évènement prochainre"
-        ]);
+        // Message::create([
+        //     'client_email' => 'ademamin@gmail.com',
+        //     'subject' => 'Réservations',
+        //     'message' => 'Comment je peux faire une réservation a travert le site web '
+        // ]);
+        // Message::create([
+        //     'client_email' => 'islamaei@gmail.com',
+        //     'subject' => 'Services',
+        //     'message' => 'Quel sont les services disponible dans un suite'
+        // ]);
+        // Message::create([
+        //     'client_email' => 'farid_mazi@gmail.com',
+        //     'subject' => 'Evenement',
+        //     'message' => "Comment je peux réserver pour l'évènement prochainre"
+        // ]);
 
         Type::create([
             'type_designation' => 'Single'
@@ -81,18 +82,18 @@ class DatabaseSeeder extends Seeder
         // Service::factory(2)->create();
         // Event::factory(1)->create();
         // Promotion::factory(1)->create();
-        // Category::create([
-        //     'categorie_name' => 'Connection internet'
-        // ]);
-        // Category::create([
-        //     'categorie_name' => 'Général'
-        // ]);
-        // Category::create([
-        //     'categorie_name' => 'Cuisine'
-        // ]);
-        // Category::create([
-        //     'categorie_name' => 'Sale de bain'
-        // ]);
+        Category::create([
+            'categorie_name' => 'Connection internet'
+        ]);
+        Category::create([
+            'categorie_name' => 'Général'
+        ]);
+        Category::create([
+            'categorie_name' => 'Cuisine'
+        ]);
+        Category::create([
+            'categorie_name' => 'Sale de bain'
+        ]);
         // Feature::factory(20)->create();
         // RoomFeature::factory(100)->create();
     }

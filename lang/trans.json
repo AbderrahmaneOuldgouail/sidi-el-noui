@@ -176,7 +176,7 @@
   "personnes" : "اشخاص",
   "Nom" : "اللقب",
   "Prénom" : "الإ سم",
-  "Chambre N°": "",
+  "Chambre N°": "الغرفة رقم",
   "Capacité" : "قدرة",
   "List Des Consommations" : "قائمة الاستهلاكات",
   "Réservation de " : "حجز ",
@@ -316,6 +316,19 @@
   "nuit" : "ليلة",
   "Récapitulatif du montant" : "ملخص المبلغ",
   "Ce prix avec tout tax inclus" : "هذا السعر شامل الضريبة",
+
+  "Vous avez sélectionné pour" : "لقد اخترت ل",
+  "adult" : "بالغين",
+  "bébés" : "أطفال",
+  "et" : "و",
+  "Modifier la selection" : "تغيير التحديد",
+  "Finaliser votre réservation" : "إنهاء الحجز الخاص بك",
+  "Consommations" : "الاستهلاكات",
+  "Type de logement" : "نوع الغرفة",
+  "Tarif" : "السعر",
+  "Selectionner des chambres" : "حدد الغرف",
+  "Dernière étape" : "الخطوة الأخيرة",
+  "Total" : "المجموع",
 
   "" : ""
 }

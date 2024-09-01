@@ -99,19 +99,19 @@ export default function Footer() {
                                 <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">
                                     <Facebook />
                                 </div>
-                                <div className="text-sm font-medium">
-                                    0540304050
+                                <div className="text-sm font-medium hover:underline">
+                                    Sidi el noui
                                 </div>
                             </a>
                             <a
                                 href="phone:04505050"
-                                className="flex gap-4 items-center "
+                                className="flex gap-4 items-center  "
                             >
                                 <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">
                                     <Instagram />
                                 </div>
-                                <div className="text-sm font-medium">
-                                    0540304050
+                                <div className="text-sm font-medium hover:underline">
+                                    Sidi_el_noui
                                 </div>
                             </a>
                         </div>

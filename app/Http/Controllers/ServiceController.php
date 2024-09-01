@@ -48,7 +48,7 @@ class ServiceController extends Controller
         request()->validate(
             [
                 'service_name' => 'required|string',
-                'service_descreption' => 'required|string|max:255',
+                'service_descreption' => 'required|string',
                 'assets' => 'required|array',
                 'assets.*' => 'file|mimes:jpg,png,jpeg|max:2048',
             ]
@@ -95,7 +95,7 @@ class ServiceController extends Controller
         request()->validate(
             [
                 'service_name' => 'required|string',
-                'service_descreption' => 'required|string|max:255',
+                'service_descreption' => 'required|string',
                 'assets' => 'required|array',
                 'assets.*' => 'file|mimes:jpg,png,jpeg|max:2048',
             ]

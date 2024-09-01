@@ -9,6 +9,7 @@ import {
 } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { usePage } from "@inertiajs/react";
+import { useTrans } from "@/Hooks/useTrans";
 
 export default function UserDataForm({
     booking_data,
@@ -18,18 +19,8 @@ export default function UserDataForm({
     handleSetData,
     data,
     submit,
+    total,
 }) {
-    const totalPrice = (rooms) => {
-        let total = 0;
-        let days =
-            (new Date(booking_data.check_out) -
-                new Date(booking_data.check_in)) /
-            (1000 * 60 * 60 * 24);
-        rooms.map((room) => {
-            total += room.room_price * days;
-        });
-        return total;
-    };
     const auth = usePage().props.auth;
 
     return (
@@ -37,11 +28,11 @@ export default function UserDataForm({
             <div className="w-1/3 flex flex-col gap-2">
                 <Card>
                     <CardHeader className="font-bold p-2">
-                        Détails de votre réservation
+                        {useTrans("Détails de votre réservation")}
                     </CardHeader>
                     <CardContent className="flex justify-between p-2">
                         <div>
-                            <div>Arrivée</div>
+                            <div>{useTrans("Arrivée")} </div>
                             <div className="font-bold">
                                 {booking_data.check_in}
                             </div>
@@ -50,7 +41,7 @@ export default function UserDataForm({
                             </div>
                         </div>
                         <div>
-                            <div>départ</div>
+                            <div>{useTrans("Départ")} </div>
                             <div className="font-bold">
                                 {booking_data.check_out}
                             </div>
@@ -60,21 +51,24 @@ export default function UserDataForm({
                         </div>
                     </CardContent>
                     <CardFooter className="flex-col items-start p-2">
-                        <div>Durée de séjour</div>
+                        <div>{useTrans("Durée de séjour")} </div>
                         <div className="font-bold">
                             {(new Date(booking_data.check_out) -
                                 new Date(booking_data.check_in)) /
                                 (1000 * 60 * 60 * 24)}{" "}
-                            nuit
+                            {useTrans("nuit")}
                         </div>
                     </CardFooter>
                 </Card>
                 <Card>
                     <CardHeader className="font-bold p-2">
-                        Vous avez sélectioné pour {booking_data.guest_number}{" "}
-                        adult{" "}
+                        {useTrans("Vous avez sélectionné pour")}{" "}
+                        {booking_data.guest_number} {useTrans("adult")}{" "}
                         {booking_data.kids_number && (
-                            <>et {booking_data.kids_number} bébés : </>
+                            <>
+                                {useTrans("et")} {booking_data.kids_number}{" "}
+                                {useTrans("bébés")} :{" "}
+                            </>
                         )}{" "}
                     </CardHeader>
                     <CardContent className="p-2">
@@ -84,33 +78,34 @@ export default function UserDataForm({
                                 className="shadow rounded-lg py-1 px-2 mb-1 flex justify-between"
                             >
                                 <div>
-                                    Un chambre {room.type.type_designation}{" "}
+                                    {useTrans("chambre")}{" "}
+                                    {room.type.type_designation}{" "}
                                 </div>
                                 <div className="font-bold text-primary">
-                                    {room.room_price} DA x{" "}
+                                    {room.room_price} {useTrans("DA")} x{" "}
                                     {(new Date(booking_data.check_out) -
                                         new Date(booking_data.check_in)) /
                                         (1000 * 60 * 60 * 24)}{" "}
-                                    nuit
+                                    {useTrans("nuit")}
                                 </div>
                             </div>
                         ))}
                     </CardContent>
                     <CardFooter className="justify-center p-2">
                         <Button variant="link" onClick={() => setFinal(false)}>
-                            Modifier la selection
+                            {useTrans("Modifier la selection")}
                         </Button>
                     </CardFooter>
                 </Card>
                 <Card>
                     <CardHeader className="p-2 font-bold">
-                        Récapitulatif du montant
+                        {useTrans("Récapitulatif du montant")}
                     </CardHeader>
                     <CardContent className="p-2 text-3xl font-bold text-primary">
-                        {totalPrice(selectedRooms)} DA
+                        {total} {useTrans("DA")}
                     </CardContent>
                     <CardFooter className="p-2 text-muted-foreground">
-                        Ce prix avec tout tax inclus
+                        {useTrans("Ce prix avec tout tax inclus")}
                     </CardFooter>
                 </Card>
             </div>
@@ -158,7 +153,7 @@ export default function UserDataForm({
                     />
                     <div className="flex justify-end">
                         <Button variant="secondary" className="w-1/4">
-                            Réserver
+                            {useTrans("Réserver")}
                         </Button>
                     </div>
                 </form>

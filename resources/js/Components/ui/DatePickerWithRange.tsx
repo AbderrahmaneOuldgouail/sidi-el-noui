@@ -1,8 +1,7 @@
 import * as React from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { addDays, format } from "date-fns";
+import { format, isBefore } from "date-fns";
 import { fr } from "date-fns/locale";
-import { es } from "date-fns/locale";
 
 import { DateRange } from "react-day-picker";
 
@@ -25,6 +24,12 @@ export function DatePickerWithRange({
     onDateChange: (range: DateRange | undefined) => void;
     className?: string;
 }) {
+    const disablePastDates = (date: Date) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return isBefore(date, today);
+    };
+
     return (
         <div className={cn("grid gap-2", className)}>
             <Popover>
@@ -62,6 +67,8 @@ export function DatePickerWithRange({
                         numberOfMonths={2}
                         locale={fr}
                         weekStartsOn={6}
+                        disabled={disablePastDates}
+                        showOutsideDays={false}
                     />
                 </PopoverContent>
             </Popover>

@@ -4,23 +4,24 @@ import { useForm, usePage } from "@inertiajs/react";
 import UserDataForm from "@/Components/Client/AviableRooms/UserDataForm";
 import RoomsServces from "@/Components/Client/AviableRooms/RoomsServces";
 import BookingsCard from "@/Components/Client/AviableRooms/BookingsCard";
+import { useTrans } from "@/Hooks/useTrans";
 
 export default function AviableRooms({ rooms, booking_data, services }) {
     const [selectedRooms, setSelectedRooms] = useState([]);
     const [total, setTotal] = useState(0);
     const [beedsNumber, setBeedsNumber] = useState(0);
     const [final, setFinal] = useState(false);
-    const auth = usePage().props.auth;
+    const user = usePage().props.auth.user;
     const { data, setData, post, errors } = useForm({
         rooms: [],
         consomation: [],
         check_in: booking_data.check_in,
         check_out: booking_data.check_out,
         guest_number: booking_data.guest_number,
-        first_name: auth ? auth.user.first_name : "",
-        last_name: auth ? auth.user.last_name : "",
-        email: auth ? auth.user.email : "",
-        phone: auth ? auth.user.phone : "",
+        first_name: user ? user.first_name : "",
+        last_name: user ? user.last_name : "",
+        email: user ? user.email : "",
+        phone: user ? user.phone : "",
     });
 
     const handleSetData = (field, value) => {
@@ -38,16 +39,12 @@ export default function AviableRooms({ rooms, booking_data, services }) {
     return (
         <ClientLayout>
             <div className="font-bold text-xl m-6 ">
-                Finalisé votre réservation
+                {useTrans("Finaliser votre réservation")}
             </div>
             <div className="absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
-            <div className="absolute z-[0] w-[57rem] h-[57rem] left-[calc(30%-28.5rem)] top-[0] translate-x-[-10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
-            {!services && (
-                <>
-                    <div className="absolute z-[0] w-[37rem] h-[37rem] left-[calc(60%-28.5rem)] top-[50%] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
-                    <div className="absolute z-[0] w-[37rem] h-[37rem] left-[calc(20%-28.5rem)] top-[0] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
-                </>
-            )}
+            <div className="absolute z-[0] w-1/2 h-1/2 left-[0]  top-[10]  translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
+            <div className="absolute z-[0] min-w-1/2 w-[37rem] h-[27rem] left-[calc(60%-28.5rem)] top-[50%] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
+            <div className="absolute z-[0] min-w-1/2 w-[37rem] h-[37rem] left-[0]  top-[50%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
 
             {final ? (
                 <UserDataForm
@@ -58,6 +55,7 @@ export default function AviableRooms({ rooms, booking_data, services }) {
                     errors={errors}
                     data={data}
                     submit={submit}
+                    total={total}
                 />
             ) : (
                 <div className="relative flex gap-2 m-6">

@@ -100,8 +100,8 @@ export default function RoomsServces({
                                 {price} {useTrans("DA")}{" "}
                             </td>
                             <td className="boreder-b border-2 border-b-secondary px-3 flex justify-between items-center">
-                                {rooms.length} Chambre
-                                {rooms.length == 1 ? "" : "s"}
+                                {rooms.length} {useTrans("Chambre")}
+                                {rooms.length == 1 ? "" : useTrans("s")}
                                 <Button
                                     size="icon"
                                     variant="outline"
@@ -219,17 +219,19 @@ export default function RoomsServces({
         >
             <AccordionItem value="rooms">
                 <AccordionTrigger className="bg-card mb-2 p-3 rounded">
-                    Is it accessible?
+                    {useTrans("Chambres")}
                 </AccordionTrigger>
                 <AccordionContent>
                     <table className="relative border-muted border-1 border bg-card z-[10]">
                         <thead className="relative">
                             <tr className="border border-secondary  border-2">
-                                <th className="w-1/2">Type de logement</th>
-                                <th>Nombre de lits</th>
-                                <th className="w-1/4">Tarif</th>
+                                <th className="w-1/2">
+                                    {useTrans("Type de logement")}{" "}
+                                </th>
+                                <th>{useTrans("Nombre de lits")} </th>
+                                <th className="w-1/4">{useTrans("Tarif")} </th>
                                 <th className="w-1/4">
-                                    Selectionner des chambrs
+                                    {useTrans("Selectionner des chambres")}
                                 </th>
                             </tr>
                         </thead>
@@ -239,7 +241,7 @@ export default function RoomsServces({
             </AccordionItem>
             <AccordionItem value="rooms-1">
                 <AccordionTrigger className="bg-card mb-2 p-3 rounded">
-                    Services
+                    {useTrans("Consommations")}
                 </AccordionTrigger>
                 <AccordionContent>
                     <div className="relative bg-card z-[10] p-4 rounded">
