@@ -10,10 +10,9 @@ import { Button } from "@/Components/ui/button";
 import { useTrans } from "@/Hooks/useTrans";
 import PromotionCard from "@/Components/Admin/Promotions/PromotionCard";
 
-export default function Promotions({ promotions }) {
+export default function Promotions({ promotions, promotion_permission }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
-    const permissions = usePage().props.auth.permissions;
 
     useEffect(() => {
         if (flash.message) {
@@ -25,7 +24,7 @@ export default function Promotions({ promotions }) {
             <Head title="Promotions" />
             <PageHeading title={useTrans("Promotions")} />
             <div className="flex justify-end">
-                {permissions.promotion.create && (
+                {promotion_permission.create && (
                     <Button variant="secondary">
                         <Link href={route("promotions.create")}>
                             {useTrans("Créer un promotion")}

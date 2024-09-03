@@ -1,11 +1,15 @@
 import { useEffect } from "react";
-import Checkbox from "@/Components/Checkbox";
 import GuestLayout from "@/Layouts/GuestLayout";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import { useToast } from "@/Components/ui/use-toast";
+import { Input } from "@/Components/ui/input";
+import { Checkbox } from "@/Components/ui/checkbox";
+import { Button } from "@/Components/ui/button";
+import { LoaderCircle } from "lucide-react";
+import { useTrans } from "@/Hooks/useTrans";
 
 export default function AdminLogin({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,6 +17,13 @@ export default function AdminLogin({ status, canResetPassword }) {
         password: "",
         remember: false,
     });
+    const { toast } = useToast();
+    const flash = usePage().props.flash;
+    useEffect(() => {
+        if (flash.message) {
+            toast({ description: flash.message?.message });
+        }
+    }, [flash.message, toast]);
 
     useEffect(() => {
         return () => {
@@ -35,12 +46,14 @@ export default function AdminLogin({ status, canResetPassword }) {
                     {status}
                 </div>
             )}
-
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="auth" value="Email or phone" />
+                    <InputLabel
+                        htmlFor="auth"
+                        value={useTrans("Email ou N° téléphone")}
+                    />
 
-                    <TextInput
+                    <Input
                         id="auth"
                         type="text"
                         name="auth"
@@ -55,9 +68,12 @@ export default function AdminLogin({ status, canResetPassword }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel
+                        htmlFor="password"
+                        value={useTrans("Mot de passe")}
+                    />
 
-                    <TextInput
+                    <Input
                         id="password"
                         type="password"
                         name="password"
@@ -75,12 +91,12 @@ export default function AdminLogin({ status, canResetPassword }) {
                         <Checkbox
                             name="remember"
                             checked={data.remember}
-                            onChange={(e) =>
-                                setData("remember", e.target.checked)
+                            onCheckedChange={(e) =>
+                                setData("remember", !data.remember)
                             }
                         />
                         <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                            Remember me
+                            {useTrans("Souviens moi")}
                         </span>
                     </label>
                 </div>
@@ -91,13 +107,21 @@ export default function AdminLogin({ status, canResetPassword }) {
                             href={route("password.request")}
                             className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                         >
-                            Forgot your password?
+                            {useTrans("Mot de passe oublié ?")}
                         </Link>
                     )}
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        className="ms-4 w-1/4"
+                        disabled={processing}
+                    >
+                        {processing ? (
+                            <LoaderCircle className="animate-spin" />
+                        ) : (
+                            useTrans("Se Connecter")
+                        )}
+                    </Button>
                 </div>
             </form>
         </GuestLayout>

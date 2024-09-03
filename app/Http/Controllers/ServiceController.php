@@ -29,7 +29,7 @@ class ServiceController extends Controller
 
         $services = Service::with('assets')->get();
 
-        return Inertia::render('Admin/Services/Services', ['services' => $services]);
+        return Inertia::render('Admin/Services/Services', ['services' => $services, 'service_permission' =>  getModelPermission($request, Service::class)]);
     }
 
     public function create(Request $request)

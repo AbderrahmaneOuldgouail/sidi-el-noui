@@ -1,7 +1,7 @@
 {
-  "Rooms" : "==============================================================================",
-
-  "Chambres" : "الغرف",
+  "Rooms" :{
+    "Chambres" : "الغرف"
+  },
   "Crée un chambre" : "إنشاء غرفة",
   "Chambre Création" : "إنشاء الغرف",
   "Numéro de chmabre" : "رقم الغرفة",
@@ -265,6 +265,8 @@
   "Lignes par page" : "صفوف لكل صفحة",
   "ligne(s) sélectionné(s)." : "سطر (سطور) محددة.",
 
+  "à fait un nouveaux réservation" : "قام بحجز جديد",
+
 
   "client side " : "============",
 
@@ -329,6 +331,17 @@
   "Selectionner des chambres" : "حدد الغرف",
   "Dernière étape" : "الخطوة الأخيرة",
   "Total" : "المجموع",
+
+  "Email ou N° téléphone" : "البريد الإلكتروني أو رقم الهاتف",
+  "Souviens moi" : "تذكرنى",
+  "Mot de passe oublié ?" : "هل نسيت كلمة المرور؟",
+  "Se Connecter" : "تسجيل الدخول",
+  "Mot de passe" : "كلمة المرور",
+  "Lien de réinitialisation du mot de passe par e-mail" : "رابط إعادة تعيين كلمة المرور للبريد الإلكتروني",
+  "Vous avez oublié votre mot de passe ? Aucun problème. Indiquez-nous simplement votre adresse e-mail et nous vous enverrons par e-mail un lien de réinitialisation de mot de passe qui vous permettra de choisir un nouveau mot de passe." : "هل نسيت كلمة مرورك؟ لا مشكلة. ما عليك سوى إخبارنا بعنوان بريدك الإلكتروني وسنرسل إليك رابط إعادة تعيين كلمة المرور عبر البريد الإلكتروني الذي سيسمح لك باختيار كلمة مرور جديدة.",
+  "Il s'agit d'une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer." : "هذه منطقة آمنة للتطبيق. يرجى تأكيد كلمة المرور الخاصة بك قبل الاستمرار.",
+  "Confirmer" : "تأكيد",
+  "Réinitialiser le mot de passe" : "إعادة تعيين كلمة المرور",
 
   "" : ""
 }

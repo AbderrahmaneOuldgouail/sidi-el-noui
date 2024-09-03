@@ -35,7 +35,6 @@ export default function CreateEvent() {
         event_price: "",
         assets: [],
     });
-    console.log(errors);
     const submit = (e) => {
         e.preventDefault();
         post(route("events.store"));

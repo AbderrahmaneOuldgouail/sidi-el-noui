@@ -24,30 +24,26 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\HandleAdminRequests;
+use App\Http\Middleware\HandleInertiaRequests;
 
-Route::middleware(AdminGuest::class)->group(
-  function () {
-    Route::get('login', [AuthenticatedAdminSessionController::class, 'create'])
-      ->name('admin.login');
+Route::get('login', [AuthenticatedAdminSessionController::class, 'create'])
+  ->name('admin.login');
 
-    Route::post('login', [AuthenticatedAdminSessionController::class, 'adminstore'])
-      ->name('admin.store');
-  }
-);
+Route::post('login', [AuthenticatedAdminSessionController::class, 'adminstore'])
+  ->name('admin.store');
+
+
 
 
 Route::middleware(['auth', Admin::class])->group(
   function () {
     Route::get('switch-lang', function (Request $request) {
       App::setlocale($request->lang);
-      Cache::put('user_locale_' . $request->ip(), $request->lang, 60 * 24 * 30);
       return redirect()->back();
     })->name('switch.lang');
 
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
-
-    Route::get('/dispach', [DashboardController::class, 'dispach'])->name("admin.dispach");
-
 
     Route::post('/toggle-status', [RoomController::class, 'toggleStatus'])->name('rooms.toggle.status');
     Route::post('/edit/{room}', [RoomController::class, 'update'])->name('rooms.update');

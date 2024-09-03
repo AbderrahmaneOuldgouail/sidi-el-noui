@@ -5,11 +5,10 @@ import { Button } from "@/Components/ui/button";
 import DeleteeDialog from "../Shared/DeleteDialog";
 
 export default function EventCardFooter({ event }) {
-    const permissions = usePage().props.auth.permissions;
-
+    const event_permission = usePage().props.event_permission;
     return (
         <div className="flex items-center gap-4">
-            {permissions.event.update && (
+            {event_permission.update && (
                 <Button variant="secondary">
                     <Link
                         href={route("events.edit", event.event_id)}
@@ -19,7 +18,7 @@ export default function EventCardFooter({ event }) {
                     </Link>
                 </Button>
             )}
-            {permissions.event.delete && (
+            {event_permission.delete && (
                 <DeleteeDialog
                     id={event.event_id}
                     url={"events.destroy"}

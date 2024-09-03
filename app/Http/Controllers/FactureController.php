@@ -9,8 +9,10 @@ use App\Models\Facture;
 use App\Models\Role;
 use App\Models\Type;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Date;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Mail;
 
@@ -27,7 +29,7 @@ class FactureController extends Controller
         $factures = Facture::orderBy('created_at')->paginate($itemsPerPage);
 
         $bill_settings = Cache::get('bill-settings');
-        return Inertia::render('Admin/Factures/Factures', ['factures' => $factures, 'bill_settings' => $bill_settings]);
+        return Inertia::render('Admin/Factures/Factures', ['factures' => $factures, 'bill_settings' => $bill_settings, 'create_permission' => $request->user()->can('create', Facture::class)]);
     }
 
     public function create()
@@ -40,6 +42,7 @@ class FactureController extends Controller
         if ($request->user()->cannot('create', Facture::class)) {
             return abort(403);
         }
+
         $request->validate([
             'booking_id' => 'required|integer',
             'payment' => 'required'
@@ -51,6 +54,8 @@ class FactureController extends Controller
             return redirect()->back()->with('message', ['status' => 'error', 'message' => 'Voulez sétez les paramètres de facturation avant générer les factures', 'action' => "factures.index"]);
         }
         $booking = Booking::with(['user', 'consomation', 'rooms'])->where('booking_id', $request->booking_id)->first();
+
+        $days = Carbon::parse($booking->check_in)->diffInDays($booking->check_out, true);
         $is_company = Role::where('role_id', $booking->user->role_id)->first()->role_name == Roles::COMPANY->value;
         $rooms = [];
         $rooms_total = 0;
@@ -58,9 +63,9 @@ class FactureController extends Controller
         $consomations_total = 0;
         foreach ($booking->rooms as $room) {
             if ($request->payment == 'espece') {
-                $prix_th = (($room->room_price / (1 + $bill_settings['timbre'] / 100)) - $bill_settings['tourist_tax'] * $booking->guest_number) / (1 + $bill_settings['tva'] / 100); //espece
+                $prix_th = (($room->room_price / (1 + $bill_settings['timbre'] / 100)) - $bill_settings['tourist_tax'] * $booking->guest_number) / (1 + $bill_settings['tva'] / 100) * $days;
             } else {
-                $prix_th = ($room->room_price - $bill_settings['tourist_tax'] * $booking->guest_number) / (1 + $bill_settings['tva'] / 100);
+                $prix_th = ($room->room_price - $bill_settings['tourist_tax'] * $booking->guest_number) / (1 + $bill_settings['tva'] / 100) * $days;
             }
             $type = Type::where("type_id", $room->type_id)->first()->type_designation;
             $existingKey = null;
@@ -91,7 +96,7 @@ class FactureController extends Controller
         $total_ht = round($rooms_total, 2) + round($consomations_total, 2);
         $total_tva = round($total_ht * ($bill_settings['tva'] / 100), 2);
         $sous_total = round($total_ht + ($total_tva), 2);
-        $taxe_de_sejour = $bill_settings['tourist_tax'] * $booking->guest_number;
+        $taxe_de_sejour = $bill_settings['tourist_tax'] * $booking->guest_number * $days;
         $droit_de_timbre = round((($sous_total) + ($taxe_de_sejour)) * ($bill_settings['timbre'] / 100), 2);
         $total_ttc = round($droit_de_timbre + $taxe_de_sejour + $sous_total, 2);
 

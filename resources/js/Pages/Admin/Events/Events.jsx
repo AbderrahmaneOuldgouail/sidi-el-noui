@@ -10,23 +10,21 @@ import { Button } from "@/Components/ui/button";
 import EventCard from "@/Components/Admin/Events/EventCard";
 import { useTrans } from "@/Hooks/useTrans";
 
-export default function Events({ events }) {
+export default function Events({ events, event_permission }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
-    const permissions = usePage().props.auth.permissions;
 
     useEffect(() => {
         if (flash.message) {
             toast({ description: flash.message?.message });
         }
     }, [flash.message, toast]);
-
     return (
         <AdminPanelLayout>
             <Head title="Events" />
             <PageHeading title={useTrans("Evènements")} />
             <div className="flex justify-end">
-                {permissions.event.create && (
+                {event_permission.create && (
                     <Button variant="secondary">
                         <Link href={route("events.create")}>
                             {useTrans("Créer un évènement")}
@@ -39,7 +37,7 @@ export default function Events({ events }) {
                     {useTrans("List des évènements")} :
                 </div>
                 {events.map((event) => (
-                    <EventCard event={event} key={event.event_id}/>
+                    <EventCard event={event} key={event.event_id} />
                 ))}
             </PlaceholderContent>
         </AdminPanelLayout>

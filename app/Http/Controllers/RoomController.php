@@ -35,7 +35,7 @@ class RoomController extends Controller
 
         $rooms = Room::with('type')->orderBy('room_number')->paginate($itemsPerPage);
 
-        return Inertia::render('Admin/Rooms/Rooms', ['rooms' => $rooms]);
+        return Inertia::render('Admin/Rooms/Rooms', ['rooms' => $rooms, 'room_permission' =>  getModelPermission($request, Room::class)]);
     }
 
     public function show(Request $request)

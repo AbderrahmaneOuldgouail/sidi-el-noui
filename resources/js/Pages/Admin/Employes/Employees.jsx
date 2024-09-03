@@ -9,10 +9,9 @@ import { userColumns } from "@/Components/Admin/Users/UserColumns";
 import { useTrans } from "@/Hooks/useTrans";
 import { useToast } from "@/Components/ui/use-toast";
 
-export default function Employees({ users }) {
+export default function Employees({ users, employ_permission }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
-    const permissions = usePage().props.auth.permissions;
 
     useEffect(() => {
         if (flash.message) {
@@ -25,7 +24,7 @@ export default function Employees({ users }) {
             <Head title="Employees" />
             <PageHeading title={useTrans("Employés")} />
             <div className="flex justify-end">
-                {permissions.employ.create && (
+                {employ_permission.create && (
                     <Button variant="secondary">
                         <Link href={route("users.create")}>
                             {useTrans("Ajouter un employé")}{" "}

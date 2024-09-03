@@ -123,6 +123,7 @@ export const columns: ColumnDef<Payment>[] = [
         id: "actions",
         cell: ({ row }) => {
             const room = row.original;
+            const room_permission = usePage().props.room_permission;
 
             return (
                 <DropdownMenu>
@@ -133,7 +134,7 @@ export const columns: ColumnDef<Payment>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        {usePage().props.auth.permissions.room.viewAny && (
+                        {room_permission.viewAny && (
                             <DropdownMenuItem>
                                 <Link
                                     href={route("rooms.show", room.room_number)}
@@ -144,7 +145,7 @@ export const columns: ColumnDef<Payment>[] = [
                                 </Link>
                             </DropdownMenuItem>
                         )}
-                        {usePage().props.auth.permissions.room.update && (
+                        {room_permission.update && (
                             <DropdownMenuItem>
                                 <Link
                                     href={route("rooms.edit", room.room_number)}
@@ -156,7 +157,7 @@ export const columns: ColumnDef<Payment>[] = [
                             </DropdownMenuItem>
                         )}
                         <DropdownMenuSeparator></DropdownMenuSeparator>
-                        {usePage().props.auth.permissions.room.update && (
+                        {room_permission.update && (
                             <DropdownMenuItem>
                                 <Switch
                                     checked={

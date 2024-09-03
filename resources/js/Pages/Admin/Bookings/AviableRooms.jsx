@@ -44,7 +44,6 @@ export default function AviableRooms({ rooms, bookingData, services }) {
         n_article: "",
     });
 
-    console.log(errors);
 
     const handleRooms = (id) => {
         setData((data) => {

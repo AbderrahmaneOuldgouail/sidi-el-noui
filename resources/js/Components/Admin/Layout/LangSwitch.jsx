@@ -4,9 +4,16 @@ import InputLabel from "@/Components/InputLabel";
 import { router, usePage } from "@inertiajs/react";
 
 export function LangSwitch() {
-    const [lang, setLang] = useState(usePage().props.locale);
-    const switchLang = (newLang) => {
+    // const [lang, setLang] = useState(usePage().props.locale);
+    const locale = localStorage.getItem("locale") || "fr";
+    const [lang, setLang] = React.useState(locale);
+
+    const switchLang = () => {
+        // setLang(newLang);
+
+        const newLang = lang === "ar" ? "fr" : "ar";
         setLang(newLang);
+        localStorage.setItem("locale", newLang);
         router.visit(route("switch.lang"), {
             data: { lang: newLang },
             preserveState: true,

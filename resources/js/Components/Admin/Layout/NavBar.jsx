@@ -4,10 +4,10 @@ import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 import { NotificationsNav } from "./NotificationsNav";
 import { AddBooking } from "./AddBooking";
-import { Link, router, usePage } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
 
 export function Navbar({ title, isOpen }) {
-    const permissions = usePage().props.auth.permissions;
+    const booking_permission = usePage().props.booking_permission;
     return (
         <div
             className={cn(
@@ -21,7 +21,7 @@ export function Navbar({ title, isOpen }) {
                         <SheetMenu />
                         <h1 className="font-bold">{title}</h1>
                     </div>
-                    <div>{permissions.booking.create && <AddBooking />}</div>
+                    <div>{booking_permission.create && <AddBooking />}</div>
                     <div className="flex items-center gap-2 justify-end">
                         <NotificationsNav />
                         <ThemeToggle />

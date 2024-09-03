@@ -6,11 +6,11 @@ import { Button } from "@/Components/ui/button";
 import DeleteeDialog from "../Shared/DeleteDialog";
 
 export default function ServiceCardFooter({ service }) {
-    const permissions = usePage().props.auth.permissions;
+    const service_permission = usePage().props.service_permission;
 
     return (
         <>
-            {permissions.service.update && (
+            {service_permission.update && (
                 <div>
                     <Switch
                         checked={service.availability}
@@ -28,7 +28,7 @@ export default function ServiceCardFooter({ service }) {
                 </div>
             )}
             <div className="flex items-center gap-4">
-                {permissions.service.update && (
+                {service_permission.update && (
                     <Button variant="secondary">
                         <Link
                             href={route("services.edit", service.service_id)}
@@ -38,7 +38,7 @@ export default function ServiceCardFooter({ service }) {
                         </Link>
                     </Button>
                 )}
-                {permissions.service.delete && (
+                {service_permission.delete && (
                     <DeleteeDialog
                         id={service.service_id}
                         url={"services.destroy"}

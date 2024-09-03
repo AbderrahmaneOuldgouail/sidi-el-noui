@@ -1,10 +1,4 @@
 import { Head, Link } from "@inertiajs/react";
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbList,
-    BreadcrumbSeparator,
-} from "@/Components/ui/breadcrumb";
 import EditRoomForm from "@/Components/Admin/Rooms/EditRoomForm";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";

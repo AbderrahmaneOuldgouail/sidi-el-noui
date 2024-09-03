@@ -9,10 +9,9 @@ import { DataTable } from "@/Components/Admin/DataTable";
 import { roleColumns } from "@/Components/Admin/Roles/RolesColumns";
 import { useToast } from "@/Components/ui/use-toast";
 
-export default function Roles({ roles }) {
+export default function Roles({ roles, role_permission }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
-    const permissions = usePage().props.auth.permissions;
 
     useEffect(() => {
         if (flash.message) {
@@ -24,7 +23,7 @@ export default function Roles({ roles }) {
             <Head title="Rools" />
             <PageHeading title={useTrans("Rôles")} />
             <div className="flex justify-end">
-                {permissions.role.create && (
+                {role_permission.create && (
                     <Button variant="secondary">
                         <Link href={route("roles.create")}>
                             {useTrans("Ajouter un rôle")}

@@ -77,8 +77,6 @@ export default function CreateRole({ permissions, permissions_actions }) {
         post(route("roles.store"));
     };
 
-    console.log(permissions);
-
     return (
         <AdminPanelLayout>
             <Head title="Rools" />

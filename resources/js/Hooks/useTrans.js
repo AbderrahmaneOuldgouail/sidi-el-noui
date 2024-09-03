@@ -1,9 +1,6 @@
-import { usePage } from "@inertiajs/react";
+import translation from "../lib/trans.json";
 
-export function useTrans(value) {
-    const array = usePage().props.translations;
-    // const locale = usePage().props.locale;
+export function useTrans(value, section='') {
     const locale = localStorage.getItem("locale") || "fr";
-
-    return locale == "fr" ? value : array[value];
+    return locale == "fr" ? value : translation[value];
 }

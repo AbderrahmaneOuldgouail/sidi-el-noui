@@ -27,7 +27,7 @@ class BookingController extends Controller
         }
 
         $bookings = Booking::with('user')->where('check_out', '>=', now())->paginate(10);
-        return Inertia::render('Admin/Bookings/Bookings', ['bookings' => $bookings]);
+        return Inertia::render('Admin/Bookings/Bookings', ['bookings' => $bookings,'booking_permission' => getModelPermission($request, Booking::class)]);
     }
 
     public function historique(Request $request)
@@ -252,6 +252,8 @@ class BookingController extends Controller
             ]);
 
 
+
+
         if ($rooms->isNotEmpty()) {
             $booking_data = [
                 'check_in' => $request->check_in,
@@ -287,8 +289,8 @@ class BookingController extends Controller
         try {
             $user = User::firstOrCreate(
                 [
-                    'phone' => $request->phone,
                     'email' => $request->email,
+                    'phone' => $request->phone,
                 ],
                 [
                     'first_name' => $request->first_name,
@@ -351,7 +353,7 @@ class BookingController extends Controller
         $booking->update([
             'booking_status' => booking_status::Cancled->value,
         ]);
-        
-        return redirect()->back()->with('message' ,  ['status' => 'success' , 'message' => 'Réservation annuler']);
+
+        return redirect()->back()->with('message',  ['status' => 'success', 'message' => 'Réservation annuler']);
     }
 }

@@ -26,7 +26,7 @@ class PromotionController extends Controller
             return abort(403);
         }
         $promotions = Promotion::with('assets')->get();
-        return Inertia::render('Admin/Promotions/Promotions', ['promotions' => $promotions]);
+        return Inertia::render('Admin/Promotions/Promotions', ['promotions' => $promotions, 'promotion_permission' =>  getModelPermission($request, Promotion::class)]);
     }
 
     /**

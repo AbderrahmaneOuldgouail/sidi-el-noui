@@ -19,7 +19,11 @@ export function LangSwitch() {
         const newLang = lang === "ar" ? "fr" : "ar";
         setLang(newLang);
         localStorage.setItem("locale", newLang);
-        router.visit(route("client.switch.lang"));
+        router.visit(route("client.switch.lang"), {
+            data: { lang: newLang },
+            preserveState: true,
+            preserveScroll: true,
+        });
     };
     return (
         <TooltipProvider disableHoverableContent>

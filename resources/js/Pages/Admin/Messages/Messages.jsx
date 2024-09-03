@@ -27,14 +27,12 @@ import { useToast } from "@/Components/ui/use-toast";
 import { MessageSquareX } from "lucide-react";
 import InputError from "@/Components/InputError";
 
-export default function messages({ messages, filter }) {
+export default function messages({ messages, filter, update_permission, delete_permission }) {
     const [selectedMessage, setSelectedMessage] = useState(0);
     const { toast } = useToast();
     const flash = usePage().props.flash;
-    const permissions = usePage().props.auth.permissions;
     const hasUnreadMessages = usePage().props.hasUnreadMessages;
 
-    console.log(permissions);
 
     const { data, setData, post, errors } = useForm({
         message: "",
@@ -120,26 +118,12 @@ export default function messages({ messages, filter }) {
     const deleteAll = () => {
         router.delete(route("messages.destroyAll"));
     };
-
-    const ViewNotification = (notif) => {
-        router.get(
-            route("bookings.show", notif.data.booking_id),
-            {},
-            {
-                onSuccess: () => {
-                    router.post(route("notifications.read"), {
-                        id: notif.id,
-                    });
-                },
-            }
-        );
-    };
     return (
         <AdminPanelLayout>
             <Head title="Boîte de réception" />
             <PageHeading title={useTrans("Boîte de réception")} />
             <div className="flex justify-end mt-2 gap-4">
-                {permissions.message.update && (
+                {update_permission && (
                     <Button
                         disabled={messages.length < 1 || !hasUnreadMessages}
                         onClick={() => {
@@ -151,7 +135,7 @@ export default function messages({ messages, filter }) {
                         {useTrans("Tout marquer comme lu")}
                     </Button>
                 )}
-                {permissions.message.delete && (
+                {delete_permission && (
                     <Button
                         disabled={messages.length < 1}
                         onClick={() => {
@@ -265,7 +249,7 @@ export default function messages({ messages, filter }) {
                                                         )}
                                                     </a>
                                                 </Button>
-                                                {permissions.message.delete && (
+                                                {delete_permission && (
                                                     <Button
                                                         variant="destructive"
                                                         size="sm"

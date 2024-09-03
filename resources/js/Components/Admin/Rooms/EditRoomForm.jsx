@@ -3,7 +3,6 @@ import { Button, buttonVariants } from "@/Components/ui/button";
 import { Link, router, useForm } from "@inertiajs/react";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import { Textarea } from "@/Components/ui/textarea";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { ImagePlus, Trash } from "lucide-react";
 import { Editor } from "@/Components/Admin/Shared/Editor";

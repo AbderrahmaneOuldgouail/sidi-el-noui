@@ -10,6 +10,7 @@ import ConsommationDialog from "./ConsommationDialog";
 import { useTrans } from "@/Hooks/useTrans";
 import { Badge } from "@/Components/ui/badge";
 
+
 export default function ConsommationCard({
     consumption,
     services,
@@ -25,6 +26,7 @@ export default function ConsommationCard({
                         {consumption.service.service_name}{" "}
                     </Badge>
                 </div>
+                
             </CardHeader>
             <CardContent>
                 {useTrans("Prix Unitaire:")}{" "}

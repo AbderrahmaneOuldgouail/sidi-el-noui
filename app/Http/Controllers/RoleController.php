@@ -26,7 +26,7 @@ class RoleController extends Controller
 
         $roles = Role::with('permissions')->paginate($itemsPerPage);
 
-        return Inertia::render('Admin/Roles/Roles', ['roles' => $roles]);
+        return Inertia::render('Admin/Roles/Roles', ['roles' => $roles, 'role_permission' =>  getModelPermission($request, Role::class)]);
     }
 
     /**

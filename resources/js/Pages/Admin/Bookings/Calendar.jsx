@@ -7,7 +7,6 @@ import PageHeading from "@/Components/ui/PageHeading";
 import Calender from "@/Components/Admin/Shared/Calender";
 
 export default function Calendar({ rooms }) {
-    console.log(rooms);
 
     return (
         <AdminPanelLayout>

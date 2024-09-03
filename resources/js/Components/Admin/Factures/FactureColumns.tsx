@@ -27,7 +27,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { Link, router, usePage } from "@inertiajs/react";
+import { Link,} from "@inertiajs/react";
 import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { Badge } from "@/Components/ui/badge";
 import { useTrans } from "@/Hooks/useTrans";

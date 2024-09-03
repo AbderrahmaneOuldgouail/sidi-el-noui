@@ -13,6 +13,7 @@ use App\Events\MyEvent;
 use App\Events\NewBooking;
 use App\Events\TestEvent;
 use App\Models\Booking;
+use App\Models\Room;
 use App\Models\User;
 use App\Notifications\NewBookingNotif;
 use App\Notifications\RoomBookingNotification;
@@ -20,16 +21,30 @@ use Illuminate\Support\Facades\Notification;
 
 class DashboardController extends Controller
 {
-    function index(Request $request)
+    function index()
     {
-        return Inertia::render('Admin/Dashboard');
-    }
+        $check_ins = Booking::where('check_in', now())->count();
+        $check_outs = Booking::where('check_out', now())->count();
+        $day_bookings = Booking::where('created_at', now())->count();
+        $last_day_bookings = Booking::where('created_at', now()->subDay())->count();
+        $month_bookings = Booking::where('created_at', '>=', now()->subMonth())->count();
+        $last_month_bookings = Booking::where([
+            ['created_at', '<=', now()->subMonths(1)],
+            ['created_at', '>=', now()->subMonths(2)]
+        ])->count();
 
-    function dispach()
-    {
-        $booking = Booking::with('user')->where('booking_id', 1)->first();
-        event(new NewBooking($booking));
-        $users = User::where("access", true)->get();
-        Notification::send($users, new NewBookingNotif($booking));
+        $rooms = Room::with('type')->whereHas('bookings', function ($query) {
+            $query->where(function ($query) {
+                $query->where('created_at', '>', now()->subMonths(1));
+            });
+        })
+            ->get()
+            ->groupBy([
+                function ($room) {
+                    return $room->type->type_designation;
+                }
+            ]);
+
+        return Inertia::render('Admin/Dashboard', ['check_ins' => $check_ins, 'check_outs' => $check_outs, 'day_bookings' => $day_bookings, 'month_bookings' => $month_bookings, 'last_day_bookings' => $last_day_bookings, 'last_month_bookings' => $last_month_bookings, 'rooms' => $rooms]);
     }
 }

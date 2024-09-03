@@ -115,7 +115,7 @@ export default function DeleteUserForm({ className = "" }) {
                                     }
                                     className="mt-1 "
                                     isFocused
-                                    placeholder="Password"
+                                    placeholder={useTrans("Mot de passe")}
                                 />
 
                                 <InputError
@@ -184,7 +184,7 @@ export default function DeleteUserForm({ className = "" }) {
                                     }
                                     className="mt-1"
                                     isFocused
-                                    placeholder="Password"
+                                    placeholder={useTrans("Mot de passe")}
                                 />
 
                                 <InputError

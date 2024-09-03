@@ -18,7 +18,6 @@ export default function Facture({ facture, mail, total_ttc }) {
             toast({ description: flash.message?.message });
         }
     }, [flash.message, toast]);
-    console.log(facture.data.user);
     return (
         <AdminPanelLayout>
             <Head title="Facture" />

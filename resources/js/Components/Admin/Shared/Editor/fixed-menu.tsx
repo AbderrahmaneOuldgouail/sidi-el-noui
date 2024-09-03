@@ -151,7 +151,7 @@ const Items = ({ editor }: { editor: Editor }) => {
                     <ChevronDown className="h-3 w-3 ml-2" />
                 </Button>
             </Dropdown.DropdownMenuTrigger>
-            <Dropdown.DropdownMenuContent loop align="start">
+            <Dropdown.DropdownMenuContent loop align="start" on>
                 <Dropdown.DropdownMenuItem
                     onClick={() => editor.chain().focus().setParagraph().run()}
                     className=" data-[selected=true]:bg-gray-200/65 cursor-pointer gap-2"

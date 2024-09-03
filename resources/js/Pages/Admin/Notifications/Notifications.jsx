@@ -86,6 +86,7 @@ export default function Notifications({ notifications }) {
                         )}
                         onClick={() => ViewNotification(notification)}
                     >
+                    {console.log(notification)}
                         <span>
                             <span className="font-bold">
                                 {notification.data.first_name}{" "}

@@ -116,7 +116,7 @@ export const userColumns: ColumnDef<Users>[] = [
             const { width } = useWindowDimensions();
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
-            const permissions = usePage().props.auth.permissions;
+            const employ_permission = usePage().props.employ_permission;
 
             const handleDelete = () => {
                 router.delete(route("users.destroy", user.id), {
@@ -140,13 +140,13 @@ export const userColumns: ColumnDef<Users>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        {permissions.employ.update && (
+                        {employ_permission.update && (
                             <DropdownMenuItem>
                                 <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                                 <span>{useTrans("Modifier")}</span>
                             </DropdownMenuItem>
                         )}
-                        {permissions.employ.delete && (
+                        {employ_permission.delete && (
                             <DropdownMenuItem>
                                 {width >= 767 ? (
                                     <Dialog

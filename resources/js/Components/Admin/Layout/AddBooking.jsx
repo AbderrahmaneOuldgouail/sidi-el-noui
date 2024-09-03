@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { usePage } from "@inertiajs/react";
 import { useToast } from "@/Components/ui/use-toast";
 import { CalendarPlus, CirclePlus, CircleMinus } from "lucide-react";
-
-import { Button, buttonVariants } from "@/Components/ui/button";
+import { Button } from "@/Components/ui/button";
 import {
     Dialog,
     DialogContent,

@@ -9,11 +9,10 @@ import { useTrans } from "@/Hooks/useTrans";
 import ServiceCard from "@/Components/Admin/Services/ServiceCard";
 import { Button } from "@/Components/ui/button";
 
-export default function Services({ services }) {
+export default function Services({ services, service_permission }) {
     const { toast } = useToast();
 
     const flash = usePage().props.flash;
-    const permissions = usePage().props.auth.permissions;
 
     useEffect(() => {
         if (flash.message) {
@@ -26,7 +25,7 @@ export default function Services({ services }) {
             <Head title="Services" />
             <PageHeading title={useTrans("Services")} />
             <div className="flex justify-end">
-                {permissions.service.create && (
+                {service_permission.create && (
                     <Button variant="secondary">
                         <Link href={route("services.create")} as="button">
                             {useTrans("Créer un service")}

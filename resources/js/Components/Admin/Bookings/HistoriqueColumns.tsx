@@ -135,7 +135,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
 
-            const permissions = usePage().props.auth.permissions;
+            const booking_permission = usePage().props.booking_permission;
 
             const handleBookingStatus = (status) => {
                 router.post(
@@ -287,7 +287,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                 )}
                             </DropdownMenuItem>
                         ) : booking.booking_status == "en attente" &&
-                          permissions.booking.update ? (
+                          booking_permission.update ? (
                             <DropdownMenuItem className="flex gap-2">
                                 <Button
                                     variant="secondary"

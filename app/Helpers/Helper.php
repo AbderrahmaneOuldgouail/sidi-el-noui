@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+
 if (!function_exists('numberToWords')) {
   function numberToWords($number)
   {
@@ -22,4 +25,13 @@ if (!function_exists('numberToWords')) {
     return ucfirst($result);
   }
 }
-?>
+
+function getModelPermission(Request $request, $model)
+{
+  return [
+    'viewAny' => $request->user()?->can('viewAny', $model),
+    'create' => $request->user()?->can('create', $model),
+    'update' => $request->user()?->can('update', $model),
+    'delete' => $request->user()?->can('delete', $model),
+  ];
+}

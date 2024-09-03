@@ -6,11 +6,11 @@ import DeleteeDialog from "../Shared/DeleteDialog";
 import { Switch } from "@/Components/ui/switch";
 
 export default function EventCardFooter({ promotion }) {
-    const permissions = usePage().props.auth.permissions;
+    const promotion_permission = usePage().props.promotion_permission;
 
     return (
         <div className="flex items-center gap-4">
-            {permissions.promotion.update && (
+            {promotion_permission.update && (
                 <div>
                     <Switch
                         checked={promotion.is_active}
@@ -28,7 +28,7 @@ export default function EventCardFooter({ promotion }) {
                 </div>
             )}
             <div className="flex items-center gap-4">
-                {permissions.promotion.update && (
+                {promotion_permission.update && (
                     <Button variant="secondary">
                         <Link
                             href={route(
@@ -41,7 +41,7 @@ export default function EventCardFooter({ promotion }) {
                         </Link>
                     </Button>
                 )}
-                {permissions.promotion.delete && (
+                {promotion_permission.delete && (
                     <DeleteeDialog
                         id={promotion.promotion_id}
                         url={"promotions.destroy"}

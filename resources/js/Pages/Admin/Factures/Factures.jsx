@@ -22,12 +22,12 @@ import InputError from "@/Components/InputError";
 import { Input } from "@/Components/ui/input";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Separator } from "@/Components/ui/separator";
+import { create } from "zustand";
 
-export default function Factures({ factures, bill_settings }) {
+export default function Factures({ factures, bill_settings, create_permission }) {
     const { toast } = useToast();
     const [open, setOpen] = useState(false);
     const flash = usePage().props.flash;
-    const permissions = usePage().props.auth.permissions;
     const { data, setData, errors, post } = useForm({
         tva: bill_settings?.tva,
         timbre: bill_settings?.timbre,
@@ -51,7 +51,8 @@ export default function Factures({ factures, bill_settings }) {
         <AdminPanelLayout>
             <Head title="Factures" />
             <PageHeading title={useTrans("Factures")} />
-            {permissions.role.create && (
+            {create_permission && (
+
                 <div className="flex justify-end gap-2">
                     <Button variant="secondary" size="sm">
                         <Link href={route("bookings.index")}>

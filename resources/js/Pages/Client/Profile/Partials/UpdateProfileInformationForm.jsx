@@ -105,7 +105,7 @@ export default function UpdateProfileInformation({
                     <div className="w-full md:w-1/3 pb-2">
                         <InputLabel
                             htmlFor="phone"
-                            value={useTrans("N° téléphone d'employé")}
+                            value={useTrans("N° téléphone")}
                         />
                         <LabelDescreption>
                             {useTrans(
@@ -116,7 +116,7 @@ export default function UpdateProfileInformation({
                     <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                         <InputLabel
                             htmlFor="phone"
-                            value={useTrans("N° téléphone d'employé")}
+                            value={useTrans("N° téléphone")}
                         />
                         <Input
                             className="mt-2 w-full bg-card"

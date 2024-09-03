@@ -24,7 +24,7 @@ import { RedBeadge } from "@/Components/ui/red-badge";
 
 export function UserNav() {
     const user = usePage().props.auth.user;
-    const permissions = usePage().props.auth.permissions;
+    const message_permission = usePage().props.message_permission;
     const hasUnreadMessages = usePage().props.hasUnreadMessages;
     return (
         <DropdownMenu>
@@ -43,13 +43,9 @@ export function UserNav() {
                                         {user.last_name.charAt(0)}
                                     </AvatarFallback>
                                 </Avatar>
-                                {hasUnreadMessages &&
-                                    (permissions.service.viewAny ||
-                                        permissions.service.update ||
-                                        permissions.service.delete ||
-                                        permissions.service.create) && (
-                                        <RedBeadge className="right-0" />
-                                    )}
+                                {hasUnreadMessages && (
+                                    <RedBeadge className="right-0" />
+                                )}
                             </Button>
                         </DropdownMenuTrigger>
                     </TooltipTrigger>
@@ -81,10 +77,10 @@ export function UserNav() {
                             {useTrans("tableau de bord")}
                         </Link>
                     </DropdownMenuItem>
-                    {(permissions.service.viewAny ||
-                        permissions.service.update ||
-                        permissions.service.delete ||
-                        permissions.service.create) && (
+                    {(message_permission.viewAny ||
+                        message_permission.update ||
+                        message_permission.delete ||
+                        message_permission.create) && (
                         <DropdownMenuItem
                             className="hover:cursor-pointer"
                             asChild
@@ -93,11 +89,7 @@ export function UserNav() {
                                 href={route("messages.index")}
                                 className="flex items-center"
                             >
-                                {hasUnreadMessages &&
-                                (permissions.service.viewAny ||
-                                    permissions.service.update ||
-                                    permissions.service.delete ||
-                                    permissions.service.create) ? (
+                                {hasUnreadMessages ? (
                                     <div className="relative">
                                         <Inbox className="w-4 h-4 mr-3 text-muted-foreground" />
                                         <RedBeadge className="right-1/3" />

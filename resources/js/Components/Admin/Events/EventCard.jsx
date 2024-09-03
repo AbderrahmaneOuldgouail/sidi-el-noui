@@ -16,7 +16,7 @@ import {
 } from "@/Components/ui/carousel";
 import { ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/Components/ui/button";
+import { buttonVariants } from "@/Components/ui/button";
 import EventCardFooter from "./EventCardFooter";
 import { Editor } from "@/Components/Admin/Shared/Editor";
 

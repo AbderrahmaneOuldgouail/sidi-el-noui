@@ -44,20 +44,33 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-
-        $locale = Cache::get('user_locale_' . $request->ip(), config('app.locale'));
-        App::setLocale($locale);
-        $direction = $locale == 'ar' ? 'rtl' : 'ltr';
-
-        $file = lang_path("trans.json");
-
-
-
-        return [
+        $sharedData = [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
-                'permissions' => [
+            ],
+
+            'flash' => [
+                'message' => fn() => $request->session()->get('message')
+            ],
+        ];
+
+        if ($request->user()?->access == true) {
+            $sharedData['booking_permission'] = [
+                'create' => $request->user()->can('create', Booking::class),
+            ];
+            $sharedData['message_permission'] = [
+                'viewAny' => $request->user()?->can('viewAny', Message::class),
+                'create' => $request->user()?->can('create', Message::class),
+                'update' => $request->user()?->can('update', Message::class),
+                'delete' => $request->user()?->can('delete', Message::class),
+            ];
+            $sharedData['hasUnreadMessages'] = [
+                'hasUnreadMessages' => Message::whereNull('read_at')->exists()
+            ];
+            $sharedData['notifs'] = $request->user()?->unreadNotifications;
+            $sharedData["auth"]['permissions'] =
+                [
                     'room' => [
                         'viewAny' => $request->user()?->can('viewAny', Room::class),
                         'create' => $request->user()?->can('create', Room::class),
@@ -68,12 +81,6 @@ class HandleInertiaRequests extends Middleware
                         'create' => $request->user()?->can('create', Service::class),
                         'update' => $request->user()?->can('update', Service::class),
                         'delete' => $request->user()?->can('delete', Service::class),
-                    ],
-                    'consommation' => [
-                        'viewAny' => $request->user()?->can('viewAny', Consumption::class),
-                        'create' => $request->user()?->can('create', Consumption::class),
-                        'update' => $request->user()?->can('update', Consumption::class),
-                        'delete' => $request->user()?->can('delete', Consumption::class),
                     ],
                     'message' => [
                         'viewAny' => $request->user()?->can('viewAny', Message::class),
@@ -116,16 +123,10 @@ class HandleInertiaRequests extends Middleware
                         'create' => $request->user()?->can('create', Booking::class),
                         'update' => $request->user()?->can('update', Booking::class),
                     ],
-                ],
-            ],
-            'flash' => [
-                'message' => fn() => $request->session()->get('message')
-            ],
-            'direction' => $direction,
-            'locale' => $locale,
-            'translations' => File::exists($file) ? File::json($file) : [],
-            'notifs' => User::find($request->user()?->id)?->unreadNotifications,
-            'hasUnreadMessages' => Message::whereNull('read_at')->exists()
-        ];
+                ];
+        }
+
+
+        return $sharedData;
     }
 }

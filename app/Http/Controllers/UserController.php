@@ -25,7 +25,7 @@ class UserController extends Controller
             $query->where([['role_name', "<>",  $client], ['role_name', "<>",  $company]]);
         })->paginate($itemsPerPage);
 
-        return Inertia::render('Admin/Employes/Employees', ['users' => $users]);
+        return Inertia::render('Admin/Employes/Employees', ['users' => $users, 'employ_permission' =>  getModelPermission($request, User::class)]);
     }
 
     /**
@@ -79,24 +79,6 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('message', ['status' => 'success', 'message' => 'Employé ajouter avec succès']);
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    // public function edit(string $id)
-    // {
-    //     $user = User::where('id', $id)->first();
-    //     return Inertia::render('Admin/Profile/Edit', ['user' => $user]);
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, string $id)
-    // {
-    //     User::where('id', $id)->first()->syncRoles($request->role);
-    //     return redirect()->route('users.index');
-    // }
 
     /**
      * Remove the specified resource from storage.

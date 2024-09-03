@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,8 +24,9 @@ class EventController extends Controller
         if ($request->user()->cannot('viewAny', Event::class) && ($request->user()->cannot('create', Event::class) || $request->user()->cannot('delete', Event::class) || $request->user()->cannot('update', Event::class))) {
             return abort(403);
         }
+
         $events = Event::with('assets')->get();
-        return Inertia::render('Admin/Events/Events', ['events' => $events]);
+        return Inertia::render('Admin/Events/Events', ['events' => $events, 'event_permission' => getModelPermission($request, Event::class)]);
     }
 
     public function create(Request $request)

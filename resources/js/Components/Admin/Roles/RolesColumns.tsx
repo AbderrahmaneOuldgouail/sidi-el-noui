@@ -104,7 +104,7 @@ export const roleColumns: ColumnDef<Role>[] = [
             const { width } = useWindowDimensions();
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
-            const permissions = usePage().props.auth.permissions;
+            const role_permission = usePage().props.role_permission;
 
             const handleDelete = () => {
                 router.delete(route("roles.destroy", role.role_id), {
@@ -128,7 +128,7 @@ export const roleColumns: ColumnDef<Role>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        {permissions.role.update && (
+                        {role_permission.update && (
                             <DropdownMenuItem>
                                 <Link href={route("roles.edit", role.role_id)}>
                                     <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
@@ -136,7 +136,7 @@ export const roleColumns: ColumnDef<Role>[] = [
                                 </Link>
                             </DropdownMenuItem>
                         )}
-                        {permissions.role.delete && (
+                        {role_permission.delete && (
                             <DropdownMenuItem>
                                 {width >= 767 ? (
                                     <Dialog

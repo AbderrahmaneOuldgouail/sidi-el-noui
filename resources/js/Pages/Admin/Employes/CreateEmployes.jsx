@@ -37,7 +37,6 @@ export default function CreateEmployes({ roles }) {
         role: "",
     });
 
-    console.log(roles);
 
     const submit = (e) => {
         e.preventDefault();
