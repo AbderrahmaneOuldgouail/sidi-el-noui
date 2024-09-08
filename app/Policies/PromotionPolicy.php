@@ -13,7 +13,7 @@ class PromotionPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Promotion-consulter');
+        return $user->role->permissions()->where('permission_name', 'Promotion-consulter')->exists();
     }
 
 
@@ -22,7 +22,7 @@ class PromotionPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Promotion-cree');
+        return $user->role->permissions()->where('permission_name', 'Promotion-cree')->exists();
     }
 
     /**
@@ -30,7 +30,7 @@ class PromotionPolicy
      */
     public function update(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Promotion-modifier');
+        return $user->role->permissions()->where('permission_name', 'Promotion-modifier')->exists();
     }
 
     /**
@@ -38,6 +38,6 @@ class PromotionPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Promotion-supprimer');
+        return $user->role->permissions()->where('permission_name', 'Promotion-supprimer')->exists();
     }
 }

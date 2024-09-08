@@ -18,7 +18,6 @@ export default function Home({ events, promotions, rooms, services }) {
             toast({ description: flash.message?.message });
         }
     }, [flash.message, toast]);
-
     return (
         <ClientLayout>
             <Head title="Home" />

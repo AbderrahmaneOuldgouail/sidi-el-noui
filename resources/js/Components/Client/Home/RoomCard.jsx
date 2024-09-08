@@ -34,7 +34,7 @@ export default function RoomCard({ room }) {
                         {useTrans("Caractéristique de la chambre")} :
                     </div>
                     <CardDescription className="flex gap-2 flex-wrap">
-                        {room.features.slice(0, 8).map((feature) => (
+                        {room.features.map((feature) => (
                             <Badge
                                 className="m-0 w-autot"
                                 key={feature.feature_id}

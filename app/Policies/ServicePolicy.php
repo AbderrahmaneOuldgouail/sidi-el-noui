@@ -13,7 +13,7 @@ class ServicePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Service-consulter');
+        return $user->role->permissions()->where('permission_name', 'Service-consulter')->exists();
     }
 
 
@@ -22,7 +22,7 @@ class ServicePolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Service-cree');
+        return $user->role->permissions()->where('permission_name', 'Service-cree')->exists();
     }
 
     /**
@@ -30,7 +30,7 @@ class ServicePolicy
      */
     public function update(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Service-modifier');
+        return $user->role->permissions()->where('permission_name', 'Service-modifier')->exists();
     }
 
     /**
@@ -38,6 +38,6 @@ class ServicePolicy
      */
     public function delete(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Service-supprimer');
+        return $user->role->permissions()->where('permission_name', 'Service-supprimer')->exists();
     }
 }

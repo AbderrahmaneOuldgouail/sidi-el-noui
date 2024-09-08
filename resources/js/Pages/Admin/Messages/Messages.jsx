@@ -27,12 +27,12 @@ import { useToast } from "@/Components/ui/use-toast";
 import { MessageSquareX } from "lucide-react";
 import InputError from "@/Components/InputError";
 
-export default function messages({ messages, filter, update_permission, delete_permission }) {
+export default function messages({ messages, filter }) {
     const [selectedMessage, setSelectedMessage] = useState(0);
     const { toast } = useToast();
     const flash = usePage().props.flash;
     const hasUnreadMessages = usePage().props.hasUnreadMessages;
-
+    const permission = usePage().props.auth.permissions.message;
 
     const { data, setData, post, errors } = useForm({
         message: "",
@@ -123,7 +123,7 @@ export default function messages({ messages, filter, update_permission, delete_p
             <Head title="Boîte de réception" />
             <PageHeading title={useTrans("Boîte de réception")} />
             <div className="flex justify-end mt-2 gap-4">
-                {update_permission && (
+                {permission.update && (
                     <Button
                         disabled={messages.length < 1 || !hasUnreadMessages}
                         onClick={() => {
@@ -135,7 +135,7 @@ export default function messages({ messages, filter, update_permission, delete_p
                         {useTrans("Tout marquer comme lu")}
                     </Button>
                 )}
-                {delete_permission && (
+                {permission.delete && (
                     <Button
                         disabled={messages.length < 1}
                         onClick={() => {
@@ -249,7 +249,7 @@ export default function messages({ messages, filter, update_permission, delete_p
                                                         )}
                                                     </a>
                                                 </Button>
-                                                {delete_permission && (
+                                                {permission.delete && (
                                                     <Button
                                                         variant="destructive"
                                                         size="sm"

@@ -19,6 +19,6 @@ class Admin
         if (Auth::check() && Auth::user()->access) {
             return $next($request);
         }
-        return abort(401, 'Not authorized');
+        return abort(403);
     }
 }

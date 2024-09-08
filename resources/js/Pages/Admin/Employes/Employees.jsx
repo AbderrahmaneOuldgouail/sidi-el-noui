@@ -9,9 +9,11 @@ import { userColumns } from "@/Components/Admin/Users/UserColumns";
 import { useTrans } from "@/Hooks/useTrans";
 import { useToast } from "@/Components/ui/use-toast";
 
-export default function Employees({ users, employ_permission }) {
+export default function Employees({ users }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
+    const employ_permission = usePage().props.auth.permissions.employ;
+    console.log(employ_permission)
 
     useEffect(() => {
         if (flash.message) {

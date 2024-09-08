@@ -13,7 +13,7 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Rôle-consulter');
+        return $user->role->permissions()->where('permission_name', 'Rôle-consulter')->exists();
     }
 
 
@@ -22,7 +22,7 @@ class RolePolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Rôle-cree');
+        return $user->role->permissions()->where('permission_name', 'Rôle-cree')->exists();
     }
 
     /**
@@ -30,7 +30,7 @@ class RolePolicy
      */
     public function update(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Rôle-modifier');
+        return $user->role->permissions()->where('permission_name', 'Rôle-modifier')->exists();
     }
 
     /**
@@ -38,6 +38,6 @@ class RolePolicy
      */
     public function delete(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Rôle-supprimer');
+        return $user->role->permissions()->where('permission_name', 'Rôle-supprimer')->exists();
     }
 }

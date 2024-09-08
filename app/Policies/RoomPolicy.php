@@ -13,7 +13,7 @@ class RoomPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Chambre-consulter');
+        return $user->role->permissions()->where('permission_name', 'Chambre-consulter')->exists();
     }
 
     /**
@@ -21,7 +21,7 @@ class RoomPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Chambre-cree');
+        return $user->role->permissions()->where('permission_name', 'Chambre-cree')->exists();
     }
 
     /**
@@ -29,6 +29,6 @@ class RoomPolicy
      */
     public function update(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Chambre-modifier');
+        return $user->role->permissions()->where('permission_name', 'Chambre-modifier')->exists();
     }
 }

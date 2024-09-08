@@ -49,14 +49,13 @@ class FactureController extends Controller
         ]);
         $bill_settings = Cache::get('bill-settings', false);
 
-
         if (!$bill_settings) {
             return redirect()->back()->with('message', ['status' => 'error', 'message' => 'Voulez sétez les paramètres de facturation avant générer les factures', 'action' => "factures.index"]);
         }
-        $booking = Booking::with(['user', 'consomation', 'rooms'])->where('booking_id', $request->booking_id)->first();
-
+        $booking = Booking::with(['user', 'consomation', 'rooms', 'user.role'])->where('booking_id', $request->booking_id)->first();
         $days = Carbon::parse($booking->check_in)->diffInDays($booking->check_out, true);
-        $is_company = Role::where('role_id', $booking->user->role_id)->first()->role_name == Roles::COMPANY->value;
+        $is_company = $booking->user->role->role_name == Roles::COMPANY->value;
+
         $rooms = [];
         $rooms_total = 0;
         $consomations = [];
@@ -111,7 +110,8 @@ class FactureController extends Controller
                 'nif' => $is_company ? $booking->user->nis : "",
                 'nis' => $is_company ? $booking->user->nis : "",
                 'nrc' => $is_company ? $booking->user->nrc : "",
-                'n_article' => $is_company ? $booking->user->n_article : ""
+                'n_article' => $is_company ? $booking->user->n_article : "",
+                'is_company' => $is_company,
             ],
             'booking' => [
                 'check_in' => $booking->check_in,

@@ -1,11 +1,10 @@
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { Check, X, Pencil, Eye, MoreHorizontal, Trash } from "lucide-react";
+import { Check, X, Pencil, MoreHorizontal, Trash } from "lucide-react";
 import { Button, buttonVariants } from "@/Components/ui/button";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import { Input } from "@/Components/ui/input";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -31,22 +30,13 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/Components/ui/drawer";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/Components/ui/select";
 import { Link, router, useForm } from "@inertiajs/react";
 import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { Checkbox } from "@/Components/ui/checkbox";
 import { useTrans } from "@/Hooks/useTrans";
 import { Badge } from "@/Components/ui/badge";
-import DeleteeDialog from "../Shared/DeleteDialog";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
+import ColumnHeader from "@/Components/Admin/ColumnHeader";
 
 export type Feature = {
     feature_id: number;
@@ -60,41 +50,12 @@ export type Feature = {
 
 export const featuresColumns: ColumnDef<Feature>[] = [
     {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) =>
-                    table.toggleAllPageRowsSelected(!!value)
-                }
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
-    {
         accessorKey: "Nom",
         cell: ({ row }) => {
             const features = row.original;
             return <span> {features.features_name}</span>;
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Nom de caractéristique")}
-            />
-        ),
+        header: () => <ColumnHeader title={"Nom de caractéristique"} />,
     },
     {
         accessorKey: "Valeur",
@@ -115,12 +76,7 @@ export const featuresColumns: ColumnDef<Feature>[] = [
                 </span>
             );
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Besoin de valeur")}
-            />
-        ),
+        header: () => <ColumnHeader title={"Besoin de valeur"} />,
     },
     {
         accessorKey: "Categorie",
@@ -128,12 +84,7 @@ export const featuresColumns: ColumnDef<Feature>[] = [
             const feature = row.original;
             return <span>{feature.category.categorie_name}</span>;
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Catégorie")}
-            />
-        ),
+        header: () => <ColumnHeader title={"Catégorie"} />,
     },
     {
         id: "actions",

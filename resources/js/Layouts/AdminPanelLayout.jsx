@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/Providers/ThemeProvider";
 import { Toaster } from "@/Components/ui/toaster";
 import { useToast } from "@/Components/ui/use-toast";
 import { useTrans } from "@/Hooks/useTrans";
+import { router } from "@inertiajs/react";
 
 export default function AdminPanelLayout({ children }) {
     const sidebar = useStore(useSidebarToggle, (state) => state);
@@ -25,9 +26,13 @@ export default function AdminPanelLayout({ children }) {
                 " " +
                 useTrans("à fait un nouveaux réservation"),
         });
+        if (route().current() == "admin.dashboard") {
+            router.reload({
+                preserveScroll: true,
+                preserveState: true,
+            });
+        }
     });
-
-    React.useEffect(() => console.log("mount"), []);
 
     if (!sidebar) return null;
 

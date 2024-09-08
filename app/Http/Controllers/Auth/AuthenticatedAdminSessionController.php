@@ -10,6 +10,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Validation\ValidationException;
+
 
 
 class AuthenticatedAdminSessionController extends Controller
@@ -38,7 +40,9 @@ class AuthenticatedAdminSessionController extends Controller
             return redirect()->intended(route('admin.dashboard', absolute: false));
         }
         Auth::guard('web')->logout();
-        return redirect()->intended(route('admin.login', absolute: false))->with('message', ['status' => 'error', 'message' => "Vous n'avez pas l'autorisation pour acces à cette section"]);
+        throw ValidationException::withMessages([
+            'auth' => ["Vous n'avez pas l'autorisation pour acces à cette section"],
+        ]);
     }
 
     /**

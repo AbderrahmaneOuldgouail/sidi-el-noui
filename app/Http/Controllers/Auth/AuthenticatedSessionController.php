@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Validation\ValidationException;
+
 
 class AuthenticatedSessionController extends Controller
 {
@@ -35,14 +37,18 @@ class AuthenticatedSessionController extends Controller
         if (Auth::user()->access == false) {
             if (Auth::user()->deleted_at != null) {
                 Auth::guard('web')->logout();
-                return redirect()->intended(route('login', absolute: false))->with('message', ['status' => 'error', 'message' => 'Ce compte est supprimier, essayer avec autre compte']);
+                throw ValidationException::withMessages([
+                    'auth' => trans('auth.failed'),
+                ]);
             }
             $request->session()->regenerate();
 
             return redirect()->intended(route('client.profile.edit', absolute: false));
         }
         Auth::guard('web')->logout();
-        return redirect()->intended(route('login', absolute: false))->with('message', ['status' => 'error', 'message' => "Vous n'avez pas l'autorisation pour acces à cette section"]);
+        throw ValidationException::withMessages([
+            'auth' => ["Vous n'avez pas l'autorisation pour acces à cette section"],
+        ]);
     }
 
     /**

@@ -14,8 +14,10 @@ class ConsumptionController extends Controller
         if ($request->user()->cannot('viewAny', Consumption::class) && ($request->user()->cannot('create', Consumption::class) || $request->user()->cannot('delete', Consumption::class) || $request->user()->cannot('update', Consumption::class))) {
             return abort(403);
         }
+
         $consumptions = Consumption::with('service')->get();
         $services = Service::all();
+
         return Inertia::render('Admin/Services/Consumptions', ['consumptions' => $consumptions, 'services' => $services]);
     }
 
@@ -24,6 +26,7 @@ class ConsumptionController extends Controller
         if ($request->user()->cannot('create', Consumption::class)) {
             return abort(403);
         }
+
         request()->validate(
             [
                 'consumption_name' => 'required|string',
@@ -31,11 +34,13 @@ class ConsumptionController extends Controller
                 'consumption_price' => 'required|numeric'
             ]
         );
+
         Consumption::create([
             'service_id' => $request->service_id,
             'consumption_name' => $request->consumption_name,
             'consumption_price' => $request->consumption_price,
         ]);
+
         return redirect(route('consumptions.index'))->with('message', ['status' => 'success', 'message' => 'Consommation ajouter avec succès']);
     }
 
@@ -44,6 +49,7 @@ class ConsumptionController extends Controller
         if ($request->user()->cannot('update', Consumption::class)) {
             return abort(403);
         }
+        
         request()->validate(
             [
                 'consumption_name' => 'required|string',

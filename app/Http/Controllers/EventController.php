@@ -14,7 +14,6 @@ class EventController extends Controller
 
     public function show(string $id)
     {
-
         $event = Event::with("assets")->where('event_id', $id)->first();
         return Inertia::render('Client/Events/Show', ['event' => $event]);
     }
@@ -42,6 +41,7 @@ class EventController extends Controller
         if ($request->user()->cannot('create', Event::class)) {
             return abort(403);
         }
+
         request()->validate(
             [
                 'event_name' => 'required|string',
@@ -54,31 +54,25 @@ class EventController extends Controller
             ]
         );
 
-
         DB::beginTransaction();
-        try {
-            $service = Event::create([
-                'user_id' => Auth::user()->id,
-                'event_name' => $request->event_name,
-                'event_descreption' => $request->event_descreption,
-                'event_start_date' => $request->event_start_date,
-                'event_end_date' => $request->event_end_date,
-                'event_price' => $request->event_price,
+        $service = Event::create([
+            'user_id' => Auth::user()->id,
+            'event_name' => $request->event_name,
+            'event_descreption' => $request->event_descreption,
+            'event_start_date' => $request->event_start_date,
+            'event_end_date' => $request->event_end_date,
+            'event_price' => $request->event_price,
+        ]);
+
+        foreach ($request->file('assets') as $key => $value) {
+            $filename = $value->store('event', 'public');
+            $service->assets()->create([
+                'name' => "event-{$request->event_name}-img-$key",
+                'url' => $filename,
             ]);
-
-            foreach ($request->file('assets') as $key => $value) {
-                $filename = $value->store('event', 'public');
-                $service->assets()->create([
-                    'name' => "event-{$request->event_name}-img-$key",
-                    'url' => $filename,
-                ]);
-            }
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
         }
+        DB::commit();
+
         return redirect(route('events.index'))->with('message', ['status' => 'success', 'message' => 'Evènement crée avec succès']);
     }
 
@@ -87,6 +81,7 @@ class EventController extends Controller
         if ($request->user()->cannot('update', Event::class)) {
             return abort(403);
         }
+        
         $event = Event::with('assets')->where('event_id', $id)->first();
         return Inertia::render('Admin/Events/EditEvent', ['event' => $event]);
     }

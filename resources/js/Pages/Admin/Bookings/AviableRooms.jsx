@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
-import { Toggle, toggleVariants } from "@/Components/ui/toggle";
 
 import PageHeading from "@/Components/ui/PageHeading";
 import InputLabel from "@/Components/InputLabel";
-import { Input } from "@/Components/ui/input";
 import InputError from "@/Components/InputError";
 import { Button } from "@/Components/ui/button";
 
@@ -21,7 +19,6 @@ import { Separator } from "@/Components/ui/separator";
 import { useTrans } from "@/Hooks/useTrans";
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { Badge } from "@/Components/ui/badge";
-import LabelDescreption from "@/Components/LabelDescreption";
 import { cn } from "@/lib/utils";
 
 export default function AviableRooms({ rooms, bookingData, services }) {
@@ -43,7 +40,6 @@ export default function AviableRooms({ rooms, bookingData, services }) {
         nrc: "",
         n_article: "",
     });
-
 
     const handleRooms = (id) => {
         setData((data) => {
@@ -119,7 +115,7 @@ export default function AviableRooms({ rooms, bookingData, services }) {
             <PageHeading title={useTrans("Chambres disponible")} />
             <PlaceholderContent>
                 <form onSubmit={submit}>
-                    {bookingData.is_company ? (
+                    {bookingData.is_company == 1 ? (
                         <div className="flex gap-2 w-full">
                             <FormInput
                                 label="Nom"
@@ -159,7 +155,7 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                         </div>
                     )}
                     <Separator />
-                    {bookingData.is_company && (
+                    {bookingData.is_company == 1 && (
                         <>
                             <div className="flex gap-2 w-full">
                                 <FormInput

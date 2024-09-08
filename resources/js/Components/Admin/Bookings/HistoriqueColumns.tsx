@@ -6,6 +6,7 @@ import {
     ReceiptText,
     HandCoins,
     Ticket,
+    ArrowUpDown,
 } from "lucide-react";
 import { Button, buttonVariants } from "@/Components/ui/button";
 import {
@@ -38,6 +39,7 @@ import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { Badge } from "@/Components/ui/badge";
 import { useTrans } from "@/Hooks/useTrans";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
+import ColumnHeader from "@/Components/Admin/ColumnHeader";
 
 export type Bookings = {
     booking_id: number;
@@ -68,7 +70,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
             );
         },
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title={useTrans("Client")} />
+            <ColumnHeader title={"Client"} />
         ),
     },
     {
@@ -78,10 +80,11 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
             return <span>{booking.check_in}</span>;
         },
         header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Check in")}
-            />
+            // <DataTableColumnHeader
+            //     column={column}
+            //     title={useTrans("Check in")}
+            // />
+            <ColumnHeader title={"Check in"} />
         ),
     },
     {
@@ -91,10 +94,12 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
             return <span>{booking.check_out}</span>;
         },
         header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Check out")}
-            />
+            // <DataTableColumnHeader
+            //     column={column}
+            //     title={useTrans("Check out")}
+            // />
+            // <div> {useTrans("Check out")} </div>
+            <ColumnHeader title={"Check out"} />
         ),
     },
     {
@@ -104,10 +109,11 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
             return <span>{booking.created_at.split("T")[0]} </span>;
         },
         header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Date de réservation")}
-            />
+            // <DataTableColumnHeader
+            //     column={column}
+            //     title={useTrans("Date de réservation")}
+            // />
+            <ColumnHeader title={"Date de réservation"} />
         ),
     },
     {
@@ -123,9 +129,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
             );
         },
 
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title={useTrans("Status")} />
-        ),
+        header: ({ column }) => <ColumnHeader title={"Status"} />,
     },
     {
         id: "actions",
@@ -135,7 +139,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
 
-            const booking_permission = usePage().props.booking_permission;
+            const booking_permission = usePage().props.auth.permissions.booking;
 
             const handleBookingStatus = (status) => {
                 router.post(
@@ -287,7 +291,8 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                 )}
                             </DropdownMenuItem>
                         ) : booking.booking_status == "en attente" &&
-                          booking_permission.update ? (
+                          booking_permission.update &&
+                          route().current("bookings.index") ? (
                             <DropdownMenuItem className="flex gap-2">
                                 <Button
                                     variant="secondary"

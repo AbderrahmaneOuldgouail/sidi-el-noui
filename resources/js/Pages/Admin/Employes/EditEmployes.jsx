@@ -27,24 +27,25 @@ import {
     PopoverTrigger,
 } from "@/Components/ui/popover";
 
-export default function CreateEmployes({ roles }) {
+export default function EditEmployes({ roles, user }) {
     const [open, setOpen] = useState(false);
-    const { data, setData, post, errors } = useForm({
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
-        role: "",
+    const { data, setData, put, errors } = useForm({
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role.role_name,
     });
-
     const submit = (e) => {
         e.preventDefault();
-        post(route("users.store"));
+        put(route("users.update", user.id));
     };
     return (
         <AdminPanelLayout>
             <Head title="Employes" />
-            <PageHeading title={useTrans("Inscription d'employé")} />
+            <PageHeading
+                title={useTrans("Modification les infromation d'employé")}
+            />
             <PlaceholderContent>
                 <form onSubmit={submit}>
                     <div className="md:flex my-4 gap-4">
@@ -237,7 +238,7 @@ export default function CreateEmployes({ roles }) {
                             className="mt-2 w-1/4"
                             variant="secondary"
                         >
-                            {useTrans("Créer")}
+                            {useTrans("Enregistrer")}
                         </Button>
                     </div>
                 </form>

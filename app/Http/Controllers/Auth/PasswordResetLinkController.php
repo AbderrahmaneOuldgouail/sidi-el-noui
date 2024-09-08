@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -33,12 +34,19 @@ class PasswordResetLinkController extends Controller
             'email' => 'required|email',
         ]);
 
+        if (User::where('email', $request->email)->first()?->deleted_at != null) {
+            throw ValidationException::withMessages([
+                'email' => [trans("passwords.user")],
+            ]);
+        }
+
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
         $status = Password::sendResetLink(
             $request->only('email')
         );
+
 
         if ($status == Password::RESET_LINK_SENT) {
             return back()->with('status', __($status));

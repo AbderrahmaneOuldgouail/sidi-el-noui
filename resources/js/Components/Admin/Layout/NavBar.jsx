@@ -7,7 +7,7 @@ import { AddBooking } from "./AddBooking";
 import { usePage } from "@inertiajs/react";
 
 export function Navbar({ title, isOpen }) {
-    const booking_permission = usePage().props.booking_permission;
+    const booking_permission = usePage().props.auth.permissions.booking;
     return (
         <div
             className={cn(

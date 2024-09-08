@@ -168,7 +168,7 @@ export default function MyBookings({ booking }) {
                                     >
                                         {useTrans("Voir Plus")}
                                     </DialogTrigger>
-                                    <DialogContent className="p-0">
+                                    <DialogContent className="p-0 mb-10 max-h-screen">
                                         <DialogHeader>
                                             <DialogTitle className="p-0">
                                                 <Carousel>
@@ -193,68 +193,65 @@ export default function MyBookings({ booking }) {
                                                     <CarouselNext />
                                                 </Carousel>
                                             </DialogTitle>
-                                            <DialogDescription className="p-4">
-                                                <div className="font-bold text-foreground flex justify-between">
-                                                    <div>
-                                                        {useTrans("Chambre")}{" "}
-                                                        {
-                                                            room.type
-                                                                .type_designation
-                                                        }{" "}
-                                                        {useTrans("avec")}{" "}
-                                                        {room.beeds_number}{" "}
-                                                        {useTrans("lits")}
-                                                    </div>
-                                                    <div className="text-xl text-primary">
-                                                        {" "}
-                                                        {room.room_price}{" "}
-                                                        {useTrans("DA")}
-                                                    </div>
-                                                </div>
-                                                {room.features.length > 0 && (
-                                                    <div className="my-2 ">
-                                                        <Separator />
-                                                        <div className="font-bold text-foreground pb-2 flex justify-start">
-                                                            {useTrans(
-                                                                "Caractéristiques"
-                                                            )}{" "}
-                                                            :
-                                                        </div>
-                                                        {room.features
-                                                            .slice(0, 4)
-                                                            .map((feature) => (
-                                                                <Badge
-                                                                    className="m-0 w-autot"
-                                                                    key={
-                                                                        feature.feature_id
-                                                                    }
-                                                                >
-                                                                    {
-                                                                        feature.features_name
-                                                                    }
-                                                                    {feature.need_value ==
-                                                                        true &&
-                                                                        ": " +
-                                                                            feature
-                                                                                .pivot
-                                                                                .valeur}
-                                                                </Badge>
-                                                            ))}
-                                                    </div>
-                                                )}
-                                                <div className="my-2">
-                                                    <Separator />
-                                                    <Editor
-                                                        className="bg-transparent border-none"
-                                                        autofocus={false}
-                                                        editable={false}
-                                                        content={
-                                                            room.room_descreption
-                                                        }
-                                                    />
-                                                </div>
-                                            </DialogDescription>
                                         </DialogHeader>
+                                        <DialogDescription className="p-4">
+                                            <div className="font-bold text-foreground flex justify-between">
+                                                <div>
+                                                    {useTrans("Chambre")}{" "}
+                                                    {room.type.type_designation}{" "}
+                                                    {useTrans("avec")}{" "}
+                                                    {room.beeds_number}{" "}
+                                                    {useTrans("lits")}
+                                                </div>
+                                                <div className="text-xl text-primary">
+                                                    {" "}
+                                                    {room.room_price}{" "}
+                                                    {useTrans("DA")}
+                                                </div>
+                                            </div>
+                                            {room.features.length > 0 && (
+                                                <div className="my-2 ">
+                                                    <Separator />
+                                                    <div className="font-bold text-foreground pb-2 flex justify-start">
+                                                        {useTrans(
+                                                            "Caractéristiques"
+                                                        )}{" "}
+                                                        :
+                                                    </div>
+                                                    {room.features
+                                                        .slice(0, 4)
+                                                        .map((feature) => (
+                                                            <Badge
+                                                                className="m-0 w-autot"
+                                                                key={
+                                                                    feature.feature_id
+                                                                }
+                                                            >
+                                                                {
+                                                                    feature.features_name
+                                                                }
+                                                                {feature.need_value ==
+                                                                    true &&
+                                                                    ": " +
+                                                                        feature
+                                                                            .pivot
+                                                                            .valeur}
+                                                            </Badge>
+                                                        ))}
+                                                </div>
+                                            )}
+                                            <div className="my-2">
+                                                <Separator />
+                                                <Editor
+                                                    className="bg-transparent border-none max-h-[200px] overflow-auto"
+                                                    autofocus={false}
+                                                    editable={false}
+                                                    content={
+                                                        room.room_descreption
+                                                    }
+                                                />
+                                            </div>
+                                        </DialogDescription>
                                     </DialogContent>
                                 </Dialog>
                             </CardFooter>

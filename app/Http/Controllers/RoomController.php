@@ -12,37 +12,25 @@ use Inertia\Inertia;
 
 class RoomController extends Controller
 {
-
-
-    public function clientIndex(Request $request)
-    {
-        $rooms = Type::withCount('rooms')->with(['rooms' => function ($query) {
-            $query->orderBy('id')->take(1);
-        }, 'rooms.assets', 'rooms.features'])->get()->map(function ($type) {
-            return $type->rooms->map(function ($room) use ($type) {
-                $room->type_designation = $type->type_designation;
-                $room->rooms_count = $type->rooms_count;
-
-                return $room;
-            });
-        })->flatten();;
-        return Inertia::render('Client/Rooms', ['rooms' => $rooms]);
-    }
-
     public function index(Request $request)
     {
+        if ($request->user()->cannot('viewAny', Room::class) && ($request->user()->cannot('update', Room::class) || $request->user()->cannot('create', Room::class))) {
+            return abort(403);
+        }
         $itemsPerPage = $request->input('pages', 10);
-
         $rooms = Room::with('type')->orderBy('room_number')->paginate($itemsPerPage);
-
         return Inertia::render('Admin/Rooms/Rooms', ['rooms' => $rooms, 'room_permission' =>  getModelPermission($request, Room::class)]);
     }
 
     public function show(Request $request)
     {
+        if ($request->user()->cannot('viewAny', Room::class) && ($request->user()->cannot('update', Room::class))) {
+            return abort(403);
+        }
 
         $room = Room::with(['features', 'assets', 'type'])->where('room_number', $request->room)->first();
         $categorys = Category::all();
+        
         return Inertia::render('Admin/Rooms/Room', ['room' => $room, 'categorys' => $categorys]);
     }
 

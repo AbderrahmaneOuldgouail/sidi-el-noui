@@ -13,7 +13,7 @@ class FacturePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Facture-consulter');
+        return $user->role->permissions()->where('permission_name', 'Facture-consulter')->exists();
     }
 
 
@@ -22,7 +22,7 @@ class FacturePolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Facture-cree');
+        return $user->role->permissions()->where('permission_name', 'Facture-cree')->exists();
     }
 
     /**
@@ -30,7 +30,7 @@ class FacturePolicy
      */
     public function update(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Facture-modifier');
+        return $user->role->permissions()->where('permission_name', 'Facture-modifier')->exists();
     }
 
     /**
@@ -38,6 +38,6 @@ class FacturePolicy
      */
     public function delete(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Facture-supprimer');
+        return $user->role->permissions()->where('permission_name', 'Facture-supprimer')->exists();
     }
 }

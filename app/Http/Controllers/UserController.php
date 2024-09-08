@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Illuminate\Validation\Rule;
+
 
 class UserController extends Controller
 {
@@ -16,8 +18,8 @@ class UserController extends Controller
         if ($request->user()->cannot('viewAny', User::class) && ($request->user()->cannot('create', User::class) || $request->user()->cannot('delete', User::class) || $request->user()->cannot('update', User::class))) {
             return abort(403);
         }
-        $itemsPerPage = $request->input('pages', 10);
 
+        $itemsPerPage = $request->input('pages', 10);
         $client = Roles::CLIENT->value;
         $company = Roles::COMPANY->value;
 
@@ -25,12 +27,9 @@ class UserController extends Controller
             $query->where([['role_name', "<>",  $client], ['role_name', "<>",  $company]]);
         })->paginate($itemsPerPage);
 
-        return Inertia::render('Admin/Employes/Employees', ['users' => $users, 'employ_permission' =>  getModelPermission($request, User::class)]);
+        return Inertia::render('Admin/Employes/Employees', ['users' => $users, 'roles' => Role::whereNotIn('role_name', [Roles::CLIENT->value, Roles::COMPANY->value])->get()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(Request $request)
     {
         if ($request->user()->cannot('create', User::class)) {
@@ -40,9 +39,6 @@ class UserController extends Controller
         return Inertia::render('Admin/Employes/CreateEmployes', ['roles' => $roles]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         if ($request->user()->cannot('create', User::class)) {
@@ -79,19 +75,59 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('message', ['status' => 'success', 'message' => 'Employé ajouter avec succès']);
     }
 
+    public function edit(Request $request, string $id)
+    {
+        if ($request->user()->cannot('update', User::class)) {
+            return abort(403);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+        $user = User::with('role')->where("id", $id)->first();
+
+        if ($user->role->role_name == Roles::SUPPERADMIN->value) {
+            return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Vous pouvez pas modifier ce utilisateur']);
+        }
+
+        $roles = Role::whereNotIn('role_name', [Roles::CLIENT->value, Roles::COMPANY->value])->get();
+        return Inertia::render('Admin/Employes/EditEmployes', ['roles' => $roles, 'user' => $user]);
+    }
+
+    public function update(Request $request)
+    {
+        if ($request->user()->cannot('update', User::class)) {
+            return abort(403);
+        }
+
+        $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($request->route('user'))],
+            'phone' => ['required', 'string', Rule::unique('users')->ignore($request->route('user'))],
+            'role' => 'required|string|exists:roles,role_name',
+        ]);
+
+        DB::beginTransaction();
+        $role_id = Role::where('role_name', $request->role)->first()->role_id;
+        $user = User::where('id', $request->user)->first();
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'role_id' => $role_id,
+        ]);
+        DB::commit();
+
+        return redirect()->route('users.index')->with('message', ['status' => 'success', 'message' => 'Employé modifier avec succès']);
+    }
+
     public function destroy(string $id, Request $request)
     {
         if ($request->user()->cannot('delete', User::class)) {
             return abort(403);
         }
         $user = User::where('id', $id)->first();
-        $role = Role::where('role_id', $user->role->role_id)->first();
 
-        if ($role && Roles::exists($role->role_name)) {
+        if ($user->role->role_name == Roles::SUPPERADMIN->value) {
             return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Vous pouvez pas supprimer ce utilisateur']);
         }
 

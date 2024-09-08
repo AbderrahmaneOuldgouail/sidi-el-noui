@@ -1,9 +1,8 @@
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Dot, MoreHorizontal, Eye, Pencil } from "lucide-react";
+import { MoreHorizontal, Eye, Pencil } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import { Switch } from "@/Components/ui/switch";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -14,10 +13,9 @@ import {
 } from "@/Components/ui/dropdown-menu";
 import { Link, usePage } from "@inertiajs/react";
 import { router } from "@inertiajs/react";
-import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { Badge } from "@/Components/ui/badge";
 import { useTrans } from "@/Hooks/useTrans";
-import { Editor } from "@/Components/Admin/Shared/Editor";
+import ColumnHeader from "@/Components/Admin/ColumnHeader";
 
 export type Payment = {
     room_number: string;
@@ -32,17 +30,12 @@ export type Payment = {
 
 export const columns: ColumnDef<Payment>[] = [
     {
-        accessorKey: "Numéro de chmabre",
+        accessorKey: "Numéro de chambre",
         cell: ({ row }) => {
             const room = row.original;
             return <span> {room.room_number}</span>;
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Numéro de chmabre")}
-            />
-        ),
+        header: ({ column }) => <ColumnHeader title={"Numéro de chambre"} />,
     },
     {
         accessorKey: "Type",
@@ -50,43 +43,14 @@ export const columns: ColumnDef<Payment>[] = [
             const room = row.original;
             return <span> {room.type.type_designation} </span>;
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title={useTrans("Type")} />
-        ),
+        header: ({ column }) => <ColumnHeader title={"Type"} />,
     },
-    // {
-    //     accessorKey: "Description",
-    //     cell: ({ row }) => {
-    //         const room = row.original;
-    //         const truncateText = (text, length) => {
-    //             if (text.length <= length) {
-    //                 return text;
-    //             }
-    //             return text.slice(0, length) + "...";
-    //         };
-    //         // return <span> {room.room_descreption}</span>;
-    //         return (
-    //             <Editor
-    //                 autofocus={false}
-    //                 editable={false}
-    //                 content={room.room_descreption}
-    //                 classNames={{ content: "resize-none" }}
-    //             />
-    //         );
-    //     },
-    //     header: ({ column }) => (
-    //         <DataTableColumnHeader
-    //             column={column}
-    //             title={useTrans("Description")}
-    //         />
-    //     ),
-    // },
     {
         accessorKey: "Status",
         cell: ({ row }) => {
             const room = row.original;
             return (
-                <div className="flex items-center justify-center space-x-2">
+                <div className="flex items-center justify-center rtl:justify-start space-x-2">
                     {room.room_status === "hors service" ? (
                         <Badge variant="danger">{room.room_status} </Badge>
                     ) : room.room_status === "libre" ? (
@@ -97,26 +61,18 @@ export const columns: ColumnDef<Payment>[] = [
                 </div>
             );
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title={useTrans("Status")} />
-        ),
+        header: ({ column }) => <ColumnHeader title={"Status"} />,
     },
     {
         accessorKey: "Prix",
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                className="justify-end"
-                column={column}
-                title={useTrans("Prix de chmabre")}
-            />
-        ),
+        header: ({ column }) => <ColumnHeader title={"Prix de chambre"} />,
         cell: ({ row }) => {
             const formatted = new Intl.NumberFormat("fr-FR", {
                 style: "currency",
                 currency: "DZD",
             }).format(row.original.room_price);
 
-            return <div className="text-right font-medium">{formatted}</div>;
+            return <div className="font-medium">{formatted}</div>;
         },
     },
     {

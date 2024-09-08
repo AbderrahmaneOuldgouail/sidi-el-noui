@@ -1,14 +1,51 @@
 import React from "react";
-import { Head, Link } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/Components/ui/dialog";
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+} from "@/Components/ui/card";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/Components/ui/carousel";
+import { Editor } from "@/Components/Admin/Shared/Editor";
+import { buttonVariants } from "@/Components/ui/button";
+import { Badge } from "@/Components/ui/badge";
 import { Separator } from "@/Components/ui/separator";
 import { useTrans } from "@/Hooks/useTrans";
 
 export default function Booking({ booking }) {
+    const totalPrice = () => {
+        let total = 0;
+        let days =
+            (new Date(booking.check_out) - new Date(booking.check_in)) /
+            (1000 * 60 * 60 * 24);
+        booking.rooms.map((room) => {
+            total += room.room_price * days;
+        });
 
+        booking.consomation.map((consomation) => {
+            total += consomation.consumption_price * consomation.pivot.quantity;
+        });
+
+        return total;
+    };
     return (
         <AdminPanelLayout>
             <Head title="Réservation" />
@@ -20,110 +57,213 @@ export default function Booking({ booking }) {
                     booking.user.last_name
                 }
             />
-            <PlaceholderContent>
-                <div className="flex gap-4 mb-4">
-                    <Card className="w-1/2">
-                        <CardHeader>
-                            <CardTitle>{useTrans("Réservation")} </CardTitle>
+            <PlaceholderContent className="flex flex-col md:flex-row gap-2">
+                <div className="md:w-1/3 w-full flex md:flex-col gap-2">
+                    <Card>
+                        <CardHeader className="font-bold p-2">
+                            {useTrans("Informations de client")}
                         </CardHeader>
-                        <CardContent>
-                            <div className=" md:flex block">
-                                <div className="md:w-1/2">
-                                    {useTrans("Arrivée : ")} {booking.check_in}
-                                </div>
-                                <div className="md:w-1/2">
-                                    {useTrans("Départ : ")} {booking.check_out}
-                                </div>
-                            </div>
+                        <CardContent className="flex justify-between p-2">
                             <div>
-                                {useTrans("Réserver le : ")}{" "}
-                                {booking.created_at}{" "}
-                            </div>
-                            <div>
-                                {useTrans("Pour : ")} {booking.guest_number}{" "}
-                                {useTrans("personnes")}
+                                <div className="font-bold">
+                                    {booking.user.first_name}{" "}
+                                    {booking.user.last_name}{" "}
+                                </div>
+                                <div>{booking.user.email}</div>
+                                <div className="text-sm text-muted-foreground">
+                                    {booking.user.phone}
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
-                    <Card className="w-1/2">
-                        <CardHeader>
-                            <CardTitle>{useTrans("Client")} </CardTitle>
+                    <Card>
+                        <CardHeader className="font-bold p-2">
+                            {useTrans("Détails de réservation")}
                         </CardHeader>
-                        <CardContent>
-                            <div className=" md:flex block">
-                                <div className="md:w-1/2">
-                                    {useTrans("Nom")} :{" "}
-                                    {booking.user.first_name}
+                        <CardContent className="flex justify-between p-2">
+                            <div>
+                                <div>{useTrans("Arrivée")} </div>
+                                <div className="font-bold">
+                                    {booking.check_in}
                                 </div>
-                                <div className="md:w-1/2">
-                                    {useTrans("Prénom")} :{" "}
-                                    {booking.user.last_name}
+                                <div className="text-sm text-muted-foreground">
+                                    12h00 - 23h00
                                 </div>
                             </div>
                             <div>
-                                {useTrans("Email")} : {booking.user.email}{" "}
-                            </div>
-                            <div>
-                                {useTrans("N° téléphone")} :{" "}
-                                {booking.user.phone}{" "}
+                                <div>{useTrans("Départ")} </div>
+                                <div className="font-bold">
+                                    {booking.check_out}
+                                </div>
+                                <div className="text-sm text-muted-foreground">
+                                    07h00 - 12h00
+                                </div>
                             </div>
                         </CardContent>
+                        <CardFooter className="flex-col items-start p-2">
+                            <div>{useTrans("Durée de séjour")} </div>
+                            <div className="font-bold">
+                                {(new Date(booking.check_out) -
+                                    new Date(booking.check_in)) /
+                                    (1000 * 60 * 60 * 24)}{" "}
+                                {useTrans("nuit")}
+                            </div>
+                        </CardFooter>
+                    </Card>
+                    <Card>
+                        <CardHeader className="p-2 font-bold">
+                            {useTrans("Récapitulatif du montant")}
+                        </CardHeader>
+                        <CardContent className="p-2 text-3xl font-bold text-primary">
+                            {totalPrice(booking.rooms)} {useTrans("DA")}
+                        </CardContent>
+                        <CardFooter className="p-2 text-muted-foreground">
+                            {useTrans("Ce prix avec tout tax inclus")}
+                        </CardFooter>
                     </Card>
                 </div>
-                <Separator />
-                <Card className="my-4">
-                    <CardHeader>
-                        <CardTitle>{useTrans("Chambres")} </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        {booking.rooms.map((room) => (
-                            <div key={room.room_number}>
-                                <div className="flex">
-                                    <div className="w-1/2">
-                                        {useTrans("La Chambre N°")} :{" "}
-                                        {room.room_number}{" "}
-                                    </div>
-                                    <div className="w-1/2">
-                                        {useTrans("Capacité")} :{" "}
-                                        {room.beeds_number}{" "}
-                                        {useTrans("personnes")}
-                                    </div>
-                                </div>
+                <div className="md:w-2/3 w-full h-fit bg-card p-2 pb-6 rounded-lg">
+                    {booking.rooms.map((room) => (
+                        <Card className="w-full mb-2" key={room.room_number}>
+                            <CardHeader className="font-bold p-2 pb-0 flex-row items-center justify-between">
                                 <div>
-                                    {useTrans("Prix de chmabre")} :{" "}
-                                    {room.room_price} {useTrans("DA")}
+                                    {useTrans("Chambre")}{" "}
+                                    {room.type.type_designation}{" "}
+                                    {useTrans("avec")} {room.beeds_number}{" "}
+                                    {useTrans("lits")}
                                 </div>
-                                <Separator />
-                            </div>
-                        ))}
-                    </CardContent>
-                </Card>
-                <Separator />
-                {booking.consomation.length > 0 && (
-                    <Card className="my-4">
-                        <CardHeader>
-                            <CardTitle>
-                                {useTrans("List Des Consommations")}{" "}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            {booking.consomation.map((consomation) => (
-                                <div key={consomation.consumption_id}>
-                                    <div className="flex justify-between">
-                                        <div>
-                                            {consomation.consumption_name}
-                                        </div>
-                                        <div>
-                                            {" x "}
-                                            {consomation.pivot.quantity}
-                                        </div>
-                                    </div>
-                                    <Separator />
+                                <div className="text-xl text-primary">
+                                    {(new Date(booking.check_out) -
+                                        new Date(booking.check_in)) /
+                                        (1000 * 60 * 60 * 24)}{" "}
+                                    x {room.room_price} {useTrans("DA")}
                                 </div>
-                            ))}
-                        </CardContent>
-                    </Card>
-                )}
+                            </CardHeader>
+                            <CardContent className="p-2 ">
+                                {room.features.slice(0, 4).map((feature) => (
+                                    <Badge
+                                        className="m-0 w-autot"
+                                        key={feature.feature_id}
+                                    >
+                                        {feature.features_name}
+                                        {feature.need_value == true &&
+                                            ": " + feature.pivot.valeur}
+                                    </Badge>
+                                ))}
+                            </CardContent>
+                            <CardFooter className="flex-col items-end p-2 pt-0">
+                                <Dialog>
+                                    <DialogTrigger
+                                        className={buttonVariants({
+                                            variant: "link",
+                                        })}
+                                    >
+                                        {useTrans("Voir Plus")}
+                                    </DialogTrigger>
+                                    <DialogContent className="p-0">
+                                        <DialogHeader>
+                                            <DialogTitle className="p-0">
+                                                <Carousel>
+                                                    <CarouselContent>
+                                                        {room.assets.map(
+                                                            (asset) => (
+                                                                <CarouselItem>
+                                                                    <img
+                                                                        src={
+                                                                            asset.url
+                                                                        }
+                                                                        alt={
+                                                                            asset.name
+                                                                        }
+                                                                        className="w-full"
+                                                                    />
+                                                                </CarouselItem>
+                                                            )
+                                                        )}
+                                                    </CarouselContent>
+                                                    <CarouselPrevious />
+                                                    <CarouselNext />
+                                                </Carousel>
+                                            </DialogTitle>
+                                        </DialogHeader>
+                                        <DialogDescription className="p-4">
+                                            <div className="font-bold text-foreground flex justify-between">
+                                                <div>
+                                                    {useTrans("Chambre")}{" "}
+                                                    {room.type.type_designation}{" "}
+                                                    {useTrans("avec")}{" "}
+                                                    {room.beeds_number}{" "}
+                                                    {useTrans("lits")}
+                                                </div>
+                                                <div className="text-xl text-primary">
+                                                    {" "}
+                                                    {room.room_price}{" "}
+                                                    {useTrans("DA")}
+                                                </div>
+                                            </div>
+                                            {room.features.length > 0 && (
+                                                <div className="my-2 ">
+                                                    <Separator />
+                                                    <div className="font-bold text-foreground pb-2 flex justify-start">
+                                                        {useTrans(
+                                                            "Caractéristiques"
+                                                        )}{" "}
+                                                        :
+                                                    </div>
+                                                    {room.features
+                                                        .slice(0, 4)
+                                                        .map((feature) => (
+                                                            <Badge
+                                                                className="m-0 w-autot"
+                                                                key={
+                                                                    feature.feature_id
+                                                                }
+                                                            >
+                                                                {
+                                                                    feature.features_name
+                                                                }
+                                                                {feature.need_value ==
+                                                                    true &&
+                                                                    ": " +
+                                                                        feature
+                                                                            .pivot
+                                                                            .valeur}
+                                                            </Badge>
+                                                        ))}
+                                                </div>
+                                            )}
+                                            <div className="my-2">
+                                                <Separator />
+                                                <Editor
+                                                    className="bg-transparent border-none max-h-[200px] overflow-auto"
+                                                    autofocus={false}
+                                                    editable={false}
+                                                    content={
+                                                        room.room_descreption
+                                                    }
+                                                />
+                                            </div>
+                                        </DialogDescription>
+                                    </DialogContent>
+                                </Dialog>
+                            </CardFooter>
+                        </Card>
+                    ))}
+                    {booking.consomation.map((consomation) => (
+                        <Card
+                            className="w-full mb-2"
+                            key={consomation.consumption_id}
+                        >
+                            <CardHeader className="p-2 font-bold flex flex-row items-center justify-between">
+                                <div>{consomation.consumption_name}</div>
+                                <div className="text-xl text-primary">
+                                    {consomation.pivot.quantity} x{" "}
+                                    {consomation.consumption_price} DA
+                                </div>
+                            </CardHeader>
+                        </Card>
+                    ))}
+                </div>
             </PlaceholderContent>
         </AdminPanelLayout>
     );

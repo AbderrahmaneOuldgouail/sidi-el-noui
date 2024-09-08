@@ -2,11 +2,23 @@
   "Rooms" :{
     "Chambres" : "الغرف"
   },
+
+  "Tableaux De Bord" : "لوحات المعلومات",
+  "Entrés d'aujourd'hui" : "تسجيلات الدخول اليوم",
+  "Sorties d'aujourd'hui" : "تسجيلات الخروج اليوم",
+  "Réservations de jour" : "حجوزات اليوم",
+  "du dernier jour" : "من اليوم الأخير",
+  "Réservations de mois" : "حجوزات الشهر",
+  "du mois dernier" : "من الشهر الأخير",
+  "Les types plus réservé le mois dernier" : "أنواع الغرف الأكثر حجزاً في الشهر الماضي",
+  "Ces statistique inclus les réservations annuléers et refusées" : "وتشمل هذه الإحصائيات الحجوزات الملغاة والمرفوضة",
+
   "Crée un chambre" : "إنشاء غرفة",
   "Chambre Création" : "إنشاء الغرف",
   "Numéro de chmabre" : "رقم الغرفة",
   "Quel est le numéro unique de cette chambre ?" : "ما هو الرقم الفريد لهذه الغرفة؟",
   "Prix de chmabre" : "سعر الغرفة",
+  "Prix de chambre" : "سعر الغرفة", 
   "Ce sont les prix de la chambre avec tous taxe inclus" : "هذه هي أسعار الغرف شاملة جميع الضرائب",
   "Nombre de lits" : "عدد الأسرة",
   "Quel est le nombre de lits dans cette chambre" : "كم سرير في هذه الغرفة؟",
@@ -100,7 +112,7 @@
   "Choisis une date" : "اختر تاريخا",
   "Modification d'évènement" : "تعديل الحدث",
   "Créer un nouveau évènement" : "إنشاء حدث جديد",
-  "Modifier ce évènement" : "تحرير هذا الحدث",
+  "Modifier ce évènement" : "تعديل هذا الحدث",
   
   "Promotionss" : "===========================================================================",
   "Promotions" : "التخفيضات",
@@ -131,7 +143,7 @@
   "Employés" : "الموظفون",
   "Ajouter un employé" : "إضافة موظف",
   "Rôle" : "الدور",
-  "date d'inscription " : "تاريخ التسجيل",
+  "date d'inscription" : "تاريخ التسجيل",
   "Inscription d'employé" : "تسجيل موظف",
   "Nom d'employé" : "اسم الموظف",
   "Prénom d'employé" : "لقب الموظف",
@@ -141,11 +153,13 @@
   "Le N° téléphone doit être unique pour chaque utilisateur" : "يجب أن يكون رقم الهاتف فريدًا لكل مستخدم",
   "Assigne un role au ce employé" : "عين دور لهذا الموظف",
   "Sélectionner un role..." : "حدد الدور...",
+  "Modification les informations d'employé" : "تعديل معلومات الموظف",
 
   "roles" : "================================================================================",
   "Rôles" :"الأدوار",
   "Ajouter un rôle" : "أضف دورًا",
   "Permissions" : "الأذونات",
+  "List des permissions pour le rôle" : "قائمة الأذونات للدور",
   "date de création": "تاريخ الإنشاء",
   "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions" : "لا يمكن التراجع عن هذا الإجراء. ستحذف هذا الدور نهائيًا، وسيتولى المستخدمون الذين لديهم هذا الدور دور المسؤول البسيط وسيفقدون جميع أذوناتهم",
   "Nom de rôle" : "اسم الدور",
@@ -193,6 +207,8 @@
   "Réserver" : "حجز",
   "Chambres disponible" : "الغرف متوفرة",
   "Choisi cette option lors cette réservation est pour un société" : "اختر هذا الخيار عندما يكون هذا الحجز خاصًا بشركة",
+  "Informations de client" : "معلومات الزبون",
+  "Détails de réservation" : "تفاصيل الحجز",
 
   "nav bar" : "==============================================================================",
   "Compte" : "الحساب",
@@ -241,6 +257,8 @@
   "la valeur de taxe de séjour en DA/personne" : "قيمة الضريبة السياحية بـ دج/شخص",
   "La valeur de tibmre en %" : " قيمة الطوابع بـ %",
   "Droit de timbre" : "واجب الطوابع",
+  "N° Facture" : "رقم الفاتورة",
+  "List des invités" : "قائمة الضيوف",
 
   "messages" : "===========================================================================",
   "Tous" : "الكل",

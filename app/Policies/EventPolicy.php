@@ -13,7 +13,7 @@ class EventPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Evenement-consulter');
+        return $user->role->permissions()->where('permission_name', 'Evenement-consulter')->exists();
     }
 
 
@@ -22,7 +22,7 @@ class EventPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Evenement-cree');
+        return $user->role->permissions()->where('permission_name', 'Evenement-cree')->exists();
     }
 
     /**
@@ -30,7 +30,7 @@ class EventPolicy
      */
     public function update(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Evenement-modifier');
+        return $user->role->permissions()->where('permission_name', 'Evenement-modifier')->exists();
     }
 
     /**
@@ -38,6 +38,6 @@ class EventPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Evenement-supprimer');
+        return $user->role->permissions()->where('permission_name', 'Evenement-supprimer')->exists();
     }
 }

@@ -8,7 +8,7 @@ class EmploysPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Employ-consulter');
+        return $user->role->permissions()->where('permission_name', 'Employ-consulter')->exists();
     }
 
 
@@ -17,7 +17,7 @@ class EmploysPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Employ-cree');
+        return $user->role->permissions()->where('permission_name', 'Employ-cree')->exists();
     }
 
     /**
@@ -25,7 +25,7 @@ class EmploysPolicy
      */
     public function update(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Employ-modifier');
+        return $user->role->permissions()->where('permission_name', 'Employ-modifier')->exists();
     }
 
     /**
@@ -33,6 +33,6 @@ class EmploysPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Employ-supprimer');
+        return $user->role->permissions()->where('permission_name', 'Employ-supprimer')->exists();
     }
 }

@@ -30,7 +30,6 @@ import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import { DatePickerWithRange } from "@/Components/ui/DatePickerWithRange";
 import { Input } from "@/Components/ui/input";
 import { useTrans } from "@/Hooks/useTrans";
-import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group";
 import { Checkbox } from "@/Components/ui/checkbox";
 
 export function AddBooking() {
@@ -38,11 +37,11 @@ export function AddBooking() {
         from: "",
         to: "",
     });
-    const { data, post, setData, errors } = useForm("Layout/AddBooking", {
+    const { data, get, setData, errors } = useForm({
         check_in: "",
         check_out: "",
         guest_number: 0,
-        is_company: false,
+        is_company: 0,
     });
     const [open, setOpen] = useState(false);
     const { width } = useWindowDimensions();
@@ -89,7 +88,7 @@ export function AddBooking() {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("bookings.searchAviableRoom"));
+        get(route("bookings.searchAviableRoom"));
     };
 
     if (width >= 767) {
@@ -159,9 +158,12 @@ export function AddBooking() {
                         <div className="flex gap-2 items-center">
                             <Checkbox
                                 id="need_value"
-                                checked={data.is_company}
+                                checked={data.is_company == 1 ? true : false}
                                 onCheckedChange={() =>
-                                    setData("is_company", !data.is_company)
+                                    setData(
+                                        "is_company",
+                                        data.is_company == 1 ? 0 : 1
+                                    )
                                 }
                             />
                             <InputLabel

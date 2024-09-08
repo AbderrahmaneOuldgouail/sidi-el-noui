@@ -1,6 +1,6 @@
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Eye, Pencil, Trash } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { Button, buttonVariants } from "@/Components/ui/button";
 import {
     Dialog,
@@ -28,10 +28,10 @@ import {
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 import { router, usePage } from "@inertiajs/react";
-import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { Badge } from "@/Components/ui/badge";
 import { useTrans } from "@/Hooks/useTrans";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
+import ColumnHeader from "@/Components/Admin/ColumnHeader";
 
 export type Users = {
     id: number;
@@ -56,12 +56,7 @@ export const userColumns: ColumnDef<Users>[] = [
                 </div>
             );
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Utilisateurs")}
-            />
-        ),
+        header: () => <ColumnHeader title={"Utilisateurs"} />,
     },
     {
         accessorKey: "Email",
@@ -69,9 +64,7 @@ export const userColumns: ColumnDef<Users>[] = [
             const user = row.original;
             return <span>{user.email} </span>;
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title={useTrans("Email")} />
-        ),
+        header: () => <ColumnHeader title={"Email"} />,
     },
     {
         accessorKey: "N° téléphone",
@@ -79,35 +72,23 @@ export const userColumns: ColumnDef<Users>[] = [
             const user = row.original;
             return <span>{user.phone} </span>;
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("N° téléphone")}
-            />
-        ),
+        header: () => <ColumnHeader title={"N° téléphone"} />,
     },
     {
-        accessorKey: "Role",
+        accessorKey: "Rôle",
         cell: ({ row }) => {
             const user = row.original;
             return <Badge>{user.role.role_name} </Badge>;
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title={useTrans("Role")} />
-        ),
+        header: () => <ColumnHeader title={"Rôle"} />,
     },
     {
-        accessorKey: "date d'inscription ",
+        accessorKey: "date d'inscription",
         cell: ({ row }) => {
             const user = row.original;
-            return <span> {user.created_at}</span>;
+            return <span> {user.created_at.split("T")[0]}</span>;
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("date d'inscription ")}
-            />
-        ),
+        header: () => <ColumnHeader title={"date d'inscription"} />,
     },
     {
         id: "actions",
@@ -116,7 +97,8 @@ export const userColumns: ColumnDef<Users>[] = [
             const { width } = useWindowDimensions();
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
-            const employ_permission = usePage().props.employ_permission;
+            const employ_permission = usePage().props.auth.permissions.employ;
+            const roles = usePage().props.roles;
 
             const handleDelete = () => {
                 router.delete(route("users.destroy", user.id), {
@@ -128,6 +110,7 @@ export const userColumns: ColumnDef<Users>[] = [
                     },
                 });
             };
+
             return (
                 <DropdownMenu
                     open={isopen ? true : open}
@@ -141,7 +124,12 @@ export const userColumns: ColumnDef<Users>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         {employ_permission.update && (
-                            <DropdownMenuItem>
+                            <DropdownMenuItem
+                                className="cursor-pointer flex"
+                                onClick={() =>
+                                    router.get(route("users.edit", user.id))
+                                }
+                            >
                                 <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                                 <span>{useTrans("Modifier")}</span>
                             </DropdownMenuItem>
@@ -151,7 +139,7 @@ export const userColumns: ColumnDef<Users>[] = [
                                 {width >= 767 ? (
                                     <Dialog
                                         open={isopen}
-                                        onOpenChange={setIsOpen}
+                                        onOpenChange={() => setIsOpen(!isopen)}
                                     >
                                         <DialogTrigger
                                             className={buttonVariants({
@@ -199,7 +187,7 @@ export const userColumns: ColumnDef<Users>[] = [
                                 ) : (
                                     <Drawer
                                         open={isopen}
-                                        onOpenChange={setIsOpen}
+                                        onOpenChange={() => etIsOpen(!isopen)}
                                     >
                                         <DrawerTrigger
                                             className={buttonVariants({

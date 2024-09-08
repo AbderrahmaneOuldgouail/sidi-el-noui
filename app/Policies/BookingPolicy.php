@@ -13,7 +13,7 @@ class BookingPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Réservation-consulter');
+        return $user->role->permissions()->where('permission_name', 'Réservation-consulter')->exists();
     }
 
 
@@ -22,7 +22,7 @@ class BookingPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Réservation-cree');
+        return $user->role->permissions()->where('permission_name', 'Réservation-cree')->exists();
     }
 
     /**
@@ -30,7 +30,6 @@ class BookingPolicy
      */
     public function update(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Réservation-modifier');
+        return $user->role->permissions()->where('permission_name', 'Réservation-modifier')->exists();
     }
-
 }

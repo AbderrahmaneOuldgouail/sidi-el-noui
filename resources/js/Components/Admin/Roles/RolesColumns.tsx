@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
+import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, Eye, Pencil, Trash, ChevronUp } from "lucide-react";
 import { Button, buttonVariants } from "@/Components/ui/button";
@@ -30,14 +29,9 @@ import {
 } from "@/Components/ui/dropdown-menu";
 import { Link, router, usePage } from "@inertiajs/react";
 import { DataTableColumnHeader } from "../DataTableColumnHeader";
-import { Badge } from "@/Components/ui/badge";
 import { useTrans } from "@/Hooks/useTrans";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/Components/ui/collapsible";
+import ColumnHeader from "@/Components/Admin/ColumnHeader";
 
 export type Permission = {
     permission_id: number;
@@ -58,43 +52,83 @@ export const roleColumns: ColumnDef<Role>[] = [
             return <div>{role.role_name}</div>;
         },
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title={useTrans("Rôle")} />
+            // <DataTableColumnHeader column={column} title={useTrans("Rôle")} />
+            <ColumnHeader title={"Rôle"} />
         ),
     },
     {
         accessorKey: "Permissions",
         cell: ({ row }) => {
             const role = row.original;
-            const [open, setOpen] = useState(false);
-            return (
-                <Collapsible>
-                    <CollapsibleTrigger
-                        onClick={() => setOpen(!open)}
-                        className="flex gap-2"
-                    >
-                        <div>Permissions</div>
-                        <ChevronUp
-                            className={cn(
-                                "h-4 w-4 transition-transform ease-in-out duration-700",
-                                open === false ? "rotate-180" : "rotate-0"
-                            )}
-                        />
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                        {role.permissions.map((permission) => (
-                            <div key={permission.permission_id}>
-                                {permission.permission_name}
-                            </div>
-                        ))}
-                    </CollapsibleContent>
-                </Collapsible>
+            const { width } = useWindowDimensions();
+            const [isopen, setIsOpen] = React.useState(false);
+            return width >= 767 ? (
+                <Dialog open={isopen} onOpenChange={setIsOpen}>
+                    <DialogTrigger>{useTrans("Permissions")}</DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle className="text-left rtl:text-right rtl:pr-4">
+                                {useTrans("List des permissions pour le rôle")}{" "}
+                                {role.role_name}
+                            </DialogTitle>
+                            <DialogDescription className="flex flex-wrap">
+                                {role.permissions.map((permission) => (
+                                    <span
+                                        className="px-2 py-1"
+                                        key={permission.permission_id}
+                                    >
+                                        {permission.permission_name}
+                                    </span>
+                                ))}
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                            <Button
+                                variant="outline"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                {useTrans("Annuler")}
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+            ) : (
+                <Drawer open={isopen} onOpenChange={setIsOpen}>
+                    <DrawerTrigger>{useTrans("Permissions")} </DrawerTrigger>
+                    <DrawerContent>
+                        <DrawerHeader>
+                            <DrawerTitle className="text-left rtl:text-right">
+                                {useTrans("List des permissions pour le rôle")}{" "}
+                                {role.role_name}{" "}
+                            </DrawerTitle>
+                            <DrawerDescription className="flex flex-wrap">
+                                {role.permissions.map((permission) => (
+                                    <span
+                                        className="px-2 py-1"
+                                        key={permission.permission_id}
+                                    >
+                                        {permission.permission_name}
+                                    </span>
+                                ))}
+                            </DrawerDescription>
+                        </DrawerHeader>
+                        <DrawerFooter className="pt-2">
+                            <DrawerClose asChild>
+                                <Button variant="outline">
+                                    {useTrans("Annuler")}
+                                </Button>
+                            </DrawerClose>
+                        </DrawerFooter>
+                    </DrawerContent>
+                </Drawer>
             );
         },
         header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Permissions")}
-            />
+            // <DataTableColumnHeader
+            //     column={column}
+            //     title={useTrans("Permissions")}
+            // />
+            <ColumnHeader title={"Permissions"} />
         ),
     },
     {
@@ -130,7 +164,10 @@ export const roleColumns: ColumnDef<Role>[] = [
                     <DropdownMenuContent align="end">
                         {role_permission.update && (
                             <DropdownMenuItem>
-                                <Link href={route("roles.edit", role.role_id)}>
+                                <Link
+                                    href={route("roles.edit", role.role_id)}
+                                    className="flex"
+                                >
                                     <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                                     <span>{useTrans("Modifier")}</span>
                                 </Link>

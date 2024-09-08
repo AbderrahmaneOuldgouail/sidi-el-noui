@@ -13,7 +13,7 @@ class ConsumptionPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Consommation-consulter');
+        return $user->role->permissions()->where('permission_name', 'Consommation-consulter')->exists();
     }
 
 
@@ -22,7 +22,7 @@ class ConsumptionPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Consommation-cree');
+        return $user->role->permissions()->where('permission_name', 'Consommation-cree')->exists();
     }
 
     /**
@@ -30,7 +30,7 @@ class ConsumptionPolicy
      */
     public function update(User $user): bool
     {
-        return $user->role->permissions->contains('permission_name', 'Consommation-modifier');
+        return $user->role->permissions()->where('permission_name', 'Consommation-modifier')->exists();
     }
 
     /**

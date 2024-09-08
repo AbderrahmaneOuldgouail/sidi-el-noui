@@ -4,21 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ServiceController extends Controller
 {
 
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
         $service = Service::with('assets', 'consomation')->where('service_id', $id)->first();
         return Inertia::render('Client/Services/Show', ['service' => $service]);
-    }
-    public function servicesIndex()
-    {
-
-        return Inertia::render('Client/Services');
     }
 
     public function index(Request  $request)

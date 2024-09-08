@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Mail\ReplyMessage;
 use App\Models\Message;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -48,6 +47,8 @@ class MessageController extends Controller
         }
         $message = Message::where('message_id', $id)->first();
         $message->update(['read_at' => now()]);
+
+        Cache::forget('hasUnreadMessages');
         return redirect()->back();
     }
 
@@ -57,6 +58,7 @@ class MessageController extends Controller
             return abort(403);
         }
         Message::query()->update(['read_at' => now()]);
+        Cache::forget('hasUnreadMessages');
         return redirect()->back();
     }
 
@@ -67,6 +69,7 @@ class MessageController extends Controller
         }
         $message = Message::find($id);
         $message->delete();
+        Cache::forget('hasUnreadMessages');
         return redirect()->back()->with('message', ['status' => 'success', 'message'
         => 'Message supprimé avec succès']);
     }
@@ -77,6 +80,7 @@ class MessageController extends Controller
             return abort(403);
         }
         DB::table('messages')->delete();
+        Cache::forget('hasUnreadMessages');
         return redirect()->back()->with('message', ['status' => 'success', 'message'
         => 'Messages supprimé avec succès']);
     }
@@ -95,6 +99,7 @@ class MessageController extends Controller
             'message' => $request->message,
             'read_at' => null,
         ]);
+        Cache::forget('hasUnreadMessages');
 
         return redirect()->back()->with('message', ['status' => 'success', 'message' => 'Message envoyé avec sucssé']);
     }

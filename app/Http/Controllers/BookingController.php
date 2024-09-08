@@ -10,7 +10,6 @@ use App\Models\Booking;
 use App\Models\Role;
 use App\Models\Room;
 use App\Models\Service;
-use App\Models\Type;
 use App\Models\User;
 use App\Notifications\NewBookingNotif;
 use Illuminate\Http\Request;
@@ -26,8 +25,8 @@ class BookingController extends Controller
             return abort(403);
         }
 
-        $bookings = Booking::with('user')->where('check_out', '>=', now())->paginate(10);
-        return Inertia::render('Admin/Bookings/Bookings', ['bookings' => $bookings,'booking_permission' => getModelPermission($request, Booking::class)]);
+        $bookings = Booking::with('user')->where('check_out', '>=', now())->orderBy('created_at', 'desc')->paginate(10);
+        return Inertia::render('Admin/Bookings/Bookings', ['bookings' => $bookings, 'booking_permission' => getModelPermission($request, Booking::class)]);
     }
 
     public function historique(Request $request)
@@ -67,7 +66,7 @@ class BookingController extends Controller
         $date_check_in = $request->check_in;
         $date_check_out = $request->check_out;
 
-        $rooms = Room::with(['features', 'assets', 'type'])->whereDoesntHave('bookings', function ($query) use ($date_check_in, $date_check_out) {
+        $rooms = Room::with(['features',  'type'])->whereDoesntHave('bookings', function ($query) use ($date_check_in, $date_check_out) {
             $query->where(function ($query) use ($date_check_in, $date_check_out) {
                 $query->where('check_in', '<', $date_check_out)
                     ->where('check_out', '>', $date_check_in);
@@ -81,35 +80,17 @@ class BookingController extends Controller
                 'guest_number' => $request->guest_number,
                 'is_company' => $request->is_company
             ];
-            $cacheKey = 'available_rooms_' . uniqid();
 
-            Cache::put($cacheKey, ['rooms' => $rooms, 'bookingData' => $booking_data], now()->addMinutes(10));
+            $services = Service::with('consomation')->where('availability', true)->get();
 
-            return redirect()->route('bookings.showAviableRooms', ['cacheKey' => $cacheKey]);
+            return Inertia::render('Admin/Bookings/AviableRooms', [
+                'rooms' => $rooms,
+                'bookingData' => $booking_data,
+                'services' => $services,
+            ]);
         } else {
             return redirect()->back()->with('message', ['status' => 'error', 'message' => 'No rooms aviable']);
         }
-    }
-
-    public function showAviableRooms(Request $request)
-    {
-        if ($request->user()->cannot('create', Booking::class)) {
-            return abort(403);
-        }
-        $cacheKey = $request->cacheKey;
-        $data = Cache::get($cacheKey);
-
-        if (!$data) {
-            return redirect()->route('bookings.index')->with('message', ['status' => 'error', 'message' => 'No data available']);
-        }
-
-        $services = Service::with('consomation')->where('availability', true)->get();
-
-        return Inertia::render('Admin/Bookings/AviableRooms', [
-            'rooms' => $data['rooms'],
-            'bookingData' => $data['bookingData'],
-            'services' => $services,
-        ]);
     }
 
     public function changeStatus(Request $request)
@@ -132,7 +113,6 @@ class BookingController extends Controller
             return abort(403);
         }
 
-
         $request->validate([
             'first_name' => 'required|string|max:30',
             'last_name' => 'nullable|string|max:30',
@@ -152,62 +132,60 @@ class BookingController extends Controller
             'n_article' => 'nullable|numeric|max_digits:12',
         ]);
 
-
         DB::beginTransaction();
-        try {
-            $user = User::firstOrCreate(
+        $user = User::where('email', $request->email,)->orWhere('phone', $request->phone)->first();
+        if (!$user) {
+            $user = User::create(
                 [
-                    'phone' => $request->phone,
                     'email' => $request->email,
-
-                ],
-                [
+                    'phone' => $request->phone,
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
                     'access' => false,
+                    'adresse' => $request->adresse,
+                    'nif' => $request->nif,
+                    'nis' => $request->nis,
+                    'nrc' => $request->nrc,
+                    'n_article' => $request->n_article,
                     'role_id' => Role::where('role_name', $request->is_company ? Roles::COMPANY->value : Roles::CLIENT->value)->first()->role_id,
-                    'adresse' => $request->is_company ? $request->adresse : null,
-                    'nif' => $request->is_company ? $request->nif : null,
-                    'nis' => $request->is_company ? $request->nis : null,
-                    'nrc' => $request->is_company ? $request->nrc : null,
-                    'n_article' => $request->is_company ? $request->n_article : null,
                     'password' => bcrypt('password'),
                 ]
             );
-
-
-            $booking = Booking::create([
-                'user_id' => $user->id,
-                'check_in' => $request->check_in,
-                'check_out' => $request->check_out,
-                'guest_number' => $request->guest_number,
-                "booking_status" => booking_status::Waiting->value,
-                'created_at' => now(),
-            ]);
-            foreach ($request->rooms as $room) {
-                $booking->rooms()->attach($room);
-            }
-            if ($request->consomation) {
-                foreach ($request->consomation as $consomation) {
-                    $booking->consomation()->attach($consomation['consumption_id'], ['quantity' => $consomation['quantity']]);
-                }
-            }
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
         }
 
-        $booking = Booking::with('user')->where('booking_id', $booking->booking_id)->first();
+        $booking = Booking::create([
+            'user_id' => $user->id,
+            'check_in' => $request->check_in,
+            'check_out' => $request->check_out,
+            'guest_number' => $request->guest_number,
+            "booking_status" => booking_status::Waiting->value,
+            'created_at' => now(),
+        ]);
+        foreach ($request->rooms as $room) {
+            $booking->rooms()->attach($room);
+        }
+        if ($request->consomation) {
+            foreach ($request->consomation as $consomation) {
+                $booking->consomation()->attach($consomation['consumption_id'], ['quantity' => $consomation['quantity']]);
+            }
+        }
+        DB::commit();
 
+
+        $booking = Booking::with('user')->where('booking_id', $booking->booking_id)->first();
         event(new NewBooking($booking));
         $users = User::where("role_id", 1)->get();
         foreach ($users as $user) {
             $user->notify(new NewBookingNotif($booking));
         }
 
-
+        Cache::forget('check_ins');
+        Cache::forget('check_outs');
+        Cache::forget('day_bookings');
+        Cache::forget('last_day_bookings');
+        Cache::forget('month_bookings');
+        Cache::forget('last_month_bookings');
+        Cache::forget('dashboard_statistic_rooms');
 
         return redirect(route('bookings.index'))->with('message', ['status' => 'success', 'message' => 'Réservation effectué avec succé']);
     }
@@ -217,7 +195,7 @@ class BookingController extends Controller
         if ($request->user()->cannot('viewAny', Booking::class)) {
             return abort(403);
         }
-        $booking = Booking::with(['user', 'consomation', 'rooms'])->where('booking_id', $id)->first();
+        $booking = Booking::with(['user', 'rooms', 'consomation', 'rooms.type', 'rooms.features', 'rooms.assets'])->where('booking_id', $id)->first();
         return Inertia::render('Admin/Bookings/Booking', ['booking' => $booking]);
     }
 
@@ -252,8 +230,6 @@ class BookingController extends Controller
             ]);
 
 
-
-
         if ($rooms->isNotEmpty()) {
             $booking_data = [
                 'check_in' => $request->check_in,
@@ -286,13 +262,13 @@ class BookingController extends Controller
 
 
         DB::beginTransaction();
-        try {
-            $user = User::firstOrCreate(
+
+        $user = User::where('email', $request->email,)->orWhere('phone', $request->phone)->first();
+        if (!$user) {
+            $user = User::create(
                 [
                     'email' => $request->email,
                     'phone' => $request->phone,
-                ],
-                [
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
                     'access' => false,
@@ -300,29 +276,26 @@ class BookingController extends Controller
                     'password' => bcrypt('password'),
                 ]
             );
-
-            $booking = Booking::create([
-                'user_id' => $user->id,
-                'check_in' => $request->check_in,
-                'check_out' => $request->check_out,
-                'guest_number' => $request->guest_number,
-                "booking_status" => booking_status::Waiting->value,
-                'created_at' => now(),
-            ]);
-            foreach ($request->rooms as $room) {
-                $booking->rooms()->attach($room);
-            }
-            if ($request->consomation) {
-                foreach ($request->consomation as $consomation) {
-                    $booking->consomation()->attach($consomation['consumption_id'], ['quantity' => $consomation['quantity']]);
-                }
-            }
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
         }
+
+        $booking = Booking::create([
+            'user_id' => $user->id,
+            'check_in' => $request->check_in,
+            'check_out' => $request->check_out,
+            'guest_number' => $request->guest_number,
+            "booking_status" => booking_status::Waiting->value,
+            'created_at' => now(),
+        ]);
+        foreach ($request->rooms as $room) {
+            $booking->rooms()->attach($room);
+        }
+        if ($request->consomation) {
+            foreach ($request->consomation as $consomation) {
+                $booking->consomation()->attach($consomation['consumption_id'], ['quantity' => $consomation['quantity']]);
+            }
+        }
+        DB::commit();
+
 
         $booking = Booking::with('user')->where('booking_id', $booking->booking_id)->first();
 
@@ -331,6 +304,15 @@ class BookingController extends Controller
         foreach ($users as $user) {
             $user->notify(new NewBookingNotif($booking));
         }
+
+        Cache::forget('check_ins');
+        Cache::forget('check_outs');
+        Cache::forget('day_bookings');
+        Cache::forget('last_day_bookings');
+        Cache::forget('month_bookings');
+        Cache::forget('last_month_bookings');
+        Cache::forget('dashboard_statistic_rooms');
+
         return redirect(route('client.index'))->with('message', ['status' => 'success', 'message' => 'Réservation effectué avec succé']);
     }
 
@@ -342,7 +324,7 @@ class BookingController extends Controller
 
     public function myBookingshow(string $id)
     {
-        $booking = Booking::with(['user', 'rooms', 'consomation', 'factures', 'rooms.type', 'rooms.features', 'rooms.assets'])->where('booking_id', $id)->first();
+        $booking = Booking::with(['user', 'rooms', 'consomation', 'rooms.type', 'rooms.features', 'rooms.assets'])->where('booking_id', $id)->first();
         return Inertia::render('Client/Bookings/Booking', ['booking' => $booking]);
     }
 

@@ -44,86 +44,80 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+
+
         $sharedData = [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
             ],
-
             'flash' => [
                 'message' => fn() => $request->session()->get('message')
             ],
         ];
 
         if ($request->user()?->access == true) {
-            $sharedData['booking_permission'] = [
-                'create' => $request->user()->can('create', Booking::class),
-            ];
-            $sharedData['message_permission'] = [
-                'viewAny' => $request->user()?->can('viewAny', Message::class),
-                'create' => $request->user()?->can('create', Message::class),
-                'update' => $request->user()?->can('update', Message::class),
-                'delete' => $request->user()?->can('delete', Message::class),
-            ];
-            $sharedData['hasUnreadMessages'] = [
-                'hasUnreadMessages' => Message::whereNull('read_at')->exists()
-            ];
+            $sharedData['hasUnreadMessages'] = Cache::remember('hasUnreadMessages', now()->addDay(), function () {
+                return Message::whereNull('read_at')->exists();
+            });
             $sharedData['notifs'] = $request->user()?->unreadNotifications;
             $sharedData["auth"]['permissions'] =
-                [
-                    'room' => [
-                        'viewAny' => $request->user()?->can('viewAny', Room::class),
-                        'create' => $request->user()?->can('create', Room::class),
-                        'update' => $request->user()?->can('update', Room::class),
-                    ],
-                    'service' => [
-                        'viewAny' => $request->user()?->can('viewAny', Service::class),
-                        'create' => $request->user()?->can('create', Service::class),
-                        'update' => $request->user()?->can('update', Service::class),
-                        'delete' => $request->user()?->can('delete', Service::class),
-                    ],
-                    'message' => [
-                        'viewAny' => $request->user()?->can('viewAny', Message::class),
-                        'create' => $request->user()?->can('create', Message::class),
-                        'update' => $request->user()?->can('update', Message::class),
-                        'delete' => $request->user()?->can('delete', Message::class),
-                    ],
-                    'role' => [
-                        'viewAny' => $request->user()?->can('viewAny', Role::class),
-                        'create' => $request->user()?->can('create', Role::class),
-                        'update' => $request->user()?->can('update', Role::class),
-                        'delete' => $request->user()?->can('delete', Role::class),
-                    ],
-                    'promotion' => [
-                        'viewAny' => $request->user()?->can('viewAny', Promotion::class),
-                        'create' => $request->user()?->can('create', Promotion::class),
-                        'update' => $request->user()?->can('update', Promotion::class),
-                        'delete' => $request->user()?->can('delete', Promotion::class),
-                    ],
-                    'facture' => [
-                        'viewAny' => $request->user()?->can('viewAny', Facture::class),
-                        'create' => $request->user()?->can('create', Facture::class),
-                        'update' => $request->user()?->can('update', Facture::class),
-                        'delete' => $request->user()?->can('delete', Facture::class),
-                    ],
-                    'event' => [
-                        'viewAny' => $request->user()?->can('viewAny', Event::class),
-                        'create' => $request->user()?->can('create', Event::class),
-                        'update' => $request->user()?->can('update', Event::class),
-                        'delete' => $request->user()?->can('delete', Event::class),
-                    ],
-                    'employ' => [
-                        'viewAny' => $request->user()?->can('viewAny', User::class),
-                        'create' => $request->user()?->can('create', User::class),
-                        'update' => $request->user()?->can('update', User::class),
-                        'delete' => $request->user()?->can('delete', User::class),
-                    ],
-                    'booking' => [
-                        'viewAny' => $request->user()?->can('viewAny', Booking::class),
-                        'create' => $request->user()?->can('create', Booking::class),
-                        'update' => $request->user()?->can('update', Booking::class),
-                    ],
-                ];
+                Cache::remember("permissions_" . $request->user()->id, now()->addHour(), function () use ($request) {
+                    return [
+                        'room' => [
+                            'viewAny' => $request->user()?->can('viewAny', Room::class),
+                            'create' => $request->user()?->can('create', Room::class),
+                            'update' => $request->user()?->can('update', Room::class),
+                        ],
+                        'service' => [
+                            'viewAny' => $request->user()?->can('viewAny', Service::class),
+                            'create' => $request->user()?->can('create', Service::class),
+                            'update' => $request->user()?->can('update', Service::class),
+                            'delete' => $request->user()?->can('delete', Service::class),
+                        ],
+                        'message' => [
+                            'viewAny' => $request->user()?->can('viewAny', Message::class),
+                            'create' => $request->user()?->can('create', Message::class),
+                            'update' => $request->user()?->can('update', Message::class),
+                            'delete' => $request->user()?->can('delete', Message::class),
+                        ],
+                        'role' => [
+                            'viewAny' => $request->user()?->can('viewAny', Role::class),
+                            'create' => $request->user()?->can('create', Role::class),
+                            'update' => $request->user()?->can('update', Role::class),
+                            'delete' => $request->user()?->can('delete', Role::class),
+                        ],
+                        'promotion' => [
+                            'viewAny' => $request->user()?->can('viewAny', Promotion::class),
+                            'create' => $request->user()?->can('create', Promotion::class),
+                            'update' => $request->user()?->can('update', Promotion::class),
+                            'delete' => $request->user()?->can('delete', Promotion::class),
+                        ],
+                        'facture' => [
+                            'viewAny' => $request->user()?->can('viewAny', Facture::class),
+                            'create' => $request->user()?->can('create', Facture::class),
+                            'update' => $request->user()?->can('update', Facture::class),
+                            'delete' => $request->user()?->can('delete', Facture::class),
+                        ],
+                        'event' => [
+                            'viewAny' => $request->user()?->can('viewAny', Event::class),
+                            'create' => $request->user()?->can('create', Event::class),
+                            'update' => $request->user()?->can('update', Event::class),
+                            'delete' => $request->user()?->can('delete', Event::class),
+                        ],
+                        'employ' => [
+                            'viewAny' => $request->user()?->can('viewAny', User::class),
+                            'create' => $request->user()?->can('create', User::class),
+                            'update' => $request->user()?->can('update', User::class),
+                            'delete' => $request->user()?->can('delete', User::class),
+                        ],
+                        'booking' => [
+                            'viewAny' => $request->user()?->can('viewAny', Booking::class),
+                            'create' => $request->user()?->can('create', Booking::class),
+                            'update' => $request->user()?->can('update', Booking::class),
+                        ],
+                    ];
+                });
         }
 
 

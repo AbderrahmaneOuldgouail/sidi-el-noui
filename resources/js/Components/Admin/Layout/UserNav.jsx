@@ -24,7 +24,7 @@ import { RedBeadge } from "@/Components/ui/red-badge";
 
 export function UserNav() {
     const user = usePage().props.auth.user;
-    const message_permission = usePage().props.message_permission;
+    const message_permission = usePage().props.auth.permissions.message;
     const hasUnreadMessages = usePage().props.hasUnreadMessages;
     return (
         <DropdownMenu>

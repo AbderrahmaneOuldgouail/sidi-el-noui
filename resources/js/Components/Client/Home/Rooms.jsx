@@ -1,6 +1,6 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
-import RoomCard from "./RoomCard";
+import RoomCard from "@/Components/Client/Home/RoomCard";
 import { ScrollArea, ScrollBar } from "@/Components/ui/scroll-area";
 import { useTrans } from "@/Hooks/useTrans";
 
@@ -49,7 +49,7 @@ export default function Rooms({ rooms }) {
                         value={room.room_number}
                         key={room.room_number}
                     >
-                        <RoomCard room={room} />
+                        <RoomCard room={room} />{" "}
                     </TabsContent>
                 ))}
             </Tabs>
