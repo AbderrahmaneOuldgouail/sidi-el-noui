@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Promotion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -25,7 +26,7 @@ class PromotionController extends Controller
         if ($request->user()->cannot('viewAny', Promotion::class) && ($request->user()->cannot('create', Promotion::class) || $request->user()->cannot('delete', Promotion::class) || $request->user()->cannot('update', Promotion::class))) {
             return abort(403);
         }
-        $promotions = Promotion::with('assets')->get();
+        $promotions = Promotion::with(['assets', 'user'])->get();
         return Inertia::render('Admin/Promotions/Promotions', ['promotions' => $promotions, 'promotion_permission' =>  getModelPermission($request, Promotion::class)]);
     }
 
@@ -59,7 +60,6 @@ class PromotionController extends Controller
             ]
         );
 
-        // dd($request->promo_descreption);
         DB::beginTransaction();
         try {
             $promotion = Promotion::create([
@@ -84,6 +84,7 @@ class PromotionController extends Controller
             DB::rollBack();
             throw $e;
         }
+        Cache::forget('home-promotions');
         return redirect(route('promotions.index'))->with('message', ['status' => 'success', 'message' => 'Promotions crée avec succès']);
     }
 
@@ -114,7 +115,7 @@ class PromotionController extends Controller
                 'promo_start_date' => 'required|date',
                 'promo_end_date' => 'required|date',
                 'promo_value' => 'required|numeric',
-                'assets' => 'array',
+                'assets' => 'required|array',
                 'assets.*' => 'file|mimes:jpg,png,jpeg|max:2048',
             ]
         );
@@ -144,6 +145,7 @@ class PromotionController extends Controller
             DB::rollBack();
             throw $e;
         }
+        Cache::forget('home-promotions');
         return redirect(route('promotions.index'))->with('message', ['status' => 'success', 'message' => 'Promotion modifier avec succès']);
     }
 
@@ -154,6 +156,7 @@ class PromotionController extends Controller
         }
         $promo = Promotion::where('promotion_id', $request->promotion_id)->first();
         $promo->update(['is_active' => !$promo->is_active]);
+        Cache::forget('home-promotions');
         redirect()->back()->with('message', ['status' => 'success', 'message' => $promo->is_active ? "Promotion activé" : "Promotion désactivé"]);
     }
 
@@ -166,6 +169,7 @@ class PromotionController extends Controller
             return abort(403);
         }
         Promotion::where('promotion_id', $id)->delete();
+        Cache::forget('home-promotions');
         return redirect()->back()->with('message', ['status' => 'success', 'message'
         => 'Promotion supprimé avec succès']);
     }

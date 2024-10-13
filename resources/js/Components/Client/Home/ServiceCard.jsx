@@ -16,8 +16,8 @@ export default function ServiceCard({ service }) {
         <Card className="relative my-6 p-4 sm:flex sm:flex-row-reverse flex-col-reverse bg-transparent border-none shadow-none">
             <div className="sm:w-1/2 w-full">
                 <img
-                    src={service.assets[0].url}
-                    alt={`Selected ${service.assets[0].id}`}
+                    src={service.assets[0]?.url}
+                    alt={`${service.assets[0]?.name}`}
                     className="object-cover w-full min-h-fit rounded-xl relative z-10 aspect-video hover:corsur-pointer shadow-xl transition-transform duration-300 hover:scale-105 "
                 />
             </div>

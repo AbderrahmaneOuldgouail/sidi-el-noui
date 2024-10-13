@@ -17,19 +17,20 @@ import {
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 import { Link } from "@inertiajs/react";
-import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { useTrans } from "@/Hooks/useTrans";
 import ColumnHeader from "@/Components/Admin/ColumnHeader";
 
 export type Facture = {
     facture_id: number;
     created_at: string;
-    data: {
+    booking: {
         user: {
             first_name: string;
             last_name: string;
             email: string;
-            is_company: boolean;
+            role: {
+                role_name: string;
+            };
         };
     };
 };
@@ -41,13 +42,7 @@ export const factureColumns: ColumnDef<Facture>[] = [
             const facture = row.original;
             return <span>{facture.facture_id} </span>;
         },
-        header: ({ column }) => (
-            // <DataTableColumnHeader
-            //     column={column}
-            //     title={useTrans("N° Facture")}
-            // />
-            <ColumnHeader title={"N° Facture"} />
-        ),
+        header: () => <ColumnHeader title={"N° Facture"} />,
     },
     {
         accessorKey: "Client",
@@ -55,25 +50,20 @@ export const factureColumns: ColumnDef<Facture>[] = [
             const facture = row.original;
             return (
                 <div>
-                    {facture.data.user.first_name} {facture.data.user.last_name}
+                    {facture.booking.user.first_name}{" "}
+                    {facture.booking.user.last_name}
                 </div>
             );
         },
-        header: ({ column }) => (
-            // <DataTableColumnHeader column={column} title={useTrans("Client")} />
-            <ColumnHeader title={"Client"} />
-        ),
+        header: () => <ColumnHeader title={"Client"} />,
     },
     {
         accessorKey: "Email",
         cell: ({ row }) => {
             const facture = row.original;
-            return <span>{facture.data.user.email} </span>;
+            return <span>{facture.booking.user.email} </span>;
         },
-        header: ({ column }) => (
-            // <DataTableColumnHeader column={column} title={useTrans("Email")} />
-            <ColumnHeader title={"Email"} />
-        ),
+        header: () => <ColumnHeader title={"Email"} />,
     },
     {
         accessorKey: "Date",
@@ -90,16 +80,14 @@ export const factureColumns: ColumnDef<Facture>[] = [
             const facture = row.original;
             return <span>{formatDate(facture.created_at)} </span>;
         },
-        header: ({ column }) => (
-            // <DataTableColumnHeader column={column} title={useTrans("Date")} />
-            <ColumnHeader title={"Date"} />
-        ),
+        header: () => <ColumnHeader title={"Date"} />,
     },
     {
         id: "actions",
         cell: ({ row }) => {
             const facture = row.original;
-            console.log(facture.data.user);
+            console.log(facture.booking.user.role.role_name);
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -109,7 +97,7 @@ export const factureColumns: ColumnDef<Facture>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        {facture.data.user.is_company && (
+                        {facture.booking.user.role.role_name == "sositée" && (
                             <DropdownMenuItem>
                                 <Link
                                     href={route("guests.show", {

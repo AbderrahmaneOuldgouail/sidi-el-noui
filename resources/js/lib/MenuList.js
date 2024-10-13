@@ -1,3 +1,4 @@
+import { useTrans } from "@/Hooks/useTrans";
 import { usePage } from "@inertiajs/react";
 import {
     Users,
@@ -60,18 +61,18 @@ export function getMenuList(pathname) {
                 permissions.room.update ||
                 permissions.room.create) && {
                 href: "rooms.index",
-                label: "Chambres",
+                label: useTrans("Chambres"),
                 active: roomsPathnames.includes(pathname),
                 icon: Hotel,
                 submenus: [
                     {
                         href: "rooms.index",
-                        label: "Tous Les Chambre",
+                        label: useTrans("Tous Les Chambre"),
                         active: pathname === "rooms.index",
                     },
                     {
                         href: "features.index",
-                        label: "Equipement",
+                        label: useTrans("Caractéristiques"),
                         active: pathname === "features.index",
                     },
                 ],
@@ -81,18 +82,18 @@ export function getMenuList(pathname) {
                 permissions.service.delete ||
                 permissions.service.create) && {
                 href: "services.index",
-                label: "Services",
+                label: useTrans("Services"),
                 active: servicesPathnames.includes(pathname),
                 icon: HandPlatter,
                 submenus: [
                     {
                         href: "services.index",
-                        label: "Tous Les Services",
+                        label: useTrans("Tous Les Services"),
                         active: pathname === "services.index",
                     },
                     {
                         href: "consumptions.index",
-                        label: "Service Consommations",
+                        label: useTrans("Consommations"),
                         active: pathname === "consumptions.index",
                     },
                 ],
@@ -102,7 +103,7 @@ export function getMenuList(pathname) {
                 permissions.facture.delete ||
                 permissions.facture.create) && {
                 href: "factures.index",
-                label: "Factures",
+                label: useTrans("Factures"),
                 active: facturePathnames.includes(pathname),
                 icon: ReceiptText,
                 submenus: [],
@@ -112,7 +113,7 @@ export function getMenuList(pathname) {
                 permissions.event.delete ||
                 permissions.event.create) && {
                 href: "events.index",
-                label: "Evènements",
+                label: useTrans("Evènements"),
                 active: eventPathnames.includes(pathname),
                 icon: Megaphone,
                 submenus: [],
@@ -122,7 +123,7 @@ export function getMenuList(pathname) {
                 permissions.promotion.delete ||
                 permissions.promotion.create) && {
                 href: "promotions.index",
-                label: "Promotions",
+                label: useTrans("Promotions"),
                 active: promoPathnames.includes(pathname),
                 icon: TicketMinus,
                 submenus: [],
@@ -131,11 +132,18 @@ export function getMenuList(pathname) {
     };
 
     const managementGroup = {
-        groupLabel: "Managment",
+        groupLabel: useTrans("Management"),
         menus: [
-            {
+            (permissions.employ.viewAny ||
+                permissions.employ.update ||
+                permissions.employ.delete ||
+                permissions.employ.create ||
+                permissions.role.viewAny ||
+                permissions.role.update ||
+                permissions.role.delete ||
+                permissions.role.create) && {
                 href: "roles.index",
-                label: "Utilisateurs",
+                label: useTrans("Utilisateurs"),
                 active: usersPathnames.includes(pathname),
                 icon: Users,
                 submenus: [
@@ -144,7 +152,7 @@ export function getMenuList(pathname) {
                         permissions.role.delete ||
                         permissions.role.create) && {
                         href: "roles.index",
-                        label: "Roles",
+                        label: useTrans("Rôles"),
                         active: rolesPathnames.includes(pathname),
                     },
                     (permissions.employ.viewAny ||
@@ -152,7 +160,7 @@ export function getMenuList(pathname) {
                         permissions.employ.delete ||
                         permissions.employ.create) && {
                         href: "users.index",
-                        label: "Employés",
+                        label: useTrans("Employés"),
                         active: userPathnames.includes(pathname),
                     },
                 ],
@@ -160,13 +168,14 @@ export function getMenuList(pathname) {
         ].filter(Boolean),
     };
 
+
     return [
         {
             groupLabel: "",
             menus: [
                 {
                     href: "admin.dashboard",
-                    label: "Tableux de bord",
+                    label: useTrans("Tableaux De Bord"),
                     active: pathname === "admin.dashboard",
                     icon: LayoutGrid,
                     submenus: [],
@@ -176,18 +185,18 @@ export function getMenuList(pathname) {
         (permissions.booking.viewAny ||
             permissions.booking.update ||
             permissions.booking.create) && {
-            groupLabel: "Moteur de réservation",
+            groupLabel: useTrans("Moteur de réservation"),
             menus: [
                 permissions.booking.viewAny && {
                     href: "bookings.index",
-                    label: "Réservations",
+                    label: useTrans("Réservations"),
                     active: pathname == "bookings.index",
                     icon: BookmarkCheck,
                     submenus: [],
                 },
                 permissions.booking.viewAny && {
                     href: "bookings.historique",
-                    label: "Historique",
+                    label: useTrans("Historique"),
                     active: pathname == "bookings.historique",
                     icon: Archive,
                     submenus: [],

@@ -42,8 +42,8 @@ export default function AdminPanelLayout({ children }) {
             <Navbar title="Tableux de bord" isOpen={sidebar?.isOpen} />
             <main
                 className={cn(
-                    "min-h-[calc(100vh_-_56px)] bg-zinc-50 md:p-10 p-2  dark:bg-zinc-900 transition-[margin-left] ease-in-out duration-300",
-                    sidebar?.isOpen === false ? "lg:ml-[90px]" : "lg:ml-72"
+                    "min-h-[calc(100vh_-_56px)] bg-zinc-50 md:p-10 p-2 dark:bg-zinc-900 transition-[margin-left] ease-in-out duration-300",
+                    sidebar?.isOpen === false ? "lg:ml-[90px]" : "lg:ml-72 "
                 )}
             >
                 {children}

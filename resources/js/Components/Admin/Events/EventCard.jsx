@@ -95,7 +95,7 @@ export default function EventCard({ event }) {
                                 />
                             </div>
                         </CardContent>
-                        <CardFooter className="justify-end">
+                        <CardFooter>
                             <EventCardFooter event={event} />
                         </CardFooter>
                     </>

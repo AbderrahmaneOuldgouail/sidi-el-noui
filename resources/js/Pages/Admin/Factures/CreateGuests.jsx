@@ -1,5 +1,5 @@
 import React from "react";
-import { Head, useForm, usePage } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import InputLabel from "@/Components/InputLabel";
@@ -13,19 +13,20 @@ import { CircleMinus, CirclePlus } from "lucide-react";
 export default function CreateGuests({ facture_id }) {
     const { data, setData, post, errors } = useForm({
         facture_id: facture_id,
-        guests_list: [{ first_name: "", last_name: "" }],
+        guests_list: [{ guest_first_name: "", guest_last_name: "" }],
     });
-
-    console.log(usePage().props);
 
     const addGuest = () => {
         setData("guests_list", [
             ...data.guests_list,
-            { first_name: "", last_name: "" },
+            { guest_first_name: "", guest_last_name: "" },
         ]);
     };
 
     const minesGuest = (index) => {
+        if (data.guests_list.length == 1) {
+            return;
+        }
         const updatedGuests = data.guests_list.filter((_, i) => i !== index);
         setData("guests_list", updatedGuests);
     };
@@ -47,8 +48,8 @@ export default function CreateGuests({ facture_id }) {
             <Head title="List d'invités" />
             <div className="flex justify-end">
                 <Button variant="secondary" size="sm" onClick={addGuest}>
-                    <CirclePlus className="mr-2" />
-                    Ajouter
+                    <CirclePlus className="mr-2 rtl:ml-2" />
+                    {useTrans("Ajouter")}
                 </Button>
             </div>
             <PlaceholderContent>
@@ -58,17 +59,17 @@ export default function CreateGuests({ facture_id }) {
                             <div className="md:flex my-4 gap-4">
                                 <div className="w-full md:w-1/2 bg-muted p-4 shadow">
                                     <InputLabel
-                                        htmlFor={`first_name_${index}`}
+                                        htmlFor={`guest_first_name_${index}`}
                                         value={useTrans("Prénom")}
                                     />
                                     <Input
                                         className="mt-2 w-full bg-card"
-                                        id={`first_name_${index}`}
-                                        value={guest.first_name}
+                                        id={`guest_first_name_${index}`}
+                                        value={guest.guest_first_name}
                                         onChange={(e) =>
                                             handleGuestChange(
                                                 index,
-                                                "first_name",
+                                                "guest_first_name",
                                                 e.target.value
                                             )
                                         }
@@ -84,17 +85,17 @@ export default function CreateGuests({ facture_id }) {
                                 </div>
                                 <div className="w-full md:w-1/2 bg-muted p-4 shadow">
                                     <InputLabel
-                                        htmlFor={`last_name_${index}`}
+                                        htmlFor={`guest_last_name_${index}`}
                                         value={useTrans("Nom")}
                                     />
                                     <Input
                                         className="mt-2 w-full bg-card"
-                                        id={`last_name_${index}`}
-                                        value={guest.last_name}
+                                        id={`guest_last_name_${index}`}
+                                        value={guest.guest_last_name}
                                         onChange={(e) =>
                                             handleGuestChange(
                                                 index,
-                                                "last_name",
+                                                "guest_last_name",
                                                 e.target.value
                                             )
                                         }
@@ -102,7 +103,7 @@ export default function CreateGuests({ facture_id }) {
                                     <InputError
                                         message={
                                             errors[
-                                                `guests_list.${index}.last_name`
+                                                `guests_list.${index}.guest_last_name`
                                             ]
                                         }
                                         className="mt-2"

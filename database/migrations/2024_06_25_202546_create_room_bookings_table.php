@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('room_bookings', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('room_id')->constrained('rooms', 'id')->cascadeOnDelete();
             $table->foreignId('booking_id')->constrained('bookings', 'booking_id')->cascadeOnDelete();
+            $table->primary(['room_id', 'booking_id']);
+            $table->unsignedInteger('room_price');
         });
     }
 

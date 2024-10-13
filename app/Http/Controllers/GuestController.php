@@ -12,10 +12,15 @@ class GuestController extends Controller
 {
     public function show(string $id)
     {
-        $guests_list = Facture::with('guests')->where('facture_id', $id)->first();
-        if ($guests_list->guests->isNotEmpty()) {
-            return Inertia::render('Admin/Factures/GuestList');
+        $guests = Facture::with('guests')->where('facture_id', $id)->first()->guests;
+        if ($guests->isNotEmpty()) {
+            return Inertia::render('Admin/Factures/GuestList', ['guests' => $guests]);
         }
+        return redirect(route('guests.create', $id));
+    }
+
+    public function create(string $id)
+    {
         return Inertia::render('Admin/Factures/CreateGuests', ['facture_id' => $id]);
     }
 
@@ -24,18 +29,13 @@ class GuestController extends Controller
         $request->validate([
             'facture_id' => 'required',
             'guests_list' => 'required',
-            'guests_list.*.first_name' => 'required|string',
-            'guests_list.*.last_name' => 'required|string',
+            'guests_list.*.guest_first_name' => 'required|string',
+            'guests_list.*.guest_last_name' => 'required|string',
         ]);
 
-        Guest::insert($request->guests_list);
-
         $facture = Facture::where('facture_id', $request->facture_id)->first();
+        $facture->guests()->createMany($request->guests_list);
 
-        foreach ($request->guests_list as $guest) {
-            $facture->guests()->attach($guest);
-        }
-
-        return redirect(route('guests.show', ['guest' => $request->facture_id]))->with('message', ['status' => 'success', 'message' => 'Invités ajouter avec succé']);
+        return redirect(route('guests.show', ['id' => $request->facture_id]))->with('message', ['status' => 'success', 'message' => 'Invités ajouter avec succé']);
     }
 }

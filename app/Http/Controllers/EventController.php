@@ -6,6 +6,7 @@ use App\Models\Event;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -24,7 +25,10 @@ class EventController extends Controller
             return abort(403);
         }
 
-        $events = Event::with('assets')->get();
+        $events = Event::with(['assets', 'user'])
+            ->orderByRaw('event_end_date >= now() DESC')
+            ->orderBy('event_start_date', 'asc')
+            ->get();
         return Inertia::render('Admin/Events/Events', ['events' => $events, 'event_permission' => getModelPermission($request, Event::class)]);
     }
 
@@ -72,6 +76,7 @@ class EventController extends Controller
             ]);
         }
         DB::commit();
+        Cache::forget('home-events');
 
         return redirect(route('events.index'))->with('message', ['status' => 'success', 'message' => 'Evènement crée avec succès']);
     }
@@ -81,7 +86,7 @@ class EventController extends Controller
         if ($request->user()->cannot('update', Event::class)) {
             return abort(403);
         }
-        
+
         $event = Event::with('assets')->where('event_id', $id)->first();
         return Inertia::render('Admin/Events/EditEvent', ['event' => $event]);
     }
@@ -130,6 +135,7 @@ class EventController extends Controller
             DB::rollBack();
             throw $e;
         }
+        Cache::forget('home-events');
         return redirect(route('events.index'))->with('message', ['status' => 'success', 'message' => 'Evènement modifier avec succès']);
     }
 
@@ -139,6 +145,7 @@ class EventController extends Controller
             return abort(403);
         }
         Event::where('event_id', $id)->delete();
+        Cache::forget('home-events');
         return redirect()->back()->with('message', ['status' => 'success', 'message'
         => 'Evènement supprimé avec succès']);
     }

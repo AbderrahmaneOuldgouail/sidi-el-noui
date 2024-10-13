@@ -19,10 +19,12 @@ export function DatePickerWithRange({
     date,
     onDateChange,
     className,
+    min,
 }: {
     date: DateRange | undefined;
     onDateChange: (range: DateRange | undefined) => void;
     className?: string;
+    min: number;
 }) {
     const disablePastDates = (date: Date) => {
         const today = new Date();
@@ -61,6 +63,7 @@ export function DatePickerWithRange({
                     <Calendar
                         initialFocus
                         mode="range"
+                        min={min}
                         defaultMonth={date?.from}
                         selected={date}
                         onSelect={onDateChange}

@@ -11,18 +11,33 @@ class Facture extends Model
 {
     use HasFactory;
     protected $primaryKey = 'facture_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'booking_id',
-        'data',
         'tva',
         'tourist_tax',
-        'timbre'
+        'timbre',
+        'payment'
     ];
 
-    protected $casts = [
-        'data' => 'json',
-    ];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($facture) {
+            $currentYear = now()->year;
+
+            $lastFacture = Facture::latest()->first();
+
+            $lastNumber = $lastFacture ? intval(explode('-', $lastFacture->facture_id)[1]) : 0;
+
+            $newNumber = $lastNumber + 1;
+
+            $facture->facture_id = "$currentYear-$newNumber";
+        });
+    }
 
     public function booking(): BelongsTo
     {

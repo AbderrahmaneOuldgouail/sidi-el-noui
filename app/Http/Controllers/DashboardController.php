@@ -2,25 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-
-use App\Enums\Permissions;
-use App\Enums\permissions_actions;
-use App\Events\BookingPlaced;
-use App\Events\MyEvent;
-use App\Events\NewBooking;
-use App\Events\TestEvent;
 use App\Models\Booking;
-use App\Models\Room;
 use App\Models\Type;
-use App\Models\User;
-use App\Notifications\NewBookingNotif;
-use App\Notifications\RoomBookingNotification;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Notification;
 
 class DashboardController extends Controller
 {

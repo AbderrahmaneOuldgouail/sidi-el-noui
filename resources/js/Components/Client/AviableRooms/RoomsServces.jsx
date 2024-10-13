@@ -24,13 +24,15 @@ export default function RoomsServces({
     setBeedsNumber,
 }) {
     const addRoom = (room) => {
-        let nights = (new Date(booking_data.check_out) - new Date(booking_data.check_in)) /
+        let nights =
+            (new Date(booking_data.check_out) -
+                new Date(booking_data.check_in)) /
             (1000 * 60 * 60 * 24);
         setTotal(total + room.room_price * nights);
         setBeedsNumber(beedsNumber + Number(room.beeds_number));
         setSelectedRooms([...selectedRooms, room]);
         setData((prevData) => {
-            prevData.rooms.push(room.id);
+            prevData.rooms.push({ id: room.id, room_price: room.room_price });
             return { ...prevData };
         });
     };
@@ -179,7 +181,7 @@ export default function RoomsServces({
                 prevData.consomation.push({
                     consumption_id: consumption.consumption_id,
                     quantity: 1,
-                    price: consumption.consumption_price,
+                    current_consumption_price: consumption.consumption_price,
                     name: consumption.consumption_name,
                 });
             }
@@ -188,12 +190,12 @@ export default function RoomsServces({
     };
 
     const decrement = (consumption) => {
+        setTotal(total - consumption.consumption_price);
         setData((prevData) => {
             const existingIndex = prevData.consomation.findIndex(
                 (c) => c.consumption_id === consumption.consumption_id
             );
             if (existingIndex > -1) {
-                setTotal(total - consumption.consumption_price);
                 if (prevData.consomation[existingIndex].quantity === 1) {
                     prevData.consomation.splice(existingIndex, 1);
                 } else {

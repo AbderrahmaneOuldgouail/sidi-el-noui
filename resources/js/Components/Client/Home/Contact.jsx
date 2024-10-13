@@ -1,7 +1,7 @@
 import React from "react";
 import InputLabel from "@/Components/InputLabel";
 import { Input } from "@/Components/ui/input";
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import { Textarea } from "@/Components/ui/textarea";
 import { Button } from "@/Components/ui/button";
 import { LoaderCircle } from "lucide-react";
@@ -9,9 +9,10 @@ import InputError from "@/Components/InputError";
 import { useTrans } from "@/Hooks/useTrans";
 
 export default function Contact() {
+    const user = usePage().props.auth.user;
     const { data, setData, errors, post, reset, processing, clearErrors } =
         useForm({
-            client_email: "",
+            client_email: user ? user.email : "",
             subject: "",
             message: "",
         });
@@ -48,6 +49,7 @@ export default function Contact() {
                                 name="client_email"
                                 placeholder={useTrans("Email")}
                                 value={data.client_email}
+                                disabled={user}
                                 onChange={(e) => {
                                     setData("client_email", e.target.value);
                                     clearErrors("client_email");

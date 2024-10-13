@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Link, useForm } from "@inertiajs/react";
 import { FileUploader } from "react-drag-drop-files";
@@ -6,7 +6,6 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { Button, buttonVariants } from "@/Components/ui/button";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import { Textarea } from "@/Components/ui/textarea";
 import {
     Command,
     CommandEmpty,
@@ -41,9 +40,9 @@ export default function CreateRoomForm({ types, categorys }) {
     const [type, setType] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const [searchValue, setSearchValue] = React.useState("");
-    const [images, setImages] = React.useState([]);
+    const [importedFiles, setImportedFiles] = useState([]);
 
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors , clearErrors} = useForm({
         room_number: "",
         room_price: "",
         room_descreption: "",
@@ -52,7 +51,34 @@ export default function CreateRoomForm({ types, categorys }) {
         features: [],
         assets: [],
     });
+    const handleFiles = (files) => {
+        if (!files || !files.length) return;
 
+        const newFiles = Array.from(files);
+
+        setImportedFiles((prevData) => {
+            const updatedFiles = newFiles.map((file) => ({
+                file,
+                url: URL.createObjectURL(file),
+            }));
+            return [...prevData, ...updatedFiles];
+        });
+
+        setData("assets", [...data.assets, ...newFiles]);
+    };
+
+    const deleteImage = (index) => {
+        setImportedFiles((prevData) => {
+            const updatedFiles = [...prevData];
+            updatedFiles.splice(index, 1);
+            return updatedFiles;
+        });
+
+        const updatedAssets = [...data.assets];
+        updatedAssets.splice(index, 1);
+        setData("assets", updatedAssets);
+        clearErrors(`assets.${index}`);
+    };
     const submit = (e) => {
         e.preventDefault();
         post(route("rooms.store"));
@@ -83,24 +109,24 @@ export default function CreateRoomForm({ types, categorys }) {
         });
     };
 
-    const handleFiles = (file) => {
-        const files = Array.from(file);
-        const promises = files.map((f) => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    resolve(reader.result);
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(f);
-            });
-        });
+    // const handleFiles = (file) => {
+    //     const files = Array.from(file);
+    //     const promises = files.map((f) => {
+    //         return new Promise((resolve, reject) => {
+    //             const reader = new FileReader();
+    //             reader.onloadend = () => {
+    //                 resolve(reader.result);
+    //             };
+    //             reader.onerror = reject;
+    //             reader.readAsDataURL(f);
+    //         });
+    //     });
 
-        Promise.all(promises).then((images) => {
-            setImages(images);
-        });
-        setData("assets", file);
-    };
+    //     Promise.all(promises).then((images) => {
+    //         setImages(images);
+    //     });
+    //     setData("assets", file);
+    // };
 
     return (
         <form onSubmit={submit}>
@@ -446,7 +472,11 @@ export default function CreateRoomForm({ types, categorys }) {
                         <InputError message={errors.assets} className="mt-2" />
                     </div>
                 </div>
-                <ImagesViewer images={images} />
+                <ImagesViewer
+                    images={importedFiles}
+                    errors={errors}
+                    deleteImage={deleteImage}
+                />{" "}
             </div>
             <div className="flex justify-end">
                 <Button

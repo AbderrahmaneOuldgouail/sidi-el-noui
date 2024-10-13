@@ -41,29 +41,30 @@ export default function AviableRooms({ rooms, bookingData, services }) {
         n_article: "",
     });
 
-    const handleRooms = (id) => {
+    const handleRooms = (room) => {
         setData((data) => {
-            if (data.rooms.includes(id)) {
-                data.rooms.splice(data.rooms.indexOf(id), 1);
+            const roomIndex = data.rooms.findIndex((r) => r.id === room.id);
+            if (roomIndex !== -1) {
+                data.rooms.splice(roomIndex, 1);
             } else {
-                data.rooms.push(id);
+                data.rooms.push({ id: room.id, room_price: room.room_price });
             }
-
             return { ...data };
         });
     };
 
-    const increment = (consumption_id) => {
+    const increment = (consumption) => {
         setCount(count + 1);
         setData((prevData) => {
             const existingIndex = prevData.consomation.findIndex(
-                (c) => c.consumption_id === consumption_id
+                (c) => c.consumption_id === consumption.consumption_id
             );
             if (existingIndex > -1) {
                 prevData.consomation[existingIndex].quantity += 1;
             } else {
                 prevData.consomation.push({
-                    consumption_id: consumption_id,
+                    consumption_id: consumption.consumption_id,
+                    current_consumption_price: consumption.consumption_price,
                     quantity: 1,
                 });
             }
@@ -232,10 +233,12 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                         {rooms.map((room) => (
                             <tr
                                 key={room.room_number}
-                                onClick={() => handleRooms(room.id)}
+                                onClick={() => handleRooms(room)}
                                 className={cn(
-                                    "hover:bg-accent text-center border cursor-pointer",
-                                    data.rooms.includes(room.id)
+                                    "hover:bg-gray-200 hover:dark:bg-gray-600 text-center border cursor-pointer",
+                                    data.rooms.findIndex(
+                                        (r) => r.id === room.id
+                                    ) !== -1
                                         ? "bg-muted"
                                         : ""
                                 )}
@@ -304,7 +307,7 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                                                         <CirclePlus
                                                             onClick={() =>
                                                                 increment(
-                                                                    consomation.consumption_id
+                                                                    consomation
                                                                 )
                                                             }
                                                             className="cursor-pointer hover:text-secondary"

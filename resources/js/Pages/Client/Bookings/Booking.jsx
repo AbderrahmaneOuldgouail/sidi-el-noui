@@ -25,7 +25,7 @@ import {
 import { Editor } from "@/Components/Admin/Shared/Editor";
 
 import { Button, buttonVariants } from "@/Components/ui/button";
-import { router } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { Badge } from "@/Components/ui/badge";
 import { Separator } from "@/Components/ui/separator";
 import { useTrans } from "@/Hooks/useTrans";
@@ -48,6 +48,7 @@ export default function MyBookings({ booking }) {
     };
     return (
         <ClientLayout>
+            <Head title="Mes Réservations" />
             <div className="absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <div className="absolute z-[0] w-[47rem] h-[47rem] left-[calc(40%-20rem)] top-[30rem] sm:translate-x-[10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <div className="absolute z-[0] w-[20rem] h-[20rem] right-[20rem] bottom-[5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
@@ -106,6 +107,29 @@ export default function MyBookings({ booking }) {
                                 <div className="text-sm text-muted-foreground">
                                     07h00 - 12h00
                                 </div>
+                            </div>
+                        </CardContent>
+                        <CardContent className="flex justify-between p-2">
+                            <div>
+                                <div>{useTrans("Nombre des personnes")} </div>
+                                <span className="font-bold">
+                                    {booking.guest_number}{" "}
+                                </span>
+                                <span className="text-sm text-muted-foreground">
+                                    {useTrans("adult")}
+                                </span>
+                                {booking.kids_number ? (
+                                    <>
+                                        {" "}
+                                        {useTrans("et")}{" "}
+                                        <span className="font-bold">
+                                            {booking.kids_number}{" "}
+                                        </span>
+                                        <span className="text-sm text-muted-foreground">
+                                            {useTrans("bébés")}
+                                        </span>
+                                    </>
+                                ) : null}
                             </div>
                         </CardContent>
                         <CardFooter className="flex-col items-start p-2">

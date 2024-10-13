@@ -77,6 +77,7 @@ export default function BookingForm({ id }) {
                     <DatePickerWithRange
                         date={dateRange}
                         onDateChange={handleDateChange}
+                        min={2}
                     />
                 </div>
                 <div className="w-2/3 md:w-1/4">

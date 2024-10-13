@@ -22,13 +22,13 @@ import { Editor } from "@/Components/Admin/Shared/Editor";
 const fileTypes = ["JPG", "PNG", "GIF"];
 
 export default function EditPromotion({ promotion }) {
-    const [images, setImages] = useState([]);
+    const [importedFiles, setImportedFiles] = useState([]);
     const [dateRange, setDateRange] = useState({
         from: new Date(promotion.promo_start_date),
         to: new Date(promotion.promo_end_date),
     });
 
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors, clearErrors } = useForm({
         promo_value: promotion.promo_value,
         promo_descreption: promotion.promo_descreption,
         promo_start_date: promotion.promo_start_date,
@@ -41,23 +41,33 @@ export default function EditPromotion({ promotion }) {
         post(route("promotions.update", promotion.promotion_id));
     };
 
-    const handleFiles = (file) => {
-        const files = Array.from(file);
-        const promises = files.map((f) => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    resolve(reader.result);
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(f);
-            });
+    const handleFiles = (files) => {
+        if (!files || !files.length) return;
+
+        const newFiles = Array.from(files);
+
+        setImportedFiles((prevData) => {
+            const updatedFiles = newFiles.map((file) => ({
+                file,
+                url: URL.createObjectURL(file),
+            }));
+            return [...prevData, ...updatedFiles];
         });
 
-        Promise.all(promises).then((images) => {
-            setImages(images);
+        setData("assets", [...data.assets, ...newFiles]);
+    };
+
+    const deleteImage = (index) => {
+        setImportedFiles((prevData) => {
+            const updatedFiles = [...prevData];
+            updatedFiles.splice(index, 1);
+            return updatedFiles;
         });
-        setData("assets", file);
+
+        const updatedAssets = [...data.assets];
+        updatedAssets.splice(index, 1);
+        setData("assets", updatedAssets);
+        clearErrors(`assets.${index}`);
     };
 
     function formatDate(dateString) {
@@ -214,8 +224,15 @@ export default function EditPromotion({ promotion }) {
                                 />
                             </div>
                         </div>
-                        <ImagesViewer images={images} />
-                        <DbImageViewer assets={promotion.assets} />
+                        <ImagesViewer
+                            images={importedFiles}
+                            errors={errors}
+                            deleteImage={deleteImage}
+                        />{" "}
+                        <DbImageViewer
+                            assets={promotion.assets}
+                            importedFiles={importedFiles.length}
+                        />{" "}
                     </div>
                     <div className="flex justify-end">
                         <Button

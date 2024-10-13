@@ -48,7 +48,7 @@ export default function RoomCard({ room }) {
                 </CardContent>
                 <CardFooter className="justify-end">
                     <a href="#booking-form">
-                        <Button variant="secondary">
+                        <Button variant="secondary" size="sm">
                             {useTrans("Réserver maintenant")}{" "}
                         </Button>
                     </a>

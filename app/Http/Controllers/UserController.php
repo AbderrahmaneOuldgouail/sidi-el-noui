@@ -44,11 +44,12 @@ class UserController extends Controller
         if ($request->user()->cannot('create', User::class)) {
             return abort(403);
         }
+
         $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'phone' => 'required|string|unique:users',
+            'phone' => ['required', 'string', 'unique:users', 'regex:/^(05|06|07)[0-9]{8}$/'],
             'role' => 'required|string|exists:roles,role_name',
         ]);
 
@@ -101,7 +102,7 @@ class UserController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => ['required', 'email', Rule::unique('users')->ignore($request->route('user'))],
-            'phone' => ['required', 'string', Rule::unique('users')->ignore($request->route('user'))],
+            'phone' => ['required', 'string', Rule::unique('users')->ignore($request->route('user')), 'regex:/^(05|06|07)[0-9]{8}$/'],
             'role' => 'required|string|exists:roles,role_name',
         ]);
 

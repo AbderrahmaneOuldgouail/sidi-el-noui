@@ -6,7 +6,6 @@ import {
     ReceiptText,
     HandCoins,
     Ticket,
-    ArrowUpDown,
 } from "lucide-react";
 import { Button, buttonVariants } from "@/Components/ui/button";
 import {
@@ -34,8 +33,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { Link, router, usePage } from "@inertiajs/react";
-import { DataTableColumnHeader } from "../DataTableColumnHeader";
+import { router, usePage } from "@inertiajs/react";
 import { Badge } from "@/Components/ui/badge";
 import { useTrans } from "@/Hooks/useTrans";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
@@ -69,9 +67,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                 </div>
             );
         },
-        header: ({ column }) => (
-            <ColumnHeader title={"Client"} />
-        ),
+        header: ({ column }) => <ColumnHeader title={"Client"} />,
     },
     {
         accessorKey: "Check in",
@@ -222,7 +218,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                                     onClick={() =>
                                                         handleBill(
                                                             booking.booking_id,
-                                                            "check"
+                                                            "chèque"
                                                         )
                                                     }
                                                     className="flex justify-center"

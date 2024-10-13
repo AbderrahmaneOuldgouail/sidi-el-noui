@@ -72,4 +72,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class, 'user_id');
     }
+
+    public function promotions(): HasMany
+    {
+        return $this->hasMany(Promotion::class, 'user_id');
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class, 'user_id');
+    }
 }

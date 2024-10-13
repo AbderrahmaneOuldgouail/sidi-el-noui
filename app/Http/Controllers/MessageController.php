@@ -25,6 +25,7 @@ class MessageController extends Controller
             $filter = 'all';
         }
 
+
         return Inertia::render("Admin/Messages/Messages", ['messages' => $messages, 'filter' => $filter]);
     }
 
@@ -94,7 +95,8 @@ class MessageController extends Controller
         ]);
 
         Message::create([
-            'client_email' => $request->client_email,
+            'user_id' => $request->user() ? $request->user()->id : null,
+            'client_email' => $request->user() ? $request->user()->email : $request->client_email,
             'subject' => $request->subject,
             'message' => $request->message,
             'read_at' => null,

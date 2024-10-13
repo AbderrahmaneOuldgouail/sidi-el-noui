@@ -13,6 +13,13 @@
   "Les types plus réservé le mois dernier" : "أنواع الغرف الأكثر حجزاً في الشهر الماضي",
   "Ces statistique inclus les réservations annuléers et refusées" : "وتشمل هذه الإحصائيات الحجوزات الملغاة والمرفوضة",
 
+  "Moteur de réservation" : "محرك الحجز",
+  "Chambres" : "الغرف",
+  "Tous Les Chambre" : "جميع الغرف",
+  "Tous Les Services" : "جميع الخدمات",
+  "Management" : "إدارة",
+  "Créé par" : "تم إنشاؤها بواسطة",
+
   "Crée un chambre" : "إنشاء غرفة",
   "Chambre Création" : "إنشاء الغرف",
   "Numéro de chmabre" : "رقم الغرفة",
@@ -259,6 +266,8 @@
   "Droit de timbre" : "واجب الطوابع",
   "N° Facture" : "رقم الفاتورة",
   "List des invités" : "قائمة الضيوف",
+  "Ajouter" : "إضافة",
+  "Ajouter des invités" : "إضافة الضيوف",
 
   "messages" : "===========================================================================",
   "Tous" : "الكل",
@@ -336,6 +345,7 @@
   "nuit" : "ليلة",
   "Récapitulatif du montant" : "ملخص المبلغ",
   "Ce prix avec tout tax inclus" : "هذا السعر شامل الضريبة",
+  "Nombre des personnes" : "عدد المقيمين",
 
   "Vous avez sélectionné pour" : "لقد اخترت ل",
   "adult" : "بالغين",

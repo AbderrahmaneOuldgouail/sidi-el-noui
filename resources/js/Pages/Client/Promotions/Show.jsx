@@ -22,7 +22,10 @@ export default function Show({ promotion }) {
                 <Carousel>
                     <CarouselContent>
                         {promotion.assets.map((asset) => (
-                            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+                            <CarouselItem
+                                className="md:basis-1/2 lg:basis-1/3"
+                                key={asset.id}
+                            >
                                 <img
                                     src={asset.url}
                                     alt={asset.name}

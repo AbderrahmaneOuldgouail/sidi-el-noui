@@ -31,7 +31,6 @@ import {
     DrawerTrigger,
 } from "@/Components/ui/drawer";
 import { Link, router, useForm } from "@inertiajs/react";
-import { DataTableColumnHeader } from "../DataTableColumnHeader";
 import { Checkbox } from "@/Components/ui/checkbox";
 import { useTrans } from "@/Hooks/useTrans";
 import { Badge } from "@/Components/ui/badge";
@@ -88,28 +87,6 @@ export const featuresColumns: ColumnDef<Feature>[] = [
     },
     {
         id: "actions",
-        header: ({ table }) => (
-            <Button
-                variant="ghost"
-                disabled={
-                    !(
-                        table.getIsAllRowsSelected() ||
-                        table.getIsSomePageRowsSelected()
-                    )
-                }
-            >
-                <Link
-                    href={route("features.destroy", 1)}
-                    className=" flex w-full"
-                >
-                    <Trash className="mr-2 h-3.5 w-3.5" />
-                    {table.getIsAllRowsSelected() ||
-                    table.getIsSomePageRowsSelected()
-                        ? useTrans("Supprimer tous")
-                        : ""}
-                </Link>
-            </Button>
-        ),
         cell: ({ row }) => {
             const feature = row.original;
             const [isopen, setIsOpen] = React.useState(false);

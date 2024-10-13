@@ -1,11 +1,9 @@
 import React from "react";
 import { buttonVariants } from "@/Components/ui/button";
 import { Trash } from "lucide-react";
+import InputError from "@/Components/InputError";
 
-export function ImagesViewer({ images }) {
-    const deleteImage = (index) => {
-        images.splice(index, 1);
-    };
+export function ImagesViewer({ images, errors, deleteImage }) {
     return (
         <div className="pb-4">
             {images.length > 0 && (
@@ -13,7 +11,7 @@ export function ImagesViewer({ images }) {
                     {images.map((image, index) => (
                         <div key={index} className="relative">
                             <img
-                                src={image}
+                                src={image.url}
                                 alt={`Selected ${index}`}
                                 className="rounded-md object-cover aspect-video"
                             />
@@ -27,6 +25,12 @@ export function ImagesViewer({ images }) {
                             >
                                 <Trash />
                             </div>
+                            {errors && (
+                                <InputError
+                                    message={errors?.[`assets.${index}`]}
+                                    className="mt-2"
+                                />
+                            )}
                         </div>
                     ))}
                 </div>

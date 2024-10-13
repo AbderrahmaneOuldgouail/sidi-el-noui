@@ -79,7 +79,10 @@ Route::middleware(['auth', Admin::class])->group(
     Route::post('/bill-settings', [FactureController::class, 'billSettings'])->name('factures.bill.settings');
     Route::resource('factures', FactureController::class)->names("factures");
 
-    Route::resource('guests', GuestController::class)->names("guests")->except(['index', 'edit', 'update']);
+    // Route::resource('guests', GuestController::class)->names("guests")->except(['index', 'edit', 'update']);
+    Route::get('guests/show/{id}', [GuestController::class, 'show'])->name('guests.show');
+    Route::get('guests/create/{id}', [GuestController::class, 'create'])->name('guests.create');
+    Route::post('guests/store', [GuestController::class, 'store'])->name('guests.store');
 
 
     Route::delete('/messages/delete', [MessageController::class, 'destroyAll'])->name('messages.destroyAll');

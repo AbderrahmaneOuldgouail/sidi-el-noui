@@ -21,7 +21,7 @@ export default function Consumptions({ consumptions, services }) {
     return (
         <AdminPanelLayout>
             <Head title="Consumptions" />
-            <PageHeading title={"Consommations"} />
+            <PageHeading title={useTrans("Consommations")} />
             <div className="flex justify-end">
                 <ConsommationDialog services={services} mode="create" />
             </div>

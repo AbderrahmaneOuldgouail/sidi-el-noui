@@ -85,7 +85,6 @@ class RoleController extends Controller
         if ($request->user()->cannot('update', Role::class)) {
             return abort(403);
         }
-
         $request->validate([
             'role_name' => 'required|string',
             'prevName' => 'string',
@@ -93,12 +92,12 @@ class RoleController extends Controller
             'permissions.*' => 'required'
         ]);
 
-        if (Role::where('role_name', $request->role_name)->exists() && $request->role_name !== $request->prevName) {
+        if (Role::where('role_name', $request->role_name)->exists() && $request->role_name != $request->prevName) {
             return redirect()->back()->withErrors(['role_name' => 'Ce rôle est éxisté déjà']);
         }
 
         DB::beginTransaction();
-        $$role = Role::where('role_id', $id)->first();
+        $role = Role::where('role_id', $id)->first();
         $role->update([
             'role_name' => $request->role_name,
         ]);

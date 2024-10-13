@@ -93,7 +93,7 @@ export default function Footer() {
                                 {useTrans("Réseaux Sociaux")}
                             </span>
                             <a
-                                href="phone:04505050"
+                                href="https://web.facebook.com/p/Hotel-sidi-el-noui-100088684863459/?locale=fr_FR&_rdc=1&_rdr"
                                 className="flex gap-4 items-center "
                             >
                                 <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">
@@ -104,7 +104,7 @@ export default function Footer() {
                                 </div>
                             </a>
                             <a
-                                href="phone:04505050"
+                                href="https://www.instagram.com/hotelsidielnoui?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                                 className="flex gap-4 items-center  "
                             >
                                 <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">

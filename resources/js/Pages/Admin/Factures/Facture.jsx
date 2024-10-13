@@ -9,9 +9,12 @@ import { FileDown, Printer, Send } from "lucide-react";
 import { Button, buttonVariants } from "@/Components/ui/button";
 import { AppLogo } from "@/Components/ui/app-logo";
 
-export default function Facture({ facture, mail, total_ttc }) {
+export default function Facture({ facture, data, mail, total_ttc_words }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
+
+    console.log(facture);
+    console.log(data);
 
     useEffect(() => {
         if (flash.message) {
@@ -103,37 +106,36 @@ export default function Facture({ facture, mail, total_ttc }) {
                         <div className="text-left my-4">
                             <div>Doit</div>
                             <div className="border-2 border-black p-2 mt-2 h-36 flex flex-wrap gap-4">
-                                <span>{facture.data.user.first_name}</span>
-                                <span>{facture.data.user.last_name}</span>
-                                {" / "}
+                                <span>{facture.booking.user.first_name}</span>
+                                <span>{facture.booking.user.last_name}</span>
                                 <span>
-                                    {facture.data.user.adresse &&
-                                        "Adresse : " +
-                                            facture.data.user.adresse}
+                                    {facture.booking.user.adresse &&
+                                        " / Adresse : " +
+                                            facture.booking.user.adresse +
+                                            " / "}
                                 </span>
-                                {" / "}
                                 <span>
-                                    {facture.data.user.nif &&
+                                    {facture.booking.user.nif &&
                                         "Numéro d'Identification Fiscale : " +
-                                            facture.data.user.nif}
+                                            facture.booking.user.nif +
+                                            " / "}
                                 </span>
-                                {" / "}
                                 <span>
-                                    {facture.data.user.nis &&
+                                    {facture.booking.user.nis &&
                                         "Numéro d'Identification Statistique : " +
-                                            facture.data.user.nis}
+                                            facture.booking.user.nis +
+                                            " / "}
                                 </span>
-                                {" / "}
                                 <span>
-                                    {facture.data.user.nrc &&
+                                    {facture.booking.user.nrc &&
                                         "Numéro  de registre de commerce : " +
-                                            facture.data.user.nrc}
+                                            facture.booking.user.nrc +
+                                            " / "}
                                 </span>
-                                {" / "}
                                 <span>
-                                    {facture.data.user.n_article &&
+                                    {facture.booking.user.n_article &&
                                         "Numéro d'article : " +
-                                            facture.data.user.n_article}
+                                            facture.booking.user.n_article}
                                 </span>
                             </div>
                         </div>
@@ -162,38 +164,40 @@ export default function Facture({ facture, mail, total_ttc }) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {facture.data.rooms.map((room, index) => (
-                                        <tr key={index}>
-                                            <td className="border border-black p-2">
-                                                {room.room}
-                                            </td>
-                                            <td className="border border-black p-2">
-                                                {facture.data.booking.check_in}{" "}
-                                                AU{" "}
-                                                {facture.data.booking.check_out}
-                                            </td>
-                                            <td className="border border-black p-2">
-                                                {(new Date(
-                                                    facture.data.booking.check_out
-                                                ) -
-                                                    new Date(
-                                                        facture.data.booking.check_in
-                                                    )) /
-                                                    (1000 * 60 * 60 * 24)}
-                                            </td>
-                                            <td className="border border-black p-2">
-                                                {room.quantity}
-                                            </td>
-                                            <td className="border border-black p-2">
-                                                {room.unitare_price}
-                                            </td>
-                                            <td className="border border-black p-2">
-                                                {room.unitare_price *
-                                                    room.quantity}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    {facture.data.consomations.map(
+                                    {data.rooms.map(
+                                        (room, index) => (
+                                            <tr key={index}>
+                                                <td className="border border-black p-2">
+                                                    {room.room}
+                                                </td>
+                                                <td className="border border-black p-2">
+                                                    {facture.booking.check_in}{" "}
+                                                    AU{" "}
+                                                    {facture.booking.check_out}
+                                                </td>
+                                                <td className="border border-black p-2">
+                                                    {(new Date(
+                                                        facture.booking.check_out
+                                                    ) -
+                                                        new Date(
+                                                            facture.booking.check_in
+                                                        )) /
+                                                        (1000 * 60 * 60 * 24)}
+                                                </td>
+                                                <td className="border border-black p-2">
+                                                    {room.quantity}
+                                                </td>
+                                                <td className="border border-black p-2">
+                                                    {room.unitare_price}
+                                                </td>
+                                                <td className="border border-black p-2">
+                                                    {room.unitare_price *
+                                                        room.quantity}
+                                                </td>
+                                            </tr>
+                                        )
+                                    )}
+                                    {data.consomations.map(
                                         (consomation, index) => (
                                             <tr key={index}>
                                                 <td className="border border-black p-2">
@@ -229,7 +233,7 @@ export default function Facture({ facture, mail, total_ttc }) {
                                             Total HT
                                         </th>
                                         <td className="border border-black p-2">
-                                            {facture.data.total_ht}
+                                            {data.total_ht}
                                         </td>
                                     </tr>
                                     <tr>
@@ -237,7 +241,7 @@ export default function Facture({ facture, mail, total_ttc }) {
                                             Total TVA {facture.tva}%
                                         </th>
                                         <td className="border border-black p-2">
-                                            {facture.data.total_tva}
+                                            {data.total_tva}
                                         </td>
                                     </tr>
                                     <tr>
@@ -245,7 +249,7 @@ export default function Facture({ facture, mail, total_ttc }) {
                                             Sous Total
                                         </td>
                                         <td className="border border-black p-2">
-                                            {facture.data.sous_total}
+                                            {data.sous_total}
                                         </td>
                                     </tr>
                                     <tr>
@@ -253,7 +257,7 @@ export default function Facture({ facture, mail, total_ttc }) {
                                             Taxe de séjour
                                         </td>
                                         <td className="border border-black p-2">
-                                            {facture.data.taxe_de_sejour}
+                                            {data.taxe_de_sejour}
                                         </td>
                                     </tr>
                                     <tr>
@@ -261,7 +265,7 @@ export default function Facture({ facture, mail, total_ttc }) {
                                             Droit de timbre
                                         </td>
                                         <td className="border border-black p-2">
-                                            {facture.data.droit_de_timbre}
+                                            {data.droit_de_timbre}
                                         </td>
                                     </tr>
                                     <tr>
@@ -269,7 +273,7 @@ export default function Facture({ facture, mail, total_ttc }) {
                                             Total TTC
                                         </td>
                                         <td className="border border-black p-2">
-                                            {facture.data.total_ttc}
+                                            {data.total_ttc}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -278,7 +282,7 @@ export default function Facture({ facture, mail, total_ttc }) {
                         <p className="mt-6">
                             LA PRESENTE FACTURE EST ARRETEE A LA SOMME DE :
                         </p>
-                        <p className="font-bold">{total_ttc}</p>
+                        <p className="font-bold">{total_ttc_words}</p>
                     </main>
                     <hr className="mt-6" />
                     <footer className="mt-4">

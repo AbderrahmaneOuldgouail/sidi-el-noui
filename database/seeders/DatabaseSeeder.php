@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enums\Permissions;
 use App\Enums\permissions_actions;
 use App\Enums\Roles;
+use App\Enums\room_status;
 use App\Models\Assets;
 use App\Models\Caracteristique;
 use App\Models\Categorie;
@@ -16,6 +17,8 @@ use App\Models\Message;
 use App\Models\Permission;
 use App\Models\Promotion;
 use App\Models\Role;
+use App\Models\Room;
+use App\Models\Service;
 use App\Models\Type;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -37,8 +40,8 @@ class DatabaseSeeder extends Seeder
             $role = Role::create([
                 'role_name' => $value->value,
             ]);
-            if($role->role_name == Roles::SUPPERADMIN->value || $role->role_name == Roles::ADMIN->value)
-            $role->permissions()->attach(Permission::all());
+            if ($role->role_name == Roles::SUPPERADMIN->value || $role->role_name == Roles::ADMIN->value)
+                $role->permissions()->attach(Permission::all());
         }
 
         // Message::create([
@@ -94,7 +97,26 @@ class DatabaseSeeder extends Seeder
         Category::create([
             'categorie_name' => 'Sale de bain'
         ]);
-        // Feature::factory(20)->create();
-        // RoomFeature::factory(100)->create();
+        Room::create([
+            'room_number' => 100,
+            'type_id' => 2,
+            'room_price' => 5500,
+            'beeds_number' => 2,
+            'room_status' => room_status::Free->value,
+            'room_descreption' => fake()->name(),
+        ]);
+        Room::create([
+            'room_number' => 101,
+            'type_id' => 3,
+            'room_price' => 9500,
+            'beeds_number' => 3,
+            'room_status' => room_status::Free->value,
+            'room_descreption' => fake()->name(),
+        ]);
+        Service::create([
+            'service_name' => 'Réstaurant',
+            'service_descreption' => "descreption",
+            'availability' => true,
+        ]);
     }
 }

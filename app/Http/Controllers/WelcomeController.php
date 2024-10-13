@@ -13,6 +13,8 @@ class WelcomeController extends Controller
 {
     public function index()
     {
+
+
         $rooms = Cache::remember('home-rooms', now()->addHours(6), function () {
             return Type::withCount('rooms')->with([
                 'rooms' => function ($query) {
@@ -40,7 +42,10 @@ class WelcomeController extends Controller
         $events = Cache::remember('home-events', now()->addHours(6), function () {
             return Event::with(['assets' => function ($query) {
                 $query->limit(1);
-            }])->get();
+            }])->where('event_end_date', '>=', now())
+                ->orderBy('event_start_date', 'asc')
+                ->limit(1)
+                ->first();
         });
         $promotions = Cache::remember('home-promotions', now()->addHours(6), function () {
             return Promotion::with(['assets' => function ($query) {

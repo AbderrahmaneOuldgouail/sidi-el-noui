@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ServiceController extends Controller
 {
-
     public function show(string $id, Request $request)
     {
         $service = Service::with('assets', 'consomation')->where('service_id', $id)->first();
@@ -41,6 +41,7 @@ class ServiceController extends Controller
         if ($request->user()->cannot('create', Service::class)) {
             return abort(403);
         }
+
         request()->validate(
             [
                 'service_name' => 'required|string',
@@ -72,6 +73,7 @@ class ServiceController extends Controller
             DB::rollBack();
             throw $e;
         }
+        Cache::forget('home-services');
         return redirect(route('services.index'))->with('message', ['status' => 'success', 'message' => 'Service crée avec succès']);
     }
 
@@ -119,6 +121,7 @@ class ServiceController extends Controller
             DB::rollBack();
             throw $e;
         }
+        Cache::forget('home-services');
         return redirect(route("services.index"))->with('message', ['status' => 'success', 'message' => 'Service modifier avec succès']);
     }
 
@@ -131,6 +134,7 @@ class ServiceController extends Controller
         $service->update([
             'availability' => !$service->availability
         ]);
+        Cache::forget('home-services');
         redirect()->back()->with('message', ['status' => 'success', 'message' => $service->availability ? "Le service '$service->service_name' est disponible" : "Le service '$service->service_name' est indisponible"]);
     }
 
@@ -140,6 +144,8 @@ class ServiceController extends Controller
             return abort(403);
         }
         Service::where('service_id', $id)->delete();
+        Cache::forget('home-services');
+
         return redirect()->back()->with('message', ['status' => 'success', 'message'
         => 'Service supprimé avec succès']);
     }

@@ -117,11 +117,12 @@ class BookingController extends Controller
             'first_name' => 'required|string|max:30',
             'last_name' => 'nullable|string|max:30',
             'email' => 'email|max:50',
-            'phone' => 'required|max:13',
+            'phone' => ['required', 'string', 'regex:/^(05|06|07|02)[0-9]{8}$/'],
             'rooms' => 'required|array',
             'consomation' => 'array',
             'consomation.*.consumption_id' => 'required|integer',
             'consomation.*.quantity' => 'required|integer',
+            'consomation.*.current_consumption_price' => 'required|integer',
             'check_in' => 'required|date',
             'check_out' => 'required|date',
             'guest_number' => 'required|numeric',
@@ -153,20 +154,21 @@ class BookingController extends Controller
             );
         }
 
+
         $booking = Booking::create([
             'user_id' => $user->id,
             'check_in' => $request->check_in,
             'check_out' => $request->check_out,
             'guest_number' => $request->guest_number,
-            "booking_status" => booking_status::Waiting->value,
+            "booking_status" => booking_status::Confirmed->value,
             'created_at' => now(),
         ]);
         foreach ($request->rooms as $room) {
-            $booking->rooms()->attach($room);
+            $booking->rooms()->attach($room['id'], ['room_price' => $room['room_price']]);
         }
         if ($request->consomation) {
             foreach ($request->consomation as $consomation) {
-                $booking->consomation()->attach($consomation['consumption_id'], ['quantity' => $consomation['quantity']]);
+                $booking->consomation()->attach($consomation['consumption_id'], ['quantity' => $consomation['quantity'], 'current_consumption_price' => $consomation['current_consumption_price']]);
             }
         }
         DB::commit();
@@ -199,7 +201,6 @@ class BookingController extends Controller
         return Inertia::render('Admin/Bookings/Booking', ['booking' => $booking]);
     }
 
-
     public function searchForBooking(Request $request)
     {
         $request->validate([
@@ -215,7 +216,9 @@ class BookingController extends Controller
         $rooms = Room::with(['features', 'assets', 'type'])->whereDoesntHave('bookings', function ($query) use ($date_check_in, $date_check_out) {
             $query->where(function ($query) use ($date_check_in, $date_check_out) {
                 $query->where('check_in', '<', $date_check_out)
-                    ->where('check_out', '>', $date_check_in);
+                    ->where('check_out', '>', $date_check_in)
+                    ->where('booking_status', booking_status::Cancled->value)
+                    ->where('booking_status', booking_status::Refuse->value);
             });
         })
             ->where('room_status', '<>', room_status::Out_of_service->value)
@@ -250,17 +253,20 @@ class BookingController extends Controller
             'first_name' => 'required|string|max:30',
             'last_name' => 'required|string|max:30',
             'email' => 'email|max:50',
-            'phone' => 'required|max:13',
+            'phone' => ['required', 'string', 'regex:/^(05|06|07)[0-9]{8}$/'],
             'rooms' => 'required|array',
             'consomation' => 'array',
             'consomation.*.consumption_id' => 'required|integer',
             'consomation.*.quantity' => 'required|integer',
+            'consomation.*.current_consumption_price' => 'required|integer',
             'check_in' => 'required|date',
             'check_out' => 'required|date',
             'guest_number' => 'required|numeric',
+            'kids_number' => 'nullable|numeric'
         ]);
 
-
+        // dd($request->guest_number);
+        // dd($request->kids_number);
         DB::beginTransaction();
 
         $user = User::where('email', $request->email,)->orWhere('phone', $request->phone)->first();
@@ -283,15 +289,16 @@ class BookingController extends Controller
             'check_in' => $request->check_in,
             'check_out' => $request->check_out,
             'guest_number' => $request->guest_number,
+            'kids_number' => $request->kids_number,
             "booking_status" => booking_status::Waiting->value,
             'created_at' => now(),
         ]);
         foreach ($request->rooms as $room) {
-            $booking->rooms()->attach($room);
+            $booking->rooms()->attach($room['id'], ['room_price' => $room['room_price']]);
         }
         if ($request->consomation) {
             foreach ($request->consomation as $consomation) {
-                $booking->consomation()->attach($consomation['consumption_id'], ['quantity' => $consomation['quantity']]);
+                $booking->consomation()->attach($consomation['consumption_id'], ['quantity' => $consomation['quantity'], 'current_consumption_price' => $consomation['current_consumption_price']]);
             }
         }
         DB::commit();

@@ -1,12 +1,11 @@
-import React from "react";
-import { Button, buttonVariants } from "@/Components/ui/button";
-import { Link, router, useForm } from "@inertiajs/react";
+import React, { useState } from "react";
+import { Button } from "@/Components/ui/button";
+import { Link, useForm } from "@inertiajs/react";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { ImagePlus, Trash } from "lucide-react";
+import { ImagePlus } from "lucide-react";
 import { Editor } from "@/Components/Admin/Shared/Editor";
-
 
 import { cn } from "@/lib/utils";
 import {
@@ -34,6 +33,8 @@ import LabelDescreption from "@/Components/LabelDescreption";
 import { Input } from "@/Components/ui/input";
 import { useTrans } from "@/Hooks/useTrans";
 import { Separator } from "@/Components/ui/separator";
+import { ImagesViewer } from "../Shared/ImagesViewer";
+import DbImageViewer from "../Shared/DbImageViewer";
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
@@ -41,8 +42,9 @@ export default function EditRoomForm({ types, categorys, room }) {
     const [type, setType] = React.useState(room.type.type_designation);
     const [open, setOpen] = React.useState(false);
     const [searchValue, setSearchValue] = React.useState("");
-    const [images, setImages] = React.useState([]);
-    const { data, setData, post, errors } = useForm({
+    const [importedFiles, setImportedFiles] = useState([]);
+
+    const { data, setData, post, errors, clearErrors } = useForm({
         room_number: room.room_number,
         type_id: room.type_id,
         room_descreption: room.room_descreption,
@@ -58,32 +60,39 @@ export default function EditRoomForm({ types, categorys, room }) {
         }),
         assets: [],
     });
-    const onSubmit = (e) => {
-        e.preventDefault();
-        post(route("rooms.update", room.room_number));
-    };
 
-    const handleFiles = (file) => {
-        const files = Array.from(file);
-        const promises = files.map((f) => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    resolve(reader.result);
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(f);
-            });
+    const handleFiles = (files) => {
+        if (!files || !files.length) return;
+
+        const newFiles = Array.from(files);
+
+        setImportedFiles((prevData) => {
+            const updatedFiles = newFiles.map((file) => ({
+                file,
+                url: URL.createObjectURL(file),
+            }));
+            return [...prevData, ...updatedFiles];
         });
 
-        Promise.all(promises).then((images) => {
-            setImages(images);
-        });
-        setData("assets", file);
+        setData("assets", [...data.assets, ...newFiles]);
     };
 
     const deleteImage = (index) => {
-        images.splice(index, 1);
+        setImportedFiles((prevData) => {
+            const updatedFiles = [...prevData];
+            updatedFiles.splice(index, 1);
+            return updatedFiles;
+        });
+
+        const updatedAssets = [...data.assets];
+        updatedAssets.splice(index, 1);
+        setData("assets", updatedAssets);
+        clearErrors(`assets.${index}`);
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        post(route("rooms.update", room.room_number));
     };
 
     const isPressedFn = (feature) =>
@@ -399,7 +408,9 @@ export default function EditRoomForm({ types, categorys, room }) {
                         {data.features.map((feature, idx) =>
                             feature.need_value ? (
                                 <div key={idx}>
-                                    <InputLabel>{feature.name}</InputLabel>
+                                    <InputLabel>
+                                        {feature.features_name}
+                                    </InputLabel>
                                     <Input
                                         className="mt-2 w-full bg-card"
                                         value={feature.value}
@@ -460,76 +471,15 @@ export default function EditRoomForm({ types, categorys, room }) {
                         <InputError message={errors.assets} className="mt-2" />
                     </div>
                 </div>
-                {images.length > 0 && (
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-                        {images.map((image, index) => (
-                            <div key={index} className="relative">
-                                <img
-                                    src={image}
-                                    alt={`Selected ${index}`}
-                                    className="rounded-md object-cover aspect-video"
-                                />
-                                <div
-                                    onClick={() => deleteImage(index)}
-                                    className={buttonVariants({
-                                        variant: "destructive",
-                                        className:
-                                            "absolute bottom-0 left-1/2 -translate-x-1/2 cursor-pointer",
-                                    })}
-                                >
-                                    <Trash />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-                    {room.assets.map((image, index) => (
-                        <div key={index} className="relative">
-                            <img
-                                src={image.url}
-                                alt={`Selected ${index}`}
-                                className="rounded-md object-cover aspect-video"
-                            />
-                            <div
-                                onClick={() =>
-                                    router.visit(
-                                        route("assets.delete", image.id),
-                                        {
-                                            method: "GET",
-                                            preserveState: true,
-                                            preserveScroll: true,
-                                        }
-                                    )
-                                }
-                                className={buttonVariants({
-                                    variant: "destructive",
-                                    className:
-                                        "absolute bottom-0 left-1/2 -translate-x-1/2 cursor-pointer",
-                                })}
-                            >
-                                <Trash />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                {/* <>
-                        <AspectRatio ratio={16 / 9} className="bg-muted">
-                            <img
-                                src={asset.url}
-                                alt={asset.name}
-                                className="rounded-md object-cover"
-                            />
-                        </AspectRatio>
-                        <Link
-                            href={route("assets.delete", asset.id)}
-                            as="button"
-                        >
-                            <Button variant="destructive">
-                                <Trash />
-                            </Button>
-                        </Link>
-                    </> */}
+                <ImagesViewer
+                    images={importedFiles}
+                    errors={errors}
+                    deleteImage={deleteImage}
+                />{" "}
+                <DbImageViewer
+                    assets={room.assets}
+                    importedFiles={importedFiles.length}
+                />
             </div>
             <div className="flex justify-end">
                 <Button

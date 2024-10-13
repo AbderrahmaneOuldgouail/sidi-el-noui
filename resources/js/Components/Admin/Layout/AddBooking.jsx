@@ -120,6 +120,7 @@ export function AddBooking() {
                             <DatePickerWithRange
                                 date={dateRange}
                                 onDateChange={handleDateChange}
+                                min={2}
                             />
                             <InputError
                                 message={errors.check_in}

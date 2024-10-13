@@ -9,9 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Guest extends Model
 {
     use HasFactory;
-    // protected $table = 'invites';
+
     public $timestamps = false;
     protected $primaryKey = 'guest_id';
+
+    protected $fillable = [
+        'guest_first_name',
+        'guest_last_name',
+    ];
 
 
     public function factures(): BelongsToMany

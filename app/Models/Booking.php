@@ -20,6 +20,7 @@ class Booking extends Model
         'check_in',
         'check_out',
         'guest_number',
+        'kids_number',
         'booking_status'
     ];
 
@@ -30,12 +31,12 @@ class Booking extends Model
 
     public function rooms(): BelongsToMany
     {
-        return $this->belongsToMany(Room::class, 'room_bookings', 'booking_id', 'room_id');
+        return $this->belongsToMany(Room::class, 'room_bookings', 'booking_id', 'room_id')->withPivot('room_price');
     }
 
     public function consomation(): BelongsToMany
     {
-        return $this->belongsToMany(Consumption::class, 'booking_consumptions', 'booking_id', 'consumption_id')->withPivot('quantity');
+        return $this->belongsToMany(Consumption::class, 'booking_consumptions', 'booking_id', 'consumption_id')->withPivot(['quantity', 'current_consumption_price']);
     }
 
     public function factures(): HasMany

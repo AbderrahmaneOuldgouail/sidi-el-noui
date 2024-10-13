@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ClientLayout from "@/Layouts/ClientLayout";
-import { useForm, usePage } from "@inertiajs/react";
+import { Head, useForm, usePage } from "@inertiajs/react";
 import UserDataForm from "@/Components/Client/AviableRooms/UserDataForm";
 import RoomsServces from "@/Components/Client/AviableRooms/RoomsServces";
 import BookingsCard from "@/Components/Client/AviableRooms/BookingsCard";
@@ -18,6 +18,7 @@ export default function AviableRooms({ rooms, booking_data, services }) {
         check_in: booking_data.check_in,
         check_out: booking_data.check_out,
         guest_number: booking_data.guest_number,
+        kids_number: booking_data.kids_number,
         first_name: user ? user.first_name : "",
         last_name: user ? user.last_name : "",
         email: user ? user.email : "",
@@ -38,6 +39,7 @@ export default function AviableRooms({ rooms, booking_data, services }) {
 
     return (
         <ClientLayout>
+            <Head title="Aviable rooms" />
             <div className="font-bold text-xl m-6 ">
                 {useTrans("Finaliser votre réservation")}
             </div>

@@ -19,6 +19,7 @@ export default function Promotions({ promotions, promotion_permission }) {
             toast({ description: flash.message?.message });
         }
     }, [flash.message, toast]);
+
     return (
         <AdminPanelLayout>
             <Head title="Promotions" />

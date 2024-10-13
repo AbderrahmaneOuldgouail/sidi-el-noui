@@ -15,7 +15,7 @@ import { Checkbox } from "@/Components/ui/checkbox";
 export default function EditRole({ role, permissions, permissions_actions }) {
     const { data, setData, put, errors } = useForm({
         role_name: role.role_name,
-        prevName: role.name,
+        prevName: role.role_name,
         permissions: role.permissions.map(
             (permission) => permission.permission_id
         ),

@@ -28,6 +28,6 @@ class Consumption extends Model
 
     public function bookings(): BelongsToMany
     {
-        return $this->belongsToMany(Consumption::class, 'booking_consumptions', 'consumption_id', 'booking_id')->withPivot('quantity');
+        return $this->belongsToMany(Consumption::class, 'booking_consumptions', 'consumption_id', 'booking_id')->withPivot(['quantity', 'current_consumption_price']);
     }
 }

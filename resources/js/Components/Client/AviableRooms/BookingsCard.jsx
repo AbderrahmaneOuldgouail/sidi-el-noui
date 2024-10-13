@@ -51,7 +51,9 @@ export default function BookingsCard({
     };
 
     const unselectConsommation = (consomation) => {
-        setTotal(total - consomation.price * consomation.quantity);
+        setTotal(
+            total - consomation.current_consumption_price * consomation.quantity
+        );
         setData((prevData) => {
             const existingIndex = data.consomation.findIndex(
                 (c) => c.consumption_id === consomation.consumption_id
@@ -68,9 +70,7 @@ export default function BookingsCard({
                     variant="secondary"
                     size="sm"
                     className="my-4 w-full z-[1] justify-between"
-                    disabled={
-                        selectedRooms == false && data?.consomation == false
-                    }
+                    disabled={selectedRooms == false}
                 >
                     {useTrans("Dernière étape")} <ChevronRight />
                 </Button>

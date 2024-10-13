@@ -8,6 +8,7 @@
 
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <link rel="shortcut icon" href="/assets/sidi-el-noui-logo.png" type="image/png">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

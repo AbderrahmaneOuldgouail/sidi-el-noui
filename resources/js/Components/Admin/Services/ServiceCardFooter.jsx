@@ -15,9 +15,16 @@ export default function ServiceCardFooter({ service }) {
                     <Switch
                         checked={service.availability}
                         onCheckedChange={() => {
-                            router.post(route("services.toggle.availability"), {
-                                service_id: service.service_id,
-                            });
+                            router.post(
+                                route("services.toggle.availability"),
+                                {
+                                    service_id: service.service_id,
+                                },
+                                {
+                                    preserveState: true,
+                                    preserveScroll: true,
+                                }
+                            );
                         }}
                     />
                     <span className="ml-2 ">

@@ -15,9 +15,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\File;
 use Inertia\Middleware;
-use Illuminate\Support\Facades\Route;
 
 class HandleInertiaRequests extends Middleware
 {

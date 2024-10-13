@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Room;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -94,6 +95,7 @@ class RoomController extends Controller
             DB::rollBack();
             throw $e;
         }
+        Cache::forget('home-rooms');
         return redirect(route('rooms.index'));
     }
 

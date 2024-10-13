@@ -43,6 +43,6 @@ class Room extends Model
 
     public function bookings(): BelongsToMany
     {
-        return $this->belongsToMany(Booking::class, 'room_bookings', 'room_id', 'booking_id');
+        return $this->belongsToMany(Booking::class, 'room_bookings', 'room_id', 'booking_id')->withPivot('room_price');
     }
 }

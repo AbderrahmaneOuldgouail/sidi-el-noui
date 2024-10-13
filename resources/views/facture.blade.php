@@ -1,10 +1,11 @@
 @php
     use Carbon\Carbon;
 
-    $checkIn = Carbon::parse($facture->data['booking']['check_in']);
-    $checkOut = Carbon::parse($facture->data['booking']['check_out']);
+    $checkIn = Carbon::parse($facture->booking->check_in);
+    $checkOut = Carbon::parse($facture->booking->check_out);
 
     $daysDifference = $checkIn->diffInDays($checkOut);
+
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -135,17 +136,12 @@
         <div class="client-section">
             <div>Doit</div>
             <div class="client">
-                <span>{{ $facture->data['user']['first_name'] }} {{ $facture->data['user']['last_name'] }} </span>
-                /
-                <span>{{ $facture->data['user']['adresse'] ?  "adresse : " . $facture->data['user']['adresse'] : ""}} </span>
-                /
-                <span>{{ $facture->data['user']['nif'] ?  "Numéro d'Identification Fiscale : " . $facture->data['user']['nif'] : ""}} </span>
-                /
-                <span>{{ $facture->data['user']['nis'] ?  "Numéro d'Identification Statistique : " . $facture->data['user']['nis'] : ""}} </span>
-                /
-                <span>{{ $facture->data['user']['nrc'] ?  "Numéro  de registre de commerce : " . $facture->data['user']['nrc'] : ""}} </span>
-                /
-                <span>{{ $facture->data['user']['n_article'] ?  "Numéro d'article : " . $facture->data['user']['n_article'] : ""}} </span>
+                <span>{{ $facture->booking->user->first_name }} {{ $facture->booking->user->last_name }} </span>
+                <span>{{ $facture->booking->user->adresse ?  " / adresse : " . $facture->booking->user->adresse : ""}} </span>
+                <span>{{ $facture->booking->user->nif ?  " / Numéro d'Identification Fiscale : " . $facture->booking->user->nif : ""}} </span>
+                <span>{{ $facture->booking->user->nis ?  " / Numéro d'Identification Statistique : " . $facture->booking->user->nis : ""}} </span>
+                <span>{{ $facture->booking->user->nrc ?  " / Numéro  de registre de commerce : " . $facture->booking->user->nrc : ""}} </span>
+                <span>{{ $facture->booking->user->n_article ?  " / Numéro d'article : " . $facture->booking->user->n_article : ""}} </span>
             </div>
         </div>
         <div class="tables">
@@ -158,7 +154,17 @@
                     <th>Prix unitaire</th>
                     <th>Montant HT</th>
                 </tr>
-                @foreach($facture->data['consomations'] as $consomation)
+                @foreach($data['rooms'] as $room)
+                <tr>
+                    <td>{{ $room['room'] }}</td>
+                    <td> {{ $facture->booking->check_in }} AU {{ $facture->booking->check_out }} </td>
+                    <td> {{ $daysDifference }} </td>
+                    <td> {{ $room['quantity'] }} </td>
+                    <td> {{ $room['unitare_price'] }} </td>
+                    <td> {{ $room['unitare_price'] * $room['quantity'] }} </td>
+                </tr>
+                @endforeach
+                @foreach($data['consomations'] as $consomation)
                 <tr>
                     <td>{{ $consomation['consumption_name'] }}</td>
                     <td> / </td>
@@ -168,46 +174,36 @@
                     <td> {{ $consomation['unitare_price'] * $consomation['quantity'] }} </td>
                 </tr>
                 @endforeach
-                @foreach($facture->data['rooms'] as $room)
-                <tr>
-                    <td>{{ $room['room'] }}</td>
-                    <td> {{ $facture->data['booking']['check_in'] }} AU {{ $facture->data['booking']['check_out'] }} </td>
-                    <td> {{ $daysDifference }} </td>
-                    <td> {{ $room['quantity'] }} </td>
-                    <td> {{ $room['unitare_price'] }} </td>
-                    <td> {{ $room['unitare_price'] * $room['quantity'] }} </td>
-                </tr>
-                @endforeach
             </table>
             <table class="total-table">
                 <tr>
                     <th>Total HT</th>
-                    <th>{{ $facture->data['total_ht'] }} </th>
+                    <th>{{ $data['total_ht'] }} </th>
                 </tr>
                 <tr>
                     <th>Total TVA {{ $facture->tva }} </th>
-                    <th>{{ $facture->data['total_tva']}} </th>
+                    <th>{{ $data['total_tva']}} </th>
                 </tr>
                 <tr>
                     <td>Sous Total</td>
-                    <td>{{ $facture->data['sous_total'] }}</td>
+                    <td>{{ $data['sous_total'] }}</td>
                 </tr>
                 <tr>
                     <td>Taxe de séjour</td>
-                    <td>{{ $facture->data['taxe_de_sejour'] }}</td>
+                    <td>{{ $data['taxe_de_sejour'] }}</td>
                 </tr>
                 <tr>
                     <td>Droit de timbre</td>
-                    <td>{{ $facture->data['droit_de_timbre'] }}</td>
+                    <td>{{ $data['droit_de_timbre'] }}</td>
                 </tr>
                 <tr>
                     <td>Total TTC</td>
-                    <td>{{ $facture->data['total_ttc'] }}</td>
+                    <td>{{ $data['total_ttc'] }}</td>
                 </tr>
             </table>
         </div>
         <p>LA PRESENTE FACTURE EST ARRETEE A LA SOMME DE :</p>
-        <p><b>{{ numberToWords($facture->data['total_ttc']) }}</b></p>
+        <p><b>{{ numberToWords($data['total_ttc']) }}</b></p>
     </main>
     <hr/>
     <footer>

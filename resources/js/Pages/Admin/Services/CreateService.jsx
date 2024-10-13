@@ -20,36 +20,46 @@ import { Editor } from "@/Components/Admin/Shared/Editor";
 const fileTypes = ["JPG", "PNG", "GIF"];
 
 export default function CreateService() {
-    const [images, setImages] = useState([]);
-
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors, clearErrors } = useForm({
         service_name: "",
         service_descreption: "",
         assets: [],
     });
 
+    const [importedFiles, setImportedFiles] = useState([]);
+
+    const handleFiles = (files) => {
+        if (!files || !files.length) return;
+
+        const newFiles = Array.from(files);
+
+        setImportedFiles((prevData) => {
+            const updatedFiles = newFiles.map((file) => ({
+                file,
+                url: URL.createObjectURL(file),
+            }));
+            return [...prevData, ...updatedFiles];
+        });
+
+        setData("assets", [...data.assets, ...newFiles]);
+    };
+
+    const deleteImage = (index) => {
+        setImportedFiles((prevData) => {
+            const updatedFiles = [...prevData];
+            updatedFiles.splice(index, 1);
+            return updatedFiles;
+        });
+
+        const updatedAssets = [...data.assets];
+        updatedAssets.splice(index, 1);
+        setData("assets", updatedAssets);
+        clearErrors(`assets.${index}`);
+    };
+
     const submit = (e) => {
         e.preventDefault();
         post(route("services.store"));
-    };
-
-    const handleFiles = (file) => {
-        const files = Array.from(file);
-        const promises = files.map((f) => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    resolve(reader.result);
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(f);
-            });
-        });
-
-        Promise.all(promises).then((images) => {
-            setImages(images);
-        });
-        setData("assets", file);
     };
     return (
         <AdminPanelLayout>
@@ -154,7 +164,11 @@ export default function CreateService() {
                                 />
                             </div>
                         </div>
-                        <ImagesViewer images={images} />
+                        <ImagesViewer
+                            images={importedFiles}
+                            errors={errors}
+                            deleteImage={deleteImage}
+                        />
                     </div>
                     <div className="flex justify-end">
                         <Button

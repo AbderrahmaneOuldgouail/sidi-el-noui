@@ -46,6 +46,7 @@ export default function Booking({ booking }) {
 
         return total;
     };
+    console.log(booking.kids_number);
     return (
         <AdminPanelLayout>
             <Head title="Réservation" />
@@ -98,6 +99,29 @@ export default function Booking({ booking }) {
                                 <div className="text-sm text-muted-foreground">
                                     07h00 - 12h00
                                 </div>
+                            </div>
+                        </CardContent>
+                        <CardContent className="flex justify-between p-2">
+                            <div>
+                                <div>{useTrans("Nombre des personnes")} </div>
+                                <span className="font-bold">
+                                    {booking.guest_number}{" "}
+                                </span>
+                                <span className="text-sm text-muted-foreground">
+                                    {useTrans("adult")}
+                                </span>
+                                {booking.kids_number ? (
+                                    <>
+                                        {" "}
+                                        {useTrans("et")}{" "}
+                                        <span className="font-bold">
+                                            {booking.kids_number}{" "}
+                                        </span>
+                                        <span className="text-sm text-muted-foreground">
+                                            {useTrans("bébés")}
+                                        </span>
+                                    </>
+                                ) : null}
                             </div>
                         </CardContent>
                         <CardFooter className="flex-col items-start p-2">

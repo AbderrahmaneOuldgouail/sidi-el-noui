@@ -12,7 +12,6 @@ import { Editor } from "@/Components/Admin/Shared/Editor";
 import { useTrans } from "@/Hooks/useTrans";
 
 export default function Show({ event }) {
-    console.log(event);
     return (
         <ClientLayout>
             <div className="absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
@@ -23,7 +22,10 @@ export default function Show({ event }) {
                 <Carousel>
                     <CarouselContent>
                         {event.assets.map((asset) => (
-                            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+                            <CarouselItem
+                                className="md:basis-1/2 lg:basis-1/3"
+                                key={asset.id}
+                            >
                                 <img
                                     src={asset.url}
                                     alt={asset.name}
