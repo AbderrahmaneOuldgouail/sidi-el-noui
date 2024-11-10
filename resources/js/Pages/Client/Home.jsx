@@ -18,8 +18,6 @@ export default function Home({ events, promotions, rooms, services }) {
             toast({ description: flash.message?.message });
         }
     }, [flash.message, toast]);
-
-    console.log(events);
     return (
         <ClientLayout>
             <Head title="Home" />
@@ -28,9 +26,9 @@ export default function Home({ events, promotions, rooms, services }) {
                 id="home-section"
             >
                 <div className="absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.6)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
-                <HomeHeading promotion={promotions[0]} id="booking-form" />
+                <HomeHeading id="booking-form" />
             </div>
-            {promotions.length > 0 && (
+            {promotions  && (
                 <div className="my-6 relative min-h-screen max-h-sceen">
                     <div className="absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[0] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.2)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
                     <div className="font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ">
@@ -43,7 +41,7 @@ export default function Home({ events, promotions, rooms, services }) {
                             )}
                         </div>
                     </div>
-                    <Promotion promotion={promotions[0]} />
+                    <Promotion promotion={promotions} />
                 </div>
             )}
             {events && (

@@ -13,8 +13,6 @@ class WelcomeController extends Controller
 {
     public function index()
     {
-
-
         $rooms = Cache::remember('home-rooms', now()->addHours(6), function () {
             return Type::withCount('rooms')->with([
                 'rooms' => function ($query) {
@@ -50,7 +48,11 @@ class WelcomeController extends Controller
         $promotions = Cache::remember('home-promotions', now()->addHours(6), function () {
             return Promotion::with(['assets' => function ($query) {
                 $query->limit(1);
-            }])->where('is_active', true)->get();
+            }])->where('is_active', true)
+                ->where('promo_end_date', '>=', now())
+                ->orderBy('promo_start_date', 'asc')
+                ->limit(1)
+                ->first();
         });
         return Inertia::render('Client/Home', ['promotions' => $promotions, 'events' => $events, 'rooms' => $rooms, 'services' => $services]);
     }

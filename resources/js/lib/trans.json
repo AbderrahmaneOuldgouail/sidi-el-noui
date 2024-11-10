@@ -70,6 +70,9 @@
   "Supprimer tous" : "حذف الكل",
   "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette caractéristique et chaque chambre avoir cette caractéristique va le perdre" : "لا يمكن التراجع عن هذا الإجراء. سوف تقوم بحذف هذه الخاصية نهائياً وكل غرفة بها هذه الخاصية سوف تفقدها",
   "Modifier cette caractéristique" : "تعديل هذه الخاصية",
+  "Aucun categories pour l'instant, essayez de créer une nouvelle" : "لا توجد فئات حتى الآن، حاول إنشاء واحدة جديدة",
+  "Aucun caractéristiques pour l'instant, essayez de créer une nouvelle" : "لا توجد الخاصيات حتى الآن، حاول إنشاء واحدة جديدة",
+
 
   "Servicess" : "==============================================================================",
 
@@ -98,6 +101,9 @@
   "List des consommations" : "قائمة الاستهلاكات",
   "Prix Unitaire:" : "سعر الوحدة:",
   "Service Modification" : "تحرير الخدمة",
+  "Aucun services pour l'instant, essayez de créer un nouveau" : "لا توجد خدمات حتى الآن، حاول إنشاء واحدة جديدة",
+  "Aucun consommations pour l'instant, essayez de créer un nouveau" : "لا توجد الاستهلاكات حتى الآن، حاول إنشاء واحد جديد",
+
 
   "Eventss" : "===============================================================================",
 
@@ -120,6 +126,7 @@
   "Modification d'évènement" : "تعديل الحدث",
   "Créer un nouveau évènement" : "إنشاء حدث جديد",
   "Modifier ce évènement" : "تعديل هذا الحدث",
+  "Aucun évènement pour l'instant, essayez de créer une nouvelle" : "لا توجد أحداث حتى الآن، حاول إنشاء واحد جديد",
   
   "Promotionss" : "===========================================================================",
   "Promotions" : "التخفيضات",
@@ -136,6 +143,8 @@
   "Entrer la Valeur de promotion en DA" : "أدخل قيمة التخفيض ب دج",
   "Ajouter des photos au promotion (ne dépasse pas 10 photos par promotion)" : "إضافة صور إلى التخفيض (لا تتجاوز 10 صور لكل تخفيض)",
   "Modification de promotion" : "تعديل التخفيض",
+  "Aucun promotion pour l'instant, essayez de créer une nouvelle" : "لا توجد تخفيضات حتى الآن، حاول إنشاء واحد جديد",
+
 
 
   "Users" : "================================================================================",
@@ -216,6 +225,8 @@
   "Choisi cette option lors cette réservation est pour un société" : "اختر هذا الخيار عندما يكون هذا الحجز خاصًا بشركة",
   "Informations de client" : "معلومات الزبون",
   "Détails de réservation" : "تفاصيل الحجز",
+  "Aucun réservations pour l'instant, essayez de créer une nouvelle" : "لا توجد حجوزات حتى الآن، حاول إنشاء واحد جديد",
+
 
   "nav bar" : "==============================================================================",
   "Compte" : "الحساب",
@@ -268,6 +279,8 @@
   "List des invités" : "قائمة الضيوف",
   "Ajouter" : "إضافة",
   "Ajouter des invités" : "إضافة الضيوف",
+  "Aucun factures pour l'instant, essayez de créer une nouvelle" : "لا توجد فواتير حتى الآن، حاول إنشاء واحدة جديدة",
+
 
   "messages" : "===========================================================================",
   "Tous" : "الكل",

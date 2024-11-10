@@ -11,6 +11,8 @@ import { DataTable } from "@/Components/Admin/DataTable";
 import { historiqueColumns } from "@/Components/Admin/Bookings/HistoriqueColumns";
 import { useTrans } from "@/Hooks/useTrans";
 import { ToastAction } from "@/Components/ui/toast";
+import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
+import { BookmarkCheck } from "lucide-react";
 
 export default function Bookings({ bookings }) {
     const { toast } = useToast();
@@ -44,12 +46,19 @@ export default function Bookings({ bookings }) {
             <Head title="Bookings" />
             <PageHeading title={useTrans("Réservations")} />
             <PlaceholderContent>
-                <DataTable
-                    columns={historiqueColumns}
-                    data={bookings.data}
-                    paginate={bookings}
-                    selection={false}
-                />
+                {bookings.data.length ? (
+                    <DataTable
+                        columns={historiqueColumns}
+                        data={bookings.data}
+                        paginate={bookings}
+                        selection={false}
+                    />
+                ) : (
+                    <EmptyPage
+                        text="Aucun réservations pour l'instant, essayez de créer une nouvelle"
+                        icon={BookmarkCheck}
+                    />
+                )}
             </PlaceholderContent>
         </AdminPanelLayout>
     );

@@ -32,12 +32,17 @@ export default function BookingsCard({
     setSelectedRooms,
     setData,
     booking_data,
+    promotion,
 }) {
     let nights =
         (new Date(booking_data.check_out) - new Date(booking_data.check_in)) /
         (1000 * 60 * 60 * 24);
     const unselectRoom = (room) => {
-        setTotal(total - room.room_price * nights);
+        promotion
+            ? setTotal(
+                  total - (room.room_price - promotion.promo_value) * nights
+              )
+            : setTotal(total - room.room_price * nights);
         setBeedsNumber(beedsNumber - Number(room.beeds_number));
         setSelectedRooms(selectedRooms.filter((r) => r.id !== room.id));
         setData((prevData) => {
@@ -164,7 +169,6 @@ export default function BookingsCard({
                                     </DialogHeader>
                                 </DialogContent>
                             </Dialog>
-
                             <Button
                                 size="icon"
                                 variant="outline"

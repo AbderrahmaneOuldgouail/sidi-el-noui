@@ -14,6 +14,4 @@ Broadcast::channel(
         return true;
     }
 );
-Broadcast::channel('test', function (User $user) {
-    return false;
-});
+

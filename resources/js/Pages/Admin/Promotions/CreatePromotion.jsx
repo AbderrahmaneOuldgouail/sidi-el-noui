@@ -91,7 +91,7 @@ export default function CreatePromotion() {
     };
     return (
         <AdminPanelLayout>
-            <Head title="Service" />
+            <Head title="Création de Promotion" />
             <PageHeading title={useTrans("Création de promotion")} />
             <PlaceholderContent>
                 <form onSubmit={submit}>

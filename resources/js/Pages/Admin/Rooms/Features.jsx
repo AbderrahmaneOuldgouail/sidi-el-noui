@@ -8,12 +8,12 @@ import { featuresColumns } from "@/Components/Admin/Rooms/FeaturesColumns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import PageHeading from "@/Components/ui/PageHeading";
 import { useToast } from "@/Components/ui/use-toast";
-import { Card, CardContent, CardFooter } from "@/Components/ui/card";
 import FeatureCreateDialog from "@/Components/Admin/Rooms/FeatureCreateDialog";
 import { useTrans } from "@/Hooks/useTrans";
 import CategoryDialog from "@/Components/Admin/Rooms/CategoryDialog";
-import DeleteeDialog from "@/Components/Admin/Shared/DeleteDialog";
 import CategoryCard from "@/Components/Admin/Rooms/CategoryCard";
+import { Hotel } from "lucide-react";
+import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
 
 export default function Features({ features, categorys }) {
     const { toast } = useToast();
@@ -55,11 +55,18 @@ export default function Features({ features, categorys }) {
                         <FeatureCreateDialog categorys={categorys} />
                     </div>
                     <PlaceholderContent>
-                        <DataTable
-                            columns={featuresColumns}
-                            data={features}
-                            selection={true}
-                        />
+                        {features.length ? (
+                            <DataTable
+                                columns={featuresColumns}
+                                data={features}
+                                selection={true}
+                            />
+                        ) : (
+                            <EmptyPage
+                                icon={Hotel}
+                                text="Aucun caractéristiques pour l'instant, essayez de créer une nouvelle"
+                            />
+                        )}
                     </PlaceholderContent>
                 </TabsContent>
                 <TabsContent value="category">
@@ -67,12 +74,19 @@ export default function Features({ features, categorys }) {
                         <CategoryDialog mode="create" />
                     </div>
                     <PlaceholderContent>
-                        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                            {categorys &&
-                                categorys.map((category) => (
-                                    <CategoryCard category={category} />
-                                ))}
-                        </div>
+                        {categorys.length ? (
+                            <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                                {categorys &&
+                                    categorys.map((category) => (
+                                        <CategoryCard category={category} />
+                                    ))}
+                            </div>
+                        ) : (
+                            <EmptyPage
+                                icon={Hotel}
+                                text="Aucun categories pour l'instant, essayez de créer une nouvelle"
+                            />
+                        )}
                     </PlaceholderContent>
                 </TabsContent>
             </Tabs>

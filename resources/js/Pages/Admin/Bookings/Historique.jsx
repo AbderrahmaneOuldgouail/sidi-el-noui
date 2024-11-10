@@ -7,6 +7,8 @@ import PageHeading from "@/Components/ui/PageHeading";
 import { DataTable } from "@/Components/Admin/DataTable";
 import { historiqueColumns } from "@/Components/Admin/Bookings/HistoriqueColumns";
 import { useTrans } from "@/Hooks/useTrans";
+import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
+import { Archive } from "lucide-react";
 
 export default function Historique({ bookings }) {
     return (
@@ -14,12 +16,19 @@ export default function Historique({ bookings }) {
             <Head title="Historique" />
             <PageHeading title={useTrans("Historique")} />
             <PlaceholderContent>
-                <DataTable
-                    columns={historiqueColumns}
-                    data={bookings.data}
-                    paginate={bookings}
-                    selection={false}
-                />
+                {bookings.data.length ? (
+                    <DataTable
+                        columns={historiqueColumns}
+                        data={bookings.data}
+                        paginate={bookings}
+                        selection={false}
+                    />
+                ) : (
+                    <EmptyPage
+                        text="Aucun réservations pour l'instant, essayez de créer une nouvelle"
+                        icon={Archive}
+                    />
+                )}
             </PlaceholderContent>
         </AdminPanelLayout>
     );

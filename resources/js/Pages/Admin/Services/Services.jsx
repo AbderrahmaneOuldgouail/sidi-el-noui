@@ -8,6 +8,8 @@ import { useToast } from "@/Components/ui/use-toast";
 import { useTrans } from "@/Hooks/useTrans";
 import ServiceCard from "@/Components/Admin/Services/ServiceCard";
 import { Button } from "@/Components/ui/button";
+import { HandPlatter } from "lucide-react";
+import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
 
 export default function Services({ services, service_permission }) {
     const { toast } = useToast();
@@ -34,14 +36,23 @@ export default function Services({ services, service_permission }) {
                 )}
             </div>
             <PlaceholderContent>
-                <div className="font-bold p-4">
-                    {useTrans("List des services")} :
-                </div>
-                {services.map((service) => (
-                    <div key={service.service_id}>
-                        <ServiceCard service={service} />
-                    </div>
-                ))}
+                {services.lenght ? (
+                    <>
+                        <div className="font-bold p-4">
+                            {useTrans("List des services")} :
+                        </div>
+                        {services.map((service) => (
+                            <div key={service.service_id}>
+                                <ServiceCard service={service} />
+                            </div>
+                        ))}
+                    </>
+                ) : (
+                    <EmptyPage
+                        text="Aucun services pour l'instant, essayez de créer un nouveau"
+                        icon={HandPlatter}
+                    />
+                )}
             </PlaceholderContent>
         </AdminPanelLayout>
     );

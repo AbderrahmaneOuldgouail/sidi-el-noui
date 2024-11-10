@@ -6,7 +6,12 @@ import RoomsServces from "@/Components/Client/AviableRooms/RoomsServces";
 import BookingsCard from "@/Components/Client/AviableRooms/BookingsCard";
 import { useTrans } from "@/Hooks/useTrans";
 
-export default function AviableRooms({ rooms, booking_data, services }) {
+export default function AviableRooms({
+    rooms,
+    booking_data,
+    services,
+    promotion,
+}) {
     const [selectedRooms, setSelectedRooms] = useState([]);
     const [total, setTotal] = useState(0);
     const [beedsNumber, setBeedsNumber] = useState(0);
@@ -23,6 +28,7 @@ export default function AviableRooms({ rooms, booking_data, services }) {
         last_name: user ? user.last_name : "",
         email: user ? user.email : "",
         phone: user ? user.phone : "",
+        promo_value: promotion ? promotion.promo_value : null,
     });
 
     const handleSetData = (field, value) => {
@@ -58,6 +64,7 @@ export default function AviableRooms({ rooms, booking_data, services }) {
                     data={data}
                     submit={submit}
                     total={total}
+                    promotion={promotion}
                 />
             ) : (
                 <div className="relative flex gap-2 m-6">
@@ -73,6 +80,7 @@ export default function AviableRooms({ rooms, booking_data, services }) {
                         setTotal={setTotal}
                         beedsNumber={beedsNumber}
                         setBeedsNumber={setBeedsNumber}
+                        promotion={promotion}
                     />
 
                     <BookingsCard
@@ -86,6 +94,7 @@ export default function AviableRooms({ rooms, booking_data, services }) {
                         setBeedsNumber={setBeedsNumber}
                         selectedRooms={selectedRooms}
                         setSelectedRooms={setSelectedRooms}
+                        promotion={promotion}
                     />
                 </div>
             )}

@@ -13,9 +13,6 @@ export default function Facture({ facture, data, mail, total_ttc_words }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
 
-    console.log(facture);
-    console.log(data);
-
     useEffect(() => {
         if (flash.message) {
             toast({ description: flash.message?.message });
@@ -164,39 +161,36 @@ export default function Facture({ facture, data, mail, total_ttc_words }) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {data.rooms.map(
-                                        (room, index) => (
-                                            <tr key={index}>
-                                                <td className="border border-black p-2">
-                                                    {room.room}
-                                                </td>
-                                                <td className="border border-black p-2">
-                                                    {facture.booking.check_in}{" "}
-                                                    AU{" "}
-                                                    {facture.booking.check_out}
-                                                </td>
-                                                <td className="border border-black p-2">
-                                                    {(new Date(
-                                                        facture.booking.check_out
-                                                    ) -
-                                                        new Date(
-                                                            facture.booking.check_in
-                                                        )) /
-                                                        (1000 * 60 * 60 * 24)}
-                                                </td>
-                                                <td className="border border-black p-2">
-                                                    {room.quantity}
-                                                </td>
-                                                <td className="border border-black p-2">
-                                                    {room.unitare_price}
-                                                </td>
-                                                <td className="border border-black p-2">
-                                                    {room.unitare_price *
-                                                        room.quantity}
-                                                </td>
-                                            </tr>
-                                        )
-                                    )}
+                                    {data.rooms.map((room, index) => (
+                                        <tr key={index}>
+                                            <td className="border border-black p-2">
+                                                {room.room}
+                                            </td>
+                                            <td className="border border-black p-2">
+                                                {facture.booking.check_in} AU{" "}
+                                                {facture.booking.check_out}
+                                            </td>
+                                            <td className="border border-black p-2">
+                                                {(new Date(
+                                                    facture.booking.check_out
+                                                ) -
+                                                    new Date(
+                                                        facture.booking.check_in
+                                                    )) /
+                                                    (1000 * 60 * 60 * 24)}
+                                            </td>
+                                            <td className="border border-black p-2">
+                                                {room.quantity}
+                                            </td>
+                                            <td className="border border-black p-2">
+                                                {room.unitare_price}
+                                            </td>
+                                            <td className="border border-black p-2">
+                                                {room.unitare_price *
+                                                    room.quantity}
+                                            </td>
+                                        </tr>
+                                    ))}
                                     {data.consomations.map(
                                         (consomation, index) => (
                                             <tr key={index}>

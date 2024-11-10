@@ -24,7 +24,6 @@ import { Editor } from "@/Components/Admin/Shared/Editor";
 export default function PromotionCard({ promotion }) {
     const { width } = useWindowDimensions();
     const [isOpen, setIsOpen] = useState(false);
-    console.log(promotion.user.first_name);
 
     return (
         <Card className="transition-transform ease-in-out duration-700 relative my-6 ">

@@ -62,6 +62,16 @@ class FactureController extends Controller
             ]
         );
 
+        if ($facture) {
+            $facture->update([
+                'payment' => $request->payment,
+                'tourist_tax' => $bill_settings['tourist_tax'],
+                'tva' => $bill_settings['tva'],
+                'timbre' => $bill_settings['timbre'],
+                'updated_at' => now(),
+            ]);
+        }
+
         return redirect()->route('factures.show', $facture->facture_id)->with('message', ['status' => 'success', 'message' => 'Facture géniré avec succé']);
     }
 
@@ -82,6 +92,7 @@ class FactureController extends Controller
         if (!$facture) {
             abort(404);
         }
+
 
         $mail = config('mail.bookingmail');
 
@@ -131,9 +142,8 @@ class FactureController extends Controller
         $total_tva = round($total_ht * ($bill_settings['tva'] / 100), 2);
         $sous_total = round($total_ht + ($total_tva), 2);
         $taxe_de_sejour = $bill_settings['tourist_tax'] * $facture->booking->guest_number * $days;
-        $droit_de_timbre = round((($sous_total) + ($taxe_de_sejour)) * ($bill_settings['timbre'] / 100), 2);
+        $droit_de_timbre = $facture->payment == FacturePayment::Espece->value ? round((($sous_total) + ($taxe_de_sejour)) * ($bill_settings['timbre'] / 100), 2) : 0;
         $total_ttc = round($droit_de_timbre + $taxe_de_sejour + $sous_total, 2);
-
         $data = [
             'rooms' => $rooms,
             'consomations' => $consomations,
@@ -141,7 +151,7 @@ class FactureController extends Controller
             'total_tva' => $total_tva,
             'sous_total' => $sous_total,
             'taxe_de_sejour' => $taxe_de_sejour,
-            'droit_de_timbre' => $request->payment == 'espece' ? $droit_de_timbre : 0,
+            'droit_de_timbre' => $facture->payment == FacturePayment::Espece->value ? $droit_de_timbre : 0,
             'total_ttc' => $total_ttc,
         ];
 

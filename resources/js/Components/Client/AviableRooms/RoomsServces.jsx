@@ -22,13 +22,18 @@ export default function RoomsServces({
     setTotal,
     beedsNumber,
     setBeedsNumber,
+    promotion,
 }) {
     const addRoom = (room) => {
         let nights =
             (new Date(booking_data.check_out) -
                 new Date(booking_data.check_in)) /
             (1000 * 60 * 60 * 24);
-        setTotal(total + room.room_price * nights);
+        promotion
+            ? setTotal(
+                  total + (room.room_price - promotion.promo_value) * nights
+              )
+            : setTotal(total + room.room_price * nights);
         setBeedsNumber(beedsNumber + Number(room.beeds_number));
         setSelectedRooms([...selectedRooms, room]);
         setData((prevData) => {
@@ -98,8 +103,21 @@ export default function RoomsServces({
                                     </div>
                                 </td>
                             )}
-                            <td className="boreder border-2 border-secondary px-3">
-                                {price} {useTrans("DA")}{" "}
+                            <td className="boreder border-2 border-secondary px-3 ">
+                                {promotion ? (
+                                    <>
+                                        <span className="line-through">
+                                            {price} {useTrans("DA")}
+                                        </span>
+                                        <span>
+                                        {" "}
+                                            {price - promotion.promo_value}{" "}
+                                            {useTrans("DA")}
+                                        </span>
+                                    </>
+                                ) : (
+                                    price + useTrans("DA")
+                                )}{" "}
                             </td>
                             <td className="boreder-b border-2 border-b-secondary px-3 flex justify-between items-center">
                                 {rooms.length} {useTrans("Chambre")}

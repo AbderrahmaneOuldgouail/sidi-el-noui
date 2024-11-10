@@ -46,7 +46,6 @@ class LoginRequest extends FormRequest
         $credentials = [
             $loginType => $this->input('auth'),
             'password' => $this->input('password'),
-            // 'access' => 0,
         ];
 
         if (!Auth::attempt($credentials, $this->boolean('remember'))) {

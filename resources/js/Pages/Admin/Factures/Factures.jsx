@@ -9,6 +9,8 @@ import { useToast } from "@/Components/ui/use-toast";
 import { Button } from "@/Components/ui/button";
 import { useTrans } from "@/Hooks/useTrans";
 import FactureSettings from "@/Components/Admin/Factures/FactureSettings";
+import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
+import { ReceiptText } from "lucide-react";
 
 export default function Factures({ factures, bill_settings }) {
     const { toast } = useToast();
@@ -35,12 +37,19 @@ export default function Factures({ factures, bill_settings }) {
                 </div>
             )}
             <PlaceholderContent>
-                <DataTable
-                    columns={factureColumns}
-                    data={factures.data}
-                    paginate={factures}
-                    selection={false}
-                />
+                {factures.data.lenght ? (
+                    <DataTable
+                        columns={factureColumns}
+                        data={factures.data}
+                        paginate={factures}
+                        selection={false}
+                    />
+                ) : (
+                    <EmptyPage
+                        text="Aucun factures pour l'instant, essayez de créer une nouvelle"
+                        icon={ReceiptText}
+                    />
+                )}
             </PlaceholderContent>
         </AdminPanelLayout>
     );

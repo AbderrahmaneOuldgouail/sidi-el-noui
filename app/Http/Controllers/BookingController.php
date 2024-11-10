@@ -6,7 +6,9 @@ use App\Enums\booking_status;
 use App\Enums\Roles;
 use App\Enums\room_status;
 use App\Events\NewBooking;
+use App\Mail\BookingStatus;
 use App\Models\Booking;
+use App\Models\Promotion;
 use App\Models\Role;
 use App\Models\Room;
 use App\Models\Service;
@@ -15,6 +17,7 @@ use App\Notifications\NewBookingNotif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class BookingController extends Controller
@@ -95,12 +98,13 @@ class BookingController extends Controller
 
     public function changeStatus(Request $request)
     {
-
         if ($request->user()->cannot('update', Booking::class)) {
             return abort(403);
         }
 
-        $booking = Booking::where('booking_id', $request->id)->first();
+        $booking = Booking::with('user')->where('booking_id', $request->id)->first();
+        Mail::to($booking->user->email)->queue(new BookingStatus($request->booking_status, $booking));
+
         $booking->update([
             'booking_status' => $request->booking_status
         ]);
@@ -160,6 +164,7 @@ class BookingController extends Controller
             'check_in' => $request->check_in,
             'check_out' => $request->check_out,
             'guest_number' => $request->guest_number,
+            'kids_number' => 0,
             "booking_status" => booking_status::Confirmed->value,
             'created_at' => now(),
         ]);
@@ -173,13 +178,12 @@ class BookingController extends Controller
         }
         DB::commit();
 
-
-        $booking = Booking::with('user')->where('booking_id', $booking->booking_id)->first();
-        event(new NewBooking($booking));
-        $users = User::where("role_id", 1)->get();
-        foreach ($users as $user) {
-            $user->notify(new NewBookingNotif($booking));
-        }
+        // $booking = Booking::with('user')->where('booking_id', $booking->booking_id)->first();
+        // event(new NewBooking($booking));
+        // $users = User::where("role_id", 1)->get();
+        // foreach ($users as $user) {
+        //     $user->notify(new NewBookingNotif($booking));
+        // }
 
         Cache::forget('check_ins');
         Cache::forget('check_outs');
@@ -209,7 +213,6 @@ class BookingController extends Controller
             'guest_number' => 'required|numeric',
             'kids_number' => 'nullable|numeric'
         ]);
-
         $date_check_in = $request->check_in;
         $date_check_out = $request->check_out;
 
@@ -232,7 +235,6 @@ class BookingController extends Controller
                 'room_price',
             ]);
 
-
         if ($rooms->isNotEmpty()) {
             $booking_data = [
                 'check_in' => $request->check_in,
@@ -241,7 +243,19 @@ class BookingController extends Controller
                 'kids_number' => $request->kids_number ?? 0
             ];
             $services = Service::with('consomation')->where('availability', true)->get();
-            return Inertia::render('Client/AviableRooms', ['rooms' => $rooms, 'booking_data' => $booking_data, 'services' => $services]);
+            if ($request->user()) {
+                $promotion =  Promotion::where('is_active', true)
+                    ->where('promo_end_date', '>=', now())
+                    ->where('promo_start_date', '<=', now())
+                    ->where('promo_end_date', '>=', $request->check_in)
+                    ->where('promo_start_date', '<=', $request->check_in)
+                    ->orderBy('promo_start_date', 'asc')
+                    ->limit(1)
+                    ->first();
+            } else {
+                $promotion = null;
+            }
+            return Inertia::render('Client/AviableRooms', ['rooms' => $rooms, 'booking_data' => $booking_data, 'services' => $services, 'promotion' => $promotion]);
         }
         return redirect()->back()->with('message', ['status' => 'error', 'message' => 'Accun chambre disponible!']);
     }
@@ -262,11 +276,10 @@ class BookingController extends Controller
             'check_in' => 'required|date',
             'check_out' => 'required|date',
             'guest_number' => 'required|numeric',
-            'kids_number' => 'nullable|numeric'
+            'kids_number' => 'nullable|numeric',
+            'promo_value' => 'nullable'
         ]);
 
-        // dd($request->guest_number);
-        // dd($request->kids_number);
         DB::beginTransaction();
 
         $user = User::where('email', $request->email,)->orWhere('phone', $request->phone)->first();
@@ -293,8 +306,16 @@ class BookingController extends Controller
             "booking_status" => booking_status::Waiting->value,
             'created_at' => now(),
         ]);
-        foreach ($request->rooms as $room) {
-            $booking->rooms()->attach($room['id'], ['room_price' => $room['room_price']]);
+        if ($request->user()) {
+            if ($request->promo_value) {
+                foreach ($request->rooms as $room) {
+                    $booking->rooms()->attach($room['id'], ['room_price' => $room['room_price'] - $request->promo_value]);
+                }
+            }
+        } else {
+            foreach ($request->rooms as $room) {
+                $booking->rooms()->attach($room['id'], ['room_price' => $room['room_price']]);
+            }
         }
         if ($request->consomation) {
             foreach ($request->consomation as $consomation) {

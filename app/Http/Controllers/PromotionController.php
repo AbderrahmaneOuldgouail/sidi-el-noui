@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Illuminate\Validation\ValidationException;
+
 
 class PromotionController extends Controller
 {
@@ -18,9 +20,6 @@ class PromotionController extends Controller
         return Inertia::render('Client/Promotions/Show', ['promotion' => $promotion]);
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         if ($request->user()->cannot('viewAny', Promotion::class) && ($request->user()->cannot('create', Promotion::class) || $request->user()->cannot('delete', Promotion::class) || $request->user()->cannot('update', Promotion::class))) {
@@ -30,9 +29,6 @@ class PromotionController extends Controller
         return Inertia::render('Admin/Promotions/Promotions', ['promotions' => $promotions, 'promotion_permission' =>  getModelPermission($request, Promotion::class)]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(Request $request)
     {
         if ($request->user()->cannot('create', Promotion::class)) {
@@ -41,9 +37,6 @@ class PromotionController extends Controller
         return Inertia::render('Admin/Promotions/CreatePromotion');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         if ($request->user()->cannot('create', Promotion::class)) {
@@ -57,8 +50,19 @@ class PromotionController extends Controller
                 'promo_value' => 'required|numeric',
                 'assets' => 'required|array',
                 'assets.*' => 'file|mimes:jpg,png,jpeg|max:2048',
-            ]
+            ],
         );
+
+        $conflictingPromotions = Promotion::where(function ($query) use ($request) {
+            $query->where('promo_start_date', '<=', $request->promo_end_date)
+                ->where('promo_end_date', '>=', $request->promo_start_date);
+        })->exists();
+
+        if ($conflictingPromotions) {
+            throw ValidationException::withMessages([
+                'promo_start_date' => 'Les dates de promotion intersect une promotion existante.',
+            ]);
+        }
 
         DB::beginTransaction();
         try {
@@ -88,10 +92,6 @@ class PromotionController extends Controller
         return redirect(route('promotions.index'))->with('message', ['status' => 'success', 'message' => 'Promotions crée avec succès']);
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id, Request $request)
     {
         if ($request->user()->cannot('update', Promotion::class)) {
@@ -101,9 +101,6 @@ class PromotionController extends Controller
         return Inertia::render('Admin/Promotions/EditPromotion', ['promotion' => $promotion]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request)
     {
         if ($request->user()->cannot('update', Promotion::class)) {
@@ -160,9 +157,6 @@ class PromotionController extends Controller
         redirect()->back()->with('message', ['status' => 'success', 'message' => $promo->is_active ? "Promotion activé" : "Promotion désactivé"]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id, Request $request)
     {
         if ($request->user()->cannot('delete', Promotion::class)) {

@@ -37,7 +37,7 @@ export default function Booking({ booking }) {
             (new Date(booking.check_out) - new Date(booking.check_in)) /
             (1000 * 60 * 60 * 24);
         booking.rooms.map((room) => {
-            total += room.room_price * days;
+            total += room.pivot.room_price * days;
         });
 
         booking.consomation.map((consomation) => {
@@ -46,7 +46,6 @@ export default function Booking({ booking }) {
 
         return total;
     };
-    console.log(booking.kids_number);
     return (
         <AdminPanelLayout>
             <Head title="Réservation" />
@@ -160,7 +159,7 @@ export default function Booking({ booking }) {
                                     {(new Date(booking.check_out) -
                                         new Date(booking.check_in)) /
                                         (1000 * 60 * 60 * 24)}{" "}
-                                    x {room.room_price} {useTrans("DA")}
+                                    x {room.pivot.room_price} {useTrans("DA")}
                                 </div>
                             </CardHeader>
                             <CardContent className="p-2 ">
@@ -221,7 +220,7 @@ export default function Booking({ booking }) {
                                                 </div>
                                                 <div className="text-xl text-primary">
                                                     {" "}
-                                                    {room.room_price}{" "}
+                                                    {room.pivot.room_price}{" "}
                                                     {useTrans("DA")}
                                                 </div>
                                             </div>

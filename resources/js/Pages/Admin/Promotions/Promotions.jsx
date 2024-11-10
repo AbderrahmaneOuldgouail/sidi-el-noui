@@ -9,6 +9,8 @@ import { useToast } from "@/Components/ui/use-toast";
 import { Button } from "@/Components/ui/button";
 import { useTrans } from "@/Hooks/useTrans";
 import PromotionCard from "@/Components/Admin/Promotions/PromotionCard";
+import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
+import { TicketMinus } from "lucide-react";
 
 export default function Promotions({ promotions, promotion_permission }) {
     const { toast } = useToast();
@@ -34,12 +36,24 @@ export default function Promotions({ promotions, promotion_permission }) {
                 )}
             </div>
             <PlaceholderContent>
-                <div className="font-bold p-4">
-                    {useTrans("List des promotions")} :
-                </div>
-                {promotions.map((promo) => (
-                    <PromotionCard promotion={promo} key={promo.promotion_id} />
-                ))}
+                {promotions.lenght ? (
+                    <>
+                        <div className="font-bold p-4">
+                            {useTrans("List des promotions")} :
+                        </div>
+                        {promotions.map((promo) => (
+                            <PromotionCard
+                                promotion={promo}
+                                key={promo.promotion_id}
+                            />
+                        ))}
+                    </>
+                ) : (
+                    <EmptyPage
+                        text="Aucun promotion pour l'instant, essayez de créer une nouvelle"
+                        icon={TicketMinus}
+                    />
+                )}
             </PlaceholderContent>
         </AdminPanelLayout>
     );

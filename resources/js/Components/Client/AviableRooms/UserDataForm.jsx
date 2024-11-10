@@ -20,6 +20,7 @@ export default function UserDataForm({
     data,
     submit,
     total,
+    promotion,
 }) {
     const auth = usePage().props.auth;
 
@@ -102,6 +103,18 @@ export default function UserDataForm({
                         {useTrans("Récapitulatif du montant")}
                     </CardHeader>
                     <CardContent className="p-2 text-3xl font-bold text-primary">
+                        {promotion ? (
+                            <div className="text-xl line-through">
+                                {" "}
+                                {total +
+                                    (promotion.promo_value *
+                                        selectedRooms.length *
+                                        (new Date(booking_data.check_out) -
+                                            new Date(booking_data.check_in))) /
+                                        (1000 * 60 * 60 * 24)}{" "}
+                                {useTrans("DA")}{" "}
+                            </div>
+                        ) : null}
                         {total} {useTrans("DA")}
                     </CardContent>
                     <CardFooter className="p-2 text-muted-foreground">

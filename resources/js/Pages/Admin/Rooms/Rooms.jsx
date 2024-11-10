@@ -10,6 +10,8 @@ import RoomCard from "@/Components/Admin/Rooms/RoomCard";
 import TopButton from "@/Components/Admin/Layout/TopButton";
 import MobilePagination from "@/Components/Admin/Shared/MobilePagination";
 import { useTrans } from "@/Hooks/useTrans";
+import { Hotel } from "lucide-react";
+import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
 
 export default function Rooms({ rooms, room_permission }) {
     const { width } = useWindowDimensions();
@@ -25,32 +27,30 @@ export default function Rooms({ rooms, room_permission }) {
                 />
             )}
             <PlaceholderContent>
-                {width <= 767 ? (
-                    <div>
-                        {rooms.data.map((room) => (
-                            <RoomCard key={room.room_number} room={room} />
-                        ))}
-                        <MobilePagination data={rooms} />
-                    </div>
+                {rooms.data.lenght ? (
+                    width <= 767 ? (
+                        <div>
+                            {rooms.data.map((room) => (
+                                <RoomCard key={room.room_number} room={room} />
+                            ))}
+                            <MobilePagination data={rooms} />
+                        </div>
+                    ) : (
+                        <div className="max-w-7xl mx-auto invisible md:visible">
+                            <DataTable
+                                columns={columns}
+                                data={rooms.data}
+                                paginate={rooms}
+                                selection={false}
+                            />
+                        </div>
+                    )
                 ) : (
-                    <div className="max-w-7xl mx-auto invisible md:visible">
-                        <DataTable
-                            columns={columns}
-                            data={rooms.data}
-                            paginate={rooms}
-                            selection={false}
-                        />
-                    </div>
+                    <EmptyPage
+                        icon={Hotel}
+                        text="No Rooms to show, try creating new Rooms!"
+                    />
                 )}
-                {/* {rooms.map((room) => (
-                    <Toggle
-                        key={room.room_number}
-                        pressed={isPressedFn(room.id)}
-                        onPressedChange={(p) => handleRooms(p, room.id)}
-                    >
-                        {room.room_number}
-                    </Toggle>
-                ))} */}
             </PlaceholderContent>
         </AdminPanelLayout>
     );

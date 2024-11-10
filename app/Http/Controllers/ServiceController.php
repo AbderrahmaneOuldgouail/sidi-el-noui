@@ -13,10 +13,10 @@ class ServiceController extends Controller
 {
     public function show(string $id, Request $request)
     {
-        $service = Service::with('assets', 'consomation')->where('service_id', $id)->first();
+        $service = Service::with('assets', 'consomation')->where('service_id', $id)->first();        
         return Inertia::render('Client/Services/Show', ['service' => $service]);
     }
-
+    
     public function index(Request  $request)
     {
         if ($request->user()->cannot('viewAny', Service::class) && ($request->user()->cannot('create', Service::class) || $request->user()->cannot('delete', Service::class) || $request->user()->cannot('update', Service::class))) {

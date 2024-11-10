@@ -1,6 +1,5 @@
 
 <x-mail::message>
-# Introduction
 
 {{ $message }}
 
@@ -8,6 +7,6 @@
   Visité notre site web
 </x-mail::button>
 
-Merci,<br>
+Cordialement,<br>
 {{ config('app.name') }}
 </x-mail::message>
