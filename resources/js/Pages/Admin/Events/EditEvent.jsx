@@ -3,9 +3,7 @@ import { Head, useForm } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
-
 import { FileUploader } from "react-drag-drop-files";
-
 import { Button } from "@/Components/ui/button";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
@@ -23,6 +21,7 @@ const fileTypes = ["JPG", "PNG", "GIF"];
 
 export default function EditEvent({ event }) {
     const [importedFiles, setImportedFiles] = useState([]);
+    const [dbImages, setDbImages] = useState(event.assets);
     const [dateRange, setDateRange] = useState({
         from: new Date(event.event_start_date),
         to: new Date(event.event_end_date),
@@ -35,7 +34,28 @@ export default function EditEvent({ event }) {
         event_end_date: event.event_end_date,
         event_price: event.event_price,
         assets: [],
+        remouved_assets: [],
+        required_assets: false,
     });
+
+        const remouveAsset = (index) => {
+            setData((prevData) => ({
+                ...prevData,
+                remouved_assets: [...prevData.remouved_assets, index],
+            }));
+            setDbImages((prevDbImages) => {
+                const updatedDbImages = prevDbImages.filter(
+                    (image) => image.id !== index
+                );
+
+                setData((prevData) => ({
+                    ...prevData,
+                    required_assets: updatedDbImages.length === 0,
+                }));
+
+                return updatedDbImages;
+            });
+        };
 
     const submit = (e) => {
         e.preventDefault();
@@ -265,8 +285,8 @@ export default function EditEvent({ event }) {
                             deleteImage={deleteImage}
                         />{" "}
                         <DbImageViewer
-                            assets={event.assets}
-                            importedFiles={importedFiles.length}
+                            assets={dbImages}
+                            remouveAsset={remouveAsset}
                         />{" "}
                     </div>
                     <div className="flex justify-end">

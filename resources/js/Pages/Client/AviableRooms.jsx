@@ -45,7 +45,16 @@ export default function AviableRooms({
 
     return (
         <ClientLayout>
-            <Head title="Aviable rooms" />
+            <Head>
+                <title>{useTrans("Chambres disponibles")}</title>
+                <meta
+                    name="description"
+                    content={useTrans(
+                        "Consultez les chambres disponibles à l'hôtel Sidi El Noui et choisissez celle qui vous convient pour un séjour confortable."
+                    )}
+                />
+            </Head>
+
             <div className="font-bold text-xl m-6 ">
                 {useTrans("Finaliser votre réservation")}
             </div>

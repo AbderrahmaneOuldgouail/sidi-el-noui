@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
-
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
@@ -42,7 +41,7 @@ export default function EditEmployes({ roles, user }) {
     };
     return (
         <AdminPanelLayout>
-            <Head title="Employes" />
+            <Head title="Modifier un employé" />
             <PageHeading
                 title={useTrans("Modification les infromation d'employé")}
             />

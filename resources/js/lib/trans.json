@@ -1,8 +1,4 @@
 {
-  "Rooms" :{
-    "Chambres" : "الغرف"
-  },
-
   "Tableaux De Bord" : "لوحات المعلومات",
   "Entrés d'aujourd'hui" : "تسجيلات الدخول اليوم",
   "Sorties d'aujourd'hui" : "تسجيلات الخروج اليوم",
@@ -48,8 +44,7 @@
   "avec" : "مع",
   "lits" : "أسرة",
   "DA" : "دج",
-
-  "Features" : "==============================================================================",
+  "Aucun chambres pour l'instant, essayez de créer une nouvelle" : "لا توجد غرف حتى الآن، حاول إنشاء واحدة جديدة",
 
   "Catégories" : "الفئات",
   "Ajouter un categorie" : "إضافة فئة",
@@ -71,10 +66,7 @@
   "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette caractéristique et chaque chambre avoir cette caractéristique va le perdre" : "لا يمكن التراجع عن هذا الإجراء. سوف تقوم بحذف هذه الخاصية نهائياً وكل غرفة بها هذه الخاصية سوف تفقدها",
   "Modifier cette caractéristique" : "تعديل هذه الخاصية",
   "Aucun categories pour l'instant, essayez de créer une nouvelle" : "لا توجد فئات حتى الآن، حاول إنشاء واحدة جديدة",
-  "Aucun caractéristiques pour l'instant, essayez de créer une nouvelle" : "لا توجد الخاصيات حتى الآن، حاول إنشاء واحدة جديدة",
-
-
-  "Servicess" : "==============================================================================",
+  "Aucun caractéristiques pour l'instant, essayez de créer une nouvelle" : "لا توجد خاصيات حتى الآن، حاول إنشاء واحدة جديدة",
 
   "Services" : "الخدمات",
   "Créer un service" : "إنشاء خدمة",
@@ -104,9 +96,6 @@
   "Aucun services pour l'instant, essayez de créer un nouveau" : "لا توجد خدمات حتى الآن، حاول إنشاء واحدة جديدة",
   "Aucun consommations pour l'instant, essayez de créer un nouveau" : "لا توجد الاستهلاكات حتى الآن، حاول إنشاء واحد جديد",
 
-
-  "Eventss" : "===============================================================================",
-
   "Evènements" : "الأحداث",
   "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette évènement" : "لا يمكن التراجع عن هذا الإجراء. سوف تقوم بحذف هذا الحدث نهائيًا",
   "List des évènements" : "قائمة الأحداث",
@@ -128,7 +117,6 @@
   "Modifier ce évènement" : "تعديل هذا الحدث",
   "Aucun évènement pour l'instant, essayez de créer une nouvelle" : "لا توجد أحداث حتى الآن، حاول إنشاء واحد جديد",
   
-  "Promotionss" : "===========================================================================",
   "Promotions" : "التخفيضات",
   "Créer un promotion" : "إنشاء تخفيض",
   "List des promotions" : "قائمة التخفيضات",
@@ -145,9 +133,6 @@
   "Modification de promotion" : "تعديل التخفيض",
   "Aucun promotion pour l'instant, essayez de créer une nouvelle" : "لا توجد تخفيضات حتى الآن، حاول إنشاء واحد جديد",
 
-
-
-  "Users" : "================================================================================",
   "Utilisateurs" : "المستخدمين",
   "List des utilisateurs" : "قائمة المستخدمين",
   "Créer un utilisateur" : "إنشاء مستخدم",
@@ -155,7 +140,6 @@
   "Email" : "البريد الإلكتروني",
   "N° téléphone" : "رقم الهاتف",
 
-  "Employéss" : "================================================================================",
   "Employés" : "الموظفون",
   "Ajouter un employé" : "إضافة موظف",
   "Rôle" : "الدور",
@@ -171,7 +155,6 @@
   "Sélectionner un role..." : "حدد الدور...",
   "Modification les informations d'employé" : "تعديل معلومات الموظف",
 
-  "roles" : "================================================================================",
   "Rôles" :"الأدوار",
   "Ajouter un rôle" : "أضف دورًا",
   "Permissions" : "الأذونات",
@@ -183,8 +166,6 @@
   "Assigner des permissions a ce rôle" : "تعيين الأذونات لهذا الدور",
   "List des permissions" : "قائمة الأذونات",
 
-
-  "Bookings" : "==========================================================================",
   "Réservations" : "الحجوزات",
   "Ajouter une réservation" : "أضف حجزًا",
   "Chercher des chambres disponible" : "البحث عن الغرف المتاحة",
@@ -227,8 +208,6 @@
   "Détails de réservation" : "تفاصيل الحجز",
   "Aucun réservations pour l'instant, essayez de créer une nouvelle" : "لا توجد حجوزات حتى الآن، حاول إنشاء واحد جديد",
 
-
-  "nav bar" : "==============================================================================",
   "Compte" : "الحساب",
   "Se déconnecter" : "تسجيل الخروج",
   "Notifications" : "إشعارات",
@@ -239,14 +218,11 @@
   "tableau de bord" : "لوحة القيادة",
   "Changer le thème" : "تبديل الوضع",
 
-  "notifs" : "====================================================================================",
   "Tout marquer comme lu" : "وضع علامة على الكل كمقروءة",
   "Supprimer Tous" : "حذف الكل",
   "a fait une réservation de" : "قام بالحجز من",
   "vers" : "إلى",
   
-
-  "user Profile" : "==============================================================================",
   "Votre adresse email n'est pas vérifiée." : "لم يتم التحقق من عنوان بريدك الإلكتروني.",
   "Cliquez ici pour renvoyer l'e-mail de vérification." : "انقر هنا لإعادة إرسال رسالة التحقق عبر البريد الإلكتروني.",
   "Un nouveau lien de vérification a été envoyé à votre adresse e-mail." : "لقد تم إرسال رابط تحقق جديد إلى عنوان بريدك الإلكتروني.",
@@ -261,8 +237,6 @@
   "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte." : "بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته بشكل دائم. يُرجى إدخال كلمة المرور الخاصة بك لتأكيد رغبتك في حذف حسابك بشكل دائم.",
   "Etes-vous sûr de vouloir supprimer votre compte ?" : "هل انت متأكد انك تريد حذف حسابك؟",
 
-
-  "facturess": "===========================================================================",
   "Factures" : "الفواتير",
   "Date" : "التاريخ",
   "Générer pour une réservation" : "إنشاء للحجز",
@@ -281,8 +255,6 @@
   "Ajouter des invités" : "إضافة الضيوف",
   "Aucun factures pour l'instant, essayez de créer une nouvelle" : "لا توجد فواتير حتى الآن، حاول إنشاء واحدة جديدة",
 
-
-  "messages" : "===========================================================================",
   "Tous" : "الكل",
   "Non lu" : "الغير المقروءة",
   "Reprendre avec votre adresse mail" : "استئناف مع عنوان البريد الإلكتروني الخاص بك",
@@ -290,7 +262,6 @@
   "Repondre à :" : "الرد على:",
   "Envoyé" : "إرسال",
 
-  "Data Tabeles" : "==========================================================================",
   "Contrôler la visibilité des colonnes" : "التحكم في رؤية الأعمدة",
   "Cacher" : "إخفاء",
   "Croissante" : "تزايد",
@@ -304,11 +275,7 @@
   "ligne(s) afficher" : "سطر (سطور) معروضة.",
   "Lignes par page" : "صفوف لكل صفحة",
   "ligne(s) sélectionné(s)." : "سطر (سطور) محددة.",
-
   "à fait un nouveaux réservation" : "قام بحجز جديد",
-
-
-  "client side " : "============",
 
   "Changer la langue" : "تغيير اللغة",
   "Mes réservations" : "حجوزاتي",
@@ -383,6 +350,5 @@
   "Il s'agit d'une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer." : "هذه منطقة آمنة للتطبيق. يرجى تأكيد كلمة المرور الخاصة بك قبل الاستمرار.",
   "Confirmer" : "تأكيد",
   "Réinitialiser le mot de passe" : "إعادة تعيين كلمة المرور",
-
   "" : ""
 }

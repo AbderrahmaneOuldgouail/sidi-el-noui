@@ -8,6 +8,14 @@ export default function CreateFacture() {
     return (
         <AdminPanelLayout>
             <Head title="Facture Création" />
+
+            <Head>
+                <title>Facture Création</title>
+                <meta
+                    name="description"
+                    content="Créez et gérez facilement vos factures pour une gestion simplifiée des réservations à l'hôtel Sidi El Noui."
+                />
+            </Head>
             <PageHeading title={"Facture Création"} />
             <PlaceholderContent>Facture Création </PlaceholderContent>
         </AdminPanelLayout>

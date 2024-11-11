@@ -112,7 +112,13 @@ export default function AviableRooms({ rooms, bookingData, services }) {
 
     return (
         <AdminPanelLayout>
-            <Head title="Chambres disponible" />
+            <Head>
+                <title>Chambres disponible</title>
+                <meta
+                    name="description"
+                    content="Découvrez les chambres disponibles à l'hôtel Sidi El Noui et faites votre réservation en quelques clics."
+                />
+            </Head>
             <PageHeading title={useTrans("Chambres disponible")} />
             <PlaceholderContent>
                 <form onSubmit={submit}>

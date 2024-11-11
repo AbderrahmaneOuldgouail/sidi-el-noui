@@ -23,6 +23,7 @@ const fileTypes = ["JPG", "PNG", "GIF"];
 
 export default function EditPromotion({ promotion }) {
     const [importedFiles, setImportedFiles] = useState([]);
+    const [dbImages, setDbImages] = useState(promotion.assets);
     const [dateRange, setDateRange] = useState({
         from: new Date(promotion.promo_start_date),
         to: new Date(promotion.promo_end_date),
@@ -34,7 +35,28 @@ export default function EditPromotion({ promotion }) {
         promo_start_date: promotion.promo_start_date,
         promo_end_date: promotion.promo_end_date,
         assets: [],
+        remouved_assets: [],
+        required_assets: false,
     });
+
+    const remouveAsset = (index) => {
+        setData((prevData) => ({
+            ...prevData,
+            remouved_assets: [...prevData.remouved_assets, index],
+        }));
+        setDbImages((prevDbImages) => {
+            const updatedDbImages = prevDbImages.filter(
+                (image) => image.id !== index
+            );
+
+            setData((prevData) => ({
+                ...prevData,
+                required_assets: updatedDbImages.length === 0,
+            }));
+
+            return updatedDbImages;
+        });
+    };
 
     const submit = (e) => {
         e.preventDefault();
@@ -228,11 +250,11 @@ export default function EditPromotion({ promotion }) {
                             images={importedFiles}
                             errors={errors}
                             deleteImage={deleteImage}
-                        />{" "}
+                        />
                         <DbImageViewer
-                            assets={promotion.assets}
-                            importedFiles={importedFiles.length}
-                        />{" "}
+                            assets={dbImages}
+                            remouveAsset={remouveAsset}
+                        />
                     </div>
                     <div className="flex justify-end">
                         <Button

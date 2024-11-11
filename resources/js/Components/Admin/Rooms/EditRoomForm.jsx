@@ -6,7 +6,6 @@ import InputLabel from "@/Components/InputLabel";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { ImagePlus } from "lucide-react";
 import { Editor } from "@/Components/Admin/Shared/Editor";
-
 import { cn } from "@/lib/utils";
 import {
     Command,
@@ -43,6 +42,7 @@ export default function EditRoomForm({ types, categorys, room }) {
     const [open, setOpen] = React.useState(false);
     const [searchValue, setSearchValue] = React.useState("");
     const [importedFiles, setImportedFiles] = useState([]);
+    const [dbImages, setDbImages] = useState(room.assets);
 
     const { data, setData, post, errors, clearErrors } = useForm({
         room_number: room.room_number,
@@ -59,7 +59,29 @@ export default function EditRoomForm({ types, categorys, room }) {
             };
         }),
         assets: [],
+        remouved_assets: [],
+        required_assets: false,
     });
+
+
+    const remouveAsset = (index) => {
+        setData((prevData) => ({
+            ...prevData,
+            remouved_assets: [...prevData.remouved_assets, index],
+        }));
+        setDbImages((prevDbImages) => {
+            const updatedDbImages = prevDbImages.filter(
+                (image) => image.id !== index
+            );
+
+            setData((prevData) => ({
+                ...prevData,
+                required_assets: updatedDbImages.length === 0,
+            }));
+
+            return updatedDbImages;
+        });
+    };
 
     const handleFiles = (files) => {
         if (!files || !files.length) return;
@@ -464,7 +486,7 @@ export default function EditRoomForm({ types, categorys, room }) {
                                     </p>
                                 </div>
                                 <p className="text-sm text-gray-600">
-                                    {fileTypes.map((type) => type + ",")}{" "}
+                                    {fileTypes.map((type) => type + ",")}
                                 </p>
                             </div>
                         </FileUploader>
@@ -475,10 +497,10 @@ export default function EditRoomForm({ types, categorys, room }) {
                     images={importedFiles}
                     errors={errors}
                     deleteImage={deleteImage}
-                />{" "}
+                />
                 <DbImageViewer
-                    assets={room.assets}
-                    importedFiles={importedFiles.length}
+                    assets={dbImages}
+                    remouveAsset={remouveAsset}
                 />
             </div>
             <div className="flex justify-end">

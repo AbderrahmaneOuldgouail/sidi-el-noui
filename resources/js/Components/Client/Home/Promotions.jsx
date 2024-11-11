@@ -20,7 +20,7 @@ export default function Promotion({ promotion }) {
                 />
             </div>
             <div className="flex flex-col justify-between md:w-1/2 w-full ">
-                <CardHeader className="text-lg font-bold text-xl flex flex-row items-center justify-end">
+                <CardHeader className="font-bold text-xl flex flex-row items-center justify-end">
                     <div className="text-primary text-2xl ">
                         {useTrans("Réduction de")} {promotion.promo_value}{" "}
                         {useTrans("DA")}{" "}

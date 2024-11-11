@@ -43,7 +43,6 @@ class DashboardController extends Controller
                 }])->get();
         });
 
-
         return Inertia::render('Admin/Dashboard', ['check_ins' => $check_ins, 'check_outs' => $check_outs, 'day_bookings' => $day_bookings, 'month_bookings' => $month_bookings, 'last_day_bookings' => $last_day_bookings, 'last_month_bookings' => $last_month_bookings, 'bookingCounts' => $bookingCounts]);
     }
 }

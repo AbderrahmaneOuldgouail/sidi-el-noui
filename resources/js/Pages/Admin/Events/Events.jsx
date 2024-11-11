@@ -22,7 +22,6 @@ export default function Events({ events, event_permission }) {
         }
     }, [flash.message, toast]);
 
-    console.log(events);
     return (
         <AdminPanelLayout>
             <Head title="Events" />
@@ -37,7 +36,7 @@ export default function Events({ events, event_permission }) {
                 )}
             </div>
             <PlaceholderContent>
-                {events.lenght ? (
+                {events.length ? (
                     <>
                         <div className="font-bold p-4">
                             {useTrans("List des évènements")} :

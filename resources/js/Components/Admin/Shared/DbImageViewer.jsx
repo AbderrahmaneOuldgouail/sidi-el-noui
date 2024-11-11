@@ -1,9 +1,8 @@
 import { buttonVariants } from "@/Components/ui/button";
-import { router } from "@inertiajs/react";
 import { Trash } from "lucide-react";
 import React from "react";
 
-export default function DbImageViewer({ assets, importedFiles }) {
+export default function DbImageViewer({ assets, remouveAsset }) {
     return (
         <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
             {assets.map((image, index) => (
@@ -14,14 +13,7 @@ export default function DbImageViewer({ assets, importedFiles }) {
                         className="rounded-md object-cover aspect-video"
                     />
                     <div
-                        onClick={() => {
-                            (importedFiles > 1 || assets.length > 0)&&
-                                router.visit(route("assets.delete", image.id), {
-                                    method: "GET",
-                                    preserveState: true,
-                                    preserveScroll: true,
-                                });
-                        }}
+                        onClick={() => remouveAsset(image.id)}
                         className={buttonVariants({
                             variant: "destructive",
                             className:

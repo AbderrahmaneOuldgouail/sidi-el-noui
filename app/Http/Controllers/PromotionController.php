@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use App\Models\Assets;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+
 
 
 class PromotionController extends Controller
@@ -136,7 +139,13 @@ class PromotionController extends Controller
                     ]);
                 }
             }
-
+            if ($request->has('remouved_assets')) {
+                foreach ($request->remouved_assets as $asset_id) {
+                    $asset = Assets::find($asset_id);
+                    Storage::disk('public')->delete($asset->getOriginalUrlAttribute());
+                    $asset->delete();
+                }
+            }
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

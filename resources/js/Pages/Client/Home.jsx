@@ -20,7 +20,16 @@ export default function Home({ events, promotions, rooms, services }) {
     }, [flash.message, toast]);
     return (
         <ClientLayout>
-            <Head title="Home" />
+            <Head>
+                <title>{useTrans("Accueil")}</title>
+                <meta
+                    name="description"
+                    content={useTrans(
+                        "Bienvenue sur le site officiel de l'hôtel Sidi El Noui. Découvrez nos chambres, services, promotions et réservez dès maintenant pour un séjour inoubliable."
+                    )}
+                />
+            </Head>
+
             <div
                 className="relative md:h-[600px] h-dvh flex items-center justify-center "
                 id="home-section"
@@ -28,7 +37,7 @@ export default function Home({ events, promotions, rooms, services }) {
                 <div className="absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.6)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
                 <HomeHeading id="booking-form" />
             </div>
-            {promotions  && (
+            {promotions && (
                 <div className="my-6 relative min-h-screen max-h-sceen">
                     <div className="absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[0] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.2)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
                     <div className="font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ">

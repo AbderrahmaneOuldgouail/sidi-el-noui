@@ -43,7 +43,7 @@ export default function Bookings({ bookings }) {
     }, [flash.message, toast]);
     return (
         <AdminPanelLayout>
-            <Head title="Bookings" />
+            <Head title="Réservations" />
             <PageHeading title={useTrans("Réservations")} />
             <PlaceholderContent>
                 {bookings.data.length ? (

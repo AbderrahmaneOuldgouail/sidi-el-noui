@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assets;
 use App\Models\Event;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class EventController extends Controller
@@ -103,7 +105,9 @@ class EventController extends Controller
                 'event_start_date' => 'required|date',
                 'event_end_date' => 'required|date',
                 'event_price' => 'required|numeric',
-                'assets' => 'array',
+                'assets' => 'array|required_if:required_assets,true',
+                'required_assets' => 'boolean',
+                'remouved_assets' => 'array',
                 'assets.*' => 'file|mimes:jpg,png,jpeg|max:2048',
             ]
         );
@@ -127,6 +131,13 @@ class EventController extends Controller
                         'name' => "event-{$request->event_name}-img-$key",
                         'url' => $filename,
                     ]);
+                }
+            }
+            if ($request->has('remouved_assets')) {
+                foreach ($request->remouved_assets as $asset_id) {
+                    $asset = Assets::find($asset_id);
+                    Storage::disk('public')->delete($asset->getOriginalUrlAttribute());
+                    $asset->delete();
                 }
             }
 

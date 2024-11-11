@@ -10,7 +10,16 @@ import React from "react";
 export default function MyBookings({ bookings }) {
     return (
         <ClientLayout>
-            <Head title="Mes Réservations" />
+            <Head>
+                <title>{useTrans("Mes Réservations")}</title>
+                <meta
+                    name="description"
+                    content={useTrans(
+                        "Consultez et gérez toutes vos réservations à l'hôtel Sidi El Noui depuis cette page."
+                    )}
+                />
+            </Head>
+
             <div className="absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <div className="absolute z-[0] w-[47rem] h-[47rem] left-[calc(40%-20rem)] top-[30rem] sm:translate-x-[10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <PageHeading

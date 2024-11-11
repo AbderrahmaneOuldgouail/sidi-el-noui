@@ -43,7 +43,7 @@ export default function CreateEmployes({ roles }) {
     };
     return (
         <AdminPanelLayout>
-            <Head title="Employes" />
+            <Head title="Créer un employé" />
             <PageHeading title={useTrans("Inscription d'employé")} />
             <PlaceholderContent>
                 <form onSubmit={submit}>

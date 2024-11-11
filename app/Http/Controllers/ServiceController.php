@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assets;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ServiceController extends Controller
 {
     public function show(string $id, Request $request)
     {
-        $service = Service::with('assets', 'consomation')->where('service_id', $id)->first();        
+        $service = Service::with('assets', 'consomation')->where('service_id', $id)->first();
         return Inertia::render('Client/Services/Show', ['service' => $service]);
     }
-    
+
     public function index(Request  $request)
     {
         if ($request->user()->cannot('viewAny', Service::class) && ($request->user()->cannot('create', Service::class) || $request->user()->cannot('delete', Service::class) || $request->user()->cannot('update', Service::class))) {
@@ -94,7 +96,9 @@ class ServiceController extends Controller
             [
                 'service_name' => 'required|string',
                 'service_descreption' => 'required|string',
-                'assets' => 'required|array',
+                'assets' => 'array|required_if:required_assets,true',
+                'required_assets' => 'boolean',
+                'remouved_assets' => 'array',
                 'assets.*' => 'file|mimes:jpg,png,jpeg|max:2048',
             ]
         );
@@ -114,6 +118,13 @@ class ServiceController extends Controller
                         'name' => "service-{$request->service_name}-img-{$key}",
                         'url' => $filename,
                     ]);
+                }
+                if ($request->has('remouved_assets')) {
+                    foreach ($request->remouved_assets as $asset_id) {
+                        $asset = Assets::find($asset_id);
+                        Storage::disk('public')->delete($asset->getOriginalUrlAttribute());
+                        $asset->delete();
+                    }
                 }
             }
             DB::commit();

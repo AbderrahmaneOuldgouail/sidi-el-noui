@@ -36,7 +36,7 @@ export default function Promotions({ promotions, promotion_permission }) {
                 )}
             </div>
             <PlaceholderContent>
-                {promotions.lenght ? (
+                {promotions.length ? (
                     <>
                         <div className="font-bold p-4">
                             {useTrans("List des promotions")} :

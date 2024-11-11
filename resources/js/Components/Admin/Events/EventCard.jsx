@@ -47,7 +47,7 @@ export default function EventCard({ event }) {
                 </Carousel>
             </div>
             <div className="flex flex-col justify-between w-full">
-                <CardHeader className="text-lg font-bold text-xl flex flex-row items-center justify-between">
+                <CardHeader className="font-bold text-xl flex flex-row items-center justify-between">
                     <div>{event.event_name}</div>
                     <div className="flex items-center gap-2 bg-muted p-2 rounded">
                         <span>{useTrans("Prix")} </span>

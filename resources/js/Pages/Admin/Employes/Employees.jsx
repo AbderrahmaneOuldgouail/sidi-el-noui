@@ -23,7 +23,7 @@ export default function Employees({ users }) {
 
     return (
         <AdminPanelLayout>
-            <Head title="Employees" />
+            <Head title="Employées" />
             <PageHeading title={useTrans("Employés")} />
             <div className="flex justify-end">
                 {employ_permission.create && (

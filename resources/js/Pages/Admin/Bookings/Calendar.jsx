@@ -10,7 +10,7 @@ export default function Calendar({ rooms }) {
 
     return (
         <AdminPanelLayout>
-            <Head title="Dashboard" />
+            <Head title="Calendrier" />
             <PageHeading title={"Calendrier"} />
             <PlaceholderContent>
                 <div className="w-full relative h-[600px]">

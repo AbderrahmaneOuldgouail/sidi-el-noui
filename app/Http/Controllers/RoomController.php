@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enums\room_status;
+use App\Models\Assets;
 use App\Models\Category;
 use App\Models\Room;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class RoomController extends Controller
@@ -31,7 +33,7 @@ class RoomController extends Controller
 
         $room = Room::with(['features', 'assets', 'type'])->where('room_number', $request->room)->first();
         $categorys = Category::all();
-        
+
         return Inertia::render('Admin/Rooms/Room', ['room' => $room, 'categorys' => $categorys]);
     }
 
@@ -129,7 +131,9 @@ class RoomController extends Controller
                 'features.*.features_name' => 'required|string',
                 'features.*.need_value' => 'required|boolean',
                 'features.*.value' => 'nullable|string',
-                'assets' => 'array',
+                'assets' => 'array|required_if:required_assets,true',
+                'required_assets' => 'boolean',
+                'remouved_assets' => 'array',
                 'assets.*' => 'file|mimes:jpg,png,jpeg,gif,svg|max:2048',
             ]
         );
@@ -159,6 +163,13 @@ class RoomController extends Controller
                         'name' => "Room-{$request->room_number}-img-{$key}",
                         'url' => $filename,
                     ]);
+                }
+            }
+            if ($request->has('remouved_assets')) {
+                foreach ($request->remouved_assets as $asset_id) {
+                    $asset = Assets::find($asset_id);
+                    Storage::disk('public')->delete($asset->getOriginalUrlAttribute());
+                    $asset->delete();
                 }
             }
             DB::commit();

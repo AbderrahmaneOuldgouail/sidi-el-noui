@@ -21,13 +21,34 @@ import { Editor } from "@/Components/Admin/Shared/Editor";
 const fileTypes = ["JPG", "PNG", "GIF"];
 
 export default function EditService({ service }) {
+    const [importedFiles, setImportedFiles] = useState([]);
+    const [dbImages, setDbImages] = useState(service.assets);
     const { data, setData, post, errors, clearErrors } = useForm({
         service_name: service.service_name,
         service_descreption: service.service_descreption,
         assets: [],
+        remouved_assets: [],
+        required_assets: false,
     });
 
-    const [importedFiles, setImportedFiles] = useState([]);
+    const remouveAsset = (index) => {
+        setData((prevData) => ({
+            ...prevData,
+            remouved_assets: [...prevData.remouved_assets, index],
+        }));
+        setDbImages((prevDbImages) => {
+            const updatedDbImages = prevDbImages.filter(
+                (image) => image.id !== index
+            );
+
+            setData((prevData) => ({
+                ...prevData,
+                required_assets: updatedDbImages.length === 0,
+            }));
+
+            return updatedDbImages;
+        });
+    };
 
     const handleFiles = (files) => {
         if (!files || !files.length) return;
@@ -45,7 +66,6 @@ export default function EditService({ service }) {
         setData("assets", [...data.assets, ...newFiles]);
     };
 
-
     const deleteImage = (index) => {
         setImportedFiles((prevData) => {
             const updatedFiles = [...prevData];
@@ -54,7 +74,7 @@ export default function EditService({ service }) {
         });
 
         const updatedAssets = [...data.assets];
-        updatedAssets.splice(index, 1); 
+        updatedAssets.splice(index, 1);
         setData("assets", updatedAssets);
         clearErrors(`assets.${index}`);
     };
@@ -173,8 +193,8 @@ export default function EditService({ service }) {
                             deleteImage={deleteImage}
                         />
                         <DbImageViewer
-                            assets={service.assets}
-                            importedFiles={importedFiles.length}
+                            assets={dbImages}
+                            remouveAsset={remouveAsset}
                         />
                     </div>
                     <div className="flex justify-end">

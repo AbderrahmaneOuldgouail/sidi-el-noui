@@ -27,7 +27,7 @@ export default function Rooms({ rooms, room_permission }) {
                 />
             )}
             <PlaceholderContent>
-                {rooms.data.lenght ? (
+                {rooms.data.length ? (
                     width <= 767 ? (
                         <div>
                             {rooms.data.map((room) => (
@@ -48,7 +48,7 @@ export default function Rooms({ rooms, room_permission }) {
                 ) : (
                     <EmptyPage
                         icon={Hotel}
-                        text="No Rooms to show, try creating new Rooms!"
+                        text="Aucun chambres pour l'instant, essayez de créer une nouvelle"
                     />
                 )}
             </PlaceholderContent>
