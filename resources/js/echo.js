@@ -1,10 +1,7 @@
 import Echo from "laravel-echo";
-import { headers } from "next/headers";
 
 import Pusher from "pusher-js";
 window.Pusher = Pusher;
-
-// Pusher.logToConsole = true;
 
 var csrfToken = document
     .querySelector('meta[name="csrf-token"]')
