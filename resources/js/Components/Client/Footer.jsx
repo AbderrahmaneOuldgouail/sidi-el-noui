@@ -14,7 +14,7 @@ export default function Footer() {
             <div className="lg:px-28 px-10 py-4 flex flex-col  gap-4 ">
                 <div className="flex sm:flex-row pb-4 flex-col justify-between items-center gap-4 w-full">
                     <a
-                        href="phone:04505050"
+                        href="phone:023358230"
                         className="flex gap-4 items-center justify-start w-full"
                     >
                         <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">
@@ -25,12 +25,12 @@ export default function Footer() {
                                 {useTrans("N° téléphone")} :{" "}
                             </div>
                             <div className="text-sm font-medium ">
-                                0540304050
+                                023358230
                             </div>
                         </div>
                     </a>
                     <a
-                        href="mailto:sidielnoui@gmail.com"
+                        href="mailto:support@hotelsidielnoui.dz"
                         className="flex gap-4 items-center justify-start w-full"
                     >
                         <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">
@@ -41,12 +41,13 @@ export default function Footer() {
                                 {useTrans("Email")} :{" "}
                             </div>
                             <div className="text-sm font-medium">
-                                sidielnoui@gmail.com
+                                support@hotelsidielnoui.dz
                             </div>
                         </div>
                     </a>
                     <a
-                        href="https://www.googlemap.com"
+                        target="blank"
+                        href="https://maps.app.goo.gl/PKkyi9AU14F6bXYd9"
                         className="flex gap-4 items-center justify-start w-full"
                     >
                         <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">
@@ -116,7 +117,7 @@ export default function Footer() {
                             </a>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2 w-2/4">
+                    <div className="flex items-center gap-2 sm:w-2/4 w-full">
                         <AppLogo className="w-20 h-20" />
                         <div>
                             {useTrans(
@@ -126,11 +127,19 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-            <div className="bg-secondary text-secondary-foreground p-4 text-center">
-                <span>© 2024 Copyright: </span>
-                <a className="font-semibold" href="https://sidielnouihotel.com">
-                    SIDI EL NOUI
+            <div className="bg-secondary text-secondary-foreground py-4 px-16 flex justify-between items-center ">
+                <a target="blank" href="https://duobix.com">
+                    Duobix Software
                 </a>
+                <div>
+                    <span>© 2024 Copyright: </span>
+                    <a
+                        className="font-semibold"
+                        href="https://sidielnouihotel.dz"
+                    >
+                        SIDI EL NOUI
+                    </a>
+                </div>
             </div>
         </footer>
     );

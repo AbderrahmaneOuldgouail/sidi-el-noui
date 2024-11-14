@@ -37,7 +37,7 @@ export default function Contact() {
             </div>
             <form onSubmit={submit} className="relative w-full px-10">
                 <div className="flex gap-4 flex-col-reverse sm:flex-row">
-                    <div className="sm:w-1/3 w-2/3">
+                    <div className="sm:w-1/3 w-full">
                         <div className="my-4 flex flex-col gap-2">
                             <InputLabel
                                 value={useTrans("Email")}

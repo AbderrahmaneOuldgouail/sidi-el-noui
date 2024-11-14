@@ -25,7 +25,7 @@ export default function HomeHeading({ id }) {
                 {width <= 767 && <BookingForm />}
                 <div className="flex justify-center items-center  ">
                     <img
-                        src="http://localhost:8000/storage/sidi-el-noui-logo-removebg.png"
+                        src="/assets/sidi-el-noui-logo-removebg.png"
                         className="object-content w-1/3 md:w-2/3 rounded-xl relative z-10  hover:corsur-pointer  transition-transform duration-300 hover:scale-105 "
                     />
                 </div>
