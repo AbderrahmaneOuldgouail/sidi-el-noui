@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Models\Booking;
-use App\Models\Consumption;
 use App\Models\Event;
 use App\Models\Facture;
 use App\Models\Message;
@@ -15,6 +14,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -52,6 +52,7 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'message' => fn() => $request->session()->get('message')
             ],
+            'locale' => Session::get('locale', config('app.locale')),
         ];
 
         if ($request->user()?->access == true) {

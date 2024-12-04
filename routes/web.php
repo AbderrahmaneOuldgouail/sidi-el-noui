@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\Roles;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
@@ -8,16 +7,17 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PromotionController;
-use App\Models\Role;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Session;
 
 Route::name('client.')->group(function () {
     Route::get('/lang', function (Request $request) {
-        App::setlocale($request->lang);
+        if (in_array($request->lang, ['fr', 'ar'])) {
+            Session::put('locale', $request->lang);
+            App::setLocale($request->lang);
+        }
         return redirect()->back();
     })->name('switch.lang');
 

@@ -13,7 +13,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/Components/ui/popover";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export function DatePickerWithRange({
     date,
@@ -26,6 +26,7 @@ export function DatePickerWithRange({
     className?: string;
     min: number;
 }) {
+    const { t } = useTranslation();
     const disablePastDates = (date: Date) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -55,7 +56,7 @@ export function DatePickerWithRange({
                                 format(date.from, "LLL dd, y")
                             )
                         ) : (
-                            <span>{useTrans("Choisis une date")} </span>
+                            <span>{t("components.datePicker.title")} </span>
                         )}
                     </Button>
                 </PopoverTrigger>

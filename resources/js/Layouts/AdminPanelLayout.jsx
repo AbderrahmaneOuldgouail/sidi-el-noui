@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/Hooks/useStore";
 import SideBar from "@/Components/Admin/Layout/SideBar";
@@ -12,12 +12,7 @@ import { router } from "@inertiajs/react";
 
 export default function AdminPanelLayout({ children }) {
     const sidebar = useStore(useSidebarToggle, (state) => state);
-    const locale = localStorage.getItem("locale") || "fr";
     const { toast } = useToast();
-
-    useEffect(() => {
-        document.documentElement.dir = locale == "ar" ? "rtl" : "ltr";
-    }, [locale]);
 
     Echo.channel(`booking-channel`).listen("NewBooking", (e) => {
         toast({
@@ -39,7 +34,7 @@ export default function AdminPanelLayout({ children }) {
     return (
         <ThemeProvider>
             <SideBar />
-            <Navbar title="Tableux de bord" isOpen={sidebar?.isOpen} />
+            <Navbar isOpen={sidebar?.isOpen} />
             <main
                 className={cn(
                     "min-h-[calc(100vh_-_56px)] bg-zinc-50 md:p-10 p-2 dark:bg-zinc-900 transition-[margin-left] ease-in-out duration-300",

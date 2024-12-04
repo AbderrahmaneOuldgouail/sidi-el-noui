@@ -1,19 +1,18 @@
 import * as React from "react";
 import { useTheme } from "@/Providers/ThemeProvider";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-
 import { Button } from "@/Components/ui/button";
+import { useTranslation } from "react-i18next";
 import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
     TooltipProvider,
 } from "@/Components/ui/tooltip";
-import { useTrans } from "@/Hooks/useTrans";
 
 export function ThemeToggle() {
     const { setTheme, theme } = useTheme();
-    
+    const { t } = useTranslation();
 
     return (
         <TooltipProvider disableHoverableContent>
@@ -33,7 +32,7 @@ export function ThemeToggle() {
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
-                    {useTrans("Changer le thème")}{" "}
+                    {t("layout.navBar.themeTolip")}{" "}
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>

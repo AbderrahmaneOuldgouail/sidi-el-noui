@@ -14,8 +14,10 @@ import {
     CardHeader,
 } from "@/Components/ui/card";
 import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function Chart({ bookingCounts }) {
+    const { t } = useTranslation();
     const dataChart = [
         bookingCounts.map((type) => {
             return {
@@ -27,7 +29,7 @@ export default function Chart({ bookingCounts }) {
 
     const configChart = {
         bookings: {
-            label: "Réservations",
+            label: t("dashboard.chartLabel"),
             color: "hsl(var(--chart-1))",
         },
     };
@@ -62,13 +64,9 @@ export default function Chart({ bookingCounts }) {
                 </ChartContainer>
             </CardContent>
             <CardFooter className="flex-col items-start">
-                <span className="font-medium">
-                    {useTrans("Les types plus réservé le mois dernier")}
-                </span>
+                <span className="font-medium">{t("dashboard.chartTitle")}</span>
                 <span className="text-sm text-muted-foreground">
-                    {useTrans(
-                        "Ces statistique inclus les réservations annuléers et refusées"
-                    )}
+                    {t("dashboard.chartSubTitle")}
                 </span>
             </CardFooter>
         </Card>

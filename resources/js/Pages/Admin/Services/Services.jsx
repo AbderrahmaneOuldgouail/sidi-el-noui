@@ -22,6 +22,8 @@ export default function Services({ services, service_permission }) {
         }
     }, [flash.message, toast]);
 
+    console.log(services);
+
     return (
         <AdminPanelLayout>
             <Head title="Services" />
@@ -36,7 +38,7 @@ export default function Services({ services, service_permission }) {
                 )}
             </div>
             <PlaceholderContent>
-                {services.lenght ? (
+                {services.length ? (
                     <>
                         <div className="font-bold p-4">
                             {useTrans("List des services")} :

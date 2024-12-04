@@ -1,0 +1,15 @@
+{
+  "welcome" : "mar7aban",
+  "dashboard" : {
+    "title" : "لوحات المعلومات",
+    "dataChart1" : "تسجيلات الدخول اليوم",
+    "dataChart2" :  "تسجيلات الخروج اليوم",
+    "dataChart3" : "حجوزات اليوم",
+    "dataChart4" : "حجوزات الشهر",
+    "dataChartFooter1" : "من اليوم الأخير",
+    "dataChartFooter2" : "من الشهر الأخير",
+    "chartTitle" : "أنواع الغرف الأكثر حجزاً في الشهر الماضي",
+    "chartSubTitle" : "وتشمل هذه الإحصائيات الحجوزات الملغاة والمرفوضة",
+    "chartLabel" : "الحجوزات"
+  }
+}

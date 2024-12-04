@@ -31,6 +31,7 @@ import { DatePickerWithRange } from "@/Components/ui/DatePickerWithRange";
 import { Input } from "@/Components/ui/input";
 import { useTrans } from "@/Hooks/useTrans";
 import { Checkbox } from "@/Components/ui/checkbox";
+import { useTranslation } from "react-i18next";
 
 export function AddBooking() {
     const [dateRange, setDateRange] = useState({
@@ -47,6 +48,7 @@ export function AddBooking() {
     const { width } = useWindowDimensions();
     const { toast } = useToast();
     const flash = usePage().props.flash;
+    const { t } = useTranslation("translation", { keyPrefix: "layout.navBar" });
 
     useEffect(() => {
         if (flash.message) {
@@ -97,25 +99,23 @@ export function AddBooking() {
                 <DialogTrigger asChild>
                     <Button variant="link">
                         <CalendarPlus size={18} className="mx-2" />
-                        {useTrans("Ajouter une réservation")}
+                        {t("addBooking")}
                     </Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>
-                            {useTrans("Ajouter une réservation")}
+                            {t("dialog.dialogDescreption")}
                         </DialogTitle>
                         <DialogDescription>
-                            {useTrans("Chercher des chambres disponible")}
+                            {t("dialog.dialogDescreption")}
                         </DialogDescription>
                     </DialogHeader>
                     <form onSubmit={submit} className="grid items-start gap-4">
                         <div className="grid gap-2">
                             <InputLabel
                                 htmlFor="dates"
-                                value={useTrans(
-                                    "Date début et fin de réservation"
-                                )}
+                                value={t("dialog.form.dates")}
                             />
                             <DatePickerWithRange
                                 date={dateRange}
@@ -135,7 +135,7 @@ export function AddBooking() {
                             <div className="flex justify-between items-center">
                                 <InputLabel
                                     htmlFor="guest_number"
-                                    value={useTrans("Nombre des personne")}
+                                    value={t("dialog.form.guestNumber")}
                                 />
                                 <div className="flex items-center justify-center w-1/4 border rounded p-1 bg-muted">
                                     <CircleMinus
@@ -169,14 +169,12 @@ export function AddBooking() {
                             />
                             <InputLabel
                                 htmlFor="need_value"
-                                value={useTrans(
-                                    "Choisi cette option lors cette réservation est pour un société"
-                                )}
+                                value={t("dialog.form.needValue")}
                             />
                         </div>
                         <DialogFooter>
                             <Button variant="secondary" type="submit">
-                                {useTrans("Recherche")}
+                                {t("dialog.form.submit")}
                             </Button>
                         </DialogFooter>
                     </form>

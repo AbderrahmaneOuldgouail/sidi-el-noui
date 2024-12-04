@@ -3,9 +3,10 @@ import { Head } from "@inertiajs/react";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import PageHeading from "@/Components/ui/PageHeading";
-import { useTrans } from "@/Hooks/useTrans";
 import { Skeleton } from "@/Components/ui/skeleton";
 import DataCart from "@/Components/Admin/Dashboard/DataCart";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "@/Components/Admin/Shared/LanguageSwitcher";
 
 const Chart = React.lazy(() => import("@/Components/Admin/Dashboard/Chart"));
 
@@ -18,21 +19,22 @@ export default function Dashboard({
     last_month_bookings,
     bookingCounts,
 }) {
+    const { t } = useTranslation();
     return (
         <AdminPanelLayout>
             <Head title="Dashboard" />
-            <PageHeading title={useTrans("Tableaux De Bord")} />
+            <PageHeading title={t("dashboard.title")} />
             <PlaceholderContent>
                 <div className="flex flex-col lg:flex-row gap-6">
                     <div className="flex gap-6 flex-full lg:w-1/2">
                         <DataCart
-                            header_text="Entrés d'aujourd'hui"
+                            header_text={t("dashboard.dataChart1")}
                             left={true}
                             data={check_ins}
                             side="left"
                         />
                         <DataCart
-                            header_text="Sorties d'aujourd'hui"
+                            header_text={t("dashboard.dataChart2")}
                             right={true}
                             data={check_outs}
                             side="right"
@@ -40,16 +42,16 @@ export default function Dashboard({
                     </div>
                     <div className="flex gap-6 flex-full lg:w-1/2">
                         <DataCart
-                            header_text="Réservations de jour"
+                            header_text={t("dashboard.dataChart3")}
                             data={day_bookings}
                             last_data={last_day_bookings}
-                            footer_text="du dernier jour"
+                            footer_text={t("dashboard.dataChartFooter1")}
                         />
                         <DataCart
-                            header_text="Réservations de mois"
+                            header_text={t("dashboard.dataChart4")}
                             data={month_bookings}
                             last_data={last_month_bookings}
-                            footer_text="du mois dernier"
+                            footer_text={t("dashboard.dataChartFooter2")}
                         />
                     </div>
                 </div>

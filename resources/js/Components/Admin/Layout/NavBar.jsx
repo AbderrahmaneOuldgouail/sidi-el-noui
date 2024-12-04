@@ -5,8 +5,11 @@ import { cn } from "@/lib/utils";
 import { NotificationsNav } from "./NotificationsNav";
 import { AddBooking } from "./AddBooking";
 import { usePage } from "@inertiajs/react";
+import LanguageSwitcher from "../Shared/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
-export function Navbar({ title, isOpen }) {
+export function Navbar({ isOpen }) {
+    const { t } = useTranslation();
     const booking_permission = usePage().props.auth.permissions.booking;
     return (
         <div
@@ -19,10 +22,11 @@ export function Navbar({ title, isOpen }) {
                 <div className="mx-4 sm:mx-8 flex h-14 items-center justify-between">
                     <div className="flex items-center space-x-4 lg:space-x-0">
                         <SheetMenu />
-                        <h1 className="font-bold">{title}</h1>
+                        <h1 className="font-bold">{t("dashboard.title")}</h1>
                     </div>
                     <div>{booking_permission.create && <AddBooking />}</div>
                     <div className="flex items-center gap-2 justify-end">
+                        <LanguageSwitcher />
                         <NotificationsNav />
                         <ThemeToggle />
                         <UserNav />

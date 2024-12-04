@@ -23,6 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Session;
 
 Route::get('login', [AuthenticatedAdminSessionController::class, 'create'])
   ->name('admin.login');
@@ -34,7 +35,10 @@ Route::middleware(['auth', Admin::class])->group(
   function () {
 
     Route::get('switch-lang', function (Request $request) {
-      App::setlocale($request->lang);
+      if (in_array($request->lang, ['fr', 'ar'])) {
+        Session::put('locale', $request->lang);
+        App::setLocale($request->lang);
+      }
       return redirect()->back();
     })->name('switch.lang');
 
@@ -79,7 +83,6 @@ Route::middleware(['auth', Admin::class])->group(
     Route::post('/bill-settings', [FactureController::class, 'billSettings'])->name('factures.bill.settings');
     Route::resource('factures', FactureController::class)->names("factures");
 
-    // Route::resource('guests', GuestController::class)->names("guests")->except(['index', 'edit', 'update']);
     Route::get('guests/show/{id}', [GuestController::class, 'show'])->name('guests.show');
     Route::get('guests/create/{id}', [GuestController::class, 'create'])->name('guests.create');
     Route::post('guests/store', [GuestController::class, 'store'])->name('guests.store');

@@ -1,18 +1,17 @@
 import React from "react";
 import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group";
 import InputLabel from "@/Components/InputLabel";
-import { router } from "@inertiajs/react";
+import { useTranslation } from "react-i18next";
+import { router, usePage } from "@inertiajs/react";
 
-export function LangSwitch() {
-    const locale = localStorage.getItem("locale") || "fr";
-    const [lang, setLang] = React.useState(locale);
-
-    const switchLang = () => {
-        const newLang = lang === "ar" ? "fr" : "ar";
-        setLang(newLang);
-        localStorage.setItem("locale", newLang);
+const LanguageSwitcher = () => {
+    const { i18n } = useTranslation();
+    const { locale } = usePage().props;
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+        document.documentElement.dir = lng == "ar" ? "rtl" : "ltr";
         router.visit(route("switch.lang"), {
-            data: { lang: newLang },
+            data: { lang: lng },
             preserveState: true,
             preserveScroll: true,
         });
@@ -20,8 +19,8 @@ export function LangSwitch() {
 
     return (
         <RadioGroup
-            value={lang}
-            onValueChange={switchLang}
+            value={locale}
+            onValueChange={changeLanguage}
             className="flex gap-2"
         >
             <div className="flex gap-2">
@@ -42,4 +41,6 @@ export function LangSwitch() {
             </div>
         </RadioGroup>
     );
-}
+};
+
+export default LanguageSwitcher;

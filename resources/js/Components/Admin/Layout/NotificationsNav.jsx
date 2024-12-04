@@ -1,7 +1,8 @@
-import { Link, router, usePage } from "@inertiajs/react";
-import { Bell, BellDot, Inbox } from "lucide-react";
-
+import { router, usePage } from "@inertiajs/react";
+import { Bell } from "lucide-react";
 import { Button } from "@/Components/ui/button";
+import { useTranslation } from "react-i18next";
+import { RedBeadge } from "@/Components/ui/red-badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import {
     Tooltip,
@@ -18,11 +19,12 @@ import {
     DropdownMenuTrigger,
     DropdownMenuShortcut,
 } from "@/Components/ui/dropdown-menu";
-import { useTrans } from "@/Hooks/useTrans";
-import { RedBeadge } from "@/Components/ui/red-badge";
 
 export function NotificationsNav() {
     const notifs = usePage().props.notifs;
+    const { t } = useTranslation("translation", {
+        keyPrefix: "layout.navBar.notifications",
+    });
 
     function timeSince(date) {
         const now = new Date();
@@ -82,9 +84,7 @@ export function NotificationsNav() {
                             </Button>
                         </DropdownMenuTrigger>
                     </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                        {useTrans("Notifications")}{" "}
-                    </TooltipContent>
+                    <TooltipContent side="bottom">{t("tolip")}</TooltipContent>
                 </Tooltip>
             </TooltipProvider>
 
@@ -96,7 +96,7 @@ export function NotificationsNav() {
                             key={idx}
                             onClick={() => ViewNotification(notif)}
                         >
-                            {useTrans("Nouvelle réservation")}
+                            {t("new")}{" "}
                             <DropdownMenuShortcut>
                                 {timeSince(notif?.created_at)}{" "}
                             </DropdownMenuShortcut>
@@ -110,7 +110,7 @@ export function NotificationsNav() {
                         router.get(route("notifications.index"));
                     }}
                 >
-                    {useTrans("Tout notifications")}
+                    {t("all")}{" "}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

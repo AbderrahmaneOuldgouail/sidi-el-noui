@@ -1,13 +1,11 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
-import { PanelsTopLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/Hooks/useStore";
 import { Button } from "@/Components/ui/button";
 import { useSidebarToggle } from "@/Hooks/useSidebarToggle";
 import { SidebarToggle } from "./SideBareToggle";
 import { Menu } from "./Menu";
-import { LangSwitch } from "./LangSwitch";
 import { AppLogo } from "@/Components/ui/app-logo";
 
 export default function SideBar() {

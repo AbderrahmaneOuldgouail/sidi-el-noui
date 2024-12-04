@@ -37,7 +37,7 @@ export default function Factures({ factures, bill_settings }) {
                 </div>
             )}
             <PlaceholderContent>
-                {factures.data.lenght ? (
+                {factures.data.length ? (
                     <DataTable
                         columns={factureColumns}
                         data={factures.data}

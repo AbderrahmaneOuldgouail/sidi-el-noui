@@ -1,0 +1,69 @@
+{
+  "welcome" : "Bienvenue",
+  "layout" : {
+    "navBar" : {
+      "addBooking" : "Ajouter une réservation",
+      "themeTolip" : "Changer le thème",
+      "dialog" : {
+        "dialogTitle" : "Ajouter une réservation",
+        "dialogDescreption" : "Chercher des chambres disponible",
+        "form" : {
+          "dates" : "Date début et fin de réservation",
+          "guestNumber" : "Nombre des personne",
+          "needValue" : "Choisi cette option lors cette réservation est pour un société",
+          "submit" : "Recherche"
+        }
+      },
+      "notifications" : {
+        "tolip" : "Notifications",
+        "new" : "Nouvelle réservation",
+        "all" : "Tout notifications"
+      },
+      "userNav" : {
+        "tolip" : "Profile",
+        "dashboard" : "Tableaux De Bord",
+        "inbox" : "Boîte de réception",
+        "account" : "Compte",
+        "logout" : "Se déconnecter"
+      }
+    },
+    "sideBar" : {
+      "dashboard" : "Tableaux De Bord",
+      "bookingsGroupe" : "Moteur de réservation",
+      "bookings" : "Réservations",
+      "historical" : "Historique",
+      "rooms" : "Chambres",
+      "owner" : "La propriétaire",
+      "allRooms" : "Tous Les Chambres",
+      "features" : "Caractéristiques",
+      "services" : "Services",
+      "allServices" : "Tous Les Services",
+      "consumption" : "Consommations",
+      "bills" : "Factures",
+      "events" : "Evènements",
+      "promotions" : "Promotions",
+      "managment" : "Management",
+      "users" : "Utilisateurs",
+      "roles" : "Rôles",
+      "employs" : "Employés"
+    }
+  },
+  "components" : {
+    "datePicker" : {
+      "title" : "Choisis une date"
+    }
+  },
+  "dashboard" : {
+    "title" : "Tableaux De Bord",
+    "dataChart1" : "Entrés d'aujourd'hui",
+    "dataChart2" : "Sorties d'aujourd'hui",
+    "dataChart3" : "Réservations de jour",
+    "dataChart4" : "Réservations de mois",
+    "dataChartFooter1" : "du dernier jour",
+    "dataChartFooter2" : "de mois dernier",
+    "chartTitle" : "Les types plus réservé le mois dernier",
+    "chartSubTitle" : "Ces statistique inclus les réservations annuléers et refusées",
+    "chartLabel" : "Réservations"
+  }
+  
+}

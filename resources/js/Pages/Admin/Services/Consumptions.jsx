@@ -28,7 +28,7 @@ export default function Consumptions({ consumptions, services }) {
                 <ConsommationDialog services={services} mode="create" />
             </div>
             <PlaceholderContent>
-                {consumptions.lenght ? (
+                {consumptions.length ? (
                     <>
                         <div className="font-bold p-4">
                             {useTrans("List des consommations")} :

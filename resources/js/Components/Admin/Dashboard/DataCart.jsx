@@ -31,7 +31,7 @@ export default function DataCart({
                     side && "flex-row justify-between items-center"
                 )}
             >
-                <span>{useTrans(header_text)}</span>
+                <span>{header_text}</span>
                 {side == "left" && (
                     <ArrowLeft className="text-green-600 dark:text-green-400 " />
                 )}
@@ -54,7 +54,7 @@ export default function DataCart({
                     {calculate(last_data, data) > 0 && "+"}
                     {calculate(last_data, data)}
                     {"% "}
-                    {useTrans(footer_text)}
+                    {footer_text}
                 </CardFooter>
             )}
         </Card>

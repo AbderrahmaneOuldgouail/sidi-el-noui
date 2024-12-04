@@ -18,14 +18,18 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { useTrans } from "@/Hooks/useTrans";
 import { LangSwitch } from "./LangSwitch";
 import { RedBeadge } from "@/Components/ui/red-badge";
+import LanguageSwitcher from "../Shared/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export function UserNav() {
     const user = usePage().props.auth.user;
     const message_permission = usePage().props.auth.permissions.message;
     const hasUnreadMessages = usePage().props.hasUnreadMessages;
+    const { t } = useTranslation("translation", {
+        keyPrefix: "layout.navBar.userNav",
+    });
     return (
         <DropdownMenu>
             <TooltipProvider disableHoverableContent>
@@ -49,9 +53,7 @@ export function UserNav() {
                             </Button>
                         </DropdownMenuTrigger>
                     </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                        {useTrans("Profile")}{" "}
-                    </TooltipContent>
+                    <TooltipContent side="bottom">{t("tolip")} </TooltipContent>
                 </Tooltip>
             </TooltipProvider>
 
@@ -74,7 +76,7 @@ export function UserNav() {
                             className="flex items-center"
                         >
                             <LayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
-                            {useTrans("tableau de bord")}
+                            {t("dashboard")}
                         </Link>
                     </DropdownMenuItem>
                     {(message_permission.viewAny ||
@@ -97,7 +99,7 @@ export function UserNav() {
                                 ) : (
                                     <Inbox className="w-4 h-4 mr-3 text-muted-foreground" />
                                 )}
-                                {useTrans("Boîte de réception")}
+                                {t("inbox")}
                             </Link>
                         </DropdownMenuItem>
                     )}
@@ -107,12 +109,16 @@ export function UserNav() {
                             className="flex items-center"
                         >
                             <User className="w-4 h-4 mr-3 text-muted-foreground" />
-                            {useTrans("Compte")}
+                            {t("account")}
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <Languages className="w-4 h-4 mr-3 text-muted-foreground" />
                         <LangSwitch />
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <Languages className="w-4 h-4 mr-3 text-muted-foreground" />
+                        {/* <LanguageSwitcher /> */}
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
@@ -123,7 +129,7 @@ export function UserNav() {
                     }}
                 >
                     <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
-                    {useTrans("Se déconnecter")}
+                    {t("logout")}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
