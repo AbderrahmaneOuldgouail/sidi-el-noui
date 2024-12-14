@@ -59,7 +59,6 @@ class BookingController extends Controller
         if ($request->user()->cannot('create', Booking::class)) {
             return abort(403);
         }
-
         $request->validate([
             'check_in' => 'required',
             'check_out' => 'required',
@@ -116,6 +115,8 @@ class BookingController extends Controller
         if ($request->user()->cannot('create', Booking::class)) {
             return abort(403);
         }
+
+        // dd($request->is_company ? Roles::COMPANY->value : Roles::CLIENT->value);
 
         $request->validate([
             'first_name' => 'required|string|max:30',

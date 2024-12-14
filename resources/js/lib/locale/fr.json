@@ -51,7 +51,42 @@
   "components" : {
     "datePicker" : {
       "title" : "Choisis une date"
-    }
+    },
+    "dataTable" : {
+      "viewOption" : {
+        "tolip" : "Contrôler la visibilité des colonnes",
+        "show" : "Voir",
+        "title" : "Basculer les colonnes",
+        "selection" : "ligne(s) sélectionné(s).",
+        "client" : "Client",
+        "checkIn" : "Check in",
+        "checkOut" : "Check out",
+        "bookingDate" : "Date de réservation",
+        "status" : "Status",
+        "roomNumber" : "Numéro de chambre",
+        "type" : "Type",
+        "price" : "Prix",
+        "featureName" : "Nom de caractéristique",
+        "needValue" : "Besoin de valeur",
+        "categorie" : "Catégorie",
+        "billNumber" : "N° Facture",
+        "email" : "Email",
+        "date" : "Date",
+        "role" : "Rôle",
+        "permissions" : "Permissions",
+        "utilisateurs" : "Utilisateurs",
+        "phone" : "N° téléphone",
+        "createdAtDate" : "date d'inscription"
+      },
+      "pagination" : {
+        "footer" : "ligne(s) afficher"
+      },"header" : {
+        "up" : "Croissante",
+        "down" : "Décroissante",
+        "hide" : "Cacher"
+      }
+    },
+    "fileUploader" :"Télécharger ou déposer des images ici"
   },
   "dashboard" : {
     "title" : "Tableaux De Bord",
@@ -64,6 +99,409 @@
     "chartTitle" : "Les types plus réservé le mois dernier",
     "chartSubTitle" : "Ces statistique inclus les réservations annuléers et refusées",
     "chartLabel" : "Réservations"
+  },
+  "notifications" : {
+    "title" : "Notifications",
+    "readAll" : "Tout marquer comme lu",
+    "deleteAll" : "Supprimer Tous",
+    "text1" : "a fait une réservation de",
+    "text2" : "vers"
+  },
+  "messages" : {
+    "title" : "Boîte de réception",
+    "readAll" : "Tout marquer comme lu",
+    "deleteAll" : "Supprimer Tous", 
+    "all" : "Tous",
+    "unread" : "Non lu",
+    "user" : "Utilisateur",
+    "replyToMail" : "Reprendre avec votre adresse mail",
+    "delete" : "Supprimer",
+    "noMessage" : "Aucun message a afficher",
+    "subject" : "Sujet",
+    "replyTo" : "Repondre à :",
+    "message" : "Message",
+    "placeholder" : "Répendre à CLIENT",
+    "submit" : "Envoyé"
+  },
+  "profile" : {
+    "section1" : {
+      "title" : "Les informations personnelles",
+      "form" : {
+        "firstName" : "Prénom",
+        "lastName" : "Nom",
+        "email" : "Email",
+        "emailDescreption" : "L'email doit être unique pour chaque utilisateur",
+        "phone" : "N° téléphone d'employé",
+        "phoneDescreption" : "Le N° téléphone doit être unique pour chaque utilisateur",
+        "emailValidation" : "Votre adresse email n'est pas vérifiée.",
+        "sendEmailValidation" : "Cliquez ici pour renvoyer l'e-mail de vérification.",
+        "validationSended" : "Un nouveau lien de vérification a été envoyé à votre adresse e-mail.",
+        "submit" : "Enregistrer"
+      }
+    },
+    "section2" : {
+      "title" : "Mettre à jour le mot de passe",
+      "subtitle" : "Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester en sécurité",
+      "form" : {
+        "password" : "Mot de passe actuel",
+        "newPassword" : "nouveau mot de passe",
+        "confirmPassword" : "Confirmez le mot de passe",
+        "submit" : "Enregistrer"
+      }
+    },
+    "section3" : {
+      "title" : "Supprimer le compte",
+      "subtitle" : "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver.",
+      "submit" : "Supprimer le compte",
+      "dialogTitle" : "Etes-vous sûr de vouloir supprimer votre compte ?",
+      "dialogDescreption" : "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.",
+      "placeholder" : "Password",
+      "cancel" : "Annuler",
+      "delete" : "Supprimer"
+    }
+  },
+  "bookings" : {
+    "title": "Réservations",
+    "toastMessage" : "Paramètre de facturation",
+    "emptyPage" : "Aucun réservations pour l'instant, essayez de créer une nouvelle",
+    "historicalTitle" : "Historique",
+    "tableHeader" : {
+      "client" : "Client",
+      "checkIn" : "Check in",
+      "checkOut" : "Check out",
+      "bookingDate" : "Date de réservation",
+      "status" : "Status",
+      "bill" : "Facture",
+      "show" : "Voir",
+      "dialogTitle" : "Mode de payment",
+      "dialogDescreption" : "Choisi le mode de payment pour cette facture",
+      "opt1" : "Espece",
+      "opt2" : "Chèque",
+      "approve" : "Confirmer",
+      "cancel" : "Refusé"
+    }
+  },
+  "booking": {
+    "title" : "Réservation",
+    "pageHeading" : "Réservation de ",
+    "clientCard" : "Informations de client",
+    "bookingCard" : "Détails de réservation",
+    "checkIn" : "Arrivée",
+    "checkOut" : "Départ",
+    "guestNumber" : "Nombre des personnes",
+    "adult" : "adult",
+    "and" : "et",
+    "babys" : "bébés",
+    "nights" : "nuit",
+    "pricingCard" : "Récapitulatif du montant",
+    "pricingFooter" : "Ce prix avec tout tax inclus",
+    "da" : "DA",
+    "rooms" : "Chambre",
+    "with" : "avec",
+    "beeds" : "lits",
+    "showMore" : "Voir Plus",
+    "features" : "Caractéristiques"
+  },
+  "aviableRooms" : {
+    "title" : "Chambres disponible",
+    "metaDescreption" : "Découvrez les chambres disponibles à l'hôtel Sidi El Noui et faites votre réservation en quelques clics.",
+    "name" : "Nom",
+    "adress" : "Adresse",
+    "lastName" : "Prénom",
+    "nif" : "Numéro d'Identification Fiscale",
+    "nis" : "Numéro d'Identification Statistique",
+    "nrc" : "Numéro  de registre de commerce",
+    "na" : "Numéro d'article",
+    "email" : "Email",
+    "emailDescreption" : "L'email doit être unique pour chaque utilisateur",
+    "phone" : "N° téléphone",
+    "phoneDescreption" : "Le N° téléphone doit être unique pour chaque utilisateur",
+    "tableHeader" : "Choisi un ou plusieur chambres à réserver",
+    "roomNumber" : "Numéro de chambre",
+    "type" : "Type de chambre",
+    "ttc" : "Prix TTC",
+    "features" : "Caractéristiques",
+    "roomCode" : "Chambre N°",
+    "da" : "DA",
+    "cunsumptionHeader" : "Ajouter les consommation de cetter réservation",
+    "submit" : "Réserver"
+  },
+  "rooms" : {
+    "title" : "Chambres",
+    "createTitle" : "Chambre Création",
+    "editTitle" : "Chambre Modification",
+    "show" : "Voir",
+    "edit" : "Modifier",
+    "aviable" : "Marqué comme disponible",
+    "inaviable" : "Marqué comme hors service",
+    "topButton" : "Crée un chambre",
+    "emptyText" : "Aucun chambres pour l'instant, essayez de créer une nouvelle",
+    "roomNumber" : "La Chambre N°",
+    "price" : "Prix de chmabre",
+    "da" : "DA",
+    "roomForm" : {
+      "roomNumber" : "Numéro de chmabre",
+      "roomNumberDescreption" : "Quel est le numéro unique de cette chambre ?",
+      "price" : "Prix de chmabre",
+      "priceDescreption" : "Ce sont les prix de la chambre avec tous taxe inclus",
+      "beedsNumber" : "Nombre de lits",
+      "beedsNumberDescreption" : "Quel est le nombre de lits dans cette chambre",
+      "type" : "Type",
+      "typeDescreption" : "Quel est le type de cette chambre",
+      "typeSelect" : "Selectioner un Type...",
+      "typeSearch" : "Chercher un Type...",
+      "emptyTypeMessage" : "Il n'existe pas le type",
+      "emptyTypeButton" : "Ajouter un nouveau type",
+      "descreption" : "Descreption",
+      "descreptionDescreption" : "Entrer une description générale sur cette chambre",
+      "features" : "Caractéristiques",
+      "featuresDescreption" : "Choisis parmi ces caractéristiques, et ajouter des valeur aux caractéristiques qui'il besoin",
+      "assets" : "Photos",
+      "assetsDescreption" : "Ajouter des photos au chambres (ne dépasse pas 10 photos par chambres)",
+      "fileUploader" : "Télécharger ou déposer des images ici",
+      "submit" : "Crée",
+      "edit" : "Enregistrer"
+    },
+    "room" : {
+      "title" : "La Chambre N°:",
+      "with" : "avec",
+      "beeds" : "lits",
+      "price" : "Prix de chmabre",
+      "da" : "DA",
+      "description" : "Description",
+      "edit" : "Modifier"
+    }
+  },
+  "features" : {
+    "title" : "Caractéristiques",
+    "categorie" : "Catégories",
+    "emptyFeatures" : "Aucun caractéristiques pour l'instant, essayez de créer une nouvelle",
+    "emptyCategories" : "Aucun categories pour l'instant, essayez de créer une nouvelle",
+    "form" : {
+      "create" : "Créer un Caractéristique",
+      "dialogHeader" : "Ajouter un nouveau Caractéristique",
+      "name" : "Nom de caractéristique",
+      "categorie" : "Catégories",
+      "placeholder" : "Example : wifi, dimension",
+      "selectInput" : "Selectioner un categorie...",
+      "searchInput" : "Chercher un categorie...",
+      "add" : "Ajouter",
+      "add2" : "au categorie",
+      "needValue" : "Besoin de valeur",
+      "createSubmit" : "Créer",
+      "cancel" : "Annuler",
+      "edit" : "Modifier",
+      "editHeader" : "Modifier cette caractéristique",
+      "save" : "Enregistrer",
+      "delete" : "Supprimer",
+      "deleteHeader" : "Vous êtes sure?",
+      "deleteDescreption" : "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette caractéristique et chaque chambre avoir cette caractéristique va le perdre",
+      "addCategorie" : "Ajouter un categorie",
+      "addCategorieHeader" : "Ajouter un nouveau Catégorie",
+      "editCategorietHeader" : "Modifier cette Catégorie",
+      "categorieName" : "Nom de catégorie :",
+      "categoriePlaceholder" : "Example : Générale, Internet",
+      "deleteCategorieDescreption" : "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce élément et chaque caractéristique de cette categorie va supprimé"
+    }
+  },
+  "services" : {
+    "title" : "Services",
+    "createBtn" : "Créer un service",
+    "emptyServices" : "Aucun services pour l'instant, essayez de créer un nouveau",
+    "listHeader" : "List des services",
+    "card" : {
+      "aviable" : "Disponible",
+      "inaviable" : "Indisponible",
+      "descreption" : "Description",
+      "toggleOff" : "Marqué comme hors service",
+      "toggleOn" : "Marqué comme disponible",
+      "editBtn" :"Modifier",
+      "deleteServiceDescreption" : "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce élément et chaque consommations de ce service va supprimé"
+    },
+    "form" : {
+        "createTitle" : "Service Création",
+        "editTitle" : "Service Modification",
+        "name" : "Nom de service",
+        "nameDescreption" : "Entrer un nom claire et simple pour le nom de service",
+        "placeholder" : "Exemple : Restaurant",
+        "descreption" : "Description",
+        "descreptionDescreption" : "Vous pouvez ajouter des titre ou bien des style au desciption",
+        "assets" : "Photos",
+        "assetsDescreption" : "Ajouter des photos au service (ne dépasse pas 10 photos par service)",
+        "createBtn" : "Créer",
+        "editBtn" : "Enregistrer"
+      }
+  },
+  "consumptions" : {
+    "title" : "Consommations",
+    "emptyConsumptions" : "Aucun consommations pour l'instant, essayez de créer un nouveau",
+    "listHeader" : "List des consommations",
+    "card" : {
+      "price" : "Prix Unitaire:",
+      "da" : "DA",
+      "deleteConsumptionDescreption" : "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette consommation"
+    },
+    "form" : {
+      "createBtn" : "Créer un consommation",
+      "editBtn" : "Modifier",
+      "createDialogTitle" : "Créer un nouveau consommation",
+      "editDialogTitle" : "Modifier cette consommation",
+      "service" : "Service",
+      "servicePlaceholder" : "Selectionner un service",
+      "name" : "Nom de consommation",
+      "namePlaceholder" : "Exemple : Diner",
+      "price" : "Prix de consommation",
+      "createSubmit" : "Créer",
+      "editSubmit" : "Enregistrer",
+      "cancel" : "Annuler"
+    }
+  },
+  "factures" : {
+    "title" : "Factures",
+    "topBtn" : "Générer pour une réservation",
+    "emptyBill" : "Aucun factures pour l'instant, essayez de créer une nouvelle",
+    "settings" : {
+      "title" : "Parametre de facture",
+      "descreption" : "Modifier les constant de facturation içi",
+      "tva" : "La valeur de TVA en %",
+      "taxes" : "Taxe de séjour",
+      "taxesDescreption" : "la valeur de taxe de séjour en DA/personne",
+      "timbre" : "Droit de timbre",
+      "timbreDescreption" : "La valeur de tibmre en %",
+      "save" : "Enregistrer"
+    },
+    "table" : {
+      "guestsList" : "List des invités",
+      "show" : "Voir",
+      "email" : "Email",
+      "print" : "Imprimer",
+      "download" : "Télécharger",
+      "factureTitle" : "Facture"
+    }
+  },
+  "guests" : {
+    "addGuestsTitle" : "Ajouter des invités",
+    "guestsListTitle" : "List d'invités",
+    "addBtn" : "Ajouter",
+    "firstName" : "Prénom",
+    "lastName" : "Nom",
+    "saveBtn" : "Enregistrer",
+    "addGuestsBtn" : "Ajouter des invités"
+  },
+  "events" : {
+    "title" : "Evènements",
+    "createLink" : "Créer un évènement",
+    "pageHeading" : "List des évènements",
+    "emptyEvents" : "Aucun évènement pour l'instant, essayez de créer une nouvelle",
+    "card" : {
+      "price" : "Prix",
+      "da" : "DA",
+      "eventDate" : "Date d'évènement",
+      "eventStartDate" : "Date début d'évènement",
+      "eventEndDate" : "Date fin d'évènement",
+      "descreption" : "Descreption",
+      "createdBy" : "Créé par",
+      "editBtn" : "Modifier",
+      "eventDeleteDescreption" : "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette évènement"
+    },
+    "form" : {
+      "createTitle" : "Création d'évènement",
+      "editTitle" : "Modification d'évènement",
+      "eventDate" : "Date d'évènement",
+      "eventDateDescreption" : "Entrer la date ou le range de date de début et fin d'évènement",
+      "name" : "Nom de l'évènement",
+      "namePlaceholder" : "Exemple : fête 16 Avrile",
+      "nameDescreption" : "Entrer un nom claire et simple pour le nom de l'évènement",
+      "price" : "Prix",
+      "priceDescreption" : "Quelle est le prix d'accés d'évènement",
+      "descreption" : "Descreption",
+      "descreptionDescreption" : "Vous pouvez ajouter des titre ou bien des style au desciption",
+      "assets" : "Photos",
+      "assetsDescreption" : "Ajouter des photos au l'évènement (ne dépasse pas 10 photos par évènement)",
+      "createBtn" : "Créer",
+      "editBtn" : "Enregistrer"
+    }
+  },
+  "promotions" : {
+    "title" : "Promotions",
+    "createBtn" : "Créer un promotion",
+    "pageHeading" : "List des promotions",
+    "emptyPromotions" : "Aucun promotion pour l'instant, essayez de créer une nouvelle",
+    "card" : {
+      "da" : "DA",
+      "activeState" : "Active",
+      "inactiveState" : "Désactivé",
+      "date" : "Date de promotion",
+      "startDate" : "Date début de promotion",
+      "endDate" : "Date fin de promotion",
+      "descreption" : "Descreption",
+      "createdBy" : "Créé par",
+      "swichOn" : "Désactivé la promotion",
+      "swichOff" : "Activé la promotion",
+      "edit" : "Modifier",
+      "deletePromotionDescreption" : "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette promotion"
+    },
+    "form" : {
+      "createTitle" : "Création de Promotion",
+      "editTitle" : "Modification de promotion",
+      "date" : "Date de promotion",
+      "dateDescreption" : "Entrer la date ou le range de date de début et fin de promotion",
+      "value" : "Valeur de promotion",
+      "valueDescreption" : "Entrer la Valeur de promotion en DA",
+      "descreption" : "Descreption",
+      "descreptionDescreption" : "Vous pouvez ajouter des titre ou bien des style au desciption",
+      "assets" : "Photos",
+      "assetsDescreption" : "Ajouter des photos au promotion (ne dépasse pas 10 photos par promotion)",
+      "createBtn" : "Créer",
+      "editBtn" : "Enregistrer"
+    }
+  },
+  "roles" : {
+    "title" : "Rôles",
+    "create" : "Ajouter un rôle",
+    "permissions" : "Permissions",
+    "dialogHeader" : "List des permissions pour le rôle",
+    "cancel" : "Annuler",
+    "edit" : "Modifier",
+    "deleteRoleDescreption" : "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions",
+    "delete" : "Supprimer",
+    "deleteDialogHeader" : "Vous êtes sure?",
+    "form" : {
+      "createTitle" : "Rôle Creation",
+      "editTitle" : "Rôle Modification",
+      "name" : "Nom de rôle",
+      "nameDescreption" : "Le nom de rôle doit être unique",
+      "promotions" : "List des permissions",
+      "promotionsDescreption" : "Assigner des permissions a ce rôle",
+      "createBtn" : "Créer",
+      "editBtn" : "Enregistrer"
+    }
+  },
+  "users" : {
+    "title" : "Employés",
+    "createBtn" : "Ajouter un employé",
+    "edit" : "Modifier",
+    "delete" : "Supprimer",
+    "dialogHeader" : "Vous êtes sure?",
+    "dialogDescreption" : "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce utilisateur",
+    "cancel" : "Annuler",
+    "form" : {
+      "createTitle" : "Créer un employé",
+      "editTitle" : "Modifier un employé",
+      "firstName" : "Prénom d'employé",
+      "lastName" : "Nom d'employé",
+      "email" : "Email d'employé",
+      "emailDescreption" : "L'email doit être unique pour chaque utilisateur",
+      "phone" : "N° téléphone d'employé",
+      "phoneDescreption" : "Le N° téléphone doit être unique pour chaque utilisateur",
+      "role" : "Rôle",
+      "roleDescreption" : "Assigne un rôle au ce employé",
+      "rolePlaceholder" : "Sélectionner un rôle...",
+      "rolePlaceholder2" : "Chercher un rôle...",
+      "emptyRole" : "Auccun rôle",
+      "editBtn" : "Enregistrer",
+      "createBtn" : "Créer"
+    }
   }
   
 }

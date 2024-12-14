@@ -31,21 +31,32 @@ import InputLabel from "@/Components/InputLabel";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import { useTrans } from "@/Hooks/useTrans";
 import { useForm } from "@inertiajs/react";
+import { useTranslation } from "react-i18next";
 
 export default function ConsommationDialog({ services, mode, consumption }) {
     const [open, setOpen] = useState(false);
+    const { t } = useTranslation("translation", {
+        keyPrefix: "consumptions.form",
+    });
     const { width } = useWindowDimensions();
-    const { data, setData, post, put, errors } = useForm({
-        consumption_name: consumption?.consumption_name,
-        consumption_price: consumption?.consumption_price,
-        service_id: consumption?.service_id,
+    const { data, setData, post, put, errors, processing, reset } = useForm({
+        consumption_name: consumption ? consumption?.consumption_name : "",
+        consumption_price: consumption ? consumption?.consumption_price : "",
+        service_id: consumption ? consumption?.service_id : "",
     });
 
     const submit = (e) => {
         e.preventDefault();
         if (mode == "create") {
             post(route("consumptions.store"), {
-                onSuccess: () => setOpen(false),
+                onSuccess: () => {
+                    setOpen(false);
+                    reset(
+                        "consumption_name",
+                        "consumption_price",
+                        "service_id"
+                    );
+                },
             });
         } else {
             put(route("consumptions.update", consumption.consumption_id), {
@@ -59,17 +70,15 @@ export default function ConsommationDialog({ services, mode, consumption }) {
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     <Button variant="secondary">
-                        {mode == "create"
-                            ? useTrans("Créer un consommation")
-                            : useTrans("Modifier")}
+                        {mode == "create" ? t("createBtn") : t("editBtn")}
                     </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle>
                             {mode == "create"
-                                ? useTrans("Créer un nouveau consommation")
-                                : useTrans("Modifier cette consommation")}
+                                ? t("createDialogTitle")
+                                : t("editDialogTitle")}
                         </DialogTitle>
                     </DialogHeader>
                     <form
@@ -79,7 +88,7 @@ export default function ConsommationDialog({ services, mode, consumption }) {
                         <div className="grid gap-2">
                             <InputLabel
                                 htmlFor="service_id"
-                                value={useTrans("Service")}
+                                value={t("service")}
                                 className="w-fit"
                             />
                             <Select
@@ -93,9 +102,7 @@ export default function ConsommationDialog({ services, mode, consumption }) {
                                         placeholder={
                                             data.service_id
                                                 ? ""
-                                                : useTrans(
-                                                      "Selectionner un service"
-                                                  )
+                                                : t("servicePlaceholder")
                                         }
                                     />
                                     {
@@ -107,7 +114,9 @@ export default function ConsommationDialog({ services, mode, consumption }) {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        <SelectLabel>Services</SelectLabel>
+                                        <SelectLabel>
+                                            {t("service")}{" "}
+                                        </SelectLabel>
                                         {services.map((service) => (
                                             <SelectItem
                                                 value={service.service_id}
@@ -127,10 +136,10 @@ export default function ConsommationDialog({ services, mode, consumption }) {
                         <div className="grid gap-2">
                             <InputLabel
                                 htmlFor="consumption_name"
-                                value={useTrans("Nom de consommation")}
+                                value={t("name")}
                             />
                             <Input
-                                placeholder={useTrans("Exemple : Diner")}
+                                placeholder={t("namePlaceholder")}
                                 id="consumption_name"
                                 value={data.consumption_name}
                                 onChange={(e) =>
@@ -145,7 +154,7 @@ export default function ConsommationDialog({ services, mode, consumption }) {
                         <div className="grid gap-2">
                             <InputLabel
                                 htmlFor="consumption_price"
-                                value={useTrans("Prix de consommation")}
+                                value={t("price")}
                             />
                             <Input
                                 className="mt-2"
@@ -160,10 +169,14 @@ export default function ConsommationDialog({ services, mode, consumption }) {
                                 className="mt-2"
                             />
                         </div>
-                        <Button variant="secondary" type="submit">
+                        <Button
+                            variant="secondary"
+                            type="submit"
+                            disabled={processing}
+                        >
                             {mode == "create"
-                                ? useTrans("Créer")
-                                : useTrans("Enregistrer")}
+                                ? t("createSubmit")
+                                : t("editSubmit")}
                         </Button>
                     </form>
                 </DialogContent>
@@ -176,23 +189,23 @@ export default function ConsommationDialog({ services, mode, consumption }) {
             <DrawerTrigger asChild>
                 <Button variant="secondary">
                     {mode == "create"
-                        ? useTrans("Créer un consommation")
-                        : useTrans("Modifier")}{" "}
+                        ? t("createDialogTitle")
+                        : t("editDialogTitle")}
                 </Button>
             </DrawerTrigger>
-            <DrawerContent>
+            <DrawerContent aria-describedby={undefined}>
                 <DrawerHeader className="text-left">
                     <DrawerTitle>
                         {mode == "create"
-                            ? useTrans("Créer un nouveau consommation")
-                            : useTrans("Modifier cette consommation")}{" "}
+                            ? t("createDialogTitle")
+                            : t("editDialogTitle")}
                     </DrawerTitle>
                 </DrawerHeader>
                 <form className="grid items-start gap-4 px-4" onSubmit={submit}>
                     <div className="grid gap-2">
                         <InputLabel
                             htmlFor="service_id"
-                            value={useTrans("Service")}
+                            value={t("service")}
                             className="w-fit"
                         />
                         <Select
@@ -206,9 +219,7 @@ export default function ConsommationDialog({ services, mode, consumption }) {
                                     placeholder={
                                         data.service_id
                                             ? ""
-                                            : useTrans(
-                                                  "Selectionner un service"
-                                              )
+                                            : t("servicePlaceholder")
                                     }
                                 />
                                 {
@@ -219,7 +230,7 @@ export default function ConsommationDialog({ services, mode, consumption }) {
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectLabel>Services</SelectLabel>
+                                    <SelectLabel> {t("service")} </SelectLabel>
                                     {services.map((service) => (
                                         <SelectItem
                                             value={service.service_id}
@@ -239,10 +250,10 @@ export default function ConsommationDialog({ services, mode, consumption }) {
                     <div className="grid gap-2">
                         <InputLabel
                             htmlFor="consumption_name"
-                            value={useTrans("Nom de consommation")}
+                            value={t("name")}
                         />
                         <Input
-                            placeholder={useTrans("Exemple : Diner")}
+                            placeholder={t("namePlaceholder")}
                             id="consumption_name"
                             value={data.consumption_name}
                             onChange={(e) =>
@@ -257,7 +268,7 @@ export default function ConsommationDialog({ services, mode, consumption }) {
                     <div className="grid gap-2">
                         <InputLabel
                             htmlFor="consumption_price"
-                            value={useTrans("Prix de consommation")}
+                            value={t("price")}
                         />
                         <Input
                             className="mt-2"
@@ -272,15 +283,17 @@ export default function ConsommationDialog({ services, mode, consumption }) {
                             className="mt-2"
                         />
                     </div>
-                    <Button variant="secondary" type="submit">
-                        {mode == "create"
-                            ? useTrans("Créer")
-                            : useTrans("Enregistrer")}
+                    <Button
+                        variant="secondary"
+                        type="submit"
+                        disabled={processing}
+                    >
+                        {mode == "create" ? t("createSubmit") : t("editSubmit")}
                     </Button>
                 </form>
                 <DrawerFooter className="pt-2">
                     <DrawerClose asChild>
-                        <Button variant="outline">{useTrans("Annuler")}</Button>
+                        <Button variant="outline">{t("cancel")}</Button>
                     </DrawerClose>
                 </DrawerFooter>
             </DrawerContent>

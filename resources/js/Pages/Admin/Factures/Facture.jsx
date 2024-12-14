@@ -1,17 +1,21 @@
 import React, { useEffect } from "react";
-import { Head, Link, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
 import { useToast } from "@/Components/ui/use-toast";
-import { useTrans } from "@/Hooks/useTrans";
 import { FileDown, Printer, Send } from "lucide-react";
-import { Button, buttonVariants } from "@/Components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { AppLogo } from "@/Components/ui/app-logo";
+import { useTranslation } from "react-i18next";
 
 export default function Facture({ facture, data, mail, total_ttc_words }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
+    const [processing, setProcessing] = React.useState(false);
+    const { t } = useTranslation("translation", {
+        keyPrefix: "factures.table",
+    });
 
     useEffect(() => {
         if (flash.message) {
@@ -20,31 +24,40 @@ export default function Facture({ facture, data, mail, total_ttc_words }) {
     }, [flash.message, toast]);
     return (
         <AdminPanelLayout>
-            <Head title="Facture" />
-            <PageHeading title={"Facture"} />
+            <Head title={t("factureTitle")} />
+            <PageHeading title={t("factureTitle")} />
             <div className="flex justify-end gap-2">
-                <Link
-                    href={route("factures.send", {
-                        id: facture.facture_id,
-                    })}
-                    className={
-                        "flex w-full" +
-                        buttonVariants({ variant: "secondary", size: "sm" })
+                <Button
+                    variant="secondary"
+                    size="sm"
+                    disabled={processing}
+                    onClick={() =>
+                        router.get(
+                            route("factures.send", { id: facture.facture_id }),
+                            {},
+                            {
+                                onStart: () => {
+                                    setProcessing(true);
+                                },
+                                onFinish: () => {
+                                    setProcessing(false);
+                                },
+                            }
+                        )
                     }
-                    as="button"
                 >
                     <Send className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                    <span>{useTrans("Email")}</span>
-                </Link>
+                    <span>{t("email")}</span>
+                </Button>
                 <a
                     href={route("factures.print", {
                         id: facture.facture_id,
                     })}
                     target="_blank"
                 >
-                    <Button variant="secondary" size="sm">
+                    <Button variant="secondary" size="sm" disabled={processing}>
                         <Printer className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                        <span>{useTrans("Imprimer")}</span>
+                        <span>{t("print")}</span>
                     </Button>
                 </a>
                 <a
@@ -52,9 +65,9 @@ export default function Facture({ facture, data, mail, total_ttc_words }) {
                         id: facture.facture_id,
                     })}
                 >
-                    <Button variant="secondary" size="sm">
+                    <Button variant="secondary" size="sm" disabled={processing}>
                         <FileDown className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                        <span>{useTrans("Télécharger")}</span>
+                        <span>{t("download")}</span>
                     </Button>
                 </a>
             </div>

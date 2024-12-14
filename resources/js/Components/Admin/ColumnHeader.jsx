@@ -1,6 +1,9 @@
-import { useTrans } from "@/Hooks/useTrans";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function ColumnHeader({ title }) {
-    return <div className="rtl:text-right"> {useTrans(title)} </div>;
+    const { t } = useTranslation("translation", {
+        keyPrefix: "components.dataTable.viewOption",
+    });
+    return <div className="rtl:text-right"> {t(title)} </div>;
 }

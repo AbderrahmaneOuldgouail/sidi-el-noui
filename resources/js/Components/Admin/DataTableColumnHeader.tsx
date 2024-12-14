@@ -16,7 +16,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 interface DataTableColumnHeaderProps<TData, TValue>
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -32,6 +32,9 @@ export function DataTableColumnHeader<TData, TValue>({
     if (!column.getCanSort()) {
         return <div className={cn(className)}>{title}</div>;
     }
+    const { t } = useTranslation("translation", {
+        keyPrefix: "components.dataTable.header",
+    });
 
     return (
         <div className={cn("flex items-center space-x-2", className)}>
@@ -57,20 +60,20 @@ export function DataTableColumnHeader<TData, TValue>({
                         onClick={() => column.toggleSorting(false)}
                     >
                         <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                        {useTrans("Croissante")}
+                        {t("up")}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={() => column.toggleSorting(true)}
                     >
                         <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                        {useTrans("Décroissante")}
+                        {t("down")}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         onClick={() => column.toggleVisibility(false)}
                     >
                         <EyeNoneIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                        {useTrans("Cacher")}
+                        {t("hide")}
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

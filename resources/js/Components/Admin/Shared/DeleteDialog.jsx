@@ -20,21 +20,31 @@ import {
 } from "@/Components/ui/dialog";
 import { Button, buttonVariants } from "@/Components/ui/button";
 import { Trash } from "lucide-react";
-import { useTrans } from "@/Hooks/useTrans";
-import { Link, router } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
+import { useTranslation } from "react-i18next";
 
 export default function DeleteeDialog({ id, url, message }) {
     const [open, setOpen] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     const { width } = useWindowDimensions();
+    const { t } = useTranslation("translation", {
+        keyPrefix: "features.form",
+    });
 
     const handleDelete = (id) => {
-        router.delete(route(url, id), {
+        router.delete(route(url, id, message), {
             method: "delete",
             preserveScroll: true,
             preserveState: true,
             onSuccess: () => {
                 setOpen(false);
+            },
+            onStart: () => {
+                setDeleting(true);
+            },
+            onFinish: () => {
+                setDeleting(false);
             },
         });
     };
@@ -45,15 +55,13 @@ export default function DeleteeDialog({ id, url, message }) {
                     className={buttonVariants({ variant: "destructive" })}
                 >
                     <Trash className="mr-2 h-3.5 w-3.5 " />
-                    {useTrans("Supprimer")}
+                    {t("delete")}
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>
-                            {useTrans("Vous êtes sure?")}{" "}
-                        </DialogTitle>
+                        <DialogTitle>{t("deleteHeader")} </DialogTitle>
                         <DialogDescription>
-                            {useTrans(message)}
+                            {message}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter className="gap-2 ">
@@ -61,15 +69,16 @@ export default function DeleteeDialog({ id, url, message }) {
                             variant="secondary"
                             onClick={() => setOpen(false)}
                         >
-                            {useTrans("Annuler")}
+                            {t("cancel")}
                         </Button>
                         <Button
                             variant="destructive"
                             onClick={() => handleDelete(id)}
                             className="flex justify-center"
+                            disabled={deleting}
                         >
                             <Trash className="mx-2 h-3.5 w-3.5" />
-                            {useTrans("Supprimer")}
+                            {t("delete")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -82,12 +91,15 @@ export default function DeleteeDialog({ id, url, message }) {
                 className={buttonVariants({ variant: "destructive" })}
             >
                 <Trash className="mr-2 h-3.5 w-3.5 " />
-                {useTrans("Supprimer")}
+                {t("delete")}
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader className="text-left">
-                    <DrawerTitle>{useTrans("Vous êtes sure?")} </DrawerTitle>
-                    <DrawerDescription>{useTrans(message)} </DrawerDescription>
+                    <DrawerTitle>{t("deleteHeader")} </DrawerTitle>
+                    <DrawerDescription>
+                        {" "}
+                        {t("deleteCategorieDescreption")}
+                    </DrawerDescription>
                 </DrawerHeader>
                 <DrawerFooter className="pt-2">
                     <Button
@@ -96,12 +108,13 @@ export default function DeleteeDialog({ id, url, message }) {
                             handleDelete(id);
                         }}
                         className="flex justify-center"
+                        disabled={deleting}
                     >
                         <Trash className="mx-2 h-3.5 w-3.5" />
-                        {useTrans("Supprimer")}
+                        {t("delete")}
                     </Button>
                     <DrawerClose asChild>
-                        <Button variant="outline">{useTrans("Annuler")}</Button>
+                        <Button variant="outline">{t("cancel")}</Button>
                     </DrawerClose>
                 </DrawerFooter>
             </DrawerContent>

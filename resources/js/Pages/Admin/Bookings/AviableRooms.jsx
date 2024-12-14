@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { Head, useForm } from "@inertiajs/react";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
-
 import PageHeading from "@/Components/ui/PageHeading";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import { Button } from "@/Components/ui/button";
-
 import {
     Accordion,
     AccordionContent,
@@ -16,14 +14,15 @@ import {
 } from "@/Components/ui/accordion";
 import FormInput from "@/Components/Admin/Shared/FormInput";
 import { Separator } from "@/Components/ui/separator";
-import { useTrans } from "@/Hooks/useTrans";
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { Badge } from "@/Components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export default function AviableRooms({ rooms, bookingData, services }) {
     const [count, setCount] = useState(0);
-    const { data, setData, post, errors } = useForm({
+    const { t } = useTranslation("translation", { keyPrefix: "aviableRooms" });
+    const { data, setData, post, errors, processing } = useForm({
         rooms: [],
         consomation: [],
         check_in: bookingData.check_in,
@@ -112,20 +111,14 @@ export default function AviableRooms({ rooms, bookingData, services }) {
 
     return (
         <AdminPanelLayout>
-            <Head>
-                <title>Chambres disponible</title>
-                <meta
-                    name="description"
-                    content="Découvrez les chambres disponibles à l'hôtel Sidi El Noui et faites votre réservation en quelques clics."
-                />
-            </Head>
-            <PageHeading title={useTrans("Chambres disponible")} />
+            <Head title={t("title")} />
+            <PageHeading title={t("title")} />
             <PlaceholderContent>
                 <form onSubmit={submit}>
                     {bookingData.is_company == 1 ? (
                         <div className="flex gap-2 w-full">
                             <FormInput
-                                label="Nom"
+                                label={t("name")}
                                 error={errors.first_name}
                                 type="text"
                                 data={data.first_name}
@@ -133,7 +126,7 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                                 fieldName="first_name"
                             />
                             <FormInput
-                                label="Adresse"
+                                label={t("adress")}
                                 error={errors.adresse}
                                 type="text"
                                 data={data.adresse}
@@ -144,7 +137,7 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                     ) : (
                         <div className="flex gap-2 w-full">
                             <FormInput
-                                label="Nom"
+                                label={t("name")}
                                 error={errors.first_name}
                                 type="text"
                                 data={data.first_name}
@@ -152,7 +145,7 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                                 fieldName="first_name"
                             />
                             <FormInput
-                                label="Prénom"
+                                label={t("lastName")}
                                 error={errors.last_name}
                                 type="text"
                                 data={data.last_name}
@@ -166,7 +159,7 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                         <>
                             <div className="flex gap-2 w-full">
                                 <FormInput
-                                    label="Numéro d'Identification Fiscale"
+                                    label={t("nif")}
                                     error={errors.nif}
                                     type="text"
                                     data={data.nif}
@@ -174,7 +167,7 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                                     fieldName="nif"
                                 />
                                 <FormInput
-                                    label="Numéro d'Identification Statistique"
+                                    label={t("nis")}
                                     error={errors.nis}
                                     type="text"
                                     data={data.nis}
@@ -185,7 +178,7 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                             <Separator />
                             <div className="flex gap-2 w-full">
                                 <FormInput
-                                    label="Numéro  de registre de commerce"
+                                    label={t("nrc")}
                                     error={errors.nrc}
                                     type="text"
                                     data={data.nrc}
@@ -193,7 +186,7 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                                     fieldName="nrc"
                                 />
                                 <FormInput
-                                    label="Numéro d'article"
+                                    label={t("na")}
                                     error={errors.n_article}
                                     type="text"
                                     data={data.n_article}
@@ -205,8 +198,8 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                         </>
                     )}
                     <FormInput
-                        label="Email"
-                        label_descreption="L'email doit être unique pour chaque utilisateur"
+                        label={t("email")}
+                        label_descreption={t("emailDescreption")}
                         error={errors.email}
                         type="email"
                         data={data.email}
@@ -215,8 +208,8 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                     />
                     <Separator />
                     <FormInput
-                        label="N° téléphone"
-                        label_descreption="Le N° téléphone doit être unique pour chaque utilisateur"
+                        label={t("phone")}
+                        label_descreption={t("phoneDescreption")}
                         error={errors.phone}
                         type="text"
                         data={data.phone}
@@ -225,15 +218,15 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                     />
                 </form>
                 <Separator className="my-2" />
-                <InputLabel className="mb-2">
-                    {useTrans("Choisi un ou plusieur chambres à réserver")}
-                </InputLabel>
+                <InputLabel className="mb-2">{t("tableHeader")}</InputLabel>
                 <table className="table-auto border-collapse w-full border">
                     <thead>
-                        <th>{useTrans("Numéro de chambre")}</th>
-                        <th>{useTrans("Type de chambre")}</th>
-                        <th>{useTrans("Prix TTC")} </th>
-                        <th>{useTrans("Caractéristiques")}</th>
+                        <tr>
+                            <th>{t("roomNumber")}</th>
+                            <th>{t("type")}</th>
+                            <th>{t("ttc")} </th>
+                            <th>{t("features")}</th>
+                        </tr>
                     </thead>
                     <tbody>
                         {rooms.map((room) => (
@@ -241,18 +234,20 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                                 key={room.room_number}
                                 onClick={() => handleRooms(room)}
                                 className={cn(
-                                    "hover:bg-gray-200 hover:dark:bg-gray-600 text-center border cursor-pointer",
+                                    "hover:bg-muted text-center border cursor-pointer",
                                     data.rooms.findIndex(
                                         (r) => r.id === room.id
                                     ) !== -1
-                                        ? "bg-muted"
+                                        ? "bg-secondary hover:bg-secondary/90"
                                         : ""
                                 )}
                             >
-                                <td>Chambre N° {room.room_number}</td>
+                                <td>
+                                    {t("roomCode")} {room.room_number}
+                                </td>
                                 <td>{room.type.type_designation}</td>
                                 <td>
-                                    {room.room_price} {useTrans("DA")}
+                                    {room.room_price} {t("da")}
                                 </td>
                                 <td className="flex flex-wrap flex-row p-2 ">
                                     {room.features.map((feature) => (
@@ -268,9 +263,7 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                     </tbody>
                 </table>
                 <Separator className="my-2" />
-                <InputLabel>
-                    {useTrans("Ajouter les consommation de cetter réservation")}
-                </InputLabel>
+                <InputLabel>{t("cunsumptionHeader")}</InputLabel>
                 <Accordion type="multiple" className="">
                     {services.map((service) => (
                         <AccordionItem
@@ -327,34 +320,6 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                             </AccordionContent>
                         </AccordionItem>
                     ))}
-                    {/* <div key={idx}>
-                                                    <Button
-                                                        onClick={() =>
-                                                            decrement(
-                                                                consomation.consumption_id
-                                                            )
-                                                        }
-                                                    >
-                                                        -
-                                                    </Button>
-                                                    {
-                                                        consomation.consomation_name
-                                                    }
-                                                    <span>
-                                                        {getQuantity(
-                                                            consomation.consumption_id
-                                                        )}
-                                                    </span>
-                                                    <Button
-                                                        onClick={() =>
-                                                            increment(
-                                                                consomation.consumption_id
-                                                            )
-                                                        }
-                                                    >
-                                                        +
-                                                    </Button>
-                                                </div> */}
                     <InputError
                         message={errors.consomations?.message}
                         className="mt-2"
@@ -367,8 +332,9 @@ export default function AviableRooms({ rooms, bookingData, services }) {
                         size="sm"
                         type="submit"
                         onClick={submit}
+                        disabled={processing}
                     >
-                        {useTrans("Réserver")}
+                        {t("submit")}
                     </Button>
                 </div>
             </PlaceholderContent>

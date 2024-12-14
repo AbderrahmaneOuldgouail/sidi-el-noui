@@ -34,7 +34,7 @@ class RoleController extends Controller
         $permissions = Permission::all();
         $permissions_actions = permissions_actions::cases();
 
-        return Inertia::render('Admin/Roles/CreateRole', ['permissions' => $permissions, 'permissions_actions' => $permissions_actions]);
+        return Inertia::render('Admin/Roles/RoleForm', ['permissions' => $permissions, 'permissions_actions' => $permissions_actions]);
     }
 
     public function store(Request $request)
@@ -58,7 +58,7 @@ class RoleController extends Controller
         }
         DB::commit();
 
-        return redirect('roles.index')->with('message', ['status' => 'success', 'message' => 'Rôle ajouter avec succès']);
+        return redirect(route('roles.index'))->with('message', ['status' => 'success', 'message' => 'Rôle ajouter avec succès']);
     }
 
     public function edit(string $id, Request $request)
@@ -77,7 +77,7 @@ class RoleController extends Controller
         $permissions_actions = permissions_actions::cases();
         $role = Role::with('permissions')->where('role_id', $id)->first();
 
-        return Inertia::render('Admin/Roles/EditRole', ['role' => $role, 'permissions' => $permissions, 'permissions_actions' => $permissions_actions]);
+        return Inertia::render('Admin/Roles/RoleForm', ['role' => $role, 'permissions' => $permissions, 'permissions_actions' => $permissions_actions]);
     }
 
     public function update(Request $request, string $id)

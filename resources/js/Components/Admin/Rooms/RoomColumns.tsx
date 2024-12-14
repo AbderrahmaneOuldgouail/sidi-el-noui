@@ -8,14 +8,13 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-    DropdownMenuRadioItem,
     DropdownMenuSeparator,
 } from "@/Components/ui/dropdown-menu";
 import { Link, usePage } from "@inertiajs/react";
 import { router } from "@inertiajs/react";
 import { Badge } from "@/Components/ui/badge";
-import { useTrans } from "@/Hooks/useTrans";
 import ColumnHeader from "@/Components/Admin/ColumnHeader";
+import { useTranslation } from "react-i18next";
 
 export type Payment = {
     room_number: string;
@@ -30,23 +29,23 @@ export type Payment = {
 
 export const columns: ColumnDef<Payment>[] = [
     {
-        accessorKey: "Numéro de chambre",
+        accessorKey: "roomNumber",
         cell: ({ row }) => {
             const room = row.original;
             return <span> {room.room_number}</span>;
         },
-        header: ({ column }) => <ColumnHeader title={"Numéro de chambre"} />,
+        header: ({ column }) => <ColumnHeader title={"roomNumber"} />,
     },
     {
-        accessorKey: "Type",
+        accessorKey: "type",
         cell: ({ row }) => {
             const room = row.original;
             return <span> {room.type.type_designation} </span>;
         },
-        header: ({ column }) => <ColumnHeader title={"Type"} />,
+        header: ({ column }) => <ColumnHeader title={"type"} />,
     },
     {
-        accessorKey: "Status",
+        accessorKey: "status",
         cell: ({ row }) => {
             const room = row.original;
             return (
@@ -61,11 +60,11 @@ export const columns: ColumnDef<Payment>[] = [
                 </div>
             );
         },
-        header: ({ column }) => <ColumnHeader title={"Status"} />,
+        header: ({ column }) => <ColumnHeader title={"status"} />,
     },
     {
-        accessorKey: "Prix",
-        header: ({ column }) => <ColumnHeader title={"Prix de chambre"} />,
+        accessorKey: "price",
+        header: ({ column }) => <ColumnHeader title={"price"} />,
         cell: ({ row }) => {
             const formatted = new Intl.NumberFormat("fr-FR", {
                 style: "currency",
@@ -80,6 +79,7 @@ export const columns: ColumnDef<Payment>[] = [
         cell: ({ row }) => {
             const room = row.original;
             const room_permission = usePage().props.room_permission;
+            const { t } = useTranslation("translation", { keyPrefix: "rooms" });
 
             return (
                 <DropdownMenu>
@@ -97,7 +97,7 @@ export const columns: ColumnDef<Payment>[] = [
                                     className="flex w-full"
                                 >
                                     <Eye className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                    {useTrans("Voir")}
+                                    {t("show")}
                                 </Link>
                             </DropdownMenuItem>
                         )}
@@ -108,7 +108,7 @@ export const columns: ColumnDef<Payment>[] = [
                                     className="flex w-full"
                                 >
                                     <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                    {useTrans("Modifier")}
+                                    {t("edit")}
                                 </Link>
                             </DropdownMenuItem>
                         )}
@@ -135,8 +135,8 @@ export const columns: ColumnDef<Payment>[] = [
                                 />
                                 <span className="ml-2 ">
                                     {room.room_status === "hors service"
-                                        ? useTrans("Marqué comme disponible")
-                                        : useTrans("Marqué comme hors service")}
+                                        ? t("aviable")
+                                        : t("inaviable")}
                                 </span>
                             </DropdownMenuItem>
                         )}

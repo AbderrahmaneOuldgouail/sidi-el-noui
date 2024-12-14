@@ -1,18 +1,20 @@
 import React, { useEffect } from "react";
-import { Head, usePage, Link } from "@inertiajs/react";
+import { Head, usePage, router } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
 
 import { useToast } from "@/Components/ui/use-toast";
-import { useTrans } from "@/Hooks/useTrans";
 import ServiceCard from "@/Components/Admin/Services/ServiceCard";
 import { Button } from "@/Components/ui/button";
 import { HandPlatter } from "lucide-react";
 import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
+import { useTranslation } from "react-i18next";
 
 export default function Services({ services, service_permission }) {
     const { toast } = useToast();
+    const [process, setProcess] = React.useState(false);
+    const { t } = useTranslation("translation", { keyPrefix: "services" });
 
     const flash = usePage().props.flash;
 
@@ -22,27 +24,38 @@ export default function Services({ services, service_permission }) {
         }
     }, [flash.message, toast]);
 
-    console.log(services);
-
     return (
         <AdminPanelLayout>
-            <Head title="Services" />
-            <PageHeading title={useTrans("Services")} />
+            <Head title={t("title")} />
+            <PageHeading title={t("title")} />
             <div className="flex justify-end">
                 {service_permission.create && (
-                    <Button variant="secondary">
-                        <Link href={route("services.create")} as="button">
-                            {useTrans("Créer un service")}
-                        </Link>
+                    <Button
+                        variant="secondary"
+                        disabled={process}
+                        onClick={() =>
+                            router.get(
+                                route("services.create"),
+                                {},
+                                {
+                                    onStart: () => {
+                                        setProcess(true);
+                                    },
+                                    onFinish: () => {
+                                        setProcess(false);
+                                    },
+                                }
+                            )
+                        }
+                    >
+                        {t("createBtn")}
                     </Button>
                 )}
             </div>
             <PlaceholderContent>
                 {services.length ? (
                     <>
-                        <div className="font-bold p-4">
-                            {useTrans("List des services")} :
-                        </div>
+                        <div className="font-bold p-4">{t("listHeader")}</div>
                         {services.map((service) => (
                             <div key={service.service_id}>
                                 <ServiceCard service={service} />
@@ -50,10 +63,7 @@ export default function Services({ services, service_permission }) {
                         ))}
                     </>
                 ) : (
-                    <EmptyPage
-                        text="Aucun services pour l'instant, essayez de créer un nouveau"
-                        icon={HandPlatter}
-                    />
+                    <EmptyPage text={t("emptyServices")} icon={HandPlatter} />
                 )}
             </PlaceholderContent>
         </AdminPanelLayout>

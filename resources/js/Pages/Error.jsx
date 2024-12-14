@@ -25,10 +25,10 @@ export default function Error({ status }) {
                 viewBox="0 0 430 430"
             >
                 <g
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-miterlimit="10"
-                    stroke-width="12"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeMiterlimit="10"
+                    strokeWidth="12"
                 >
                     <path
                         stroke="#203d51"

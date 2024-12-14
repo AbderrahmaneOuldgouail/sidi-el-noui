@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Assets;
 use App\Models\Event;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -39,7 +38,7 @@ class EventController extends Controller
         if ($request->user()->cannot('create', Event::class)) {
             return abort(403);
         }
-        return Inertia::render('Admin/Events/CreateEvent');
+        return Inertia::render('Admin/Events/EventForm');
     }
 
     public function store(Request $request)
@@ -90,7 +89,7 @@ class EventController extends Controller
         }
 
         $event = Event::with('assets')->where('event_id', $id)->first();
-        return Inertia::render('Admin/Events/EditEvent', ['event' => $event]);
+        return Inertia::render('Admin/Events/EventForm', ['event' => $event]);
     }
 
     public function update(Request $request)

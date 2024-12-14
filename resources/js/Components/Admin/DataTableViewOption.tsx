@@ -1,8 +1,6 @@
-// import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
-
-import { Button } from "@/Components/ui/button";
+import { buttonVariants } from "@/Components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -11,7 +9,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
+import React from "react";
 
 interface DataTableViewOptionsProps<TData> {
     table: Table<TData>;
@@ -20,22 +19,24 @@ interface DataTableViewOptionsProps<TData> {
 export function DataTableViewOptions<TData>({
     table,
 }: DataTableViewOptionsProps<TData>) {
+    const { t } = useTranslation("translation", {
+        keyPrefix: "components.dataTable.viewOption",
+    });
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button
-                    variant="outline"
-                    size="sm"
-                    className="ml-auto h-8 lg:flex"
-                >
-                    <MixerHorizontalIcon className="mr-2 h-4 w-4" />
-                    {useTrans("Voir")}
-                </Button>
+            <DropdownMenuTrigger
+                className={
+                    buttonVariants({
+                        variant: "outline",
+                        size: "sm",
+                    }) + " ml-auto h-8 lg:flex"
+                }
+            >
+                <MixerHorizontalIcon className="mr-2 h-4 w-4" />
+                {t("show")}
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[150px]">
-                <DropdownMenuLabel>
-                    {useTrans("Basculer les colonnes")}
-                </DropdownMenuLabel>
+            <DropdownMenuContent align="end" className="w-fit">
+                <DropdownMenuLabel>{t("title")}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {table
                     .getAllColumns()
@@ -48,13 +49,12 @@ export function DataTableViewOptions<TData>({
                         return (
                             <DropdownMenuCheckboxItem
                                 key={column.id}
-                                className="capitalize"
                                 checked={column.getIsVisible()}
                                 onCheckedChange={(value) =>
                                     column.toggleVisibility(!!value)
                                 }
                             >
-                                {column.id}
+                                {t(column.id)}
                             </DropdownMenuCheckboxItem>
                         );
                     })}

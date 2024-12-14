@@ -5,7 +5,6 @@ import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
 
-import { useTrans } from "@/Hooks/useTrans";
 import { Button } from "@/Components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -26,6 +25,7 @@ import { ScrollArea } from "@/Components/ui/scroll-area";
 import { useToast } from "@/Components/ui/use-toast";
 import { MessageSquareX } from "lucide-react";
 import InputError from "@/Components/InputError";
+import { useTranslation } from "react-i18next";
 
 export default function messages({ messages, filter }) {
     const [selectedMessage, setSelectedMessage] = useState(0);
@@ -33,8 +33,10 @@ export default function messages({ messages, filter }) {
     const flash = usePage().props.flash;
     const hasUnreadMessages = usePage().props.hasUnreadMessages;
     const permission = usePage().props.auth.permissions.message;
+    const { t } = useTranslation("translation", { keyPrefix: "messages" });
+    const [deleteProgress, setDeleteProgress] = useState(false);
 
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors, processing } = useForm({
         message: "",
         client_email: messages[selectedMessage]?.client_email,
     });
@@ -91,60 +93,109 @@ export default function messages({ messages, filter }) {
             {
                 preserveState: true,
                 preserveScroll: true,
+                nStart: () => {
+                    setDeleteProgress(true);
+                },
+                onFinish: () => {
+                    setDeleteProgress(false);
+                },
             }
         );
     };
 
     const readAll = () => {
-        router.get(route("messages.readAll"));
+        router.get(route("messages.readAll"), {
+            nStart: () => {
+                setDeleteProgress(true);
+            },
+            onFinish: () => {
+                setDeleteProgress(false);
+            },
+        });
     };
     const getUnRead = () => {
         router.get(
             route("messages.index"),
             { filter: "unread" },
-            { preserveState: true, preserveScroll: true }
+            {
+                preserveState: true,
+                preserveScroll: true,
+                nStart: () => {
+                    setDeleteProgress(true);
+                },
+                onFinish: () => {
+                    setDeleteProgress(false);
+                },
+            }
         );
     };
     const getAll = () => {
         router.get(
             route("messages.index"),
             { filter: "all" },
-            { preserveState: true, preserveScroll: true }
+            {
+                preserveState: true,
+                preserveScroll: true,
+                nStart: () => {
+                    setDeleteProgress(true);
+                },
+                onFinish: () => {
+                    setDeleteProgress(false);
+                },
+            }
         );
     };
     const deleteMessage = (id) => {
-        router.delete(route("messages.destroy", id));
+        router.delete(route("messages.destroy", id), {
+            onStart: () => {
+                setDeleteProgress(true);
+            },
+            onFinish: () => {
+                setDeleteProgress(false);
+            },
+        });
     };
     const deleteAll = () => {
-        router.delete(route("messages.destroyAll"));
+        router.delete(route("messages.destroyAll"), {
+            onStart: () => {
+                setDeleteProgress(true);
+            },
+            onFinish: () => {
+                setDeleteProgress(false);
+            },
+        });
     };
     return (
         <AdminPanelLayout>
-            <Head title="Boîte de réception" />
-            <PageHeading title={useTrans("Boîte de réception")} />
+            <Head title={t("title")} />
+            <PageHeading title={t("title")} />
             <div className="flex justify-end mt-2 gap-4">
                 {permission.update && (
                     <Button
-                        disabled={messages.length < 1 || !hasUnreadMessages}
+                        disabled={
+                            messages.length < 1 ||
+                            !hasUnreadMessages ||
+                            deleteProgress
+                        }
                         onClick={() => {
                             readAll();
                         }}
                         variant="ghost"
                         className="font-bold "
                     >
-                        {useTrans("Tout marquer comme lu")}
+                        {t("readAll")}
                     </Button>
                 )}
                 {permission.delete && (
                     <Button
-                        disabled={messages.length < 1}
+                        disabled={messages.length < 1 || deleteProgress}
                         onClick={() => {
                             deleteAll();
                         }}
                         variant="ghost"
                         className="font-bold"
                     >
-                        {useTrans("Supprimer Tous")}
+                        {t("deleteAll")}
                     </Button>
                 )}
             </div>
@@ -161,8 +212,9 @@ export default function messages({ messages, filter }) {
                                 filter != "unread" &&
                                     "bg-accent text-accent-foreground"
                             )}
+                            disabled={deleteProgress}
                         >
-                            {useTrans("Tous")}
+                            {t("all")}
                         </Button>
                         <Button
                             onClick={() => {
@@ -174,8 +226,9 @@ export default function messages({ messages, filter }) {
                                 filter == "unread" &&
                                     "bg-accent text-accent-foreground"
                             )}
+                            disabled={deleteProgress}
                         >
-                            {useTrans("Non lu")}
+                            {t("unread")}
                         </Button>
                         {messages.length > 0 ? (
                             <ScrollArea className="h-96 mt-2">
@@ -203,7 +256,7 @@ export default function messages({ messages, filter }) {
                                                             {message.user
                                                                 ? message.user
                                                                       .first_name
-                                                                : "Utilisateur"}
+                                                                : t("user")}
                                                         </div>
                                                     </div>
                                                     <div className="flex gap-2 items-center">
@@ -244,9 +297,7 @@ export default function messages({ messages, filter }) {
                                                             message.client_email
                                                         }
                                                     >
-                                                        {useTrans(
-                                                            "Reprendre avec votre adresse mail"
-                                                        )}
+                                                        {t("replyToMail")}
                                                     </a>
                                                 </Button>
                                                 {permission.delete && (
@@ -258,8 +309,11 @@ export default function messages({ messages, filter }) {
                                                                 message.message_id
                                                             )
                                                         }
+                                                        disabled={
+                                                            deleteProgress
+                                                        }
                                                     >
-                                                        {useTrans("Supprimer")}
+                                                        {t("delete")}
                                                     </Button>
                                                 )}
                                             </CardFooter>
@@ -270,10 +324,7 @@ export default function messages({ messages, filter }) {
                         ) : (
                             <div className="flex justify-center items-center flex-col h-96 mt-2 ">
                                 <MessageSquareX size={70} />
-                                <div>
-                                    {" "}
-                                    {useTrans("Aucun message a afficher")}{" "}
-                                </div>
+                                <div> {t("noMessage")} </div>
                             </div>
                         )}
                     </ResizablePanel>
@@ -283,14 +334,14 @@ export default function messages({ messages, filter }) {
                             <div className="font-bold">
                                 {messages[selectedMessage]?.user
                                     ? messages[selectedMessage].user.first_name
-                                    : "Utilisateur"}
+                                    : t("user")}
                                 <div className="text-sm text-muted-foreground">
                                     {messages[selectedMessage]?.subject
                                         ? messages[selectedMessage].subject
-                                        : "Sujet"}
+                                        : t("subject")}
                                 </div>
                                 <div className="text-sm text-muted-foreground">
-                                    {useTrans("Repondre à :")}{" "}
+                                    {t("replyTo")}{" "}
                                     {messages[selectedMessage]?.client_email
                                         ? messages[selectedMessage]
                                               ?.client_email
@@ -310,14 +361,14 @@ export default function messages({ messages, filter }) {
                             <div className="py-2">
                                 {messages[selectedMessage]?.message
                                     ? messages[selectedMessage].message
-                                    : "Message"}
+                                    : t("message")}
                             </div>
                         </ScrollArea>
                         <div className="absolute bottom-0 w-full">
                             <Separator className="my-2 " />
                             <form onSubmit={submit}>
                                 <Textarea
-                                    placeholder="Répendre à CLIENT"
+                                    placeholder={t("placeholder")}
                                     value={data.message}
                                     onChange={(e) =>
                                         setData("message", e.target.value)
@@ -331,9 +382,11 @@ export default function messages({ messages, filter }) {
                                     <Button
                                         variant="secondary"
                                         size="sm"
-                                        disabled={messages.length < 1}
+                                        disabled={
+                                            messages.length < 1 || processing
+                                        }
                                     >
-                                        {useTrans("Envoyé")}
+                                        {t("submit")}
                                     </Button>
                                 </div>
                             </form>

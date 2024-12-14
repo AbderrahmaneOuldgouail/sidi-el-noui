@@ -14,10 +14,12 @@ import CategoryDialog from "@/Components/Admin/Rooms/CategoryDialog";
 import CategoryCard from "@/Components/Admin/Rooms/CategoryCard";
 import { Hotel } from "lucide-react";
 import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
+import { useTranslation } from "react-i18next";
 
 export default function Features({ features, categorys }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
+    const { t } = useTranslation("translation", { keyPrefix: "features" });
 
     useEffect(() => {
         if (flash.message) {
@@ -27,8 +29,8 @@ export default function Features({ features, categorys }) {
 
     return (
         <AdminPanelLayout>
-            <Head title="Rooms" />
-            <PageHeading title={useTrans("Caractéristiques")} />
+            <Head title={t("title")} />
+            <PageHeading title={t("title")} />
             <Tabs defaultValue="features" className="mt-2">
                 <TabsList className="w-full flex justify-start rtl:justify-end bg-transparent border-b-2 rounded-none	">
                     <div className="flex justify-start">
@@ -36,7 +38,7 @@ export default function Features({ features, categorys }) {
                             value="features"
                             className="mr-2 font-bold text-xl rounded-none bg-transparent data-[state=active]:bg-transparent data-[state=active]:border-b-2 border-primary data-[state=active]:text-primary shadow-none "
                         >
-                            {useTrans("Caractéristiques")}
+                            {t("title")}
                         </TabsTrigger>
                         <TabsTrigger
                             onClick={() =>
@@ -46,7 +48,7 @@ export default function Features({ features, categorys }) {
                             value="category"
                             className="mr-2 font-bold text-xl rounded-none bg-transparent shadow-none data-[state=active]:bg-transparent data-[state=active]:border-b-2 border-primary data-[state=active]:text-primary "
                         >
-                            {useTrans("Catégories")}
+                            {t("categorie")}
                         </TabsTrigger>
                     </div>
                 </TabsList>
@@ -62,10 +64,7 @@ export default function Features({ features, categorys }) {
                                 selection={true}
                             />
                         ) : (
-                            <EmptyPage
-                                icon={Hotel}
-                                text="Aucun caractéristiques pour l'instant, essayez de créer une nouvelle"
-                            />
+                            <EmptyPage icon={Hotel} text={t("emptyFeatures")} />
                         )}
                     </PlaceholderContent>
                 </TabsContent>
@@ -78,13 +77,16 @@ export default function Features({ features, categorys }) {
                             <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                                 {categorys &&
                                     categorys.map((category) => (
-                                        <CategoryCard category={category} />
+                                        <CategoryCard
+                                            category={category}
+                                            key={category.categorie_id}
+                                        />
                                     ))}
                             </div>
                         ) : (
                             <EmptyPage
                                 icon={Hotel}
-                                text="Aucun categories pour l'instant, essayez de créer une nouvelle"
+                                text={t("emptyCategories")}
                             />
                         )}
                     </PlaceholderContent>

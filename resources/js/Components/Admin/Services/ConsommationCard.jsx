@@ -7,14 +7,13 @@ import {
 import React from "react";
 import DeleteeDialog from "../Shared/DeleteDialog";
 import ConsommationDialog from "./ConsommationDialog";
-import { useTrans } from "@/Hooks/useTrans";
 import { Badge } from "@/Components/ui/badge";
+import { useTranslation } from "react-i18next";
 
-
-export default function ConsommationCard({
-    consumption,
-    services,
-}) {
+export default function ConsommationCard({ consumption, services }) {
+    const { t } = useTranslation("translation", {
+        keyPrefix: "consumptions.card",
+    });
     return (
         <Card className="w-full">
             <CardHeader className="flex-row items-center justify-between">
@@ -26,22 +25,19 @@ export default function ConsommationCard({
                         {consumption.service.service_name}{" "}
                     </Badge>
                 </div>
-                
             </CardHeader>
             <CardContent>
-                {useTrans("Prix Unitaire:")}{" "}
+                {t("price")}{" "}
                 <span className="text-destructive font-bold">
                     {consumption.consumption_price}
                 </span>{" "}
-                {useTrans("DA")}
+                {t("da")}
             </CardContent>
             <CardFooter className="gap-4">
                 <DeleteeDialog
                     id={consumption.consumption_id}
                     url={"consumptions.destroy"}
-                    message={
-                        "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette consommation"
-                    }
+                    message={t("deleteConsumptionDescreption")}
                 />
                 <ConsommationDialog
                     consumption={consumption}

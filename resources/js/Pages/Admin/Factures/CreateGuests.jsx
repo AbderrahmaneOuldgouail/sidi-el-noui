@@ -5,13 +5,14 @@ import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import InputLabel from "@/Components/InputLabel";
 import { Input } from "@/Components/ui/input";
 import InputError from "@/Components/InputError";
-import { useTrans } from "@/Hooks/useTrans";
 import { Separator } from "@/Components/ui/separator";
 import { Button } from "@/Components/ui/button";
 import { CircleMinus, CirclePlus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function CreateGuests({ facture_id }) {
-    const { data, setData, post, errors } = useForm({
+    const { t } = useTranslation("translation", { keyPrefix: "guests" });
+    const { data, setData, post, errors, processing } = useForm({
         facture_id: facture_id,
         guests_list: [{ guest_first_name: "", guest_last_name: "" }],
     });
@@ -45,22 +46,22 @@ export default function CreateGuests({ facture_id }) {
 
     return (
         <AdminPanelLayout>
-            <Head title="List d'invités" />
+            <Head title={t("title")} />
             <div className="flex justify-end">
                 <Button variant="secondary" size="sm" onClick={addGuest}>
                     <CirclePlus className="mr-2 rtl:ml-2" />
-                    {useTrans("Ajouter")}
+                    {t("addBtn")}
                 </Button>
             </div>
             <PlaceholderContent>
                 <form onSubmit={submit}>
                     {data.guests_list.map((guest, index) => (
-                        <>
+                        <React.Fragment key={index}>
                             <div className="md:flex my-4 gap-4">
                                 <div className="w-full md:w-1/2 bg-muted p-4 shadow">
                                     <InputLabel
                                         htmlFor={`guest_first_name_${index}`}
-                                        value={useTrans("Prénom")}
+                                        value={t("firstName")}
                                     />
                                     <Input
                                         className="mt-2 w-full bg-card"
@@ -77,7 +78,7 @@ export default function CreateGuests({ facture_id }) {
                                     <InputError
                                         message={
                                             errors[
-                                                `guests_list.${index}.first_name`
+                                                `guests_list.${index}.guest_first_name`
                                             ]
                                         }
                                         className="mt-2"
@@ -86,7 +87,7 @@ export default function CreateGuests({ facture_id }) {
                                 <div className="w-full md:w-1/2 bg-muted p-4 shadow">
                                     <InputLabel
                                         htmlFor={`guest_last_name_${index}`}
-                                        value={useTrans("Nom")}
+                                        value={t("lastName")}
                                     />
                                     <Input
                                         className="mt-2 w-full bg-card"
@@ -117,11 +118,15 @@ export default function CreateGuests({ facture_id }) {
                                 </div>
                             </div>
                             <Separator className="my-4" />
-                        </>
+                        </React.Fragment>
                     ))}
                     <div className="flex justify-end">
-                        <Button variant="secondary" size="sm">
-                            {useTrans("Enregistrer")}
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            disabled={processing}
+                        >
+                            {t("saveBtn")}
                         </Button>
                     </div>
                 </form>

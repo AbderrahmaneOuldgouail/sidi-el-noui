@@ -29,9 +29,9 @@ import {
 } from "@/Components/ui/dropdown-menu";
 import { router, usePage } from "@inertiajs/react";
 import { Badge } from "@/Components/ui/badge";
-import { useTrans } from "@/Hooks/useTrans";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import ColumnHeader from "@/Components/Admin/ColumnHeader";
+import { useTranslation } from "react-i18next";
 
 export type Users = {
     id: number;
@@ -47,7 +47,7 @@ export type Users = {
 
 export const userColumns: ColumnDef<Users>[] = [
     {
-        accessorKey: "Utilisateurs",
+        accessorKey: "utilisateurs",
         cell: ({ row }) => {
             const user = row.original;
             return (
@@ -56,39 +56,39 @@ export const userColumns: ColumnDef<Users>[] = [
                 </div>
             );
         },
-        header: () => <ColumnHeader title={"Utilisateurs"} />,
+        header: () => <ColumnHeader title={"utilisateurs"} />,
     },
     {
-        accessorKey: "Email",
+        accessorKey: "email",
         cell: ({ row }) => {
             const user = row.original;
             return <span>{user.email} </span>;
         },
-        header: () => <ColumnHeader title={"Email"} />,
+        header: () => <ColumnHeader title={"email"} />,
     },
     {
-        accessorKey: "N° téléphone",
+        accessorKey: "phone",
         cell: ({ row }) => {
             const user = row.original;
             return <span>{user.phone} </span>;
         },
-        header: () => <ColumnHeader title={"N° téléphone"} />,
+        header: () => <ColumnHeader title={"phone"} />,
     },
     {
-        accessorKey: "Rôle",
+        accessorKey: "role",
         cell: ({ row }) => {
             const user = row.original;
             return <Badge>{user.role.role_name} </Badge>;
         },
-        header: () => <ColumnHeader title={"Rôle"} />,
+        header: () => <ColumnHeader title={"role"} />,
     },
     {
-        accessorKey: "date d'inscription",
+        accessorKey: "createdAtDate",
         cell: ({ row }) => {
             const user = row.original;
             return <span> {user.created_at.split("T")[0]}</span>;
         },
-        header: () => <ColumnHeader title={"date d'inscription"} />,
+        header: () => <ColumnHeader title={"createdAtDate"} />,
     },
     {
         id: "actions",
@@ -97,8 +97,9 @@ export const userColumns: ColumnDef<Users>[] = [
             const { width } = useWindowDimensions();
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
+            const [processing, setProcessing] = React.useState(false);
             const employ_permission = usePage().props.auth.permissions.employ;
-            const roles = usePage().props.roles;
+            const { t } = useTranslation("translation", { keyPrefix: "users" });
 
             const handleDelete = () => {
                 router.delete(route("users.destroy", user.id), {
@@ -108,12 +109,18 @@ export const userColumns: ColumnDef<Users>[] = [
                         setopen(false);
                         setIsOpen(false);
                     },
+                    onStart: () => {
+                        setProcessing(true);
+                    },
+                    onFinish: () => {
+                        setProcessing(false);
+                    },
                 });
             };
 
             return (
                 <DropdownMenu
-                    open={isopen ? true : open}
+                    open={isopen || open}
                     onOpenChange={() => setopen(!open)}
                 >
                     <DropdownMenuTrigger asChild>
@@ -126,12 +133,24 @@ export const userColumns: ColumnDef<Users>[] = [
                         {employ_permission.update && (
                             <DropdownMenuItem
                                 className="cursor-pointer flex"
+                                disabled={processing}
                                 onClick={() =>
-                                    router.get(route("users.edit", user.id))
+                                    router.get(
+                                        route("users.edit", user.id),
+                                        {},
+                                        {
+                                            onStart: () => {
+                                                setProcessing(true);
+                                            },
+                                            onFinish: () => {
+                                                setProcessing(false);
+                                            },
+                                        }
+                                    )
                                 }
                             >
                                 <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                <span>{useTrans("Modifier")}</span>
+                                <span>{t("edit")}</span>
                             </DropdownMenuItem>
                         )}
                         {employ_permission.delete && (
@@ -139,7 +158,7 @@ export const userColumns: ColumnDef<Users>[] = [
                                 {width >= 767 ? (
                                     <Dialog
                                         open={isopen}
-                                        onOpenChange={() => setIsOpen(!isopen)}
+                                        onOpenChange={setIsOpen}
                                     >
                                         <DialogTrigger
                                             className={buttonVariants({
@@ -147,19 +166,15 @@ export const userColumns: ColumnDef<Users>[] = [
                                             })}
                                         >
                                             <Trash className="mr-2 h-3.5 w-3.5 " />
-                                            {useTrans("Supprimer")}
+                                            {t("delete")}
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
                                                 <DialogTitle>
-                                                    {useTrans(
-                                                        "Vous êtes sure?"
-                                                    )}{" "}
+                                                    {t("dialogHeader")}{" "}
                                                 </DialogTitle>
                                                 <DialogDescription>
-                                                    {useTrans(
-                                                        "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce utilisateur"
-                                                    )}
+                                                    {t("dialogDescreption")}
                                                 </DialogDescription>
                                             </DialogHeader>
                                             <DialogFooter className="gap-2 ">
@@ -169,17 +184,18 @@ export const userColumns: ColumnDef<Users>[] = [
                                                         setIsOpen(false)
                                                     }
                                                 >
-                                                    {useTrans("Annuler")}
+                                                    {t("cancel")}
                                                 </Button>
                                                 <Button
                                                     variant="destructive"
                                                     onClick={() =>
                                                         handleDelete()
                                                     }
+                                                    disabled={processing}
                                                     className="flex justify-center"
                                                 >
                                                     <Trash className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Supprimer")}
+                                                    {t("delete")}
                                                 </Button>
                                             </DialogFooter>
                                         </DialogContent>
@@ -187,7 +203,7 @@ export const userColumns: ColumnDef<Users>[] = [
                                 ) : (
                                     <Drawer
                                         open={isopen}
-                                        onOpenChange={() => etIsOpen(!isopen)}
+                                        onOpenChange={setIsOpen}
                                     >
                                         <DrawerTrigger
                                             className={buttonVariants({
@@ -195,19 +211,15 @@ export const userColumns: ColumnDef<Users>[] = [
                                             })}
                                         >
                                             <Trash className="mr-2 h-3.5 w-3.5 " />
-                                            {useTrans("Supprimer")}
+                                            {t("delete")}
                                         </DrawerTrigger>
                                         <DrawerContent>
                                             <DrawerHeader className="text-left">
                                                 <DrawerTitle>
-                                                    {useTrans(
-                                                        "Vous êtes sure?"
-                                                    )}{" "}
+                                                    {t("dialogHeader")}{" "}
                                                 </DrawerTitle>
                                                 <DrawerDescription>
-                                                    {useTrans(
-                                                        "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce utilisateur"
-                                                    )}{" "}
+                                                    {t("dialogDescreption")}{" "}
                                                 </DrawerDescription>
                                             </DrawerHeader>
                                             <DrawerFooter className="pt-2">
@@ -216,14 +228,15 @@ export const userColumns: ColumnDef<Users>[] = [
                                                     onClick={() =>
                                                         handleDelete()
                                                     }
+                                                    disabled={processing}
                                                     className="flex justify-center"
                                                 >
                                                     <Trash className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Supprimer")}
+                                                    {t("delete")}
                                                 </Button>
                                                 <DrawerClose asChild>
                                                     <Button variant="outline">
-                                                        {useTrans("Annuler")}
+                                                        {t("cancel")}
                                                     </Button>
                                                 </DrawerClose>
                                             </DrawerFooter>

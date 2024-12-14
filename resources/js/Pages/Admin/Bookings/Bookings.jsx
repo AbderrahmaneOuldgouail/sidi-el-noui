@@ -2,21 +2,20 @@ import React, { useEffect } from "react";
 import { Head, router } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
 import { useToast } from "@/Components/ui/use-toast";
-
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
-
 import PageHeading from "@/Components/ui/PageHeading";
 import { DataTable } from "@/Components/Admin/DataTable";
 import { historiqueColumns } from "@/Components/Admin/Bookings/HistoriqueColumns";
-import { useTrans } from "@/Hooks/useTrans";
 import { ToastAction } from "@/Components/ui/toast";
 import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
 import { BookmarkCheck } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function Bookings({ bookings }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
+    const { t } = useTranslation("translation", { keyPrefix: "bookings" });
 
     useEffect(() => {
         if (flash.message) {
@@ -30,12 +29,12 @@ export default function Bookings({ bookings }) {
                       description: flash.message?.message,
                       action: flash.message?.action != null && (
                           <ToastAction
-                              altText="Paramètre de facturation"
+                              altText={t("toastMessage")}
                               onClick={() =>
                                   router.get(route("factures.index"))
                               }
                           >
-                              Paramètre de facturation
+                              {t("toastMessage")}
                           </ToastAction>
                       ),
                   });
@@ -43,8 +42,8 @@ export default function Bookings({ bookings }) {
     }, [flash.message, toast]);
     return (
         <AdminPanelLayout>
-            <Head title="Réservations" />
-            <PageHeading title={useTrans("Réservations")} />
+            <Head title={t("title")} />
+            <PageHeading title={t("title")} />
             <PlaceholderContent>
                 {bookings.data.length ? (
                     <DataTable
@@ -54,10 +53,7 @@ export default function Bookings({ bookings }) {
                         selection={false}
                     />
                 ) : (
-                    <EmptyPage
-                        text="Aucun réservations pour l'instant, essayez de créer une nouvelle"
-                        icon={BookmarkCheck}
-                    />
+                    <EmptyPage text={t("emptyPage")} icon={BookmarkCheck} />
                 )}
             </PlaceholderContent>
         </AdminPanelLayout>

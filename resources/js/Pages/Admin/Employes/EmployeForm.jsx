@@ -10,7 +10,6 @@ import InputLabel from "@/Components/InputLabel";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Input } from "@/Components/ui/input";
 import InputError from "@/Components/InputError";
-import { useTrans } from "@/Hooks/useTrans";
 import { Separator } from "@/Components/ui/separator";
 import {
     Command,
@@ -25,33 +24,34 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/Components/ui/popover";
+import { useTranslation } from "react-i18next";
 
-export default function EditEmployes({ roles, user }) {
+export default function EmployeForm({ roles, user }) {
+    const { t } = useTranslation("translation", { keyPrefix: "users.form" });
     const [open, setOpen] = useState(false);
-    const { data, setData, put, errors } = useForm({
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        phone: user.phone,
-        role: user.role.role_name,
+    const { data, setData, post, put, errors, processing } = useForm({
+        first_name: user ? user.first_name : "",
+        last_name: user ? user.last_name : "",
+        email: user ? user.email : "",
+        phone: user ? user.phone : "",
+        role: user ? user.role.role_name : "",
     });
+
     const submit = (e) => {
         e.preventDefault();
-        put(route("users.update", user.id));
+        user ? put(route("users.update", user.id)) : post(route("users.store"));
     };
     return (
         <AdminPanelLayout>
-            <Head title="Modifier un employé" />
-            <PageHeading
-                title={useTrans("Modification les infromation d'employé")}
-            />
+            <Head title={user ? t("editTitle") : t("createTitle")} />
+            <PageHeading title={user ? t("editTitle") : t("createTitle")} />
             <PlaceholderContent>
                 <form onSubmit={submit}>
                     <div className="md:flex my-4 gap-4">
                         <div className="w-full md:w-1/2 bg-muted p-4 shadow">
                             <InputLabel
                                 htmlFor="first_name"
-                                value={useTrans("Prénom d'employé")}
+                                value={t("firstName")}
                             />
                             <Input
                                 className="mt-2 w-full bg-card"
@@ -70,7 +70,7 @@ export default function EditEmployes({ roles, user }) {
                         <div className="w-full md:w-1/2 bg-muted p-4 shadow">
                             <InputLabel
                                 htmlFor="last_name"
-                                value={useTrans("Nom d'employé")}
+                                value={t("lastName")}
                             />
                             <Input
                                 className="mt-2 w-full bg-card"
@@ -89,21 +89,13 @@ export default function EditEmployes({ roles, user }) {
                     <Separator />
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
-                            <InputLabel
-                                htmlFor="email"
-                                value={useTrans("Email d'employé")}
-                            />
+                            <InputLabel htmlFor="email" value={t("email")} />
                             <LabelDescreption>
-                                {useTrans(
-                                    "L'email doit être unique pour chaque utilisateur"
-                                )}
+                                {t("emailDescreption")}
                             </LabelDescreption>
                         </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
-                            <InputLabel
-                                htmlFor="email"
-                                value={useTrans("Email d'employé")}
-                            />
+                            <InputLabel htmlFor="email" value={t("email")} />
                             <Input
                                 className="mt-2 w-full bg-card"
                                 id="email"
@@ -121,21 +113,13 @@ export default function EditEmployes({ roles, user }) {
                     <Separator />
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
-                            <InputLabel
-                                htmlFor="phone"
-                                value={useTrans("N° téléphone d'employé")}
-                            />
+                            <InputLabel htmlFor="phone" value={t("phone")} />
                             <LabelDescreption>
-                                {useTrans(
-                                    "Le N° téléphone doit être unique pour chaque utilisateur"
-                                )}
+                                {t("phoneDescreption")}
                             </LabelDescreption>
                         </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
-                            <InputLabel
-                                htmlFor="phone"
-                                value={useTrans("N° téléphone d'employé")}
-                            />
+                            <InputLabel htmlFor="phone" value={t("phone")} />
                             <Input
                                 className="mt-2 w-full bg-card"
                                 id="phone"
@@ -153,18 +137,15 @@ export default function EditEmployes({ roles, user }) {
                     <Separator />
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
-                            <InputLabel
-                                htmlFor="role"
-                                value={useTrans("Rôle")}
-                            />
+                            <InputLabel htmlFor="role" value={t("role")} />
                             <LabelDescreption>
-                                {useTrans("Assigne un role au ce employé")}
+                                {t("roleDescreption")}
                             </LabelDescreption>
                         </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                             <InputLabel
                                 htmlFor="role"
-                                value={useTrans("Rôle")}
+                                value={t("role")}
                                 className="mb-2"
                             />
                             <Popover open={open} onOpenChange={setOpen}>
@@ -177,27 +158,23 @@ export default function EditEmployes({ roles, user }) {
                                     >
                                         {data.role
                                             ? data.role
-                                            : useTrans(
-                                                  "Sélectionner un role..."
-                                              )}
+                                            : t("rolePlaceholder")}
                                         <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent>
                                     <Command>
                                         <CommandInput
-                                            placeholder={useTrans(
-                                                "Chercher un role..."
-                                            )}
+                                            placeholder={t("rolePlaceholder2")}
                                         />
                                         <CommandList>
                                             <CommandEmpty>
-                                                Auccun role
+                                                {t("emptyRole")}
                                             </CommandEmpty>
                                             <CommandGroup>
                                                 {roles.map((role) => (
                                                     <CommandItem
-                                                        key={role.id}
+                                                        key={role.role_id}
                                                         value={role.role_name}
                                                         onSelect={() => {
                                                             setData(
@@ -236,8 +213,9 @@ export default function EditEmployes({ roles, user }) {
                             type="submit"
                             className="mt-2 w-1/4"
                             variant="secondary"
+                            disabled={processing}
                         >
-                            {useTrans("Enregistrer")}
+                            {user ? t("editBtn") : t("createBtn")}
                         </Button>
                     </div>
                 </form>

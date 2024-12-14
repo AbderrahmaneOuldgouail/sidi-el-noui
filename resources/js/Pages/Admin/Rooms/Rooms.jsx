@@ -12,18 +12,20 @@ import MobilePagination from "@/Components/Admin/Shared/MobilePagination";
 import { useTrans } from "@/Hooks/useTrans";
 import { Hotel } from "lucide-react";
 import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
+import { useTranslation } from "react-i18next";
 
 export default function Rooms({ rooms, room_permission }) {
     const { width } = useWindowDimensions();
+    const {t} = useTranslation("translation", {keyPrefix: "rooms"})
 
     return (
         <AdminPanelLayout>
-            <Head title="Rooms" />
-            <PageHeading title={useTrans("Chambres", "Rooms")} />
+            <Head title={t("title")} />
+            <PageHeading title={t("title")} />
             {room_permission.create && (
                 <TopButton
                     href={route("rooms.create")}
-                    text={useTrans("Crée un chambre")}
+                    text={t("topButton")}
                 />
             )}
             <PlaceholderContent>
@@ -48,7 +50,7 @@ export default function Rooms({ rooms, room_permission }) {
                 ) : (
                     <EmptyPage
                         icon={Hotel}
-                        text="Aucun chambres pour l'instant, essayez de créer une nouvelle"
+                        text={t("emptyText")}
                     />
                 )}
             </PlaceholderContent>

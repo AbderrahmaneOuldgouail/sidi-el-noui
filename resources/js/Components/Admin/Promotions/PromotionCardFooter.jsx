@@ -1,18 +1,22 @@
 import React from "react";
-import { Link, router, usePage } from "@inertiajs/react";
-import { useTrans } from "@/Hooks/useTrans";
-import { Button, buttonVariants } from "@/Components/ui/button";
+import { router, usePage } from "@inertiajs/react";
+import { Button } from "@/Components/ui/button";
 import DeleteeDialog from "../Shared/DeleteDialog";
 import { Switch } from "@/Components/ui/switch";
+import { useTranslation } from "react-i18next";
 
 export default function EventCardFooter({ promotion }) {
+    const { t } = useTranslation("translation", {
+        keyPrefix: "promotions.card",
+    });
     const promotion_permission = usePage().props.promotion_permission;
+    const [processing, setProcessing] = React.useState(false);
 
     return (
         <div className="flex items-center justify-between gap-4 w-full">
             <div>
-                {useTrans("Créé par")} :{" "}
-                <span >
+                {t("createdBy")} :{" "}
+                <span>
                     {promotion.user.first_name} {promotion.user.last_name}
                 </span>
             </div>
@@ -21,6 +25,7 @@ export default function EventCardFooter({ promotion }) {
                     <div>
                         <Switch
                             checked={promotion.is_active}
+                            disabled={processing}
                             onCheckedChange={() => {
                                 router.post(
                                     route("promotions.toggle.activity"),
@@ -30,38 +35,52 @@ export default function EventCardFooter({ promotion }) {
                                     {
                                         preserveState: true,
                                         preserveScroll: true,
+                                        onStart: () => {
+                                            setProcessing(true);
+                                        },
+                                        onFinish: () => {
+                                            setProcessing(false);
+                                        },
                                     }
                                 );
                             }}
                         />
                         <span className="ml-2 ">
-                            {promotion.is_active
-                                ? useTrans("Désactivé la promotin")
-                                : useTrans("Activé la promotion")}
+                            {promotion.is_active ? t("swichOn") : t("swichOff")}
                         </span>
                     </div>
                 )}
                 <div className="flex items-center gap-4">
                     {promotion_permission.update && (
-                        <Button variant="secondary">
-                            <Link
-                                href={route(
-                                    "promotions.edit",
-                                    promotion.promotion_id
-                                )}
-                                as="button"
-                            >
-                                {useTrans("Modifier")}
-                            </Link>
+                        <Button
+                            variant="secondary"
+                            disabled={processing}
+                            onClick={() =>
+                                router.get(
+                                    route(
+                                        "promotions.edit",
+                                        promotion.promotion_id
+                                    ),
+                                    {},
+                                    {
+                                        onStart: () => {
+                                            setProcessing(true);
+                                        },
+                                        onFinish: () => {
+                                            setProcessing(false);
+                                        },
+                                    }
+                                )
+                            }
+                        >
+                            {t("edit")}
                         </Button>
                     )}
                     {promotion_permission.delete && (
                         <DeleteeDialog
                             id={promotion.promotion_id}
                             url={"promotions.destroy"}
-                            message={
-                                "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette promotion"
-                            }
+                            message={t("deletePromotionDescreption")}
                         />
                     )}
                 </div>

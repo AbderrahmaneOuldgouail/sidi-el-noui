@@ -2,19 +2,19 @@ import React from "react";
 import { Head } from "@inertiajs/react";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
-
 import PageHeading from "@/Components/ui/PageHeading";
 import { DataTable } from "@/Components/Admin/DataTable";
 import { historiqueColumns } from "@/Components/Admin/Bookings/HistoriqueColumns";
-import { useTrans } from "@/Hooks/useTrans";
 import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
 import { Archive } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function Historique({ bookings }) {
+    const { t } = useTranslation();
     return (
         <AdminPanelLayout>
-            <Head title="Historique" />
-            <PageHeading title={useTrans("Historique")} />
+            <Head title={t("bookings.historicalTitle")} />
+            <PageHeading title={t("bookings.historicalTitle")} />
             <PlaceholderContent>
                 {bookings.data.length ? (
                     <DataTable
@@ -24,10 +24,7 @@ export default function Historique({ bookings }) {
                         selection={false}
                     />
                 ) : (
-                    <EmptyPage
-                        text="Aucun réservations pour l'instant, essayez de créer une nouvelle"
-                        icon={Archive}
-                    />
+                    <EmptyPage text={t("bookings.emptyPage")} icon={Archive} />
                 )}
             </PlaceholderContent>
         </AdminPanelLayout>

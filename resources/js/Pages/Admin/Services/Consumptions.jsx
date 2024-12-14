@@ -9,10 +9,12 @@ import ConsommationCard from "@/Components/Admin/Services/ConsommationCard";
 import { useTrans } from "@/Hooks/useTrans";
 import { HandPlatter } from "lucide-react";
 import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
+import { useTranslation } from "react-i18next";
 
 export default function Consumptions({ consumptions, services }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
+    const { t } = useTranslation("translation", { keyPrefix: "consumptions" });
 
     useEffect(() => {
         if (flash.message) {
@@ -22,17 +24,15 @@ export default function Consumptions({ consumptions, services }) {
 
     return (
         <AdminPanelLayout>
-            <Head title="Consumptions" />
-            <PageHeading title={useTrans("Consommations")} />
+            <Head title={t("title")} />
+            <PageHeading title={t("title")} />
             <div className="flex justify-end">
                 <ConsommationDialog services={services} mode="create" />
             </div>
             <PlaceholderContent>
                 {consumptions.length ? (
                     <>
-                        <div className="font-bold p-4">
-                            {useTrans("List des consommations")} :
-                        </div>
+                        <div className="font-bold p-4">{t("listHeader")}</div>
                         <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                             {consumptions.map((consumption) => (
                                 <div key={consumption.consumption_id}>
@@ -46,7 +46,7 @@ export default function Consumptions({ consumptions, services }) {
                     </>
                 ) : (
                     <EmptyPage
-                        text="Aucun consommations pour l'instant, essayez de créer un nouveau"
+                        text={t("emptyConsumptions")}
                         icon={HandPlatter}
                     />
                 )}

@@ -1,18 +1,19 @@
 import { Head, Link } from "@inertiajs/react";
-import CreateRoomForm from "@/Components/Admin/Rooms/CreateRoomForm";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import PageHeading from "@/Components/ui/PageHeading";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
+import RoomForm from "@/Components/Admin/Rooms/RoomForm";
 
 export default function RoomCreate({ types, categorys }) {
+    const { t } = useTranslation();
     return (
         <AdminPanelLayout>
-            <Head title="Rooms crete" />
-            <PageHeading title={useTrans("Chambre Création")} />
+            <Head title={t("rooms.createTitle")} />
+            <PageHeading title={t("rooms.createTitle")} />
             <PlaceholderContent>
                 <div className="max-w-7xl mx-auto ">
-                    <CreateRoomForm types={types} categorys={categorys} />
+                    <RoomForm types={types} categorys={categorys} />
                 </div>
             </PlaceholderContent>
         </AdminPanelLayout>

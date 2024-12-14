@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
+import React from "react";
+import { Head, useForm } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
 import { Button } from "@/Components/ui/button";
-import { useTrans } from "@/Hooks/useTrans";
 import InputLabel from "@/Components/InputLabel";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Input } from "@/Components/ui/input";
 import InputError from "@/Components/InputError";
 import { Separator } from "@/Components/ui/separator";
 import { Checkbox } from "@/Components/ui/checkbox";
+import { useTranslation } from "react-i18next";
 
-export default function EditRole({ role, permissions, permissions_actions }) {
-    const { data, setData, put, errors } = useForm({
-        role_name: role.role_name,
-        prevName: role.role_name,
-        permissions: role.permissions.map(
-            (permission) => permission.permission_id
-        ),
+export default function RoleForm({ role, permissions, permissions_actions }) {
+    const { t } = useTranslation("translation", { keyPrefix: "roles.form" });
+    const { data, setData, put, post, errors, processing } = useForm({
+        role_name: role ? role.role_name : "",
+        prevName: role ? role.role_name : "",
+        permissions: role
+            ? role.permissions.map((permission) => permission.permission_id)
+            : [],
     });
 
     const handleCheckboxChange = (id) => {
@@ -77,32 +78,26 @@ export default function EditRole({ role, permissions, permissions_actions }) {
 
     const submit = (e) => {
         e.preventDefault();
-        put(route("roles.update", role.role_id));
+        role
+            ? put(route("roles.update", role.role_id))
+            : post(route("roles.store"));
     };
-
-    console.log(errors);
 
     return (
         <AdminPanelLayout>
-            <Head title="Rools" />
-            <PageHeading title="Roles" />
+            <Head title={role ? t("editTitle") : t("createTitle")} />
+            <PageHeading title={role ? t("editTitle") : t("createTitle")} />
             <PlaceholderContent>
                 <form onSubmit={submit}>
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
-                            <InputLabel
-                                htmlFor="role_name"
-                                value={useTrans("Nom de rôle")}
-                            />
+                            <InputLabel htmlFor="role_name" value={t("name")} />
                             <LabelDescreption>
-                                {useTrans("Le nom de rôle doit être unique")}
+                                {t("nameDescreption")}
                             </LabelDescreption>
                         </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
-                            <InputLabel
-                                htmlFor="role_name"
-                                value={useTrans("Nom de rôle")}
-                            />
+                            <InputLabel htmlFor="role_name" value={t("name")} />
                             <Input
                                 className="mt-2 w-full bg-card"
                                 id="role_name"
@@ -120,11 +115,9 @@ export default function EditRole({ role, permissions, permissions_actions }) {
                     <Separator />
                     <div className="md:flex my-4 ">
                         <div className="w-full md:w-1/3 pb-2">
-                            <InputLabel
-                                value={useTrans("List des permissions")}
-                            />
+                            <InputLabel value={t("promotions")} />
                             <LabelDescreption>
-                                {useTrans("Assigner des permissions a ce rôle")}
+                                {t("promotionsDescreption")}
                             </LabelDescreption>
                         </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
@@ -132,7 +125,7 @@ export default function EditRole({ role, permissions, permissions_actions }) {
                                 <InputLabel
                                     htmlFor="permissions"
                                     className="w-1/4 "
-                                    value={useTrans("List des permissions")}
+                                    value={t("promotions")}
                                 />
                                 <div className="flex justify-between w-3/4">
                                     {permissions_actions.map((action) => (
@@ -209,7 +202,11 @@ export default function EditRole({ role, permissions, permissions_actions }) {
                                                                 permission.permission_name.split(
                                                                     "-"
                                                                 )[0] && (
-                                                                <div>
+                                                                <div
+                                                                    key={
+                                                                        perm.permission_id
+                                                                    }
+                                                                >
                                                                     <Checkbox
                                                                         id={
                                                                             perm.permission_id
@@ -239,8 +236,9 @@ export default function EditRole({ role, permissions, permissions_actions }) {
                             type="submit"
                             className="mt-2 w-1/4"
                             variant="secondary"
+                            disabled={processing}
                         >
-                            {useTrans("Modifier")}
+                            {role ? t("editBtn") : t("createBtn")}
                         </Button>
                     </div>
                 </form>

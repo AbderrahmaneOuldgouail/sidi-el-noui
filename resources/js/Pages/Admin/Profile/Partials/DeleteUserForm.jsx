@@ -1,12 +1,7 @@
 import { useRef, useState } from "react";
-import DangerButton from "@/Components/DangerButton";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import Modal from "@/Components/Modal";
-import SecondaryButton from "@/Components/SecondaryButton";
-import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
-import { useTrans } from "@/Hooks/useTrans";
 import { Input } from "@/Components/ui/input";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import {
@@ -30,12 +25,15 @@ import {
 } from "@/Components/ui/dialog";
 import { Button, buttonVariants } from "@/Components/ui/button";
 import { Trash } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function DeleteUserForm({ className = "" }) {
     const [open, setOpen] = useState(false);
-
     const passwordInput = useRef();
     const { width } = useWindowDimensions();
+    const { t } = useTranslation("translation", {
+        keyPrefix: "profile.section3",
+    });
 
     const {
         data,
@@ -50,7 +48,7 @@ export default function DeleteUserForm({ className = "" }) {
     const deleteUser = (e) => {
         e.preventDefault();
 
-        destroy(route("profile.destroy"), {
+        destroy(route("admin.profile.destroy"), {
             preserveScroll: true,
             onSuccess: () => {
                 setOpen(false);
@@ -65,13 +63,11 @@ export default function DeleteUserForm({ className = "" }) {
         <section className={`space-y-6 ${className}`}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    {useTrans("Supprimer le compte")}
+                    {t("title")}
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    {useTrans(
-                        "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver."
-                    )}
+                    {t("subtitle")}
                 </p>
             </header>
 
@@ -81,19 +77,13 @@ export default function DeleteUserForm({ className = "" }) {
                         className={buttonVariants({ variant: "destructive" })}
                     >
                         <Trash className="mr-2 h-3.5 w-3.5 " />
-                        {useTrans("Supprimer le compte")}
+                        {t("submit")}
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>
-                                {useTrans(
-                                    "Etes-vous sûr de vouloir supprimer votre compte ?"
-                                )}{" "}
-                            </DialogTitle>
+                            <DialogTitle>{t("dialogTitle")} </DialogTitle>
                             <DialogDescription>
-                                {useTrans(
-                                    "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte."
-                                )}{" "}
+                                {t("dialogDescreption")}{" "}
                             </DialogDescription>
                         </DialogHeader>
                         <form onSubmit={deleteUser}>
@@ -115,7 +105,7 @@ export default function DeleteUserForm({ className = "" }) {
                                     }
                                     className="mt-1 "
                                     isFocused
-                                    placeholder="Password"
+                                    placeholder={t("placeholder")}
                                 />
 
                                 <InputError
@@ -128,7 +118,7 @@ export default function DeleteUserForm({ className = "" }) {
                                     variant="outline"
                                     onClick={() => setOpen(false)}
                                 >
-                                    {useTrans("Annuler")}
+                                    {t("cancel")}
                                 </Button>
                                 <Button
                                     variant="destructive"
@@ -138,7 +128,7 @@ export default function DeleteUserForm({ className = "" }) {
                                     className="flex justify-center"
                                 >
                                     <Trash className="mx-2 h-3.5 w-3.5" />
-                                    {useTrans("Supprimer")}
+                                    {t("delete")}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -150,19 +140,13 @@ export default function DeleteUserForm({ className = "" }) {
                         className={buttonVariants({ variant: "destructive" })}
                     >
                         <Trash className="mr-2 h-3.5 w-3.5 " />
-                        {useTrans("Supprimer le compte")}
+                        {t("submit")}
                     </DrawerTrigger>
                     <DrawerContent>
                         <DrawerHeader className="text-left">
-                            <DrawerTitle>
-                                {useTrans(
-                                    "Etes-vous sûr de vouloir supprimer votre compte ?"
-                                )}{" "}
-                            </DrawerTitle>
+                            <DrawerTitle>{t("dialogTitle")} </DrawerTitle>
                             <DrawerDescription>
-                                {useTrans(
-                                    "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte."
-                                )}{" "}
+                                {t("dialogDescreption")}{" "}
                             </DrawerDescription>
                         </DrawerHeader>
                         <form onSubmit={deleteUser} className="">
@@ -184,7 +168,7 @@ export default function DeleteUserForm({ className = "" }) {
                                     }
                                     className="mt-1"
                                     isFocused
-                                    placeholder="Password"
+                                    placeholder={t("placeholder")}
                                 />
 
                                 <InputError
@@ -202,11 +186,11 @@ export default function DeleteUserForm({ className = "" }) {
                                     className="flex justify-center"
                                 >
                                     <Trash className="mx-2 h-3.5 w-3.5" />
-                                    {useTrans("Supprimer")}
+                                    {t("delete")}
                                 </Button>
                                 <DrawerClose asChild>
                                     <Button variant="outline">
-                                        {useTrans("Annuler")}
+                                        {t("cancel")}
                                     </Button>
                                 </DrawerClose>
                             </DrawerFooter>

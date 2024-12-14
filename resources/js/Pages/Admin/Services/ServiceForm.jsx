@@ -12,28 +12,22 @@ import InputError from "@/Components/InputError";
 import MyFileUploader from "@/Components/Admin/Shared/MyFileUploader";
 import { ImagesViewer } from "@/Components/Admin/Shared/ImagesViewer";
 import { Input } from "@/Components/ui/input";
-import { useTrans } from "@/Hooks/useTrans";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Separator } from "@/Components/ui/separator";
-import { DatePickerWithRange } from "@/Components/ui/DatePickerWithRange";
-import DbImageViewer from "@/Components/Admin/Shared/DbImageViewer";
 import { Editor } from "@/Components/Admin/Shared/Editor";
+import { useTranslation } from "react-i18next";
+import DbImageViewer from "@/Components/Admin/Shared/DbImageViewer";
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
-export default function EditPromotion({ promotion }) {
+export default function ServiceForm({ service }) {
+    const { t } = useTranslation("translation", { keyPrefix: "services.form" });
     const [importedFiles, setImportedFiles] = useState([]);
-    const [dbImages, setDbImages] = useState(promotion.assets);
-    const [dateRange, setDateRange] = useState({
-        from: new Date(promotion.promo_start_date),
-        to: new Date(promotion.promo_end_date),
-    });
+    const [dbImages, setDbImages] = useState(service?.assets);
 
-    const { data, setData, post, errors, clearErrors } = useForm({
-        promo_value: promotion.promo_value,
-        promo_descreption: promotion.promo_descreption,
-        promo_start_date: promotion.promo_start_date,
-        promo_end_date: promotion.promo_end_date,
+    const { data, setData, post, errors, clearErrors, processing } = useForm({
+        service_name: service ? service?.service_name : "",
+        service_descreption: service ? service?.service_descreption : "",
         assets: [],
         remouved_assets: [],
         required_assets: false,
@@ -56,11 +50,6 @@ export default function EditPromotion({ promotion }) {
 
             return updatedDbImages;
         });
-    };
-
-    const submit = (e) => {
-        e.preventDefault();
-        post(route("promotions.update", promotion.promotion_id));
     };
 
     const handleFiles = (files) => {
@@ -92,91 +81,44 @@ export default function EditPromotion({ promotion }) {
         clearErrors(`assets.${index}`);
     };
 
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        const formattedDate = `${year}-${month}-${day}`;
-        return formattedDate;
-    }
-
-    const handleDateChange = (range) => {
-        if (range?.from) {
-            const formattedDate = formatDate(range.from);
-            setData("promo_start_date", formattedDate);
-        }
-        if (range?.to) {
-            const formattedDate = formatDate(range.to);
-            setData("promo_end_date", formattedDate);
-        }
-        setDateRange(range);
+    const submit = (e) => {
+        e.preventDefault();
+        service
+            ? post(route("services.update", service.service_id))
+            : post(route("services.store"));
     };
     return (
         <AdminPanelLayout>
-            <Head title="Service" />
-            <PageHeading title={useTrans("Modification de promotion")} />
+            <Head title={service ? t("editTitle") : t("createTitle")} />
+            <PageHeading title={service ? t("editTitle") : t("createTitle")} />
             <PlaceholderContent>
                 <form onSubmit={submit}>
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
                             <InputLabel
-                                htmlFor="Date de promotion"
-                                value={useTrans("Date de promotion")}
+                                htmlFor="service_name"
+                                value={t("name")}
                             />
                             <LabelDescreption>
-                                {useTrans(
-                                    "Entrer la date ou le range de date de début et fin de promotion"
-                                )}
+                                {t("nameDescreption")}
                             </LabelDescreption>
                         </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                             <InputLabel
-                                htmlFor="Date de promotion"
-                                value={useTrans("Date de promotion")}
-                            />
-                            <DatePickerWithRange
-                                date={dateRange}
-                                onDateChange={handleDateChange}
-                            />
-                            <InputError
-                                message={errors.promo_start_date}
-                                className="mt-2"
-                            />
-                            <InputError
-                                message={errors.promo_end_date}
-                                className="mt-2"
-                            />
-                        </div>
-                    </div>
-                    <Separator />
-                    <div className="md:flex my-4">
-                        <div className="w-full md:w-1/3 pb-2">
-                            <InputLabel
-                                htmlFor="promo_value"
-                                value={useTrans("Valeur de promotion")}
-                            />
-                            <LabelDescreption>
-                                {useTrans(
-                                    "Entrer la Valeur de promotion en DA"
-                                )}
-                            </LabelDescreption>
-                        </div>
-                        <div className="w-full md:w-2/3 bg-muted p-4 shadow">
-                            <InputLabel
-                                htmlFor="promo_value"
-                                value={useTrans("Valeur de promotion")}
+                                htmlFor="service_name"
+                                value={t("name")}
                             />
                             <Input
                                 className="mt-2 w-full bg-card"
-                                id="promo_value"
-                                value={data.promo_value}
+                                placeholder={t("placeholder")}
+                                id="service_name"
+                                value={data.service_name}
                                 onChange={(e) =>
-                                    setData("promo_value", e.target.value)
+                                    setData("service_name", e.target.value)
                                 }
                             />
                             <InputError
-                                message={errors.promo_value}
+                                message={errors.service_name}
                                 className="mt-2"
                             />
                         </div>
@@ -185,29 +127,27 @@ export default function EditPromotion({ promotion }) {
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
                             <InputLabel
-                                htmlFor="promo_descreption"
-                                value={useTrans("Description")}
+                                htmlFor="service_descreption"
+                                value={t("descreption")}
                             />
                             <LabelDescreption>
-                                {useTrans(
-                                    "Vous pouvez ajouter des titre ou bien des style au desciption"
-                                )}
+                                {t("descreptionDescreption")}
                             </LabelDescreption>
                         </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                             <InputLabel
-                                htmlFor="promo_descreption"
-                                value={useTrans("Description")}
+                                htmlFor="service_descreption"
+                                value={t("descreption")}
                             />
                             <Editor
                                 autofocus={false}
-                                content={data.promo_descreption}
+                                content={data.service_descreption}
                                 onContentChange={({ html }) => {
-                                    setData("promo_descreption", html);
+                                    setData("service_descreption", html);
                                 }}
                             />
                             <InputError
-                                message={errors.promo_descreption}
+                                message={errors.service_descreption}
                                 className="mt-2"
                             />
                         </div>
@@ -218,18 +158,16 @@ export default function EditPromotion({ promotion }) {
                             <div className="w-full md:w-1/3 pb-2">
                                 <InputLabel
                                     htmlFor="assets"
-                                    value={useTrans("Photos")}
+                                    value={t("assets")}
                                 />
                                 <LabelDescreption>
-                                    {useTrans(
-                                        "Ajouter des photos au promotion (ne dépasse pas 10 photos par promotion)"
-                                    )}
+                                    {t("assetsDescreption")}
                                 </LabelDescreption>
                             </div>
                             <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                                 <InputLabel
                                     htmlFor="assets"
-                                    value={useTrans("Photos")}
+                                    value={t("assets")}
                                 />
                                 <FileUploader
                                     handleChange={handleFiles}
@@ -251,18 +189,21 @@ export default function EditPromotion({ promotion }) {
                             errors={errors}
                             deleteImage={deleteImage}
                         />
-                        <DbImageViewer
-                            assets={dbImages}
-                            remouveAsset={remouveAsset}
-                        />
+                        {service && (
+                            <DbImageViewer
+                                assets={dbImages}
+                                remouveAsset={remouveAsset}
+                            />
+                        )}
                     </div>
                     <div className="flex justify-end">
                         <Button
                             type="submit"
                             className="mt-2 w-1/4"
                             variant="secondary"
+                            disabled={processing}
                         >
-                            {useTrans("Enregistrer")}
+                            {service ? t("editBtn") : t("createBtn")}
                         </Button>
                     </div>
                 </form>

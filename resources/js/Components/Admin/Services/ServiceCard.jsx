@@ -20,13 +20,15 @@ import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import { buttonVariants } from "@/Components/ui/button";
 import { ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export default function ServiceCard({ service }) {
     const { width } = useWindowDimensions();
+    const {t} = useTranslation("translation", {keyPrefix: "services.card"})
     const [isOpen, setIsOpen] = useState(false);
     return (
         <Card
-            className="transition-transform ease-in-out duration-700 relative my-6 "
+            className="transition-all ease-in-out duration-700 relative my-6 "
             key={service.service_id}
         >
             <div className="w-full">
@@ -50,16 +52,16 @@ export default function ServiceCard({ service }) {
                 </Carousel>
             </div>
             <div className="flex flex-col justify-between w-full">
-                <CardHeader className="text-lg font-bold text-xl flex flex-row items-start justify-between">
+                <CardHeader className="font-bold text-xl flex flex-row items-start justify-between">
                     <div>{service.service_name}</div>
                     <div className="m-0">
                         {service.availability ? (
                             <Badge variant="success">
-                                {useTrans("Disponible")}
+                                {t("aviable")}
                             </Badge>
                         ) : (
                             <Badge variant="danger">
-                                {useTrans("Indisponible")}
+                                {t("inaviable")}
                             </Badge>
                         )}
                     </div>
@@ -68,7 +70,7 @@ export default function ServiceCard({ service }) {
                     <>
                         <CardContent>
                             <div className="font-bold text-lg my-4">
-                                {useTrans("Description")} :{" "}
+                                {t("descreption")} :{" "}
                             </div>
                             <Editor
                                 autofocus={false}

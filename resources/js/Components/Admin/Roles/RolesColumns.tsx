@@ -27,11 +27,11 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { Link, router, usePage } from "@inertiajs/react";
-import { DataTableColumnHeader } from "../DataTableColumnHeader";
-import { useTrans } from "@/Hooks/useTrans";
+import { router, usePage } from "@inertiajs/react";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import ColumnHeader from "@/Components/Admin/ColumnHeader";
+import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
 
 export type Permission = {
     permission_id: number;
@@ -46,30 +46,34 @@ export type Role = {
 
 export const roleColumns: ColumnDef<Role>[] = [
     {
-        accessorKey: "Rôle",
+        accessorKey: "role",
         cell: ({ row }) => {
             const role = row.original;
             return <div>{role.role_name}</div>;
         },
-        header: ({ column }) => (
-            // <DataTableColumnHeader column={column} title={useTrans("Rôle")} />
-            <ColumnHeader title={"Rôle"} />
-        ),
+        header: ({ column }) => <ColumnHeader title={"role"} />,
     },
     {
-        accessorKey: "Permissions",
+        accessorKey: "permissions",
         cell: ({ row }) => {
             const role = row.original;
             const { width } = useWindowDimensions();
             const [isopen, setIsOpen] = React.useState(false);
+            const { t } = useTranslation("translation", {
+                keyPrefix: "roles",
+            });
+
             return width >= 767 ? (
                 <Dialog open={isopen} onOpenChange={setIsOpen}>
-                    <DialogTrigger>{useTrans("Permissions")}</DialogTrigger>
+                    <DialogTrigger
+                        className={cn(buttonVariants({ variant: "outline" }))}
+                    >
+                        {t("permissions")}
+                    </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle className="text-left rtl:text-right rtl:pr-4">
-                                {useTrans("List des permissions pour le rôle")}{" "}
-                                {role.role_name}
+                                {t("dialogHeader")} {role.role_name}
                             </DialogTitle>
                             <DialogDescription className="flex flex-wrap">
                                 {role.permissions.map((permission) => (
@@ -87,19 +91,18 @@ export const roleColumns: ColumnDef<Role>[] = [
                                 variant="outline"
                                 onClick={() => setIsOpen(false)}
                             >
-                                {useTrans("Annuler")}
+                                {t("cancel")}
                             </Button>
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
             ) : (
                 <Drawer open={isopen} onOpenChange={setIsOpen}>
-                    <DrawerTrigger>{useTrans("Permissions")} </DrawerTrigger>
+                    <DrawerTrigger>{t("permissions")} </DrawerTrigger>
                     <DrawerContent>
                         <DrawerHeader>
                             <DrawerTitle className="text-left rtl:text-right">
-                                {useTrans("List des permissions pour le rôle")}{" "}
-                                {role.role_name}{" "}
+                                {t("dialogHeader")} {role.role_name}{" "}
                             </DrawerTitle>
                             <DrawerDescription className="flex flex-wrap">
                                 {role.permissions.map((permission) => (
@@ -114,22 +117,14 @@ export const roleColumns: ColumnDef<Role>[] = [
                         </DrawerHeader>
                         <DrawerFooter className="pt-2">
                             <DrawerClose asChild>
-                                <Button variant="outline">
-                                    {useTrans("Annuler")}
-                                </Button>
+                                <Button variant="outline">{t("cancel")}</Button>
                             </DrawerClose>
                         </DrawerFooter>
                     </DrawerContent>
                 </Drawer>
             );
         },
-        header: ({ column }) => (
-            // <DataTableColumnHeader
-            //     column={column}
-            //     title={useTrans("Permissions")}
-            // />
-            <ColumnHeader title={"Permissions"} />
-        ),
+        header: ({ column }) => <ColumnHeader title={"permissions"} />,
     },
     {
         id: "actions",
@@ -138,7 +133,11 @@ export const roleColumns: ColumnDef<Role>[] = [
             const { width } = useWindowDimensions();
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
+            const [processing, setProcessing] = React.useState(false);
             const role_permission = usePage().props.role_permission;
+            const { t } = useTranslation("translation", {
+                keyPrefix: "roles",
+            });
 
             const handleDelete = () => {
                 router.delete(route("roles.destroy", role.role_id), {
@@ -147,6 +146,12 @@ export const roleColumns: ColumnDef<Role>[] = [
                     onSuccess: () => {
                         setopen(false);
                         setIsOpen(false);
+                    },
+                    onStart: () => {
+                        setProcessing(true);
+                    },
+                    onFinish: () => {
+                        setProcessing(false);
                     },
                 });
             };
@@ -163,14 +168,32 @@ export const roleColumns: ColumnDef<Role>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         {role_permission.update && (
-                            <DropdownMenuItem>
-                                <Link
-                                    href={route("roles.edit", role.role_id)}
-                                    className="flex"
+                            <DropdownMenuItem className="p-0">
+                                <Button
+                                    onClick={() =>
+                                        router.get(
+                                            route("roles.edit", role.role_id),
+                                            {},
+                                            {
+                                                onSuccess: () => {
+                                                    setopen(false);
+                                                    setIsOpen(false);
+                                                },
+                                                onStart: () => {
+                                                    setProcessing(true);
+                                                },
+                                                onFinish: () => {
+                                                    setProcessing(false);
+                                                },
+                                            }
+                                        )
+                                    }
+                                    disabled={processing}
+                                    variant="ghost"
                                 >
                                     <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                    <span>{useTrans("Modifier")}</span>
-                                </Link>
+                                    <span>{t("edit")}</span>
+                                </Button>
                             </DropdownMenuItem>
                         )}
                         {role_permission.delete && (
@@ -186,19 +209,15 @@ export const roleColumns: ColumnDef<Role>[] = [
                                             })}
                                         >
                                             <Trash className="mr-2 h-3.5 w-3.5 " />
-                                            {useTrans("Supprimer")}
+                                            {t("delete")}
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
                                                 <DialogTitle>
-                                                    {useTrans(
-                                                        "Vous êtes sure?"
-                                                    )}{" "}
+                                                    {t("deleteDialogHeader")}{" "}
                                                 </DialogTitle>
                                                 <DialogDescription>
-                                                    {useTrans(
-                                                        "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions"
-                                                    )}
+                                                    {t("deleteRoleDescreption")}
                                                 </DialogDescription>
                                             </DialogHeader>
                                             <DialogFooter className="gap-2 ">
@@ -208,17 +227,18 @@ export const roleColumns: ColumnDef<Role>[] = [
                                                         setIsOpen(false)
                                                     }
                                                 >
-                                                    {useTrans("Annuler")}
+                                                    {t("cancel")}
                                                 </Button>
                                                 <Button
                                                     variant="destructive"
                                                     onClick={() =>
                                                         handleDelete()
                                                     }
+                                                    disabled={processing}
                                                     className="flex justify-center"
                                                 >
                                                     <Trash className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Supprimer")}
+                                                    {t("delete")}
                                                 </Button>
                                             </DialogFooter>
                                         </DialogContent>
@@ -234,19 +254,15 @@ export const roleColumns: ColumnDef<Role>[] = [
                                             })}
                                         >
                                             <Trash className="mr-2 h-3.5 w-3.5 " />
-                                            {useTrans("Supprimer")}
+                                            {t("delete")}
                                         </DrawerTrigger>
                                         <DrawerContent>
                                             <DrawerHeader className="text-left">
                                                 <DrawerTitle>
-                                                    {useTrans(
-                                                        "Vous êtes sure?"
-                                                    )}{" "}
+                                                    {t("deleteDialogHeader")}{" "}
                                                 </DrawerTitle>
                                                 <DrawerDescription>
-                                                    {useTrans(
-                                                        "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions"
-                                                    )}{" "}
+                                                    {t("deleteRoleDescreption")}{" "}
                                                 </DrawerDescription>
                                             </DrawerHeader>
                                             <DrawerFooter className="pt-2">
@@ -255,14 +271,15 @@ export const roleColumns: ColumnDef<Role>[] = [
                                                     onClick={() =>
                                                         handleDelete()
                                                     }
+                                                    disabled={processing}
                                                     className="flex justify-center"
                                                 >
                                                     <Trash className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Supprimer")}
+                                                    {t("delete")}
                                                 </Button>
                                                 <DrawerClose asChild>
                                                     <Button variant="outline">
-                                                        {useTrans("Annuler")}
+                                                        {t("cancel")}
                                                     </Button>
                                                 </DrawerClose>
                                             </DrawerFooter>

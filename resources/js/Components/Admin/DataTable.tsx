@@ -19,7 +19,6 @@ import {
     TableRow,
 } from "@/Components/ui/table";
 import React from "react";
-import { Input } from "@/Components/ui/input";
 import {
     Tooltip,
     TooltipContent,
@@ -29,19 +28,20 @@ import {
 import { DataTablePagination } from "./DataTablePagination";
 import { DataTableViewOptions } from "./DataTableViewOption";
 import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 interface DataTableProps<TData, TValue, TPaginate, TSelection> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     paginate: TPaginate;
-    selection: TSelection
+    selection: TSelection;
 }
 
 export function DataTable<TData, TValue, TPaginate, TSelection>({
     columns,
     data,
     paginate,
-    selection
+    selection,
 }: DataTableProps<TData, TValue, TPaginate, TSelection>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] =
@@ -49,6 +49,9 @@ export function DataTable<TData, TValue, TPaginate, TSelection>({
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
+    const { t } = useTranslation("translation", {
+        keyPrefix: "components.dataTable",
+    });
 
     const table = useReactTable({
         data,
@@ -69,35 +72,8 @@ export function DataTable<TData, TValue, TPaginate, TSelection>({
     });
     return (
         <div>
-            <div className="flex items-center justify-between py-4">
-                {/* <Input
-                    className="max-w-sm"
-                    value={
-                        (table
-                            .getColumn("room_number")
-                            ?.getFilterValue() as string) ?? ""
-                    }
-                    onChange={(event) =>
-                        table
-                            .getColumn("room_number")
-                            ?.setFilterValue(event.target.value)
-                    }
-                    placeholder="Filter chambres..."
-                /> */}
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <DataTableViewOptions table={table} />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            <p>
-                                {useTrans(
-                                    "Contrôler la visibilité des colonnes"
-                                )}
-                            </p>
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
+            <div className=" w-full py-4">
+                <DataTableViewOptions table={table} />
             </div>
             <div className="rounded-md border">
                 <Table>
@@ -157,7 +133,7 @@ export function DataTable<TData, TValue, TPaginate, TSelection>({
                     {table.getFilteredSelectedRowModel().rows.length}
                     {" / "}
                     {table.getFilteredRowModel().rows.length}{" "}
-                    {useTrans("ligne(s) sélectionné(s).")}
+                    {t("viewOption.selection")}
                 </div>
             )}
             {paginate && <DataTablePagination tabledata={paginate} />}

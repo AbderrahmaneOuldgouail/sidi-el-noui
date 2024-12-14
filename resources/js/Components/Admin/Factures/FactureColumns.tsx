@@ -19,6 +19,7 @@ import {
 import { Link } from "@inertiajs/react";
 import { useTrans } from "@/Hooks/useTrans";
 import ColumnHeader from "@/Components/Admin/ColumnHeader";
+import { useTranslation } from "react-i18next";
 
 export type Facture = {
     facture_id: number;
@@ -37,15 +38,15 @@ export type Facture = {
 
 export const factureColumns: ColumnDef<Facture>[] = [
     {
-        accessorKey: "N° Facture",
+        accessorKey: "billNumber",
         cell: ({ row }) => {
             const facture = row.original;
             return <span>{facture.facture_id} </span>;
         },
-        header: () => <ColumnHeader title={"N° Facture"} />,
+        header: () => <ColumnHeader title={"billNumber"} />,
     },
     {
-        accessorKey: "Client",
+        accessorKey: "client",
         cell: ({ row }) => {
             const facture = row.original;
             return (
@@ -55,18 +56,18 @@ export const factureColumns: ColumnDef<Facture>[] = [
                 </div>
             );
         },
-        header: () => <ColumnHeader title={"Client"} />,
+        header: () => <ColumnHeader title={"client"} />,
     },
     {
-        accessorKey: "Email",
+        accessorKey: "email",
         cell: ({ row }) => {
             const facture = row.original;
             return <span>{facture.booking.user.email} </span>;
         },
-        header: () => <ColumnHeader title={"Email"} />,
+        header: () => <ColumnHeader title={"email"} />,
     },
     {
-        accessorKey: "Date",
+        accessorKey: "date",
         cell: ({ row }) => {
             function formatDate(dateString) {
                 const date = new Date(dateString);
@@ -80,13 +81,13 @@ export const factureColumns: ColumnDef<Facture>[] = [
             const facture = row.original;
             return <span>{formatDate(facture.created_at)} </span>;
         },
-        header: () => <ColumnHeader title={"Date"} />,
+        header: () => <ColumnHeader title={"date"} />,
     },
     {
         id: "actions",
         cell: ({ row }) => {
             const facture = row.original;
-            console.log(facture.booking.user.role.role_name);
+            const {t} = useTranslation("translation", {keyPrefix: "factures.table"})
 
             return (
                 <DropdownMenu>
@@ -106,7 +107,7 @@ export const factureColumns: ColumnDef<Facture>[] = [
                                     className="flex w-full"
                                 >
                                     <ClipboardList className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                    {useTrans("List des invités")}
+                                    {t("guestsList")}
                                 </Link>
                             </DropdownMenuItem>
                         )}
@@ -119,7 +120,7 @@ export const factureColumns: ColumnDef<Facture>[] = [
                                 className="flex w-full"
                             >
                                 <Eye className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                {useTrans("Voir")}
+                                {t("show")}
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
@@ -130,7 +131,7 @@ export const factureColumns: ColumnDef<Facture>[] = [
                                 className="flex w-full"
                             >
                                 <Send className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                <span>{useTrans("Email")}</span>
+                                <span>{t("email")}</span>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
@@ -142,7 +143,7 @@ export const factureColumns: ColumnDef<Facture>[] = [
                                 className="flex w-full"
                             >
                                 <Printer className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                <span>{useTrans("Imprimer")}</span>
+                                <span>{t("print")}</span>
                             </a>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
@@ -153,7 +154,7 @@ export const factureColumns: ColumnDef<Facture>[] = [
                                 className="flex w-full"
                             >
                                 <FileDown className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                <span>{useTrans("Télécharger")}</span>
+                                <span>{t("download")}</span>
                             </a>
                         </DropdownMenuItem>
                     </DropdownMenuContent>

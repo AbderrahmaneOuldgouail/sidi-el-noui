@@ -28,9 +28,10 @@ import { Editor } from "@/Components/Admin/Shared/Editor";
 import { buttonVariants } from "@/Components/ui/button";
 import { Badge } from "@/Components/ui/badge";
 import { Separator } from "@/Components/ui/separator";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function Booking({ booking }) {
+    const { t } = useTranslation("translation", { keyPrefix: "booking" });
     const totalPrice = () => {
         let total = 0;
         let days =
@@ -46,12 +47,14 @@ export default function Booking({ booking }) {
 
         return total;
     };
+
+    console.log(t("title"))
     return (
         <AdminPanelLayout>
-            <Head title="Réservation" />
+            <Head title={t("title")} />
             <PageHeading
                 title={
-                    useTrans("Réservation de ") +
+                    t("pageHeading") +
                     booking.user.first_name +
                     " " +
                     booking.user.last_name
@@ -61,7 +64,7 @@ export default function Booking({ booking }) {
                 <div className="md:w-1/3 w-full flex md:flex-col gap-2">
                     <Card>
                         <CardHeader className="font-bold p-2">
-                            {useTrans("Informations de client")}
+                            {t("clientCard")}
                         </CardHeader>
                         <CardContent className="flex justify-between p-2">
                             <div>
@@ -78,11 +81,11 @@ export default function Booking({ booking }) {
                     </Card>
                     <Card>
                         <CardHeader className="font-bold p-2">
-                            {useTrans("Détails de réservation")}
+                            {t("bookingCard")}
                         </CardHeader>
                         <CardContent className="flex justify-between p-2">
                             <div>
-                                <div>{useTrans("Arrivée")} </div>
+                                <div>{t("checkIn")} </div>
                                 <div className="font-bold">
                                     {booking.check_in}
                                 </div>
@@ -91,7 +94,7 @@ export default function Booking({ booking }) {
                                 </div>
                             </div>
                             <div>
-                                <div>{useTrans("Départ")} </div>
+                                <div>{t("checkOut")} </div>
                                 <div className="font-bold">
                                     {booking.check_out}
                                 </div>
@@ -102,46 +105,46 @@ export default function Booking({ booking }) {
                         </CardContent>
                         <CardContent className="flex justify-between p-2">
                             <div>
-                                <div>{useTrans("Nombre des personnes")} </div>
+                                <div>{t("guestNumber")} </div>
                                 <span className="font-bold">
                                     {booking.guest_number}{" "}
                                 </span>
                                 <span className="text-sm text-muted-foreground">
-                                    {useTrans("adult")}
+                                    {t("adult")}
                                 </span>
                                 {booking.kids_number ? (
                                     <>
                                         {" "}
-                                        {useTrans("et")}{" "}
+                                        {t("and")}{" "}
                                         <span className="font-bold">
                                             {booking.kids_number}{" "}
                                         </span>
                                         <span className="text-sm text-muted-foreground">
-                                            {useTrans("bébés")}
+                                            {t("babys")}
                                         </span>
                                     </>
                                 ) : null}
                             </div>
                         </CardContent>
                         <CardFooter className="flex-col items-start p-2">
-                            <div>{useTrans("Durée de séjour")} </div>
+                            <div>{t("")} </div>
                             <div className="font-bold">
                                 {(new Date(booking.check_out) -
                                     new Date(booking.check_in)) /
                                     (1000 * 60 * 60 * 24)}{" "}
-                                {useTrans("nuit")}
+                                {t("nights")}
                             </div>
                         </CardFooter>
                     </Card>
                     <Card>
                         <CardHeader className="p-2 font-bold">
-                            {useTrans("Récapitulatif du montant")}
+                            {t("pricingCard")}
                         </CardHeader>
                         <CardContent className="p-2 text-3xl font-bold text-primary">
-                            {totalPrice(booking.rooms)} {useTrans("DA")}
+                            {totalPrice(booking.rooms)} {t("da")}
                         </CardContent>
                         <CardFooter className="p-2 text-muted-foreground">
-                            {useTrans("Ce prix avec tout tax inclus")}
+                            {t("pricingFooter")}
                         </CardFooter>
                     </Card>
                 </div>
@@ -150,16 +153,14 @@ export default function Booking({ booking }) {
                         <Card className="w-full mb-2" key={room.room_number}>
                             <CardHeader className="font-bold p-2 pb-0 flex-row items-center justify-between">
                                 <div>
-                                    {useTrans("Chambre")}{" "}
-                                    {room.type.type_designation}{" "}
-                                    {useTrans("avec")} {room.beeds_number}{" "}
-                                    {useTrans("lits")}
+                                    {t("rooms")} {room.type.type_designation}{" "}
+                                    {t("with")} {room.beeds_number} {t("beeds")}
                                 </div>
                                 <div className="text-xl text-primary">
                                     {(new Date(booking.check_out) -
                                         new Date(booking.check_in)) /
                                         (1000 * 60 * 60 * 24)}{" "}
-                                    x {room.pivot.room_price} {useTrans("DA")}
+                                    x {room.pivot.room_price} {t("da")}
                                 </div>
                             </CardHeader>
                             <CardContent className="p-2 ">
@@ -181,10 +182,13 @@ export default function Booking({ booking }) {
                                             variant: "link",
                                         })}
                                     >
-                                        {useTrans("Voir Plus")}
+                                        {t("showMore")}
                                     </DialogTrigger>
-                                    <DialogContent className="p-0">
-                                        <DialogHeader>
+                                    <DialogContent
+                                        className="p-0"
+                                        aria-describedby={undefined}
+                                    >
+                                        <DialogHeader className="p-0">
                                             <DialogTitle className="p-0">
                                                 <Carousel>
                                                     <CarouselContent>
@@ -209,29 +213,26 @@ export default function Booking({ booking }) {
                                                 </Carousel>
                                             </DialogTitle>
                                         </DialogHeader>
-                                        <DialogDescription className="p-4">
+                                        <div className="p-4">
                                             <div className="font-bold text-foreground flex justify-between">
                                                 <div>
-                                                    {useTrans("Chambre")}{" "}
+                                                    {t("rooms")}{" "}
                                                     {room.type.type_designation}{" "}
-                                                    {useTrans("avec")}{" "}
+                                                    {t("with")}{" "}
                                                     {room.beeds_number}{" "}
-                                                    {useTrans("lits")}
+                                                    {t("beeds")}
                                                 </div>
                                                 <div className="text-xl text-primary">
                                                     {" "}
                                                     {room.pivot.room_price}{" "}
-                                                    {useTrans("DA")}
+                                                    {t("da")}
                                                 </div>
                                             </div>
                                             {room.features.length > 0 && (
-                                                <div className="my-2 ">
+                                                <div className="my-2">
                                                     <Separator />
                                                     <div className="font-bold text-foreground pb-2 flex justify-start">
-                                                        {useTrans(
-                                                            "Caractéristiques"
-                                                        )}{" "}
-                                                        :
+                                                        {t("features")} :
                                                     </div>
                                                     {room.features
                                                         .slice(0, 4)
@@ -266,7 +267,7 @@ export default function Booking({ booking }) {
                                                     }
                                                 />
                                             </div>
-                                        </DialogDescription>
+                                        </div>
                                     </DialogContent>
                                 </Dialog>
                             </CardFooter>
@@ -281,7 +282,7 @@ export default function Booking({ booking }) {
                                 <div>{consomation.consumption_name}</div>
                                 <div className="text-xl text-primary">
                                     {consomation.pivot.quantity} x{" "}
-                                    {consomation.consumption_price} DA
+                                    {consomation.consumption_price} {t("da")}
                                 </div>
                             </CardHeader>
                         </Card>

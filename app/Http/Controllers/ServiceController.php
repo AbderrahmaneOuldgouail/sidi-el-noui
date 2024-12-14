@@ -35,7 +35,7 @@ class ServiceController extends Controller
         if ($request->user()->cannot('create', Service::class)) {
             return abort(403);
         }
-        return Inertia::render('Admin/Services/CreateService');
+        return Inertia::render('Admin/Services/ServiceForm');
     }
 
     public function store(Request $request)
@@ -84,7 +84,7 @@ class ServiceController extends Controller
         if ($request->user()->cannot('update', Service::class)) {
             return abort(403);
         }
-        return Inertia::render('Admin/Services/EditService', ['service' => $service]);
+        return Inertia::render('Admin/Services/ServiceForm', ['service' => $service]);
     }
 
     public function update(Request $request)

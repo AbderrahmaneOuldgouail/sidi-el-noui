@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useSyncExternalStore } from "react";
 import { Link, router } from "@inertiajs/react";
 import { Button } from "@/Components/ui/button";
 import {
@@ -11,22 +11,23 @@ import {
 import { Eye, Pencil } from "lucide-react";
 import { Badge } from "@/Components/ui/badge";
 import { Switch } from "@/Components/ui/switch";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function RoomCard({ room }) {
+    const {t} = useTranslation("translation", {keyPrefix: "rooms"})
     return (
         <Card className="rounded-lg border-none mt-6" key={room.room_number}>
             <CardContent className="p-6 flex justify-between items-center">
                 <div>
                     <CardTitle>
-                        {useTrans("La Chambre N°")}{" "}
+                        {t("roomNumber")}{" "}
                         {room.room_number}
                         {" / "}
                         {room.type.type_designation}
                     </CardTitle>
                     <CardDescription>
-                        {useTrans("Prix de chmabre")} : {room.room_price}{" "}
-                        {useTrans("DA")}
+                        {t("price")} : {room.room_price}{" "}
+                        {t("da")}
                     </CardDescription>
                 </div>
                 <div>
@@ -64,8 +65,8 @@ export default function RoomCard({ room }) {
                     />
                     <span className="mx-2 ">
                         {room.room_status === "hors service"
-                            ? useTrans("Marqué comme disponible")
-                            : useTrans("Marqué comme hors service")}
+                            ? t("aviable")
+                            : t("inaviable")}
                     </span>
                 </CardDescription>
                 <div className="flex gap-4">
@@ -75,7 +76,7 @@ export default function RoomCard({ room }) {
                             className="flex w-full"
                         >
                             <Eye className="mx-2 h-3.5 w-3.5 text-muted-foreground/70" />{" "}
-                            {useTrans("Voir")}
+                            {t("show")}
                         </Link>
                     </Button>
                     <Button variant="outline">
@@ -84,7 +85,7 @@ export default function RoomCard({ room }) {
                             className="flex w-full"
                         >
                             <Pencil className="mx-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                            {useTrans("Modifier")}
+                            {t("edit")}
                         </Link>
                     </Button>
                 </div>

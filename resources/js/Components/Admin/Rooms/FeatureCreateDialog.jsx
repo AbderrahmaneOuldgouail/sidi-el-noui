@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { cn } from "@/lib/utils";
 import {
     Dialog,
@@ -32,7 +31,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/Components/ui/popover";
-import { Button } from "@/Components/ui/button";
+import { Button, buttonVariants } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
@@ -41,14 +40,16 @@ import { Checkbox } from "@/Components/ui/checkbox";
 import { useTrans } from "@/Hooks/useTrans";
 import { router, useForm } from "@inertiajs/react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { useTranslation } from "react-i18next";
 
 export default function FeatureCreateDialog({ categorys }) {
+    const { t } = useTranslation("translation", { keyPrefix: "features.form" });
     const [selectedCategory, setSelectedCategory] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const [isOpen, setIsOpen] = React.useState(false);
     const [searchValue, setSearchValue] = React.useState("");
     const { width } = useWindowDimensions();
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors, processing } = useForm({
         features_name: "",
         categorie_id: "",
         need_value: false,
@@ -79,24 +80,17 @@ export default function FeatureCreateDialog({ categorys }) {
     if (width >= 767) {
         return (
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild>
-                    <Button
-                        variant="secondary"
-                        onClick={() =>
-                            !categorys && router.reload({ only: ["categorys"] })
-                        }
-                    >
-                        {useTrans("Créer un Caractéristique")}
-                    </Button>
+                <DialogTrigger
+                    className={cn(buttonVariants({ variant: "secondary" }))}
+                    onClick={() =>
+                        !categorys && router.reload({ only: ["categorys"] })
+                    }
+                >
+                    {t("create")}
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
                     <DialogHeader>
-                        <DialogTitle>
-                            {useTrans("Ajouter un nouveau Caractéristique")}
-                        </DialogTitle>
-                        <DialogDescription>
-                            {useTrans("Ajouter un nouveau Caractéristique")}
-                        </DialogDescription>
+                        <DialogTitle>{t("dialogHeader")}</DialogTitle>
                     </DialogHeader>
                     <form
                         className="grid items-start gap-4 px-4"
@@ -105,12 +99,10 @@ export default function FeatureCreateDialog({ categorys }) {
                         <div className="grid gap-2">
                             <InputLabel
                                 htmlFor="features_name"
-                                value={useTrans("Nom de caractéristique")}
+                                value={t("name")}
                             />
                             <Input
-                                placeholder={useTrans(
-                                    "Example : wifi, dimension"
-                                )}
+                                placeholder={t("placeholder")}
                                 id="features_name"
                                 value={data.features_name}
                                 onChange={(e) =>
@@ -125,7 +117,7 @@ export default function FeatureCreateDialog({ categorys }) {
                         <div className="grid gap-2">
                             <InputLabel
                                 htmlFor="categorie_id"
-                                value={useTrans("Catégorie")}
+                                value={t("categorie")}
                                 className="w-fit"
                             />
                             <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -138,18 +130,14 @@ export default function FeatureCreateDialog({ categorys }) {
                                     >
                                         {selectedCategory
                                             ? selectedCategory
-                                            : useTrans(
-                                                  "Selectioner un categorie..."
-                                              )}
+                                            : t("selectInput")}
                                         <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent>
                                     <Command>
                                         <CommandInput
-                                            placeholder={useTrans(
-                                                "Chercher un categorie..."
-                                            )}
+                                            placeholder={t("searchInput")}
                                             value={searchValue}
                                             onValueChange={(newValue) =>
                                                 setSearchValue(newValue)
@@ -167,20 +155,20 @@ export default function FeatureCreateDialog({ categorys }) {
                                                         }
                                                     >
                                                         <div>
-                                                            <div>Ajouter</div>
-                                                            <div className="font-bold">
+                                                            <div>
+                                                                {t("add")}{" "}
+                                                            </div>
+                                                            <div className="font-bold my-2">
                                                                 {searchValue}
                                                             </div>
                                                             <div>
-                                                                au categorie
+                                                                {t("add2")}
                                                             </div>
                                                         </div>
                                                     </Button>
                                                 ) : (
                                                     <span>
-                                                        {useTrans(
-                                                            "Chercher un categorie..."
-                                                        )}
+                                                        {t("searchInput")}
                                                     </span>
                                                 )}
                                             </CommandEmpty>
@@ -248,11 +236,15 @@ export default function FeatureCreateDialog({ categorys }) {
                             />
                             <InputLabel
                                 htmlFor="need_value"
-                                value={useTrans("Besoin de valeur")}
+                                value={t("needValue")}
                             />
                         </div>
-                        <Button variant="secondary" type="submit">
-                            {useTrans("Créer")}
+                        <Button
+                            variant="secondary"
+                            type="submit"
+                            disabled={processing}
+                        >
+                            {t("createSubmit")}
                         </Button>
                     </form>
                 </DialogContent>
@@ -262,33 +254,23 @@ export default function FeatureCreateDialog({ categorys }) {
 
     return (
         <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerTrigger asChild>
-                <Button
-                    variant="secondary"
-                    onClick={() =>
-                        !categorys && router.reload({ only: ["categorys"] })
-                    }
-                >
-                    {useTrans("Créer un Caractéristique")}
-                </Button>
+            <DrawerTrigger
+                className={cn(buttonVariants({ variant: "secondary" }))}
+                onClick={() =>
+                    !categorys && router.reload({ only: ["categorys"] })
+                }
+            >
+                {t("create")}
             </DrawerTrigger>
-            <DrawerContent>
+            <DrawerContent aria-describedby={undefined}>
                 <DrawerHeader className="text-left">
-                    <DrawerTitle>
-                        {useTrans("Ajouter un nouveau Caractéristique")}
-                    </DrawerTitle>
-                    <DrawerDescription>
-                        {useTrans("Ajouter un nouveau Caractéristique")}
-                    </DrawerDescription>
+                    <DrawerTitle>{t("dialogHeader")} </DrawerTitle>
                 </DrawerHeader>
                 <form className="grid items-start gap-4 px-4" onSubmit={submit}>
                     <div className="grid gap-2">
-                        <InputLabel
-                            htmlFor="features_name"
-                            value={useTrans("Nom de caractéristique")}
-                        />
+                        <InputLabel htmlFor="features_name" value={t("name")} />
                         <Input
-                            placeholder={useTrans("Example : wifi, dimension")}
+                            placeholder={t("placeholder")}
                             id="features_name"
                             value={data.features_name}
                             onChange={(e) =>
@@ -303,7 +285,7 @@ export default function FeatureCreateDialog({ categorys }) {
                     <div className="grid gap-2">
                         <InputLabel
                             htmlFor="categorie_id"
-                            value={useTrans("Catégorie")}
+                            value={t("categorie")}
                             className="w-fit"
                         />
                         <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -316,18 +298,15 @@ export default function FeatureCreateDialog({ categorys }) {
                                 >
                                     {selectedCategory
                                         ? selectedCategory
-                                        : useTrans(
-                                              "Selectioner un categorie..."
-                                          )}
+                                        : t("selectInput")}
+
                                     <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent>
                                 <Command>
                                     <CommandInput
-                                        placeholder={useTrans(
-                                            "Chercher un categorie..."
-                                        )}
+                                        placeholder={t("searchInput")}
                                         value={searchValue}
                                         onValueChange={(newValue) =>
                                             setSearchValue(newValue)
@@ -345,19 +324,15 @@ export default function FeatureCreateDialog({ categorys }) {
                                                     }
                                                 >
                                                     <div>
-                                                        <div>Ajouter</div>
+                                                        <div> {t("add")} </div>
                                                         <div className="font-bold">
                                                             {searchValue}
                                                         </div>
-                                                        <div>au categorie</div>
+                                                        <div> {t("add2")}</div>
                                                     </div>
                                                 </Button>
                                             ) : (
-                                                <span>
-                                                    {useTrans(
-                                                        "Chercher un categorie..."
-                                                    )}
-                                                </span>
+                                                <span>{t("searchInput")}</span>
                                             )}
                                         </CommandEmpty>
                                         <CommandGroup>
@@ -420,16 +395,20 @@ export default function FeatureCreateDialog({ categorys }) {
                         />
                         <InputLabel
                             htmlFor="need_value"
-                            value={useTrans("Besoin de valeur")}
+                            value={t("needValue")}
                         />
                     </div>
-                    <Button variant="secondary" type="submit">
-                        {useTrans("Créer")}
+                    <Button
+                        variant="secondary"
+                        type="submit"
+                        disabled={processing}
+                    >
+                        {t("createSubmit")}
                     </Button>
                 </form>
                 <DrawerFooter className="pt-2">
                     <DrawerClose asChild>
-                        <Button variant="outline">{useTrans("Annuler")}</Button>
+                        <Button variant="outline">{t("cancel")}</Button>
                     </DrawerClose>
                 </DrawerFooter>
             </DrawerContent>

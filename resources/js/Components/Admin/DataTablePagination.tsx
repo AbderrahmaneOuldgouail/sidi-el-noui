@@ -3,40 +3,25 @@ import {
     ChevronRightIcon,
     DoubleArrowLeftIcon,
     DoubleArrowRightIcon,
-    CheckIcon,
 } from "@radix-ui/react-icons";
-
 import {
     Pagination,
     PaginationContent,
     PaginationItem,
 } from "@/Components/ui/pagination";
-
-import { Link, router } from "@inertiajs/react";
-
+import { router } from "@inertiajs/react";
 import { Button } from "@/Components/ui/button";
-import { Select, SelectContent, SelectTrigger } from "@/Components/ui/select";
 import React from "react";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 interface DataTablePaginationProps {
     tabledata: any;
 }
 
 export function DataTablePagination({ tabledata }: DataTablePaginationProps) {
-    function getMultiplesOfFive(number: number) {
-        const multiples = [];
-
-        for (let i = 5; i <= number; i += 5) {
-            multiples.push(i);
-        }
-
-        if (number % 5 !== 0) {
-            multiples.push(number);
-        }
-
-        return multiples;
-    }
+    const { t } = useTranslation("translation", {
+        keyPrefix: "components.dataTable.pagination",
+    });
     const navigateTo = (url) => {
         router.visit(url, {
             preserveState: true,
@@ -47,7 +32,7 @@ export function DataTablePagination({ tabledata }: DataTablePaginationProps) {
         <div className="flex items-center justify-between px-2 mt-2">
             <div className="flex text-sm text-muted-foreground">
                 {tabledata.to - tabledata.from + 1} / {tabledata.total}{" "}
-                {useTrans("ligne(s) afficher")}
+                {t("footer")}
             </div>
             <div className="flex items-center space-x-2">
                 <Pagination>
@@ -122,39 +107,6 @@ export function DataTablePagination({ tabledata }: DataTablePaginationProps) {
                     </PaginationContent>
                 </Pagination>
             </div>
-            {/* <div className="flex items-center justify-between space-x-6 lg:space-x-8">
-                <div className="flex items-center space-x-2">
-                    <p className="text-sm font-medium">
-                        {useTrans("Lignes par page")}
-                    </p>
-                    <Select value={`${tabledata.per_page}`}>
-                        <SelectTrigger className="h-8 w-[70px]">
-                            <p>{tabledata.per_page} </p>
-                        </SelectTrigger>
-                        <SelectContent side="top">
-                            {getMultiplesOfFive(tabledata.total).map(
-                                (pageSize) => (
-                                    <Link
-                                        as="button"
-                                        key={pageSize}
-                                        className="relative flex justify-between w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
-                                        href={route("rooms.index", {
-                                            pages: pageSize,
-                                        })}
-                                    >
-                                        {pageSize}
-                                        {pageSize == tabledata.per_page && (
-                                            <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
-                                                <CheckIcon className="h-4 w-4" />
-                                            </span>
-                                        )}
-                                    </Link>
-                                )
-                            )}
-                        </SelectContent>
-                    </Select>
-                </div>
-            </div> */}
         </div>
     );
 }

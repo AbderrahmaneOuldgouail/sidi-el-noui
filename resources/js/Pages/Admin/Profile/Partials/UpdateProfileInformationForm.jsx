@@ -6,6 +6,7 @@ import { Input } from "@/Components/ui/input";
 import { useTrans } from "@/Hooks/useTrans";
 import { Separator } from "@/Components/ui/separator";
 import { Button } from "@/Components/ui/button";
+import { useTranslation } from "react-i18next";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -13,7 +14,9 @@ export default function UpdateProfileInformation({
     className = "",
 }) {
     const user = usePage().props.auth.user;
-
+    const { t } = useTranslation("translation", {
+        keyPrefix: "profile.section1",
+    });
     const { data, setData, patch, errors, processing } = useForm({
         first_name: user.first_name,
         last_name: user.last_name,
@@ -29,9 +32,7 @@ export default function UpdateProfileInformation({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium">
-                    {useTrans("Les informations personnelles")}
-                </h2>
+                <h2 className="text-lg font-medium">{t("title")}</h2>
             </header>
 
             <form onSubmit={submit}>
@@ -39,7 +40,7 @@ export default function UpdateProfileInformation({
                     <div className="w-full md:w-1/2 bg-muted p-4 shadow">
                         <InputLabel
                             htmlFor="first_name"
-                            value={useTrans("Prénom")}
+                            value={t("form.firstName")}
                         />
                         <Input
                             className="mt-2 w-full bg-card"
@@ -58,7 +59,7 @@ export default function UpdateProfileInformation({
                     <div className="w-full md:w-1/2 bg-muted p-4 shadow">
                         <InputLabel
                             htmlFor="last_name"
-                            value={useTrans("Nom")}
+                            value={t("form.lastName")}
                         />
                         <Input
                             className="mt-2 w-full bg-card"
@@ -77,15 +78,13 @@ export default function UpdateProfileInformation({
                 <Separator />
                 <div className="md:flex my-4">
                     <div className="w-full md:w-1/3 pb-2">
-                        <InputLabel htmlFor="email" value={useTrans("Email")} />
+                        <InputLabel htmlFor="email" value={t("form.email")} />
                         <LabelDescreption>
-                            {useTrans(
-                                "L'email doit être unique pour chaque utilisateur"
-                            )}
+                            {t("form.emailDescreption")}
                         </LabelDescreption>
                     </div>
                     <div className="w-full md:w-2/3 bg-muted p-4 shadow">
-                        <InputLabel htmlFor="email" value={useTrans("Email")} />
+                        <InputLabel htmlFor="email" value={t("form.email")} />
                         <Input
                             className="mt-2 w-full bg-card"
                             id="email"
@@ -98,21 +97,13 @@ export default function UpdateProfileInformation({
                 <Separator />
                 <div className="md:flex my-4">
                     <div className="w-full md:w-1/3 pb-2">
-                        <InputLabel
-                            htmlFor="phone"
-                            value={useTrans("N° téléphone d'employé")}
-                        />
+                        <InputLabel htmlFor="phone" value={t("form.phone")} />
                         <LabelDescreption>
-                            {useTrans(
-                                "Le N° téléphone doit être unique pour chaque utilisateur"
-                            )}
+                            {t("form.phoneDescreption")}
                         </LabelDescreption>
                     </div>
                     <div className="w-full md:w-2/3 bg-muted p-4 shadow">
-                        <InputLabel
-                            htmlFor="phone"
-                            value={useTrans("N° téléphone d'employé")}
-                        />
+                        <InputLabel htmlFor="phone" value={t("form.phone")} />
                         <Input
                             className="mt-2 w-full bg-card"
                             id="phone"
@@ -126,26 +117,20 @@ export default function UpdateProfileInformation({
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                            {useTrans(
-                                "Votre adresse email n'est pas vérifiée."
-                            )}
+                            {t("form.emailValidation")}
                             <Link
-                                href={route("verification.send")}
+                                href={route("form.verification.send")}
                                 method="post"
                                 as="button"
                                 className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                             >
-                                {useTrans(
-                                    "Cliquez ici pour renvoyer l'e-mail de vérification."
-                                )}{" "}
+                                {t("form.sendEmailValidation")}{" "}
                             </Link>
                         </p>
 
                         {status === "verification-link-sent" && (
                             <div className="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                                {useTrans(
-                                    "Un nouveau lien de vérification a été envoyé à votre adresse e-mail."
-                                )}
+                                {t("form.validationSended")}
                             </div>
                         )}
                     </div>
@@ -158,7 +143,7 @@ export default function UpdateProfileInformation({
                         className="mt-2 w-1/4"
                         variant="secondary"
                     >
-                        {useTrans("Enregistrer")}
+                        {t("form.submit")}
                     </Button>
                 </div>
             </form>

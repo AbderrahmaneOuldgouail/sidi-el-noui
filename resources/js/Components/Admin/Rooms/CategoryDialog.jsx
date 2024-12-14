@@ -24,12 +24,14 @@ import InputLabel from "@/Components/InputLabel";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import { useTrans } from "@/Hooks/useTrans";
 import { useForm } from "@inertiajs/react";
+import { useTranslation } from "react-i18next";
 
 export default function CategoryDialog({ category, mode }) {
     const [open, setOpen] = React.useState(false);
     const { width } = useWindowDimensions();
-    const { data, setData, post, put, errors } = useForm({
-        categorie_name: category?.categorie_name,
+    const { t } = useTranslation("translation", { keyPrefix: "features.form" });
+    const { data, setData, post, put, errors, processing } = useForm({
+        categorie_name: category ? category?.categorie_name : "",
     });
 
     const submit = (e) => {
@@ -52,22 +54,20 @@ export default function CategoryDialog({ category, mode }) {
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     <Button variant="secondary">
-                        {mode == "create"
-                            ? useTrans("Ajouter un categorie")
-                            : useTrans("Modifier")}
+                        {mode == "create" ? t("addCategorie") : t("edit")}
                     </Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>
                             {mode == "create"
-                                ? useTrans("Ajouter un nouveau Catégorie")
-                                : useTrans("Modifier cette Catégorie")}{" "}
+                                ? t("addCategorieHeader")
+                                : t("editCategorietHeader")}
                         </DialogTitle>
                         <DialogDescription>
                             {mode == "create"
-                                ? useTrans("Ajouter un nouveau Catégorie")
-                                : useTrans("Modifier cette Catégorie")}{" "}
+                                ? t("addCategorieHeader")
+                                : t("editCategorietHeader")}
                         </DialogDescription>
                     </DialogHeader>
                     <form
@@ -77,12 +77,10 @@ export default function CategoryDialog({ category, mode }) {
                         <div className="grid gap-2">
                             <InputLabel
                                 htmlFor="categorie_name"
-                                value={useTrans("Nom de catégorie :")}
+                                value={t("categorieName")}
                             />
                             <Input
-                                placeholder={useTrans(
-                                    "Example : wifi, dimension"
-                                )}
+                                placeholder={t("categoriePlaceholder")}
                                 id="categorie_name"
                                 value={data.categorie_name}
                                 onChange={(e) =>
@@ -94,10 +92,12 @@ export default function CategoryDialog({ category, mode }) {
                                 className="mt-2"
                             />
                         </div>
-                        <Button variant="secondary" type="submit">
-                            {mode == "create"
-                                ? useTrans("Créer")
-                                : useTrans("Enregistrer")}{" "}
+                        <Button
+                            variant="secondary"
+                            type="submit"
+                            disabled={processing}
+                        >
+                            {mode == "create" ? t("createSubmit") : t("save")}{" "}
                         </Button>
                     </form>
                 </DialogContent>
@@ -109,32 +109,30 @@ export default function CategoryDialog({ category, mode }) {
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
                 <Button variant="secondary">
-                    {mode == "create"
-                        ? useTrans("Ajouter un categorie")
-                        : useTrans("Modifier")}{" "}
+                    {mode == "create" ? t("addCategorie") : t("edit")}
                 </Button>
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader className="text-left">
                     <DrawerTitle>
                         {mode == "create"
-                            ? useTrans("Ajouter un nouveau Catégorie")
-                            : useTrans("Modifier cette Catégorie")}{" "}
+                            ? t("addCategorieHeader")
+                            : t("editCategorietHeader")}
                     </DrawerTitle>
                     <DrawerDescription>
                         {mode == "create"
-                            ? useTrans("Ajouter un nouveau Catégorie")
-                            : useTrans("Modifier cette Catégorie")}{" "}
+                            ? t("addCategorieHeader")
+                            : t("editCategorietHeader")}
                     </DrawerDescription>
                 </DrawerHeader>
                 <form className="grid items-start gap-4 px-4" onSubmit={submit}>
                     <div className="grid gap-2">
                         <InputLabel
                             htmlFor="categorie_name"
-                            value={useTrans("Nom de catégorie :")}
+                            value={t("categorieName")}
                         />
                         <Input
-                            placeholder={useTrans("Example : wifi, dimension")}
+                            placeholder={t("categoriePlaceholder")}
                             id="categorie_name"
                             value={data.categorie_name}
                             onChange={(e) =>
@@ -146,15 +144,17 @@ export default function CategoryDialog({ category, mode }) {
                             className="mt-2"
                         />
                     </div>
-                    <Button variant="secondary" type="submit">
-                        {mode == "create"
-                            ? useTrans("Créer")
-                            : useTrans("Enregistrer")}{" "}
+                    <Button
+                        variant="secondary"
+                        type="submit"
+                        disabled={processing}
+                    >
+                        {mode == "create" ? t("createSubmit") : t("save")}{" "}
                     </Button>
                 </form>
                 <DrawerFooter className="pt-2">
                     <DrawerClose asChild>
-                        <Button variant="outline">{useTrans("Annuler")}</Button>
+                        <Button variant="outline">{t("cancel")}</Button>
                     </DrawerClose>
                 </DrawerFooter>
             </DrawerContent>

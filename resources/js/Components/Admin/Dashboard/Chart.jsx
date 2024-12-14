@@ -7,13 +7,7 @@ import {
     ChartLegend,
     ChartLegendContent,
 } from "@/Components/ui/chart";
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-} from "@/Components/ui/card";
-import { useTrans } from "@/Hooks/useTrans";
+import { Card, CardContent, CardFooter } from "@/Components/ui/card";
 import { useTranslation } from "react-i18next";
 
 export default function Chart({ bookingCounts }) {
@@ -34,7 +28,7 @@ export default function Chart({ bookingCounts }) {
         },
     };
     return (
-        <Card className="w-full md:w-1/2   mt-4">
+        <Card className="w-full md:w-1/2 mt-4">
             <CardContent>
                 <ChartContainer
                     config={configChart}

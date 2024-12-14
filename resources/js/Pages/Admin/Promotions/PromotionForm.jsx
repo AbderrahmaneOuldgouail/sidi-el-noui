@@ -3,52 +3,42 @@ import { Head, useForm } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
-
 import { FileUploader } from "react-drag-drop-files";
-
 import { Button } from "@/Components/ui/button";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import MyFileUploader from "@/Components/Admin/Shared/MyFileUploader";
 import { ImagesViewer } from "@/Components/Admin/Shared/ImagesViewer";
 import { Input } from "@/Components/ui/input";
-import { useTrans } from "@/Hooks/useTrans";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Separator } from "@/Components/ui/separator";
-import DbImageViewer from "@/Components/Admin/Shared/DbImageViewer";
+import { DatePickerWithRange } from "@/Components/ui/DatePickerWithRange";
 import { Editor } from "@/Components/Admin/Shared/Editor";
+import DbImageViewer from "@/Components/Admin/Shared/DbImageViewer";
+import { useTranslation } from "react-i18next";
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
-export default function EditService({ service }) {
+export default function CreatePromotion({ promotion }) {
     const [importedFiles, setImportedFiles] = useState([]);
-    const [dbImages, setDbImages] = useState(service.assets);
-    const { data, setData, post, errors, clearErrors } = useForm({
-        service_name: service.service_name,
-        service_descreption: service.service_descreption,
+    const [dbImages, setDbImages] = useState(promotion?.assets);
+    const { t } = useTranslation("translation", {
+        keyPrefix: "promotions.form",
+    });
+
+    const { data, setData, post, errors, clearErrors, processing } = useForm({
+        promo_value: promotion ? promotion.promo_value : "",
+        promo_descreption: promotion ? promotion.promo_descreption : "",
+        promo_start_date: promotion ? promotion.promo_start_date : "",
+        promo_end_date: promotion ? promotion.promo_end_date : "",
         assets: [],
         remouved_assets: [],
         required_assets: false,
     });
-
-    const remouveAsset = (index) => {
-        setData((prevData) => ({
-            ...prevData,
-            remouved_assets: [...prevData.remouved_assets, index],
-        }));
-        setDbImages((prevDbImages) => {
-            const updatedDbImages = prevDbImages.filter(
-                (image) => image.id !== index
-            );
-
-            setData((prevData) => ({
-                ...prevData,
-                required_assets: updatedDbImages.length === 0,
-            }));
-
-            return updatedDbImages;
-        });
-    };
+    const [dateRange, setDateRange] = useState({
+        from: promotion ? new Date(promotion.promo_start_date) : "",
+        to: promotion ? new Date(promotion.promo_end_date) : "",
+    });
 
     const handleFiles = (files) => {
         if (!files || !files.length) return;
@@ -79,45 +69,85 @@ export default function EditService({ service }) {
         clearErrors(`assets.${index}`);
     };
 
-    const submit = (e) => {
-        e.preventDefault();
-        post(route("services.update", service.service_id));
+    const remouveAsset = (index) => {
+        setData((prevData) => ({
+            ...prevData,
+            remouved_assets: [...prevData.remouved_assets, index],
+        }));
+        setDbImages((prevDbImages) => {
+            const updatedDbImages = prevDbImages.filter(
+                (image) => image.id !== index
+            );
+
+            setData((prevData) => ({
+                ...prevData,
+                required_assets: updatedDbImages.length === 0,
+            }));
+
+            return updatedDbImages;
+        });
     };
 
+    const submit = (e) => {
+        e.preventDefault();
+        promotion
+            ? post(route("promotions.update", promotion.promotion_id))
+            : post(route("promotions.store"));
+    };
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const formattedDate = `${year}-${month}-${day}`;
+        return formattedDate;
+    }
+
+    const handleDateChange = (range) => {
+        if (range?.from) {
+            const formattedDate = formatDate(range.from);
+            setData("promo_start_date", formattedDate);
+        }
+        if (range?.to) {
+            const formattedDate = formatDate(range.to);
+            setData("promo_end_date", formattedDate);
+        }
+        setDateRange(range);
+    };
     return (
         <AdminPanelLayout>
-            <Head title="Service" />
-            <PageHeading title={useTrans("Service Modification")} />
+            <Head title={promotion ? t("editTitle") : t("createTitle")} />
+            <PageHeading
+                title={promotion ? t("editTitle") : t("createTitle")}
+            />
             <PlaceholderContent>
                 <form onSubmit={submit}>
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
                             <InputLabel
-                                htmlFor="service_name"
-                                value={useTrans("Nom de service")}
+                                htmlFor="Date de promotion"
+                                value={t("date")}
                             />
                             <LabelDescreption>
-                                {useTrans(
-                                    "Entrer un nom claire et simple pour le nom de service"
-                                )}
+                                {t("dateDescreption")}
                             </LabelDescreption>
                         </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                             <InputLabel
-                                htmlFor="service_name"
-                                value={useTrans("Nom de service")}
+                                htmlFor="Date de promotion"
+                                value={t("date")}
                             />
-                            <Input
-                                className="mt-2 w-full bg-card"
-                                placeholder={useTrans("Exemple : Restaurant")}
-                                id="service_name"
-                                value={data.service_name}
-                                onChange={(e) =>
-                                    setData("service_name", e.target.value)
-                                }
+                            <DatePickerWithRange
+                                date={dateRange}
+                                onDateChange={handleDateChange}
                             />
                             <InputError
-                                message={errors.service_name}
+                                message={errors.promo_start_date}
+                                className="mt-2"
+                            />
+                            <InputError
+                                message={errors.promo_end_date}
                                 className="mt-2"
                             />
                         </div>
@@ -126,29 +156,57 @@ export default function EditService({ service }) {
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
                             <InputLabel
-                                htmlFor="service_descreption"
-                                value={useTrans("Description")}
+                                htmlFor="promo_value"
+                                value={t("value")}
                             />
                             <LabelDescreption>
-                                {useTrans(
-                                    "Vous pouvez ajouter des titre ou bien des style au desciption"
-                                )}
+                                {t("valueDescreption")}
                             </LabelDescreption>
                         </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                             <InputLabel
-                                htmlFor="service_descreption"
-                                value={useTrans("Description")}
+                                htmlFor="promo_value"
+                                value={t("value")}
+                            />
+                            <Input
+                                className="mt-2 w-full bg-card"
+                                id="promo_value"
+                                value={data.promo_value}
+                                onChange={(e) =>
+                                    setData("promo_value", e.target.value)
+                                }
+                            />
+                            <InputError
+                                message={errors.promo_value}
+                                className="mt-2"
+                            />
+                        </div>
+                    </div>
+                    <Separator />
+                    <div className="md:flex my-4">
+                        <div className="w-full md:w-1/3 pb-2">
+                            <InputLabel
+                                htmlFor="promo_descreption"
+                                value={t("descreption")}
+                            />
+                            <LabelDescreption>
+                                {t("descreptionDescreption")}
+                            </LabelDescreption>
+                        </div>
+                        <div className="w-full md:w-2/3 bg-muted p-4 shadow">
+                            <InputLabel
+                                htmlFor="promo_descreption"
+                                value={t("descreption")}
                             />
                             <Editor
                                 autofocus={false}
-                                content={data.service_descreption}
+                                content={data.promo_descreption}
                                 onContentChange={({ html }) => {
-                                    setData("service_descreption", html);
+                                    setData("promo_descreption", html);
                                 }}
                             />
                             <InputError
-                                message={errors.service_descreption}
+                                message={errors.promo_descreption}
                                 className="mt-2"
                             />
                         </div>
@@ -159,18 +217,16 @@ export default function EditService({ service }) {
                             <div className="w-full md:w-1/3 pb-2">
                                 <InputLabel
                                     htmlFor="assets"
-                                    value={useTrans("Photos")}
+                                    value={t("assets")}
                                 />
                                 <LabelDescreption>
-                                    {useTrans(
-                                        "Ajouter des photos au service (ne dépasse pas 10 photos par service)"
-                                    )}
+                                    {t("assetsDescreption")}
                                 </LabelDescreption>
                             </div>
                             <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                                 <InputLabel
                                     htmlFor="assets"
-                                    value={useTrans("Photos")}
+                                    value={t("assets")}
                                 />
                                 <FileUploader
                                     handleChange={handleFiles}
@@ -191,19 +247,22 @@ export default function EditService({ service }) {
                             images={importedFiles}
                             errors={errors}
                             deleteImage={deleteImage}
-                        />
-                        <DbImageViewer
-                            assets={dbImages}
-                            remouveAsset={remouveAsset}
-                        />
+                        />{" "}
+                        {promotion && (
+                            <DbImageViewer
+                                assets={dbImages}
+                                remouveAsset={remouveAsset}
+                            />
+                        )}
                     </div>
                     <div className="flex justify-end">
                         <Button
                             type="submit"
                             className="mt-2 w-1/4"
                             variant="secondary"
+                            disabled={processing}
                         >
-                            {useTrans("Enregistrer")}
+                            {promotion ? t("editBtn") : t("createBtn")}
                         </Button>
                     </div>
                 </form>

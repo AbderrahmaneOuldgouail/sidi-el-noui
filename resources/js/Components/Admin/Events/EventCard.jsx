@@ -19,10 +19,12 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/Components/ui/button";
 import EventCardFooter from "./EventCardFooter";
 import { Editor } from "@/Components/Admin/Shared/Editor";
+import { useTranslation } from "react-i18next";
 
 export default function EventCard({ event }) {
     const { width } = useWindowDimensions();
     const [isOpen, setIsOpen] = useState(false);
+    const { t } = useTranslation("translation", { keyPrefix: "events.card" });
 
     return (
         <Card className="transition-transform ease-in-out duration-700 relative my-6 ">
@@ -50,12 +52,12 @@ export default function EventCard({ event }) {
                 <CardHeader className="font-bold text-xl flex flex-row items-center justify-between">
                     <div>{event.event_name}</div>
                     <div className="flex items-center gap-2 bg-muted p-2 rounded">
-                        <span>{useTrans("Prix")} </span>
+                        <span>{t("price")} </span>
                         {":"}
                         <span className="text-destructive text-2xl font-bold">
                             {event.event_price}
                         </span>{" "}
-                        <span>{useTrans("DA")} </span>
+                        <span>{t("da")} </span>
                     </div>
                 </CardHeader>
                 {isOpen && (
@@ -63,7 +65,7 @@ export default function EventCard({ event }) {
                         <CardContent>
                             {event.event_start_date == event.event_end_date ? (
                                 <div>
-                                    {useTrans("Date d'évènement")} :{" "}
+                                    {t("eventDate")} :{" "}
                                     <span className="font-bold text-lg">
                                         {event.event_start_date}
                                     </span>
@@ -71,13 +73,13 @@ export default function EventCard({ event }) {
                             ) : (
                                 <div>
                                     <div>
-                                        {useTrans("Date début d'évènement")} :{" "}
+                                        {t("eventStartDate")} :{" "}
                                         <span className="font-bold text-lg">
                                             {event.event_start_date}
                                         </span>
                                     </div>
                                     <div>
-                                        {useTrans("Date fin d'évènement")} :{" "}
+                                        {t("eventEndDate")} :{" "}
                                         <span className="font-bold text-lg">
                                             {event.event_end_date}
                                         </span>
@@ -86,7 +88,7 @@ export default function EventCard({ event }) {
                             )}
                             <div>
                                 <div className="font-bold text-lg my-4">
-                                    {useTrans("Description")} :{" "}
+                                    {t("descreption")} :{" "}
                                 </div>
                                 <Editor
                                     autofocus={false}

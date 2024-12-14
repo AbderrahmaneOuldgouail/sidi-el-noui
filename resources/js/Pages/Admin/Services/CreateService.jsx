@@ -16,11 +16,13 @@ import { useTrans } from "@/Hooks/useTrans";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Separator } from "@/Components/ui/separator";
 import { Editor } from "@/Components/Admin/Shared/Editor";
+import { useTranslation } from "react-i18next";
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
 export default function CreateService() {
-    const { data, setData, post, errors, clearErrors } = useForm({
+    const { t } = useTranslation("translation", { keyPrefix: "services.form" });
+    const { data, setData, post, errors, clearErrors, processing } = useForm({
         service_name: "",
         service_descreption: "",
         assets: [],
@@ -63,30 +65,28 @@ export default function CreateService() {
     };
     return (
         <AdminPanelLayout>
-            <Head title="Service" />
-            <PageHeading title={useTrans("Service Création")} />
+            <Head title={t("title")} />
+            <PageHeading title={t("title")} />
             <PlaceholderContent>
                 <form onSubmit={submit}>
                     <div className="md:flex my-4">
                         <div className="w-full md:w-1/3 pb-2">
                             <InputLabel
                                 htmlFor="service_name"
-                                value={useTrans("Nom de service")}
+                                value={t("name")}
                             />
                             <LabelDescreption>
-                                {useTrans(
-                                    "Entrer un nom claire et simple pour le nom de service"
-                                )}
+                                {t("nameDescreption")}
                             </LabelDescreption>
                         </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                             <InputLabel
                                 htmlFor="service_name"
-                                value={useTrans("Nom de service")}
+                                value={t("name")}
                             />
                             <Input
                                 className="mt-2 w-full bg-card"
-                                placeholder={useTrans("Exemple : Restaurant")}
+                                placeholder={t("placeholder")}
                                 id="service_name"
                                 value={data.service_name}
                                 onChange={(e) =>
@@ -104,18 +104,16 @@ export default function CreateService() {
                         <div className="w-full md:w-1/3 pb-2">
                             <InputLabel
                                 htmlFor="service_descreption"
-                                value={useTrans("Description")}
+                                value={t("descreption")}
                             />
                             <LabelDescreption>
-                                {useTrans(
-                                    "Vous pouvez ajouter des titre ou bien des style au desciption"
-                                )}
+                                {t("descreptionDescreption")}
                             </LabelDescreption>
                         </div>
                         <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                             <InputLabel
                                 htmlFor="service_descreption"
-                                value={useTrans("Description")}
+                                value={t("descreption")}
                             />
                             <Editor
                                 autofocus={false}
@@ -136,18 +134,16 @@ export default function CreateService() {
                             <div className="w-full md:w-1/3 pb-2">
                                 <InputLabel
                                     htmlFor="assets"
-                                    value={useTrans("Photos")}
+                                    value={t("assets")}
                                 />
                                 <LabelDescreption>
-                                    {useTrans(
-                                        "Ajouter des photos au service (ne dépasse pas 10 photos par service)"
-                                    )}
+                                    {t("assetsDescreption")}
                                 </LabelDescreption>
                             </div>
                             <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                                 <InputLabel
                                     htmlFor="assets"
-                                    value={useTrans("Photos")}
+                                    value={t("assets")}
                                 />
                                 <FileUploader
                                     handleChange={handleFiles}
@@ -175,8 +171,9 @@ export default function CreateService() {
                             type="submit"
                             className="mt-2 w-1/4"
                             variant="secondary"
+                            disabled={processing}
                         >
-                            {useTrans("Créer")}
+                            {t("createBtn")}
                         </Button>
                     </div>
                 </form>

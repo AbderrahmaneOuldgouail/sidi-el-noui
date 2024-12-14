@@ -6,7 +6,6 @@ import PageHeading from "@/Components/ui/PageHeading";
 import { Skeleton } from "@/Components/ui/skeleton";
 import DataCart from "@/Components/Admin/Dashboard/DataCart";
 import { useTranslation } from "react-i18next";
-import LanguageSwitcher from "@/Components/Admin/Shared/LanguageSwitcher";
 
 const Chart = React.lazy(() => import("@/Components/Admin/Dashboard/Chart"));
 

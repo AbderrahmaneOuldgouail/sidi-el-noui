@@ -14,19 +14,18 @@ import { Card, CardContent, CardTitle } from "@/Components/ui/card";
 import { Separator } from "@/Components/ui/separator";
 import { Button } from "@/Components/ui/button";
 import { Pencil } from "lucide-react";
-import { useTrans } from "@/Hooks/useTrans";
 import { Editor } from "@/Components/Admin/Shared/Editor";
+import { useTranslation } from "react-i18next";
 
 export default function Room({ room, categorys }) {
+    const { t } = useTranslation("translation", { keyPrefix: "rooms.room" });
     const categoryExists = (features, category_id) => {
         return features.some((item) => item.categorie_id === category_id);
     };
     return (
         <AdminPanelLayout>
-            <Head title="Rooms" />
-            <PageHeading
-                title={useTrans("La Chambre N°") + " " + room.room_number}
-            />
+            <Head title={t("title") + " " + room.room_number} />
+            <PageHeading title={t("title") + " " + room.room_number} />
             <PlaceholderContent>
                 <Carousel>
                     <CarouselContent>
@@ -48,14 +47,14 @@ export default function Room({ room, categorys }) {
                 </Carousel>
                 <div className="mt-4">
                     <div className="flex items-center justify-between">
-                        <div className="text-lg font-bold text-xl">
-                            {room.type.type_designation} {useTrans("avec")}{" "}
-                            {room.beeds_number} {useTrans("lits")}{" "}
+                        <div className="font-bold text-xl">
+                            {room.type.type_designation} {t("with")}{" "}
+                            {room.beeds_number} {t("beeds")}{" "}
                         </div>
                         <div className="font-bold text-xl bg-muted p-2 rounded">
-                            <span>{useTrans("Prix de chmabre")} : </span>
+                            <span>{t("price")} : </span>
                             <span className="text-destructive">
-                                {room.room_price} {useTrans("DA")}
+                                {room.room_price} {t("da")}
                             </span>
                         </div>
                     </div>
@@ -101,7 +100,7 @@ export default function Room({ room, categorys }) {
                     </div>
                     <div>
                         <div className="font-bold text-lg my-4">
-                            {useTrans("Description")} :{" "}
+                            {t("descreption")} :{" "}
                         </div>
                         <Editor
                             autofocus={false}
@@ -119,7 +118,7 @@ export default function Room({ room, categorys }) {
                             href={route("rooms.edit", room.room_number)}
                             className="flex w-full"
                         >
-                            {useTrans("Modifier")}{" "}
+                            {t("edit")}{" "}
                             <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
                         </Link>
                     </Button>

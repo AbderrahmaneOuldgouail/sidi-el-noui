@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
-import { useTrans } from "@/Hooks/useTrans";
 import {
     Card,
     CardContent,
@@ -20,10 +19,14 @@ import { buttonVariants } from "@/Components/ui/button";
 import PromotionCardFooter from "./PromotionCardFooter";
 import { Badge } from "@/Components/ui/badge";
 import { Editor } from "@/Components/Admin/Shared/Editor";
+import { useTranslation } from "react-i18next";
 
 export default function PromotionCard({ promotion }) {
     const { width } = useWindowDimensions();
     const [isOpen, setIsOpen] = useState(false);
+    const { t } = useTranslation("translation", {
+        keyPrefix: "promotions.card",
+    });
 
     return (
         <Card className="transition-transform ease-in-out duration-700 relative my-6 ">
@@ -48,18 +51,18 @@ export default function PromotionCard({ promotion }) {
                 </Carousel>
             </div>
             <div className="flex flex-col justify-between w-full">
-                <CardHeader className="text-lg font-bold text-xl flex flex-row items-center justify-between">
+                <CardHeader className=" font-bold text-xl flex flex-row items-center justify-between">
                     <div className="text-destructive text-2xl font-bold">
-                        - {promotion.promo_value} {useTrans("DA")}{" "}
+                        - {promotion.promo_value} {t("da")}{" "}
                     </div>
                     <div>
                         {promotion.is_active ? (
                             <Badge variant="success">
-                                {useTrans("Active")}
+                                {t("activeState")}
                             </Badge>
                         ) : (
                             <Badge variant="danger">
-                                {useTrans("Désactivé")}
+                                {t("inactiveState")}
                             </Badge>
                         )}
                     </div>
@@ -70,7 +73,7 @@ export default function PromotionCard({ promotion }) {
                             {promotion.promo_start_date ==
                             promotion.promo_end_date ? (
                                 <div>
-                                    {useTrans("Date de promotion")} :{" "}
+                                    {t("date")} :{" "}
                                     <span className="font-bold text-lg">
                                         {promotion.promo_start_date}
                                     </span>
@@ -78,13 +81,13 @@ export default function PromotionCard({ promotion }) {
                             ) : (
                                 <div>
                                     <div>
-                                        {useTrans("Date début de promotion")} :{" "}
+                                        {t("startDate")} :{" "}
                                         <span className="font-bold text-lg">
                                             {promotion.promo_start_date}
                                         </span>
                                     </div>
                                     <div>
-                                        {useTrans("Date fin de promotion")} :{" "}
+                                        {t("endDate")} :{" "}
                                         <span className="font-bold text-lg">
                                             {promotion.promo_end_date}
                                         </span>
@@ -93,7 +96,7 @@ export default function PromotionCard({ promotion }) {
                             )}
                             <div>
                                 <div className="font-bold text-lg my-4">
-                                    {useTrans("Description")} :{" "}
+                                    {t("descreption")} :{" "}
                                 </div>
                                 <Editor
                                     autofocus={false}
@@ -102,7 +105,7 @@ export default function PromotionCard({ promotion }) {
                                 />
                             </div>
                         </CardContent>
-                        <CardFooter >
+                        <CardFooter>
                             <PromotionCardFooter promotion={promotion} />
                         </CardFooter>
                     </>

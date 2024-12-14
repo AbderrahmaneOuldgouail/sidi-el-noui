@@ -1,18 +1,19 @@
-import { Head, Link } from "@inertiajs/react";
-import EditRoomForm from "@/Components/Admin/Rooms/EditRoomForm";
+import { Head } from "@inertiajs/react";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import PageHeading from "@/Components/ui/PageHeading";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
+import RoomForm from "@/Components/Admin/Rooms/RoomForm";
 
 export default function RoomEdit({ room, types, categorys }) {
+    const { t } = useTranslation();
     return (
         <AdminPanelLayout>
-            <Head title="Rooms crete" />
-            <PageHeading title={useTrans("Chambre Modification")} />
+            <Head title={t("editTitle")} />
+            <PageHeading title={t("editTitle")} />
             <PlaceholderContent>
                 <div className="max-w-7xl mx-auto ">
-                    <EditRoomForm
+                    <RoomForm
                         types={types}
                         categorys={categorys}
                         room={room[0]}

@@ -36,7 +36,7 @@ class UserController extends Controller
             return abort(403);
         }
         $roles = Role::whereNotIn('role_name', [Roles::CLIENT->value, Roles::COMPANY->value])->get();
-        return Inertia::render('Admin/Employes/CreateEmployes', ['roles' => $roles]);
+        return Inertia::render('Admin/Employes/EmployeForm', ['roles' => $roles]);
     }
 
     public function store(Request $request)
@@ -89,7 +89,7 @@ class UserController extends Controller
         }
 
         $roles = Role::whereNotIn('role_name', [Roles::CLIENT->value, Roles::COMPANY->value])->get();
-        return Inertia::render('Admin/Employes/EditEmployes', ['roles' => $roles, 'user' => $user]);
+        return Inertia::render('Admin/Employes/EmployeForm', ['roles' => $roles, 'user' => $user]);
     }
 
     public function update(Request $request)

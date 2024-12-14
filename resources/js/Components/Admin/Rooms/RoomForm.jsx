@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { Button, buttonVariants } from "@/Components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link, useForm } from "@inertiajs/react";
 import { FileUploader } from "react-drag-drop-files";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { Button, buttonVariants } from "@/Components/ui/button";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import {
@@ -29,28 +29,65 @@ import { Toggle } from "@/Components/ui/toggle";
 import { Input } from "@/Components/ui/input";
 import { Separator } from "@/Components/ui/separator";
 import LabelDescreption from "@/Components/LabelDescreption";
-import { useTrans } from "@/Hooks/useTrans";
 import { ImagesViewer } from "../Shared/ImagesViewer";
 import MyFileUploader from "../Shared/MyFileUploader";
 import { Editor } from "@/Components/Admin/Shared/Editor";
+import { useTranslation } from "react-i18next";
+import DbImageViewer from "../Shared/DbImageViewer";
 
 const fileTypes = ["JPG", "PNG", "GIF"];
 
-export default function CreateRoomForm({ types, categorys }) {
-    const [type, setType] = React.useState("");
+export default function RoomForm({ types, categorys, room }) {
+    const [type, setType] = React.useState(room?.type.type_designation);
     const [open, setOpen] = React.useState(false);
     const [searchValue, setSearchValue] = React.useState("");
     const [importedFiles, setImportedFiles] = useState([]);
 
-    const { data, setData, post, errors , clearErrors} = useForm({
-        room_number: "",
-        room_price: "",
-        room_descreption: "",
-        type_id: "",
-        beeds_number: "",
-        features: [],
-        assets: [],
+    const [dbImages, setDbImages] = useState(room?.assets);
+
+    const { t } = useTranslation("translation", {
+        keyPrefix: "rooms.roomForm",
     });
+    const { data, setData, post, errors, clearErrors, processing } = useForm({
+        room_number: room ? room.room_number : "",
+        type_id: room ? room.type_id : "",
+        room_descreption: room ? room.room_descreption : "",
+        room_price: room ? room.room_price : "",
+        beeds_number: room ? room.beeds_number : "",
+        features: room
+            ? room.features.map((feature) => {
+                  return {
+                      feature_id: feature.feature_id,
+                      features_name: feature.features_name,
+                      need_value: feature.need_value,
+                      value: feature.pivot.valeur,
+                  };
+              })
+            : [],
+        assets: [],
+        remouved_assets: [],
+        required_assets: room && room?.assets.length > 0 ? false : true,
+    });
+
+    const remouveAsset = (index) => {
+        setData((prevData) => ({
+            ...prevData,
+            remouved_assets: [...prevData.remouved_assets, index],
+        }));
+        setDbImages((prevDbImages) => {
+            const updatedDbImages = prevDbImages.filter(
+                (image) => image.id !== index
+            );
+
+            setData((prevData) => ({
+                ...prevData,
+                required_assets: updatedDbImages.length === 0,
+            }));
+
+            return updatedDbImages;
+        });
+    };
+
     const handleFiles = (files) => {
         if (!files || !files.length) return;
 
@@ -81,7 +118,9 @@ export default function CreateRoomForm({ types, categorys }) {
     };
     const submit = (e) => {
         e.preventDefault();
-        post(route("rooms.store"));
+        room
+            ? post(route("rooms.update", room.room_number))
+            : post(route("rooms.store"));
     };
 
     const isPressedFn = (feature) =>
@@ -109,44 +148,17 @@ export default function CreateRoomForm({ types, categorys }) {
         });
     };
 
-    // const handleFiles = (file) => {
-    //     const files = Array.from(file);
-    //     const promises = files.map((f) => {
-    //         return new Promise((resolve, reject) => {
-    //             const reader = new FileReader();
-    //             reader.onloadend = () => {
-    //                 resolve(reader.result);
-    //             };
-    //             reader.onerror = reject;
-    //             reader.readAsDataURL(f);
-    //         });
-    //     });
-
-    //     Promise.all(promises).then((images) => {
-    //         setImages(images);
-    //     });
-    //     setData("assets", file);
-    // };
-
     return (
         <form onSubmit={submit}>
             <div className="md:flex my-4">
                 <div className="w-full md:w-1/3 pb-2">
-                    <InputLabel
-                        htmlFor="room_number"
-                        value={useTrans("Numéro de chmabre")}
-                    />
+                    <InputLabel htmlFor="room_number" value={t("roomNumber")} />
                     <LabelDescreption>
-                        {useTrans(
-                            "Quel est le numéro unique de cette chambre ?"
-                        )}
+                        {t("roomNumberDescreption")}
                     </LabelDescreption>
                 </div>
                 <div className="w-full md:w-2/3 bg-muted p-4 shadow">
-                    <InputLabel
-                        htmlFor="room_number"
-                        value={useTrans("Numéro de chmabre")}
-                    />
+                    <InputLabel htmlFor="room_number" value={t("roomNumber")} />
                     <Input
                         className="mt-2 w-full bg-card"
                         placeholder="102"
@@ -160,21 +172,11 @@ export default function CreateRoomForm({ types, categorys }) {
             <Separator />
             <div className="md:flex my-4">
                 <div className="w-full md:w-1/3 pb-2">
-                    <InputLabel
-                        htmlFor="room_price"
-                        value={useTrans("Prix de chmabre")}
-                    />
-                    <LabelDescreption>
-                        {useTrans(
-                            "Ce sont les prix de la chambre avec tous taxe inclus"
-                        )}
-                    </LabelDescreption>
+                    <InputLabel htmlFor="room_price" value={t("price")} />
+                    <LabelDescreption>{t("priceDescreption")}</LabelDescreption>
                 </div>
                 <div className="w-full md:w-2/3 bg-muted p-4 shadow">
-                    <InputLabel
-                        htmlFor="room_price"
-                        value={useTrans("Prix de chmabre")}
-                    />
+                    <InputLabel htmlFor="room_price" value={t("price")} />
                     <Input
                         className="mt-2 w-full bg-card"
                         placeholder="5500 DA"
@@ -190,18 +192,16 @@ export default function CreateRoomForm({ types, categorys }) {
                 <div className="w-full md:w-1/3 pb-2">
                     <InputLabel
                         htmlFor="beeds_number"
-                        value={useTrans("Nombre de lits")}
+                        value={t("beedsNumber")}
                     />
                     <LabelDescreption>
-                        {useTrans(
-                            "Quel est le nombre de lits dans cette chambre"
-                        )}
+                        {t("beedsNumberDescreption")}
                     </LabelDescreption>
                 </div>
                 <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                     <InputLabel
                         htmlFor="beeds_number"
-                        value={useTrans("Nombre de lits")}
+                        value={t("beedsNumber")}
                     />
                     <Input
                         className="mt-2 w-full bg-card"
@@ -221,15 +221,13 @@ export default function CreateRoomForm({ types, categorys }) {
             <Separator />
             <div className="md:flex my-4">
                 <div className="w-full md:w-1/3 pb-2">
-                    <InputLabel htmlFor="room_type" value={useTrans("Type")} />
-                    <LabelDescreption>
-                        {useTrans("Quel est le type de cette chambre")}
-                    </LabelDescreption>
+                    <InputLabel htmlFor="room_type" value={t("type")} />
+                    <LabelDescreption>{t("typeDescreption")}</LabelDescreption>
                 </div>
                 <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                     <InputLabel
                         htmlFor="room_type"
-                        value={useTrans("Type")}
+                        value={t("type")}
                         className="mb-2"
                     />
                     <Popover open={open} onOpenChange={setOpen}>
@@ -240,18 +238,14 @@ export default function CreateRoomForm({ types, categorys }) {
                                 aria-expanded={open}
                                 className="w-full justify-between"
                             >
-                                {type
-                                    ? type
-                                    : useTrans("Selectioner un Type...")}
+                                {type ? type : t("typeSelect")}
                                 <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent>
                             <Command>
                                 <CommandInput
-                                    placeholder={useTrans(
-                                        "Chercher un Type..."
-                                    )}
+                                    placeholder={t("typeSearch")}
                                     value={searchValue}
                                     onValueChange={(newValue) =>
                                         setSearchValue(newValue)
@@ -259,6 +253,10 @@ export default function CreateRoomForm({ types, categorys }) {
                                 />
                                 <CommandList>
                                     <CommandEmpty>
+                                        <div>{t("emptyTypeMessage")}</div>
+                                        <div className="font-bold py-2">
+                                            {searchValue}
+                                        </div>
                                         <Link
                                             href={route("types.store")}
                                             method="post"
@@ -266,9 +264,13 @@ export default function CreateRoomForm({ types, categorys }) {
                                             data={{
                                                 type_designation: searchValue,
                                             }}
+                                            className={cn(
+                                                buttonVariants({
+                                                    variant: "secondary",
+                                                })
+                                            )}
                                         >
-                                            Ajouter <b>{searchValue}</b> au
-                                            Types
+                                            {t("emptyTypeButton")}
                                         </Link>
                                     </CommandEmpty>
                                     <CommandGroup>
@@ -319,18 +321,16 @@ export default function CreateRoomForm({ types, categorys }) {
                 <div className="w-full md:w-1/3 pb-2">
                     <InputLabel
                         htmlFor="room_descreption"
-                        value={useTrans("Description")}
+                        value={t("descreption")}
                     />
                     <LabelDescreption>
-                        {useTrans(
-                            "Entrer une description générale sur cette chambre"
-                        )}
+                        {t("descreptionDescreption")}
                     </LabelDescreption>
                 </div>
                 <div className="w-full md:w-2/3 bg-muted p-4 shadow">
                     <InputLabel
                         htmlFor="room_descreption"
-                        value={useTrans("Description")}
+                        value={t("descreption")}
                     />
                     <Editor
                         autofocus={false}
@@ -339,15 +339,6 @@ export default function CreateRoomForm({ types, categorys }) {
                             setData("room_descreption", html);
                         }}
                     />
-                    {/* <Textarea
-                        className="mt-2 w-full bg-card dark:bg-card"
-                        placeholder={useTrans("Description sur la chambre")}
-                        id="room_descreption"
-                        value={data.room_descreption}
-                        onChange={(e) =>
-                            setData("room_descreption", e.target.value)
-                        }
-                    /> */}
                     <InputError
                         message={errors.room_descreption}
                         className="mt-2"
@@ -357,21 +348,16 @@ export default function CreateRoomForm({ types, categorys }) {
             <Separator />
             <div className="md:flex  my-4">
                 <div className="w-full md:w-1/3 pb-2">
-                    <InputLabel
-                        htmlFor="room_descreption"
-                        value={useTrans("Caractéristiques")}
-                    />
+                    <InputLabel htmlFor="room_features" value={t("features")} />
                     <LabelDescreption>
-                        {useTrans(
-                            "Choisis parmi ces caractéristiques, et ajouter des valeur aux caractéristiques qui'il besoin"
-                        )}
+                        {t("featuresDescreption")}
                     </LabelDescreption>
                 </div>
                 <div className="w-full md:w-2/3 bg-muted p-4 shadow flex gap-2">
                     <div className="w-2/3">
                         <InputLabel
-                            htmlFor="room_descreption"
-                            value={useTrans("Caractéristiques")}
+                            htmlFor="room_features"
+                            value={t("features")}
                         />
                         <Accordion type="multiple">
                             {categorys.map((category) => (
@@ -445,21 +431,13 @@ export default function CreateRoomForm({ types, categorys }) {
             <div>
                 <div className="md:flex my-4">
                     <div className="w-full md:w-1/3 pb-2">
-                        <InputLabel
-                            htmlFor="assets"
-                            value={useTrans("Photos")}
-                        />
+                        <InputLabel htmlFor="assets" value={t("assets")} />
                         <LabelDescreption>
-                            {useTrans(
-                                "Ajouter des photos au chambres (ne dépasse pas 10 photos par chambres)"
-                            )}
+                            {t("assetsDescreption")}
                         </LabelDescreption>
                     </div>
                     <div className="w-full md:w-2/3 bg-muted p-4 shadow">
-                        <InputLabel
-                            htmlFor="assets"
-                            value={useTrans("Photos")}
-                        />
+                        <InputLabel htmlFor="assets" value={t("assets")} />
                         <FileUploader
                             handleChange={handleFiles}
                             name="file"
@@ -476,15 +454,22 @@ export default function CreateRoomForm({ types, categorys }) {
                     images={importedFiles}
                     errors={errors}
                     deleteImage={deleteImage}
-                />{" "}
+                />
+                {room && (
+                    <DbImageViewer
+                        assets={dbImages}
+                        remouveAsset={remouveAsset}
+                    />
+                )}
             </div>
             <div className="flex justify-end">
                 <Button
                     type="submit"
                     className="mt-2 w-1/4"
                     variant="secondary"
+                    disabled={processing}
                 >
-                    {useTrans("Crée")}
+                    {room ? t("edit") : t("submit")}
                 </Button>
             </div>
         </form>

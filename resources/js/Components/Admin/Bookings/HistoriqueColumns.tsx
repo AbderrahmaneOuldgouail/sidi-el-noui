@@ -19,7 +19,6 @@ import {
 } from "@/Components/ui/dialog";
 import {
     Drawer,
-    DrawerClose,
     DrawerContent,
     DrawerDescription,
     DrawerFooter,
@@ -35,9 +34,9 @@ import {
 } from "@/Components/ui/dropdown-menu";
 import { router, usePage } from "@inertiajs/react";
 import { Badge } from "@/Components/ui/badge";
-import { useTrans } from "@/Hooks/useTrans";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import ColumnHeader from "@/Components/Admin/ColumnHeader";
+import { useTranslation } from "react-i18next";
 
 export type Bookings = {
     booking_id: number;
@@ -53,9 +52,10 @@ export type Bookings = {
     };
 };
 
+
 export const historiqueColumns: ColumnDef<Bookings>[] = [
     {
-        accessorKey: "Client",
+        accessorKey: "client",
         cell: ({ row }) => {
             const booking = row.original;
             return (
@@ -67,53 +67,34 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                 </div>
             );
         },
-        header: ({ column }) => <ColumnHeader title={"Client"} />,
+        header: ({ column }) => <ColumnHeader title={"client"} />,
     },
     {
-        accessorKey: "Check in",
+        accessorKey: "checkIn",
         cell: ({ row }) => {
             const booking = row.original;
             return <span>{booking.check_in}</span>;
         },
-        header: ({ column }) => (
-            // <DataTableColumnHeader
-            //     column={column}
-            //     title={useTrans("Check in")}
-            // />
-            <ColumnHeader title={"Check in"} />
-        ),
+        header: ({ column }) => <ColumnHeader title={"checkIn"} />,
     },
     {
-        accessorKey: "Check out",
+        accessorKey: "checkOut",
         cell: ({ row }) => {
             const booking = row.original;
             return <span>{booking.check_out}</span>;
         },
-        header: ({ column }) => (
-            // <DataTableColumnHeader
-            //     column={column}
-            //     title={useTrans("Check out")}
-            // />
-            // <div> {useTrans("Check out")} </div>
-            <ColumnHeader title={"Check out"} />
-        ),
+        header: ({ column }) => <ColumnHeader title={"checkOut"} />,
     },
     {
-        accessorKey: "Date de réservation",
+        accessorKey: "bookingDate",
         cell: ({ row }) => {
             const booking = row.original;
             return <span>{booking.created_at.split("T")[0]} </span>;
         },
-        header: ({ column }) => (
-            // <DataTableColumnHeader
-            //     column={column}
-            //     title={useTrans("Date de réservation")}
-            // />
-            <ColumnHeader title={"Date de réservation"} />
-        ),
+        header: ({ column }) => <ColumnHeader title={"bookingDate"} />,
     },
     {
-        accessorKey: "Status",
+        accessorKey: "status",
         cell: ({ row }) => {
             const booking = row.original;
             return booking.booking_status == "confirmer" ? (
@@ -125,7 +106,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
             );
         },
 
-        header: ({ column }) => <ColumnHeader title={"Status"} />,
+        header: ({ column }) => <ColumnHeader title={"status"} />,
     },
     {
         id: "actions",
@@ -134,6 +115,9 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
             const { width } = useWindowDimensions();
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
+            const { t } = useTranslation("translation", {
+                keyPrefix: "bookings.tableHeader",
+            });
 
             const booking_permission = usePage().props.auth.permissions.booking;
 
@@ -183,19 +167,15 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                     >
                                         <DialogTrigger className="cursor-pointer flex">
                                             <ReceiptText className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                            <span>{useTrans("Facture")}</span>
+                                            <span>{t("bill")}</span>
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
                                                 <DialogTitle>
-                                                    {useTrans(
-                                                        "Mode de payment"
-                                                    )}
+                                                    {t("dialogTitle")}
                                                 </DialogTitle>
                                                 <DialogDescription>
-                                                    {useTrans(
-                                                        "Choisi le mode de payment pour cette facture"
-                                                    )}
+                                                    {t("dialogDescreption")}
                                                 </DialogDescription>
                                             </DialogHeader>
                                             <DialogFooter className="gap-2 ">
@@ -211,7 +191,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                                     size="sm"
                                                 >
                                                     <HandCoins className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Espece")}
+                                                    {t("opt1")}
                                                 </Button>
                                                 <Button
                                                     variant="secondary"
@@ -225,7 +205,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                                     size="sm"
                                                 >
                                                     <Ticket className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Chèque")}
+                                                    {t("opt2")}
                                                 </Button>
                                             </DialogFooter>
                                         </DialogContent>
@@ -237,19 +217,15 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                     >
                                         <DrawerTrigger className="cursor-pointer flex">
                                             <ReceiptText className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                                            <span>{useTrans("Facture")}</span>
+                                            <span>{t("bill")}</span>
                                         </DrawerTrigger>
                                         <DrawerContent>
                                             <DrawerHeader className="text-left">
                                                 <DrawerTitle>
-                                                    {useTrans(
-                                                        "Mode de payment"
-                                                    )}
+                                                    {t("dialogTitle")}
                                                 </DrawerTitle>
                                                 <DrawerDescription>
-                                                    {useTrans(
-                                                        "Choisi le mode de payment pour cette facture"
-                                                    )}
+                                                    {t("dialogDescreption")}
                                                 </DrawerDescription>
                                             </DrawerHeader>
                                             <DrawerFooter className="pt-2">
@@ -265,7 +241,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                                     size="sm"
                                                 >
                                                     <HandCoins className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Espece")}
+                                                    {t("opt1")}
                                                 </Button>
                                                 <Button
                                                     variant="secondary"
@@ -279,7 +255,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                                     size="sm"
                                                 >
                                                     <Ticket className="mx-2 h-3.5 w-3.5" />
-                                                    {useTrans("Chèque")}
+                                                    {t("opt2")}
                                                 </Button>
                                             </DrawerFooter>
                                         </DrawerContent>
@@ -296,7 +272,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                         handleBookingStatus("confirmer")
                                     }
                                 >
-                                    Confirmer
+                                    {t("approve")}
                                 </Button>
                                 <Button
                                     variant="destructive"
@@ -304,7 +280,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                                         handleBookingStatus("refusé")
                                     }
                                 >
-                                    Refusé
+                                    {t("cancel")}
                                 </Button>
                             </DropdownMenuItem>
                         ) : null}
@@ -317,7 +293,7 @@ export const historiqueColumns: ColumnDef<Bookings>[] = [
                             className="cursor-pointer"
                         >
                             <Eye className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                            <span>{useTrans("Voir")} </span>
+                            <span>{t("show")} </span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

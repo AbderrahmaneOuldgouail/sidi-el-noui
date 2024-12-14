@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Head, router } from "@inertiajs/react";
 
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
 
-import { useTrans } from "@/Hooks/useTrans";
 import { Button } from "@/Components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export default function Notifications({ notifications }) {
+    const { t } = useTranslation("translation", { keyPrefix: "notifications" });
     function timeSince(date) {
         const now = new Date();
         const past = new Date(date);
@@ -51,8 +52,8 @@ export default function Notifications({ notifications }) {
     };
     return (
         <AdminPanelLayout>
-            <Head title="Notifications" />
-            <PageHeading title={useTrans("Notifications")} />
+            <Head title={t("title")} />
+            <PageHeading title={t("title")} />
             <div className="flex justify-end mt-2 -mb-4 gap-4">
                 <Button
                     onClick={() => {
@@ -61,7 +62,7 @@ export default function Notifications({ notifications }) {
                     variant="ghost"
                     className="font-bold"
                 >
-                    {useTrans("Tout marquer comme lu")}
+                    {t("readAll")}
                 </Button>
                 <Button
                     onClick={() => {
@@ -70,7 +71,7 @@ export default function Notifications({ notifications }) {
                     variant="ghost"
                     className="font-bold"
                 >
-                    {useTrans("Supprimer Tous")}
+                    {t("deleteAll")}
                 </Button>
             </div>
             <PlaceholderContent>
@@ -86,17 +87,16 @@ export default function Notifications({ notifications }) {
                         )}
                         onClick={() => ViewNotification(notification)}
                     >
-                    {console.log(notification)}
                         <span>
                             <span className="font-bold">
                                 {notification.data.first_name}{" "}
                                 {notification.data.last_name}
                             </span>{" "}
-                            {useTrans("a fait une réservation de")}{" "}
+                            {t("text1")}{" "}
                             <span className="font-bold">
                                 {notification.data.check_in}
                             </span>{" "}
-                            {useTrans("vers")}{" "}
+                            {t("text2")}{" "}
                             <span className="font-bold">
                                 {notification.data.check_out}
                             </span>{" "}

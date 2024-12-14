@@ -15,8 +15,10 @@ import { router } from "@inertiajs/react";
 
 import { Button } from "@/Components/ui/button";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function MobilePagination({ data }) {
+    const {t} = useTranslation("translation", {keyPrefix: "rooms"})
     const navigateTo = (url) => {
         router.visit(url, {
             preserveState: true,

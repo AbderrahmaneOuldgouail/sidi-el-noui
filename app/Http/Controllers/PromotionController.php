@@ -37,7 +37,7 @@ class PromotionController extends Controller
         if ($request->user()->cannot('create', Promotion::class)) {
             return abort(403);
         }
-        return Inertia::render('Admin/Promotions/CreatePromotion');
+        return Inertia::render('Admin/Promotions/PromotionForm');
     }
 
     public function store(Request $request)
@@ -101,7 +101,7 @@ class PromotionController extends Controller
             return abort(403);
         }
         $promotion = Promotion::with(['assets'])->where('promotion_id', $id)->first();
-        return Inertia::render('Admin/Promotions/EditPromotion', ['promotion' => $promotion]);
+        return Inertia::render('Admin/Promotions/PromotionForm', ['promotion' => $promotion]);
     }
 
     public function update(Request $request)

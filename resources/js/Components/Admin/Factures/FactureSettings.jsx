@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "@/Components/ui/button";
-import { useTrans } from "@/Hooks/useTrans";
 import { Settings2 } from "lucide-react";
 import {
     Sheet,
@@ -16,13 +15,17 @@ import { Input } from "@/Components/ui/input";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Separator } from "@/Components/ui/separator";
 import { useForm } from "@inertiajs/react";
+import { useTranslation } from "react-i18next";
 
 export default function FactureSettings({ bill_settings }) {
     const [open, setOpen] = React.useState(false);
-    const { data, setData, errors, post } = useForm({
-        tva: bill_settings?.tva,
-        timbre: bill_settings?.timbre,
-        tourist_tax: bill_settings?.tourist_tax,
+    const { t } = useTranslation("translation", {
+        keyPrefix: "factures.settings",
+    });
+    const { data, setData, errors, post, processing } = useForm({
+        tva: bill_settings ? bill_settings?.tva : "",
+        timbre: bill_settings ? bill_settings?.timbre : "",
+        tourist_tax: bill_settings ? bill_settings?.tourist_tax : "",
     });
 
     const submit = (e) => {
@@ -38,16 +41,12 @@ export default function FactureSettings({ bill_settings }) {
             </SheetTrigger>
             <SheetContent>
                 <SheetHeader>
-                    <SheetTitle>{useTrans("Parametre de facture")}</SheetTitle>
-                    <SheetDescription>
-                        {useTrans("Modifier les constant de facturation içi")}
-                    </SheetDescription>
+                    <SheetTitle>{t("title")}</SheetTitle>
+                    <SheetDescription>{t("descreption")}</SheetDescription>
                     <form onSubmit={submit}>
                         <div className="w-full bg-muted p-4 shadow my-4">
                             <InputLabel htmlFor="tva" value="TVA" />
-                            <LabelDescreption>
-                                {useTrans("La valeur de TVA en %")}
-                            </LabelDescreption>
+                            <LabelDescreption>{t("tva")}</LabelDescreption>
                             <Input
                                 className="mt-2 w-full bg-card"
                                 id="tva"
@@ -60,12 +59,10 @@ export default function FactureSettings({ bill_settings }) {
                         <div className="w-full bg-muted p-4 shadow my-4">
                             <InputLabel
                                 htmlFor="tourist_tax"
-                                value={useTrans("Taxe de séjour")}
+                                value={t("taxes")}
                             />
                             <LabelDescreption>
-                                {useTrans(
-                                    "la valeur de taxe de séjour en DA/personne"
-                                )}
+                                {t("taxesDescreption")}
                             </LabelDescreption>
                             <Input
                                 className="mt-2 w-full bg-card"
@@ -82,12 +79,9 @@ export default function FactureSettings({ bill_settings }) {
                         </div>
                         <Separator />
                         <div className="w-full bg-muted p-4 shadow my-4">
-                            <InputLabel
-                                htmlFor="timbre"
-                                value={useTrans("Droit de timbre")}
-                            />
+                            <InputLabel htmlFor="timbre" value={t("timbre")} />
                             <LabelDescreption>
-                                {useTrans("La valeur de tibmre en %")}
+                                {t("timbreDescreption")}
                             </LabelDescreption>
                             <Input
                                 className="mt-2 w-full bg-card"
@@ -106,8 +100,9 @@ export default function FactureSettings({ bill_settings }) {
                             variant="secondary"
                             size="sm"
                             className="w-full"
+                            disabled={processing}
                         >
-                            {useTrans("Enregistrer")}
+                            {t("save")}
                         </Button>
                     </form>
                 </SheetHeader>
