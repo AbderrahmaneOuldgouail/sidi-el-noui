@@ -8,11 +8,16 @@ import { ThemeProvider } from "@/Providers/ThemeProvider";
 import { Toaster } from "@/Components/ui/toaster";
 import { useToast } from "@/Components/ui/use-toast";
 import { useTrans } from "@/Hooks/useTrans";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 
 export default function AdminPanelLayout({ children }) {
     const sidebar = useStore(useSidebarToggle, (state) => state);
     const { toast } = useToast();
+    const { locale } = usePage().props;
+
+    React.useEffect(() => {
+        document.documentElement.dir = locale == "ar" ? "rtl" : "ltr";
+    }, [locale]);
 
     Echo.channel(`booking-channel`).listen("NewBooking", (e) => {
         toast({

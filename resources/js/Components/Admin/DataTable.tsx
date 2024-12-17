@@ -19,15 +19,8 @@ import {
     TableRow,
 } from "@/Components/ui/table";
 import React from "react";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/Components/ui/tooltip";
 import { DataTablePagination } from "./DataTablePagination";
 import { DataTableViewOptions } from "./DataTableViewOption";
-import { useTrans } from "@/Hooks/useTrans";
 import { useTranslation } from "react-i18next";
 
 interface DataTableProps<TData, TValue, TPaginate, TSelection> {

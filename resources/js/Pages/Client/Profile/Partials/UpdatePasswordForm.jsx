@@ -8,6 +8,7 @@ import { useTrans } from "@/Hooks/useTrans";
 import { Separator } from "@/Components/ui/separator";
 import { Button } from "@/Components/ui/button";
 import { useToast } from "@/Components/ui/use-toast";
+import { useTranslation } from "react-i18next";
 
 export default function UpdatePasswordForm({ className = "" }) {
     const passwordInput = useRef();
@@ -25,6 +26,9 @@ export default function UpdatePasswordForm({ className = "" }) {
         current_password: "",
         password: "",
         password_confirmation: "",
+    });
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.profile.section2",
     });
     const { toast } = useToast();
     const flash = usePage().props.flash;
@@ -59,13 +63,11 @@ export default function UpdatePasswordForm({ className = "" }) {
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    {useTrans("Mettre à jour le mot de passe")}
+                    {t("title")}
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    {useTrans(
-                        "Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester en sécurité"
-                    )}
+                    {t("subtitle")}
                 </p>
             </header>
 
@@ -74,7 +76,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                     <div className="w-full  bg-muted p-4 shadow">
                         <InputLabel
                             htmlFor="current_password"
-                            value={useTrans("Mot de passe actuel")}
+                            value={t("password")}
                         />
                         <Input
                             className="mt-2 w-full bg-card"
@@ -99,7 +101,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                     <div className="w-full md:w-1/2 bg-muted p-4 shadow">
                         <InputLabel
                             htmlFor="password"
-                            value={useTrans("nouveau mot de passe")}
+                            value={t("newPassword")}
                         />
                         <Input
                             className="mt-2 w-full bg-card"
@@ -122,7 +124,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                     <div className="w-full md:w-1/2 bg-muted p-4 shadow">
                         <InputLabel
                             htmlFor="password_confirmation"
-                            value={useTrans("Confirmez le mot de passe")}
+                            value={t("confirmPassword")}
                         />
                         <Input
                             className="mt-2 w-full bg-card"
@@ -153,7 +155,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                             className="mt-2 w-1/4"
                             variant="secondary"
                         >
-                            {useTrans("Enregistrer")}
+                            {t("submit")}
                         </Button>
                     </div>
                     <Transition
@@ -164,7 +166,7 @@ export default function UpdatePasswordForm({ className = "" }) {
                         leaveTo="opacity-0"
                     >
                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {useTrans("Enregistrer")}
+                            {t("submit")}
                         </p>
                     </Transition>
                 </div>

@@ -5,7 +5,7 @@ export default function LabelDescreption({
     ...props
 }) {
     return (
-        <div {...props} className={`text-muted-foreground text-sm` + className}>
+        <div {...props} className={`text-muted-foreground text-sm ` + className}>
             {value ? value : children}
         </div>
     );

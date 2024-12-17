@@ -5,10 +5,14 @@ import { Head, usePage } from "@inertiajs/react";
 import ClientLayout from "@/Layouts/ClientLayout";
 import { useToast } from "@/Components/ui/use-toast";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Edit({ mustVerifyEmail, status }) {
     const { toast } = useToast();
     const flash = usePage().props.flash;
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.profile",
+    });
     useEffect(() => {
         if (flash.message) {
             toast({ description: flash.message?.message });
@@ -16,7 +20,7 @@ export default function Edit({ mustVerifyEmail, status }) {
     }, [flash.message, toast]);
     return (
         <ClientLayout>
-            <Head title="Profile" />
+            <Head title={t("title")} />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">

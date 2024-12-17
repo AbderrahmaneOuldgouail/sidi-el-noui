@@ -1,5 +1,6 @@
-import { Link, router, usePage } from "@inertiajs/react";
-import { LogOut, User, Languages, BookmarkCheck } from "lucide-react";
+import React from "react";
+import {router, usePage } from "@inertiajs/react";
+import { LogOut, User, BookmarkCheck } from "lucide-react";
 
 import { Button } from "@/Components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
@@ -18,11 +19,14 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { useTrans } from "@/Hooks/useTrans";
-import { LangSwitch } from "@/Components/Admin/Layout/LangSwitch";
+import { useTranslation } from "react-i18next";
 
 export function UserNav() {
     const user = usePage().props.auth.user;
+    const [processing, setProcessing] = React.useState(false);
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.navbar.userNav",
+    });
     return (
         <DropdownMenu>
             <TooltipProvider disableHoverableContent>
@@ -44,7 +48,7 @@ export function UserNav() {
                         </DropdownMenuTrigger>
                     </TooltipTrigger>
                     <TooltipContent side="bottom">
-                        {useTrans("Profile")}
+                        {t("profile")}
                     </TooltipContent>
                 </Tooltip>
             </TooltipProvider>
@@ -62,34 +66,70 @@ export function UserNav() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem className="hover:cursor-pointer" asChild>
-                        <Link
-                            href={route("client.profile.edit")}
-                            className="flex items-center"
-                        >
-                            <User className="w-4 h-4 mr-3 text-muted-foreground" />
-                            {useTrans("Compte")}
-                        </Link>
+                    <DropdownMenuItem
+                        className="hover:cursor-pointer"
+                        disabled={processing}
+                        onClick={() => {
+                            router.get(
+                                route("client.profile.edit"),
+                                {},
+                                {
+                                    onStart: () => {
+                                        setProcessing(true);
+                                    },
+                                    onFinish: () => {
+                                        setProcessing(false);
+                                    },
+                                }
+                            );
+                        }}
+                    >
+                        <User className="w-4 h-4 mr-3 text-muted-foreground" />
+                        {t("compte")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="hover:cursor-pointer" asChild>
-                        <Link
-                            href={route("client.bookings.index")}
-                            className="flex items-center"
-                        >
-                            <BookmarkCheck className="w-4 h-4 mr-3 text-muted-foreground" />
-                            {useTrans("Mes réservations")}
-                        </Link>
+                    <DropdownMenuItem
+                        className="hover:cursor-pointer"
+                        disabled={processing}
+                        onClick={() => {
+                            router.get(
+                                route("client.bookings.index"),
+                                {},
+                                {
+                                    onStart: () => {
+                                        setProcessing(true);
+                                    },
+                                    onFinish: () => {
+                                        setProcessing(false);
+                                    },
+                                }
+                            );
+                        }}
+                    >
+                        <BookmarkCheck className="w-4 h-4 mr-3 text-muted-foreground" />
+                        {t("myBookings")}
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     className="hover:cursor-pointer"
                     onClick={() => {
-                        router.post(route("logout"));
+                        router.post(
+                            route("logout"),
+                            {},
+                            {
+                                onStart: () => {
+                                    setProcessing(true);
+                                },
+                                onFinish: () => {
+                                    setProcessing(false);
+                                },
+                            }
+                        );
                     }}
+                    disabled={processing}
                 >
                     <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
-                    {useTrans("Se déconnecter")}
+                    {t("logOut")}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

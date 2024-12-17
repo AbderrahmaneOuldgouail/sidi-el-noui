@@ -3,18 +3,28 @@ import { Link } from "@inertiajs/react";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { getNavList } from "@/lib/NavList";
 import { AppLogo } from "@/Components/ui/app-logo";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
+
+const email = import.meta.env.VITE_EMAIL || "example@gmail.com";
+const phone = import.meta.env.VITE_PHONE || "0123456789";
+const address = import.meta.env.VITE_ADDRESS || "01, adress Adress";
+const maps = import.meta.env.VITE_MAPS || "url";
+const facebook = import.meta.env.VITE_FACEBOOK_URL || "url";
+const instagram = import.meta.env.VITE_INSTAGRAM_URL || "url";
 
 export default function Footer() {
     const menuList = getNavList();
     const current = route().current();
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.footer",
+    });
 
     return (
         <footer className="relative">
             <div className="lg:px-28 px-10 py-4 flex flex-col  gap-4 ">
                 <div className="flex sm:flex-row pb-4 flex-col justify-between items-center gap-4 w-full">
                     <a
-                        href="phone:023358230"
+                        href={`phone:${phone}`}
                         className="flex gap-4 items-center justify-start w-full"
                     >
                         <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">
@@ -22,15 +32,13 @@ export default function Footer() {
                         </div>
                         <div className="flex sm:flex-col gap-4 sm:gap-1 ">
                             <div className="text-xs text-muted-foreground">
-                                {useTrans("N° téléphone")} :{" "}
+                                {t("phone")} :{" "}
                             </div>
-                            <div className="text-sm font-medium ">
-                                023358230
-                            </div>
+                            <div className="text-sm font-medium ">{phone}</div>
                         </div>
                     </a>
                     <a
-                        href="mailto:support@hotelsidielnoui.dz"
+                        href={`mailto:${email}`}
                         className="flex gap-4 items-center justify-start w-full"
                     >
                         <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">
@@ -38,16 +46,14 @@ export default function Footer() {
                         </div>
                         <div className="flex sm:flex-col gap-4 sm:gap-1">
                             <div className="text-xs text-muted-foreground">
-                                {useTrans("Email")} :{" "}
+                                {t("email")} :{" "}
                             </div>
-                            <div className="text-sm font-medium">
-                                support@hotelsidielnoui.dz
-                            </div>
+                            <div className="text-sm font-medium">{email}</div>
                         </div>
                     </a>
                     <a
                         target="blank"
-                        href="https://maps.app.goo.gl/PKkyi9AU14F6bXYd9"
+                        href={maps}
                         className="flex gap-4 items-center justify-start w-full"
                     >
                         <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">
@@ -55,11 +61,9 @@ export default function Footer() {
                         </div>
                         <div className="flex sm:flex-col gap-4 sm:gap-1">
                             <div className="text-xs text-muted-foreground">
-                                {useTrans("Adresse")} :{" "}
+                                {t("address")} :{" "}
                             </div>
-                            <div className="text-sm font-medium">
-                                chéraga alger, Algerie
-                            </div>
+                            <div className="text-sm font-medium">{address}</div>
                         </div>
                     </a>
                 </div>
@@ -67,7 +71,7 @@ export default function Footer() {
                     <div className="flex items-start justify-center gap-4 sm:w-2/4 w-full">
                         <div className="flex flex-col gap-2 w-1/2">
                             <span className="text-lg font-bold">
-                                {useTrans("Liens")}{" "}
+                                {t("links")}{" "}
                             </span>
                             {current != "client.index"
                                 ? menuList.map((link, idx) => (
@@ -91,10 +95,10 @@ export default function Footer() {
                         </div>
                         <div className="flex flex-col justify-center items-center gap-4 w-1/2">
                             <span className="text-lg font-bold">
-                                {useTrans("Réseaux Sociaux")}
+                                {t("socialMedia")}
                             </span>
                             <a
-                                href="https://web.facebook.com/p/Hotel-sidi-el-noui-100088684863459/?locale=fr_FR&_rdc=1&_rdr"
+                                href={facebook}
                                 className="flex gap-4 items-center "
                             >
                                 <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">
@@ -105,7 +109,7 @@ export default function Footer() {
                                 </div>
                             </a>
                             <a
-                                href="https://www.instagram.com/hotelsidielnoui?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                                href={instagram}
                                 className="flex gap-4 items-center  "
                             >
                                 <div className="text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center">
@@ -119,11 +123,7 @@ export default function Footer() {
                     </div>
                     <div className="flex items-center gap-2 sm:w-2/4 w-full">
                         <AppLogo className="w-20 h-20" />
-                        <div>
-                            {useTrans(
-                                "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable."
-                            )}{" "}
-                        </div>
+                        <div>{t("description")} </div>
                     </div>
                 </div>
             </div>
@@ -132,10 +132,11 @@ export default function Footer() {
                     Duobix Software
                 </a>
                 <div>
-                    <span>© 2024 Copyright: </span>
+                    <span>© 2024 Copyright </span>
                     <a
                         className="font-semibold"
-                        href="https://sidielnouihotel.dz"
+                        href="https://hotelsidielnoui.dz"
+                        target="blank"
                     >
                         SIDI EL NOUI
                     </a>

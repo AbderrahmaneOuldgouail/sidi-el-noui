@@ -9,19 +9,18 @@ import {
 } from "@/Components/ui/carousel";
 import PageHeading from "@/Components/ui/PageHeading";
 import { Editor } from "@/Components/Admin/Shared/Editor";
-import { useTrans } from "@/Hooks/useTrans";
+import { Head } from "@inertiajs/react";
+import { useTranslation } from "react-i18next";
 
 export default function Show({ event }) {
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.sections.event",
+    });
     return (
         <ClientLayout>
             <Head>
-                <title>{useTrans("Événement")}</title>
-                <meta
-                    name="description"
-                    content={useTrans(
-                        "Découvrez nos événements à l'hôtel Sidi El Noui et participez à des expériences inoubliables."
-                    )}
-                />
+                <title>{t("title")}</title>
+                <meta name="description" content={t("metaDescreption")} />
             </Head>
 
             <div className="absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
@@ -52,7 +51,7 @@ export default function Show({ event }) {
                 <div className="flex justify-between itmes-center font-bold">
                     {event.event_start_date == event.event_end_date ? (
                         <div className="mb-4">
-                            {useTrans("Le")} :{" "}
+                            {t("singleDate")} :{" "}
                             <span className="text-lg">
                                 {event.event_start_date}
                             </span>
@@ -60,13 +59,13 @@ export default function Show({ event }) {
                     ) : (
                         <div className="flex flex-col sm:flex-row gap-2 justify-around mb-4">
                             <div>
-                                {useTrans("De")} :{" "}
+                                {t("multipleDateStart")} :{" "}
                                 <span className=" text-lg">
                                     {event.event_start_date}
                                 </span>
                             </div>
                             <div>
-                                {useTrans("Jusqu'a")} :{" "}
+                                {t("multipleDateEnd")} :{" "}
                                 <span className=" text-lg">
                                     {event.event_end_date}
                                 </span>
@@ -74,7 +73,7 @@ export default function Show({ event }) {
                         </div>
                     )}
                     <div className="text-xl text-primary">
-                        {event.event_price} DA
+                        {event.event_price} {t("da")}
                     </div>
                 </div>
                 <Editor

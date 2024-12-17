@@ -1,12 +1,6 @@
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-    MoreHorizontal,
-    Eye,
-    ReceiptText,
-    HandCoins,
-    Ticket,
-} from "lucide-react";
+import { MoreHorizontal, Eye } from "lucide-react";
 import { Button, buttonVariants } from "@/Components/ui/button";
 import {
     Dialog,
@@ -19,7 +13,6 @@ import {
 } from "@/Components/ui/dialog";
 import {
     Drawer,
-    DrawerClose,
     DrawerContent,
     DrawerDescription,
     DrawerFooter,
@@ -33,11 +26,11 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { Link, router, usePage } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import { Badge } from "@/Components/ui/badge";
-import { useTrans } from "@/Hooks/useTrans";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
-import { DataTableColumnHeader } from "@/Components/Admin/DataTableColumnHeader";
+import ColumnHeader from "@/Components/Admin/ColumnHeader";
+import { useTranslation } from "react-i18next";
 
 export type Bookings = {
     booking_id: number;
@@ -56,38 +49,25 @@ export type Bookings = {
 
 export const mybookingscolumns: ColumnDef<Bookings>[] = [
     {
-        accessorKey: "Ref",
+        accessorKey: "ref",
         cell: ({ row }) => {
             const booking = row.original;
             return (
                 <div className="font-bold text-base">{booking.booking_id}</div>
             );
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title={useTrans("Ref")} />
-        ),
+        header: () => <ColumnHeader title={"ref"} />,
     },
     {
-        accessorKey: "Chambre",
+        accessorKey: "rooms",
         cell: ({ row }) => {
             const booking = row.original;
-            console.log(booking.rooms);
-            return (
-                <span>
-                    {booking.rooms.length} {useTrans("chambre")}
-                    {booking.rooms.length > 1 && "s"}{" "}
-                </span>
-            );
+            return <span>{booking.rooms.length}</span>;
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Chambres")}
-            />
-        ),
+        header: () => <ColumnHeader title={"rooms"} />,
     },
     {
-        accessorKey: "date d'entrée - date de sortie",
+        accessorKey: "dates",
         cell: ({ row }) => {
             const booking = row.original;
             return (
@@ -96,28 +76,18 @@ export const mybookingscolumns: ColumnDef<Bookings>[] = [
                 </span>
             );
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("date d'entrée / sortie")}
-            />
-        ),
+        header: () => <ColumnHeader title={"dates"} />,
     },
     {
-        accessorKey: "Date de réservation",
+        accessorKey: "bookingDate",
         cell: ({ row }) => {
             const booking = row.original;
             return <span>{booking.created_at.split("T")[0]} </span>;
         },
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title={useTrans("Date de réservation")}
-            />
-        ),
+        header: () => <ColumnHeader title={"bookingDate"} />,
     },
     {
-        accessorKey: "Status",
+        accessorKey: "status",
         cell: ({ row }) => {
             const booking = row.original;
             return booking.booking_status == "confirmer" ? (
@@ -129,9 +99,7 @@ export const mybookingscolumns: ColumnDef<Bookings>[] = [
             );
         },
 
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title={useTrans("Status")} />
-        ),
+        header: () => <ColumnHeader title={"status"} />,
     },
     {
         id: "actions",
@@ -140,6 +108,31 @@ export const mybookingscolumns: ColumnDef<Bookings>[] = [
             const { width } = useWindowDimensions();
             const [open, setopen] = React.useState(false);
             const [isopen, setIsOpen] = React.useState(false);
+            const [processing, setProcessing] = React.useState(false);
+            const { t } = useTranslation("translation", {
+                keyPrefix: "client.myBookings",
+            });
+
+            const handleBookingStatus = () => {
+                router.post(
+                    route("client.bookings.cancel", booking.booking_id),
+                    {},
+                    {
+                        preserveScroll: true,
+                        preserveState: true,
+                        onSuccess: () => {
+                            setopen(false);
+                            setIsOpen(false);
+                        },
+                        onStart: () => {
+                            setProcessing(true);
+                        },
+                        onFinish: () => {
+                            setProcessing(false);
+                        },
+                    }
+                );
+            };
 
             return (
                 <DropdownMenu
@@ -157,18 +150,28 @@ export const mybookingscolumns: ColumnDef<Bookings>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem
+                            disabled={processing}
                             onClick={() =>
                                 router.get(
                                     route(
                                         "client.bookings.show",
                                         booking.booking_id
-                                    )
+                                    ),
+                                    {},
+                                    {
+                                        onStart: () => {
+                                            setProcessing(true);
+                                        },
+                                        onFinish: () => {
+                                            setProcessing(false);
+                                        },
+                                    }
                                 )
                             }
                             className="cursor-pointer"
                         >
                             <Eye className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                            <span>{useTrans("Voir")} </span>
+                            <span>{t("show")} </span>
                         </DropdownMenuItem>
                         {booking.booking_status == "en attente" ||
                         booking.booking_status == "confirmer" ? (
@@ -179,34 +182,25 @@ export const mybookingscolumns: ColumnDef<Bookings>[] = [
                                         onOpenChange={setIsOpen}
                                     >
                                         <DialogTrigger className="w-full">
-                                            {useTrans("Annuler")}
+                                            {t("cancel")}
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
                                                 <DialogTitle>
-                                                    {useTrans(
-                                                        "Vous êtes sure?"
-                                                    )}
+                                                    {t("dialogTitle")}
                                                 </DialogTitle>
                                                 <DialogDescription>
-                                                    {useTrans(
-                                                        "Vous êtes sur que vous voulez annuler cette réservation"
-                                                    )}
+                                                    {t("dialogDescreption")}
                                                 </DialogDescription>
                                             </DialogHeader>
                                             <DialogFooter className="gap-2 ">
                                                 <Button
                                                     variant="destructive"
                                                     onClick={() =>
-                                                        router.post(
-                                                            route(
-                                                                "client.bookings.cancel",
-                                                                booking.booking_id
-                                                            )
-                                                        )
+                                                        handleBookingStatus()
                                                     }
                                                 >
-                                                    {useTrans("Oui")}
+                                                    {t("accept")}
                                                 </Button>
                                                 <Button
                                                     variant="secondary"
@@ -215,7 +209,7 @@ export const mybookingscolumns: ColumnDef<Bookings>[] = [
                                                         setIsOpen(false);
                                                     }}
                                                 >
-                                                    {useTrans("Non")}
+                                                    {t("deni")}
                                                 </Button>
                                             </DialogFooter>
                                         </DialogContent>
@@ -227,35 +221,26 @@ export const mybookingscolumns: ColumnDef<Bookings>[] = [
                                     >
                                         <DrawerTrigger className="cursor-pointer flex">
                                             <Button variant="destructive">
-                                                Annuler
+                                                {t("cancel")}
                                             </Button>
                                         </DrawerTrigger>
                                         <DrawerContent>
                                             <DrawerHeader className="text-left">
                                                 <DrawerTitle>
-                                                    {useTrans(
-                                                        "Vous êtes sure?"
-                                                    )}
+                                                    {t("dialogTitle")}
                                                 </DrawerTitle>
                                                 <DrawerDescription>
-                                                    {useTrans(
-                                                        "Vous êtes sur que vous voulez annuler cette réservation"
-                                                    )}
+                                                    {t("dialogDescreption")}
                                                 </DrawerDescription>
                                             </DrawerHeader>
                                             <DrawerFooter className="pt-2">
                                                 <Button
                                                     variant="destructive"
                                                     onClick={() =>
-                                                        router.post(
-                                                            route(
-                                                                "client.bookings.cancel",
-                                                                booking.booking_id
-                                                            )
-                                                        )
+                                                        handleBookingStatus()
                                                     }
                                                 >
-                                                    {useTrans("Oui")}
+                                                    {t("accept")}
                                                 </Button>
                                                 <Button
                                                     variant="secondary"
@@ -264,7 +249,7 @@ export const mybookingscolumns: ColumnDef<Bookings>[] = [
                                                         setIsOpen(false);
                                                     }}
                                                 >
-                                                    {useTrans("Non")}
+                                                    {t("deni")}
                                                 </Button>
                                             </DrawerFooter>
                                         </DrawerContent>

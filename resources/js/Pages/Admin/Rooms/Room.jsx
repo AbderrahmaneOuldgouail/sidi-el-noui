@@ -1,5 +1,5 @@
 import React from "react";
-import { Head, Link } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 
 export default function Room({ room, categorys }) {
     const { t } = useTranslation("translation", { keyPrefix: "rooms.room" });
+    const [processing, setProcessing] = React.useState(false);
     const categoryExists = (features, category_id) => {
         return features.some((item) => item.categorie_id === category_id);
     };
@@ -100,7 +101,7 @@ export default function Room({ room, categorys }) {
                     </div>
                     <div>
                         <div className="font-bold text-lg my-4">
-                            {t("descreption")} :{" "}
+                            {t("description")} :{" "}
                         </div>
                         <Editor
                             autofocus={false}
@@ -113,14 +114,26 @@ export default function Room({ room, categorys }) {
                     </div>
                 </div>
                 <div className="flex justify-end mt-4">
-                    <Button variant="outline">
-                        <Link
-                            href={route("rooms.edit", room.room_number)}
-                            className="flex w-full"
-                        >
-                            {t("edit")}{" "}
-                            <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-                        </Link>
+                    <Button
+                        variant="outline"
+                        disabled={processing}
+                        onClick={() =>
+                            router.get(
+                                route("rooms.edit", room.room_number),
+                                {},
+                                {
+                                    onStart: () => {
+                                        setProcessing(true);
+                                    },
+                                    onFinish: () => {
+                                        setProcessing(false);
+                                    },
+                                }
+                            )
+                        }
+                    >
+                        {t("edit")}{" "}
+                        <Pencil className="mx-2 h-3.5 w-3.5 text-muted-foreground/70" />
                     </Button>
                 </div>
             </PlaceholderContent>

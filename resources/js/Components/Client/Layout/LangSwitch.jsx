@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { Button } from "@/Components/ui/button";
 import {
     Tooltip,
@@ -7,22 +6,29 @@ import {
     TooltipTrigger,
     TooltipProvider,
 } from "@/Components/ui/tooltip";
-import { useTrans } from "@/Hooks/useTrans";
 import { cn } from "@/lib/utils";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
+import { useTranslation } from "react-i18next";
 
 export function LangSwitch() {
-    const locale = localStorage.getItem("locale") || "fr";
-    const [lang, setLang] = React.useState(locale);
+    const { t } = useTranslation("translation", { keyPrefix: "client.navbar" });
+    const [processing, setProcessing] = React.useState(false);
 
-    const handleSwitch = () => {
-        const newLang = lang === "ar" ? "fr" : "ar";
-        setLang(newLang);
-        localStorage.setItem("locale", newLang);
+    const { i18n } = useTranslation();
+    const { locale } = usePage().props;
+
+    const handleSwitch = (lng) => {
+        i18n.changeLanguage(lng);
         router.visit(route("client.switch.lang"), {
-            data: { lang: newLang },
+            data: { lang: lng },
             preserveState: true,
             preserveScroll: true,
+            onStart: () => {
+                setProcessing(true);
+            },
+            onFinish: () => {
+                setProcessing(false);
+            },
         });
     };
     return (
@@ -33,12 +39,15 @@ export function LangSwitch() {
                         className="rounded-full w-8 h-8 bg-background"
                         variant="outline"
                         size="icon"
-                        onClick={handleSwitch}
+                        onClick={() =>
+                            handleSwitch(locale == "ar" ? "fr" : "ar")
+                        }
+                        disabled={processing}
                     >
                         <span
                             className={cn(
                                 "absolute w-[1.2rem] h-[1.2rem] rotate-90 scale-0 transition-transform ease-in-out duration-500 ",
-                                lang === "ar"
+                                locale === "ar"
                                     ? "rotate-0 scale-100"
                                     : "-rotate-90 scale-0"
                             )}
@@ -48,7 +57,7 @@ export function LangSwitch() {
                         <span
                             className={cn(
                                 "absolute w-[1.2rem] h-[1.2rem] rotate-0 scale-1000 transition-transform ease-in-out duration-500 ",
-                                lang === "fr"
+                                locale === "fr"
                                     ? "rotate-0 scale-100"
                                     : "rotate-90 scale-0"
                             )}
@@ -58,9 +67,7 @@ export function LangSwitch() {
                         <span className="sr-only">Switch langue</span>
                     </Button>
                 </TooltipTrigger>
-                <TooltipContent side="bottom">
-                    {useTrans("Changer la langue")}{" "}
-                </TooltipContent>
+                <TooltipContent side="bottom">{t("swichLang")} </TooltipContent>
             </Tooltip>
         </TooltipProvider>
     );

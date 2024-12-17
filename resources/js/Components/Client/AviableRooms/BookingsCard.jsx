@@ -20,6 +20,7 @@ import { Badge } from "@/Components/ui/badge";
 import { Editor } from "@/Components/Admin/Shared/Editor";
 
 import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function BookingsCard({
     setFinal,
@@ -67,6 +68,11 @@ export default function BookingsCard({
             return { ...prevData };
         });
     };
+
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.aviableRooms.bookingCard",
+    });
+
     return (
         <div className="w-1/4 rounded px-1 bg-card ">
             <div className="sticky top-10">
@@ -77,12 +83,12 @@ export default function BookingsCard({
                     className="my-4 w-full z-[1] justify-between"
                     disabled={selectedRooms == false}
                 >
-                    {useTrans("Dernière étape")} <ChevronRight />
+                    {t("btn")} <ChevronRight />
                 </Button>
                 {total > 0 && (
                     <div>
                         <p className="text-lg font-bold">
-                            {useTrans("Total")} : {total} {useTrans("DA")}{" "}
+                            {t("tot")} : {total} {t("da")}{" "}
                         </p>
                     </div>
                 )}
@@ -94,19 +100,18 @@ export default function BookingsCard({
                         >
                             <Dialog>
                                 <DialogTrigger className="hover:underline">
-                                    {useTrans("Chambre N°")} :{" "}
-                                    {room.room_number}
+                                    {t("roomNumber")} : {room.room_number}
                                 </DialogTrigger>
                                 <DialogContent>
                                     <DialogHeader>
                                         <DialogTitle>
-                                            {useTrans("Chambre")}{" "}
+                                            {t("room")}{" "}
                                             {room.type.type_designation}{" "}
-                                            {useTrans("avec")}{" "}
+                                            {t("with")}{" "}
                                             {room.beeds_number}{" "}
                                             {useTrans("lits")}{" "}
-                                            {useTrans("Pour : ")}{" "}
-                                            {room.room_price} {useTrans("DA")}
+                                            {t("for")}{" "}
+                                            {room.room_price} {t("da")}
                                         </DialogTitle>
                                         {room.assets.length > 0 && (
                                             <Carousel>
@@ -135,7 +140,7 @@ export default function BookingsCard({
                                         )}
                                         {room.features.length > 0 && (
                                             <div className="font-bold flex">
-                                                {useTrans("Caractéristiques")} :{" "}
+                                                {t("features")} :{" "}
                                             </div>
                                         )}
                                         <div>

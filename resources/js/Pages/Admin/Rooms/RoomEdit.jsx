@@ -9,8 +9,8 @@ export default function RoomEdit({ room, types, categorys }) {
     const { t } = useTranslation();
     return (
         <AdminPanelLayout>
-            <Head title={t("editTitle")} />
-            <PageHeading title={t("editTitle")} />
+            <Head title={t("rooms.editTitle")} />
+            <PageHeading title={t("rooms.editTitle")} />
             <PlaceholderContent>
                 <div className="max-w-7xl mx-auto ">
                     <RoomForm

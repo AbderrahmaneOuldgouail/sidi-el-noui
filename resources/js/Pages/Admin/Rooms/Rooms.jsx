@@ -8,9 +8,7 @@ import { columns } from "@/Components/Admin/Rooms/RoomColumns";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import RoomCard from "@/Components/Admin/Rooms/RoomCard";
 import TopButton from "@/Components/Admin/Layout/TopButton";
-import MobilePagination from "@/Components/Admin/Shared/MobilePagination";
-import { useTrans } from "@/Hooks/useTrans";
-import { Hotel } from "lucide-react";
+import MobilePagination from "@/Components/Admin/Shared/MobilePagination";import { Hotel } from "lucide-react";
 import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
 import { useTranslation } from "react-i18next";
 

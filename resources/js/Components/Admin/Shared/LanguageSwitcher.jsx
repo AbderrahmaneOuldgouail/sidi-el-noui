@@ -7,6 +7,7 @@ import { router, usePage } from "@inertiajs/react";
 const LanguageSwitcher = () => {
     const { i18n } = useTranslation();
     const { locale } = usePage().props;
+    
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng);
         document.documentElement.dir = lng == "ar" ? "rtl" : "ltr";

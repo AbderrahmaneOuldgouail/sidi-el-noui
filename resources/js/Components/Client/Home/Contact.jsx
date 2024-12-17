@@ -6,10 +6,13 @@ import { Textarea } from "@/Components/ui/textarea";
 import { Button } from "@/Components/ui/button";
 import { LoaderCircle } from "lucide-react";
 import InputError from "@/Components/InputError";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function Contact() {
     const user = usePage().props.auth.user;
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.sections.contact",
+    });
     const { data, setData, errors, post, reset, processing, clearErrors } =
         useForm({
             client_email: user ? user.email : "",
@@ -33,21 +36,21 @@ export default function Contact() {
         >
             <div className="absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <div className="font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ">
-                {useTrans("contactez-nous")}
+                {t("title")}
             </div>
             <form onSubmit={submit} className="relative w-full px-10">
                 <div className="flex gap-4 flex-col-reverse sm:flex-row">
                     <div className="sm:w-1/3 w-full">
                         <div className="my-4 flex flex-col gap-2">
                             <InputLabel
-                                value={useTrans("Email")}
+                                value={t("email")}
                                 htmlFor="client_email"
                             />
                             <Input
                                 type="email"
                                 id="client_email"
                                 name="client_email"
-                                placeholder={useTrans("Email")}
+                                placeholder={t("email")}
                                 value={data.client_email}
                                 disabled={user}
                                 onChange={(e) => {
@@ -60,14 +63,14 @@ export default function Contact() {
                         </div>
                         <div className="my-4 flex flex-col gap-2">
                             <InputLabel
-                                value={useTrans("Sujet")}
+                                value={t("subject")}
                                 htmlFor="subject"
                             />
                             <Input
                                 type="text"
                                 id="subject"
                                 name="subject"
-                                placeholder={useTrans("Sujet")}
+                                placeholder={t("subject")}
                                 value={data.subject}
                                 onChange={(e) => {
                                     setData("subject", e.target.value);
@@ -79,17 +82,15 @@ export default function Contact() {
                         </div>
                     </div>
                     <div className="sm:w-2/3 my-8 text-muted-foreground ">
-                        {useTrans(
-                            "Vous pouvez nous envoyer un message via ce formulaire de contact. Nous ferons de notre mieux pour répondre à toutes vos questions dans les plus brefs délais."
-                        )}
+                        {t("description")}
                     </div>
                 </div>
                 <div className="my-4 flex flex-col gap-2">
-                    <InputLabel value={useTrans("Message")} htmlFor="message" />
+                    <InputLabel value={t("message")} htmlFor="message" />
                     <Textarea
                         id="message"
                         name="message"
-                        placeholder={useTrans("Message")}
+                        placeholder={t("message")}
                         value={data.message}
                         onChange={(e) => {
                             setData("message", e.target.value);
@@ -104,7 +105,7 @@ export default function Contact() {
                         {processing ? (
                             <LoaderCircle className="animate-spin" />
                         ) : (
-                            useTrans("Envoyé")
+                            t("submit")
                         )}
                     </Button>
                 </div>

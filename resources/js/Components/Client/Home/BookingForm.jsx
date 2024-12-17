@@ -4,15 +4,19 @@ import { CirclePlus, CircleMinus, LoaderCircle } from "lucide-react";
 import InputLabel from "@/Components/InputLabel";
 import { useForm } from "@inertiajs/react";
 import { DatePickerWithRange } from "@/Components/ui/DatePickerWithRange";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function BookingForm({ id }) {
-    const { data, setData, get, processing } = useForm({
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.sections.banner.form",
+    });
+    const { data, setData, get, processing, errors } = useForm({
         check_in: "",
         check_out: "",
         guest_number: 0,
         kids_number: 0,
     });
+    console.log(errors);
     const [dateRange, setDateRange] = useState({
         from: "",
         to: "",
@@ -70,7 +74,7 @@ export default function BookingForm({ id }) {
             >
                 <div className="w-2/3 md:w-1/4">
                     <InputLabel
-                        value={useTrans("dates")}
+                        value={t("date")}
                         htmlFor="dates"
                         className="mb-3"
                     />
@@ -83,10 +87,10 @@ export default function BookingForm({ id }) {
                 <div className="w-2/3 md:w-1/4">
                     <InputLabel
                         htmlFor="guest_number"
-                        value={useTrans("Nombre des personne")}
+                        value={t("guestNumber")}
                         className="mb-3"
                     />
-                    <div className="flex items-center justify-between border rounded-md p-1 bg-muted">
+                    <div className="flex items-center justify-between border rounded-md p-1 bg-card">
                         <CircleMinus
                             onClick={() => dicriment("guest_number")}
                             className="cursor-pointer hover:text-secondary"
@@ -101,10 +105,10 @@ export default function BookingForm({ id }) {
                 <div className="w-2/3 md:w-1/4">
                     <InputLabel
                         htmlFor="kids_number"
-                        value={useTrans("nombre des bébé")}
+                        value={t("kidsNumber")}
                         className="mb-3"
                     />
-                    <div className="flex items-center justify-between border rounded-md p-1 bg-muted">
+                    <div className="flex items-center justify-between border rounded-md p-1 bg-card">
                         <CircleMinus
                             onClick={() => dicriment("kids_number")}
                             className="cursor-pointer hover:text-secondary"
@@ -120,11 +124,12 @@ export default function BookingForm({ id }) {
                     variant="secondary"
                     size="sm"
                     className="md:w-1/12 sm:w-1/6 w-1/4"
+                    disabled={processing}
                 >
                     {processing ? (
                         <LoaderCircle className="animate-spin" />
                     ) : (
-                        useTrans("Rechercher")
+                        t("search")
                     )}
                 </Button>
             </form>

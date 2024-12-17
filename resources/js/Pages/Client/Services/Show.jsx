@@ -10,18 +10,18 @@ import {
 import PageHeading from "@/Components/ui/PageHeading";
 import { Editor } from "@/Components/Admin/Shared/Editor";
 import { Badge } from "@/Components/ui/badge";
+import { Head } from "@inertiajs/react";
+import { useTranslation } from "react-i18next";
 
 export default function Show({ service }) {
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.sections.services",
+    });
     return (
         <ClientLayout>
             <Head>
-                <title>{useTrans("Service")}</title>
-                <meta
-                    name="description"
-                    content={useTrans(
-                        "Découvrez les services offerts par l'hôtel Sidi El Noui pour rendre votre séjour encore plus agréable."
-                    )}
-                />
+                <title>{t("title")}</title>
+                <meta name="description" content={t("metaDescreption")} />
             </Head>
             <div className="absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <div className="absolute z-[0] w-[57rem] h-[57rem] left-[calc(30%-28.5rem)] top-[0] translate-x-[-10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
@@ -59,9 +59,7 @@ export default function Show({ service }) {
                 />
                 {service.consomation.length > 0 && (
                     <>
-                        <div className="font-bold">
-                            Consommation disponible dans ce service :
-                        </div>
+                        <div className="font-bold">{t("consumptions")}</div>
                         <div className="flex gap-2 my-2">
                             {service.consomation.map((consomation) => (
                                 <Badge

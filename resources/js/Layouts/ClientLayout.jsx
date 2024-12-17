@@ -3,9 +3,10 @@ import Footer from "@/Components/Client/Footer";
 import { ThemeProvider } from "@/Providers/ThemeProvider";
 import { Toaster } from "@/Components/ui/toaster";
 import { useEffect } from "react";
+import { usePage } from "@inertiajs/react";
 
 export default function ClientLayout({ children }) {
-    const locale = localStorage.getItem("locale") || "fr";
+    const { locale } = usePage().props;
     useEffect(() => {
         document.documentElement.dir = locale == "ar" ? "rtl" : "ltr";
     }, [locale]);

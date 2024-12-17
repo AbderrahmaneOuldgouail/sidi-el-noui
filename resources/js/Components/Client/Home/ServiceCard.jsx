@@ -1,3 +1,4 @@
+import React from "react";
 import {
     Card,
     CardContent,
@@ -5,13 +6,16 @@ import {
     CardFooter,
     CardHeader,
 } from "@/Components/ui/card";
-import React from "react";
 import { Button } from "@/Components/ui/button";
 import { Editor } from "@/Components/Admin/Shared/Editor";
 import { router } from "@inertiajs/react";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function ServiceCard({ service }) {
+    const [processing, setProcessing] = React.useState(false);
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.sections.services",
+    });
     return (
         <Card className="relative my-6 p-4 sm:flex sm:flex-row-reverse flex-col-reverse bg-transparent border-none shadow-none">
             <div className="sm:w-1/2 w-full">
@@ -45,13 +49,26 @@ export default function ServiceCard({ service }) {
                     <Button
                         variant="secondary"
                         size="sm"
+                        disabled={processing}
                         onClick={() =>
                             router.get(
-                                route("client.service.show", service.service_id)
+                                route(
+                                    "client.service.show",
+                                    service.service_id
+                                ),
+                                {},
+                                {
+                                    onStart: () => {
+                                        setProcessing(true);
+                                    },
+                                    onFinish: () => {
+                                        setProcessing(false);
+                                    },
+                                }
                             )
                         }
                     >
-                        {useTrans("Voir Plus")}
+                        {t("actionBtn")}
                     </Button>
                 </CardFooter>
             </div>

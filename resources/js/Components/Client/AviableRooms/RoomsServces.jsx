@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
     Accordion,
     AccordionContent,
@@ -9,6 +9,7 @@ import { Badge } from "@/Components/ui/badge";
 import { BedSingle, CircleMinus, CirclePlus } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function RoomsServces({
     rooms,
@@ -24,6 +25,9 @@ export default function RoomsServces({
     setBeedsNumber,
     promotion,
 }) {
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.aviableRooms.roomServce",
+    });
     const addRoom = (room) => {
         let nights =
             (new Date(booking_data.check_out) -
@@ -110,7 +114,7 @@ export default function RoomsServces({
                                             {price} {useTrans("DA")}
                                         </span>
                                         <span>
-                                        {" "}
+                                            {" "}
                                             {price - promotion.promo_value}{" "}
                                             {useTrans("DA")}
                                         </span>
@@ -239,20 +243,16 @@ export default function RoomsServces({
         >
             <AccordionItem value="rooms">
                 <AccordionTrigger className="bg-card mb-2 p-3 rounded">
-                    {useTrans("Chambres")}
+                    {t("rooms")}
                 </AccordionTrigger>
                 <AccordionContent>
                     <table className="relative border-muted border-1 border bg-card z-[10]">
                         <thead className="relative">
-                            <tr className="border border-secondary  border-2">
-                                <th className="w-1/2">
-                                    {useTrans("Type de logement")}{" "}
-                                </th>
-                                <th>{useTrans("Nombre de lits")} </th>
-                                <th className="w-1/4">{useTrans("Tarif")} </th>
-                                <th className="w-1/4">
-                                    {useTrans("Selectionner des chambres")}
-                                </th>
+                            <tr className="border-secondary border-2">
+                                <th className="w-1/2">{t("type")} </th>
+                                <th>{t("beeds")} </th>
+                                <th className="w-1/4">{t("pricing")} </th>
+                                <th className="w-1/4">{t("select")}</th>
                             </tr>
                         </thead>
                         <tbody>{generateTableRows(rooms)}</tbody>
@@ -261,7 +261,7 @@ export default function RoomsServces({
             </AccordionItem>
             <AccordionItem value="rooms-1">
                 <AccordionTrigger className="bg-card mb-2 p-3 rounded">
-                    {useTrans("Consommations")}
+                    {t("consumptions")}
                 </AccordionTrigger>
                 <AccordionContent>
                     <div className="relative bg-card z-[10] p-4 rounded">
@@ -282,7 +282,7 @@ export default function RoomsServces({
                                                     {
                                                         consomation.consumption_price
                                                     }{" "}
-                                                    DA
+                                                    {t("da")}
                                                 </span>
                                             </div>
                                             <div className="flex items-center justify-center border rounded p-1 bg-muted">

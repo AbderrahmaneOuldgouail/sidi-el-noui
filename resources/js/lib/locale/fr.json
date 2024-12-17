@@ -76,7 +76,10 @@
         "permissions" : "Permissions",
         "utilisateurs" : "Utilisateurs",
         "phone" : "N° téléphone",
-        "createdAtDate" : "date d'inscription"
+        "createdAtDate" : "date d'inscription",
+        "ref" : "Ref",
+        "rooms" : "Chambres réservés",
+        "dates" : "date d'entrée / sortie"
       },
       "pagination" : {
         "footer" : "ligne(s) afficher"
@@ -325,7 +328,7 @@
         "nameDescreption" : "Entrer un nom claire et simple pour le nom de service",
         "placeholder" : "Exemple : Restaurant",
         "descreption" : "Description",
-        "descreptionDescreption" : "Vous pouvez ajouter des titre ou bien des style au desciption",
+        "descreptionDescreption" : "Vous pouvez ajouter des titre ou bien des style au description",
         "assets" : "Photos",
         "assetsDescreption" : "Ajouter des photos au service (ne dépasse pas 10 photos par service)",
         "createBtn" : "Créer",
@@ -415,7 +418,7 @@
       "price" : "Prix",
       "priceDescreption" : "Quelle est le prix d'accés d'évènement",
       "descreption" : "Descreption",
-      "descreptionDescreption" : "Vous pouvez ajouter des titre ou bien des style au desciption",
+      "descreptionDescreption" : "Vous pouvez ajouter des titre ou bien des style au description",
       "assets" : "Photos",
       "assetsDescreption" : "Ajouter des photos au l'évènement (ne dépasse pas 10 photos par évènement)",
       "createBtn" : "Créer",
@@ -449,7 +452,7 @@
       "value" : "Valeur de promotion",
       "valueDescreption" : "Entrer la Valeur de promotion en DA",
       "descreption" : "Descreption",
-      "descreptionDescreption" : "Vous pouvez ajouter des titre ou bien des style au desciption",
+      "descreptionDescreption" : "Vous pouvez ajouter des titre ou bien des style au description",
       "assets" : "Photos",
       "assetsDescreption" : "Ajouter des photos au promotion (ne dépasse pas 10 photos par promotion)",
       "createBtn" : "Créer",
@@ -501,6 +504,216 @@
       "emptyRole" : "Auccun rôle",
       "editBtn" : "Enregistrer",
       "createBtn" : "Créer"
+    }
+  },
+  "client" : {
+    "navbar" : {
+      "home" : "Accueil",
+      "rooms" : "Nos Chambres",
+      "services" : "Services",
+      "contactUs" : "contactez-nous",
+      "login" : "Se connecter",
+      "swichLang" : "Changer la langue",
+      "userNav" : {
+        "profile" : "Profile",
+        "compte" : "Compte",
+        "myBookings" : "Mes réservations",
+        "logOut" : "Se déconnecter"
+      }
+    },
+    "home" : {
+      "title" : "Accueil",
+      "metaDescreption" : "Bienvenue sur le site officiel de l'hôtel Sidi El Noui. Découvrez nos chambres, services, promotions et réservez dès maintenant pour un séjour inoubliable.",
+      "promotions" : "Promotions",
+      "promotionsDescreption" : "Offres Exclusives pour un Séjour Inoubliable Profitez de nos promotions exceptionnelles et réservez votre séjour à un prix avantageux. Découvrez nos offres spéciales et bénéficiez de réductions sur les chambres, les forfaits bien-être, et bien plus encore.",
+      "events" : "Evènements",
+      "eventsDescreption" : "Des Événements Inoubliables au Cœur d'Alger, Vivez des moments uniques en participant à nos événements exclusifs. Que ce soit pour des soirées thématiques, des concerts, ou des festivals locaux, notre hôtel est le point de départ idéal pour toutes vosaventures."
+    },
+    "sections" : {
+      "banner" : {
+        "title" : "Sidi El Noui",
+        "descreption" : "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable.",
+        "form" : {
+          "date" : "dates",
+          "guestNumber" : "Nombre des personne",
+          "kidsNumber" : "Nombre des bébé",
+          "search" : "Rechercher"
+        }
+      },
+      "promotion" : {
+        "cardHeader" : "Réduction de",
+        "da" : "DA",
+        "singleDate" : "Le",
+        "multipleDateStart" : "De",
+        "multipleDateEnd" : "Jusqu'a",
+        "actionBtn" : "Voir Plus",
+        "title" : "Promotion",
+        "metaDescription" : "Profitez des promotions exclusives de l'hôtel Sidi El Noui et réservez votre séjour à prix réduit."  
+      
+      },
+      "event" : {
+        "da" : "DA",
+        "singleDate" : "Le",
+        "multipleDateStart" : "De",
+        "multipleDateEnd" : "Jusqu'a",
+        "actionBtn" : "Voir Plus",
+        "title" : "Événement",
+        "metaDescreption" : "Découvrez nos événements à l'hôtel Sidi El Noui et participez à des expériences inoubliables."
+      },
+      "rooms" : {
+        "title" : "Nos Chambres",
+        "descreption" : "Découvrez nos chambres spacieuses et décorées avec, offrant tout le confort moderne pour un séjour des plus agréables. Que vous voyagiez seul, en couple ou en famille, nous avons la chambre parfaite pour vous.",
+        "tabTrigger" : "Chambres",
+        "roomCard" : {
+          "da" : "DA",
+          "features" : "Caractéristique de la chambre",
+          "actionBtn" : "Réserver maintenant"
+        }
+      },
+      "services" : {
+        "title" : "Services",
+        "description" : "Nous offrons une gamme de services conçus pour rendre votre séjour aussi agréable que possible. Que vous souhaitiez vous détendre, savourer de délicieux repas, ou profiter de commodités supplémentaires, nous sommes là pour répondre à tous vos besoins.",
+        "metaDescreption" : "Découvrez les services offerts par l'hôtel Sidi El Noui pour rendre votre séjour encore plus agréable.",
+        "actionBtn" :"Voir Plus",
+        "consumptions" : "Consommation disponible dans ce service :"
+      },
+      "contact" : {
+        "title" : "contactez-nous",
+        "description" : "Vous pouvez nous envoyer un message via ce formulaire de contact. Nous ferons de notre mieux pour répondre à toutes vos questions dans les plus brefs délais.",
+        "email" : "Email",
+        "subject" : "Sujet",
+        "message" : "Message",
+        "submit" : "Envoyé"
+      }
+    },
+    "profile" : {
+      "title" : "Profile",
+      "section1" : {
+        "title" : "Les informations personnelles",
+        "firstName" : "Prénom",
+        "lastName" : "Nom",
+        "email" : "Email",
+        "emailDescreption" : "L'email doit être unique pour chaque utilisateur",
+        "phone" : "N° téléphone d'employé",
+        "phoneDescreption" : "Le N° téléphone doit être unique pour chaque utilisateur",
+        "emailValidation" : "Votre adresse email n'est pas vérifiée.",
+        "sendEmailValidation" : "Cliquez ici pour renvoyer l'e-mail de vérification.",
+        "validationSended" : "Un nouveau lien de vérification a été envoyé à votre adresse e-mail.",
+        "submit" : "Enregistrer"
+      },
+      "section2" : {
+        "title" : "Mettre à jour le mot de passe",
+        "subtitle" : "Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester en sécurité",
+        "password" : "Mot de passe actuel",
+        "newPassword" : "nouveau mot de passe",
+        "confirmPassword" : "Confirmez le mot de passe",
+        "submit" : "Enregistrer"
+      },
+      "section3" : {
+        "title" : "Supprimer le compte",
+        "subtitle" : "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver.",
+        "submit" : "Supprimer le compte",
+        "dialogTitle" : "Etes-vous sûr de vouloir supprimer votre compte ?",
+        "dialogDescreption" : "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.",
+        "placeholder" : "Password",
+        "cancel" : "Annuler",
+        "delete" : "Supprimer"
+      }
+    },
+    "myBookings" : {
+      "title" : "Mes Réservations",
+      "metaDescreption" : "Consultez et gérez toutes vos réservations à l'hôtel Sidi El Noui depuis cette page.",
+      "show" : "Voir",
+      "cancel" : "Annuler",
+      "dialogTitle" : "Vous êtes sure?",
+      "dialogDescreption" : "Vous êtes sur que vous voulez annuler cette réservation",
+      "accept" : "Oui",
+      "deni" : "Non",
+      "booking" : {
+        "title" : "Réservation",
+        "metaDescreption" : "Effectuez votre réservation à l'hôtel Sidi El Noui en quelques étapes simples.",
+        "infoCard" : "Informations personnels",
+        "showProfile" : "Voir le profile",
+        "bookingDetails" : "Détails de votre réservation",
+        "checkIn" : "Arrivée",
+        "checkOut" : "Départ",
+        "guestNumber" : "Nombre des personnes",
+        "adult" : "adult",
+        "and" : "et",
+        "babys" : "bébés",
+        "nights" : "nuit",
+        "time" : "Durée de séjour",
+        "pricingCardHeader" : "Récapitulatif du montant",
+        "pricingCardFooter" : "Ce prix avec tout tax inclus",
+        "da" : "DA",
+        "room" : "Chambre",
+        "with" : "avec",
+        "beeds" : "lits",
+        "showMore" : "Voir Plus",
+        "features" : "Caractéristiques"
+      }
+    },
+    "aviableRooms" : {
+      "title" : "Chambres disponibles",
+      "metaDescreption" : "Consultez les chambres disponibles à l'hôtel Sidi El Noui et choisissez celle qui vous convient pour un séjour confortable.",
+      "pageHeader" : "Finaliser votre réservation",
+      "da" : "DA",
+      "detailsCard" : {
+        "header" : "Détails de votre réservation",
+        "checkIn" : "Arrivée",
+        "checkOut" : "Départ",
+        "time" : "Durée de séjour",
+        "nights" : "nuit"
+      },
+      "selectionCard" : {
+        "header" : "Vous avez sélectionné pour",
+        "and" : "et",
+        "babys" : "bébés",
+        "adult" : "adult",
+        "rooms" : "chambre",
+        "nights" : "nuits",
+        "btn" : "Modifier la selection"
+      },
+      "pricingCard" : {
+        "header" : "Récapitulatif du montant",
+        "footer" : "Ce prix avec tout tax inclus"
+      },
+      "form" : {
+        "firstName" : "Prénom",
+        "lastName" : "Nom",
+        "email" : "Email",
+        "phone" : "N° téléphone",
+        "submit" : "Réserver"
+      },
+      "roomServce" : {
+        "title" : "Service de chambre",
+        "rooms" : "Chambres",
+        "type" : "Type de logement",
+        "beeds" : "Nombre de lits",
+        "pricing" : "Tarif",
+        "select" : "Selectionner des chambres",
+        "consumptions" : "Consommations",
+        "da" : "DA"
+      },
+      "bookingCard" : {
+        "btn" : "Dernière étape",
+        "tot" : "Total",
+        "da" : "DA",
+        "roomNumber" : "Chambre N°",
+        "room" : "Chambre",
+        "with" : "avec",
+        "beeds" : "lits",
+        "for" : "pour",
+        "features" : "Caractéristiques"
+      }
+    },
+    "footer" : {
+      "phone" : "N° téléphone",
+      "email" : "Email",
+      "address" : "Adresse",
+      "links" : "Liens",
+      "socialMedia" : "Réseaux Sociaux",
+      "description" : "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable."
     }
   }
   

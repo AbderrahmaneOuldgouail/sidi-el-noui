@@ -4,7 +4,7 @@ import { Head, useForm, usePage } from "@inertiajs/react";
 import UserDataForm from "@/Components/Client/AviableRooms/UserDataForm";
 import RoomsServces from "@/Components/Client/AviableRooms/RoomsServces";
 import BookingsCard from "@/Components/Client/AviableRooms/BookingsCard";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function AviableRooms({
     rooms,
@@ -17,7 +17,7 @@ export default function AviableRooms({
     const [beedsNumber, setBeedsNumber] = useState(0);
     const [final, setFinal] = useState(false);
     const user = usePage().props.auth.user;
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors, processing } = useForm({
         rooms: [],
         consomation: [],
         check_in: booking_data.check_in,
@@ -29,6 +29,10 @@ export default function AviableRooms({
         email: user ? user.email : "",
         phone: user ? user.phone : "",
         promo_value: promotion ? promotion.promo_value : null,
+    });
+
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.aviableRooms",
     });
 
     const handleSetData = (field, value) => {
@@ -46,18 +50,11 @@ export default function AviableRooms({
     return (
         <ClientLayout>
             <Head>
-                <title>{useTrans("Chambres disponibles")}</title>
-                <meta
-                    name="description"
-                    content={useTrans(
-                        "Consultez les chambres disponibles à l'hôtel Sidi El Noui et choisissez celle qui vous convient pour un séjour confortable."
-                    )}
-                />
+                <title>{t("title")}</title>
+                <meta name="description" content={t("metaDescreption")} />
             </Head>
 
-            <div className="font-bold text-xl m-6 ">
-                {useTrans("Finaliser votre réservation")}
-            </div>
+            <div className="font-bold text-xl m-6 ">{t("pageHeader")}</div>
             <div className="absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <div className="absolute z-[0] w-1/2 h-1/2 left-[0]  top-[10]  translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <div className="absolute z-[0] min-w-1/2 w-[37rem] h-[27rem] left-[calc(60%-28.5rem)] top-[50%] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
@@ -74,6 +71,7 @@ export default function AviableRooms({
                     submit={submit}
                     total={total}
                     promotion={promotion}
+                    processing={processing}
                 />
             ) : (
                 <div className="relative flex gap-2 m-6">

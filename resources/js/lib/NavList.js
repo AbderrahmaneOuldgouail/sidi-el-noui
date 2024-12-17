@@ -1,24 +1,26 @@
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
+
 
 export function getNavList(activeSection) {
+    const{t} = useTranslation("translation", {keyPrefix: "client.navbar"})
     return [
         {
-            label: useTrans("Accueil"),
+            label: t("home"),
             href: "#home-section",
             active: activeSection === "home-section",
         },
         {
-            label: useTrans("Nos Chambres"),
+            label: t("rooms"),
             href: "#rooms-section",
             active: activeSection === "rooms-section",
         },
         {
-            label: useTrans("Services"),
+            label: t("services"),
             href: "#services-section",
             active: activeSection === "services-section",
         },
         {
-            label: useTrans("contactez-nous"),
+            label: t("contactUs"),
             href: "#contact-section",
             active: activeSection === "contact-section",
         },

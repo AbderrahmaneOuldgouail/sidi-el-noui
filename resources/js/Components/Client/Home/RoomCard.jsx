@@ -6,11 +6,14 @@ import {
     CardHeader,
 } from "@/Components/ui/card";
 import React from "react";
-import { useTrans } from "@/Hooks/useTrans";
 import { Button } from "@/Components/ui/button";
 import { Badge } from "@/Components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 export default function RoomCard({ room }) {
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.sections.rooms.roomCard",
+    });
     return (
         <Card className="relative my-6 p-4 w-full sm:flex sm:flex-row flex-col bg-transparent border-none shadow-none">
             <div className="sm:w-1/2 w-full">
@@ -26,13 +29,11 @@ export default function RoomCard({ room }) {
                         {room.type_designation}
                     </div>
                     <div className="text-primary text-3xl font-bold ">
-                        {room.room_price} {useTrans("DA")}{" "}
+                        {room.room_price} {t("da")}{" "}
                     </div>
                 </CardHeader>
                 <CardContent className="text-muted-foreground">
-                    <div className="my-2">
-                        {useTrans("Caractéristique de la chambre")} :
-                    </div>
+                    <div className="my-2">{t("features")} :</div>
                     <CardDescription className="flex gap-2 flex-wrap">
                         {room.features.map((feature) => (
                             <Badge
@@ -49,7 +50,7 @@ export default function RoomCard({ room }) {
                 <CardFooter className="justify-end">
                     <a href="#booking-form">
                         <Button variant="secondary" size="sm">
-                            {useTrans("Réserver maintenant")}{" "}
+                            {t("actionBtn")}{" "}
                         </Button>
                     </a>
                 </CardFooter>

@@ -17,7 +17,6 @@ import {
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 import { Link } from "@inertiajs/react";
-import { useTrans } from "@/Hooks/useTrans";
 import ColumnHeader from "@/Components/Admin/ColumnHeader";
 import { useTranslation } from "react-i18next";
 

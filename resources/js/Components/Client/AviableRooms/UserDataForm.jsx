@@ -9,7 +9,7 @@ import {
 } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { usePage } from "@inertiajs/react";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function UserDataForm({
     booking_data,
@@ -21,19 +21,22 @@ export default function UserDataForm({
     submit,
     total,
     promotion,
+    processing,
 }) {
     const auth = usePage().props.auth;
-
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.aviableRooms",
+    });
     return (
         <div className="relative flex gap-2 m-6">
             <div className="w-1/3 flex flex-col gap-2">
                 <Card>
                     <CardHeader className="font-bold p-2">
-                        {useTrans("Détails de votre réservation")}
+                        {t("detailsCard.header")}
                     </CardHeader>
                     <CardContent className="flex justify-between p-2">
                         <div>
-                            <div>{useTrans("Arrivée")} </div>
+                            <div>{t("detailsCard.checkIn")} </div>
                             <div className="font-bold">
                                 {booking_data.check_in}
                             </div>
@@ -42,7 +45,7 @@ export default function UserDataForm({
                             </div>
                         </div>
                         <div>
-                            <div>{useTrans("Départ")} </div>
+                            <div>{t("detailsCard.checkOut")} </div>
                             <div className="font-bold">
                                 {booking_data.check_out}
                             </div>
@@ -52,23 +55,24 @@ export default function UserDataForm({
                         </div>
                     </CardContent>
                     <CardFooter className="flex-col items-start p-2">
-                        <div>{useTrans("Durée de séjour")} </div>
+                        <div>{t("detailsCard.time")} </div>
                         <div className="font-bold">
                             {(new Date(booking_data.check_out) -
                                 new Date(booking_data.check_in)) /
                                 (1000 * 60 * 60 * 24)}{" "}
-                            {useTrans("nuit")}
+                            {t("detailsCard.nights")}
                         </div>
                     </CardFooter>
                 </Card>
                 <Card>
                     <CardHeader className="font-bold p-2">
-                        {useTrans("Vous avez sélectionné pour")}{" "}
-                        {booking_data.guest_number} {useTrans("adult")}{" "}
+                        {t("selectionCard.header")} {booking_data.guest_number}{" "}
+                        {t("selectionCard.adult")}{" "}
                         {booking_data.kids_number && (
                             <>
-                                {useTrans("et")} {booking_data.kids_number}{" "}
-                                {useTrans("bébés")} :{" "}
+                                {t("selectionCard.and")}{" "}
+                                {booking_data.kids_number}{" "}
+                                {t("selectionCard.babays")} :{" "}
                             </>
                         )}{" "}
                     </CardHeader>
@@ -79,28 +83,28 @@ export default function UserDataForm({
                                 className="shadow rounded-lg py-1 px-2 mb-1 flex justify-between"
                             >
                                 <div>
-                                    {useTrans("chambre")}{" "}
+                                    {t("selectionCard.rooms")}{" "}
                                     {room.type.type_designation}{" "}
                                 </div>
                                 <div className="font-bold text-primary">
-                                    {room.room_price} {useTrans("DA")} x{" "}
+                                    {room.room_price} {t("da")} x{" "}
                                     {(new Date(booking_data.check_out) -
                                         new Date(booking_data.check_in)) /
                                         (1000 * 60 * 60 * 24)}{" "}
-                                    {useTrans("nuit")}
+                                    {t("selectionCard.nights")}
                                 </div>
                             </div>
                         ))}
                     </CardContent>
                     <CardFooter className="justify-center p-2">
                         <Button variant="link" onClick={() => setFinal(false)}>
-                            {useTrans("Modifier la selection")}
+                            {t("selectionCard.btn")}
                         </Button>
                     </CardFooter>
                 </Card>
                 <Card>
                     <CardHeader className="p-2 font-bold">
-                        {useTrans("Récapitulatif du montant")}
+                        {t("pricingCard.header")}
                     </CardHeader>
                     <CardContent className="p-2 text-3xl font-bold text-primary">
                         {promotion ? (
@@ -112,13 +116,13 @@ export default function UserDataForm({
                                         (new Date(booking_data.check_out) -
                                             new Date(booking_data.check_in))) /
                                         (1000 * 60 * 60 * 24)}{" "}
-                                {useTrans("DA")}{" "}
+                                {t("da")}{" "}
                             </div>
                         ) : null}
-                        {total} {useTrans("DA")}
+                        {total} {t("da")}
                     </CardContent>
                     <CardFooter className="p-2 text-muted-foreground">
-                        {useTrans("Ce prix avec tout tax inclus")}
+                        {t("pricingCard.footer")}
                     </CardFooter>
                 </Card>
             </div>
@@ -126,7 +130,7 @@ export default function UserDataForm({
                 <form onSubmit={submit}>
                     <div className="flex gap-2 w-full">
                         <FormInput
-                            label="Nom"
+                            label={t("form.lastName")}
                             error={errors.first_name}
                             type="text"
                             data={data.first_name}
@@ -135,7 +139,7 @@ export default function UserDataForm({
                             disabled={auth.user != null}
                         />
                         <FormInput
-                            label="Prénom"
+                            label={t("form.firstName")}
                             error={errors.last_name}
                             type="text"
                             data={data.last_name}
@@ -146,7 +150,7 @@ export default function UserDataForm({
                     </div>
                     <Separator />
                     <FormInput
-                        label="Email"
+                        label={t("form.email")}
                         error={errors.email}
                         type="email"
                         data={data.email}
@@ -156,7 +160,7 @@ export default function UserDataForm({
                     />
                     <Separator />
                     <FormInput
-                        label="N° téléphone"
+                        label={t("form.phone")}
                         error={errors.phone}
                         type="phone"
                         data={data.phone}
@@ -165,8 +169,12 @@ export default function UserDataForm({
                         disabled={auth.user != null}
                     />
                     <div className="flex justify-end">
-                        <Button variant="secondary" className="w-1/4">
-                            {useTrans("Réserver")}
+                        <Button
+                            variant="secondary"
+                            className="w-1/4"
+                            disabled={processing}
+                        >
+                            {t("form.submit")}
                         </Button>
                     </div>
                 </form>

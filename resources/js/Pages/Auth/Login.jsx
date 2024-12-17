@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import { useToast } from "@/Components/ui/use-toast";
 import { Input } from "@/Components/ui/input";

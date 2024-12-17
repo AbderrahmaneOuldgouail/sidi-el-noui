@@ -1,24 +1,23 @@
 import React from "react";
 import BookingForm from "./BookingForm";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function HomeHeading({ id }) {
     const { width } = useWindowDimensions();
+    const {t} = useTranslation("translation", {keyPrefix: "client.sections.banner"})
     return (
         <div id={id}>
             <div className="relative h-full z-10 p-4 flex md:flex-row flex-col justify-around">
                 <div className="flex flex-col justify-center md:w-1/2 w-full">
                     <div className="flex flex-col space-y-1.5 p-6">
                         <div className="font-bold text-5xl py-4">
-                            {useTrans("Sidi El Noui")}
+                            {t("title")}
                         </div>
                     </div>
                     <div className="text-muted-foreground p-6 pt-0">
                         <div>
-                            {useTrans(
-                                "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable."
-                            )}
+                            {t("descreption")}
                         </div>
                     </div>
                 </div>

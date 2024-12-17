@@ -1,5 +1,4 @@
 import React from "react";
-import { useTrans } from "@/Hooks/useTrans";
 import {
     Card,
     CardContent,
@@ -9,8 +8,13 @@ import {
 import { Button } from "@/Components/ui/button";
 import { Editor } from "@/Components/Admin/Shared/Editor";
 import { router } from "@inertiajs/react";
+import { useTranslation } from "react-i18next";
 
 export default function Events({ event }) {
+    const [processing, setProcessing] = React.useState(false);
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.sections.event",
+    });
     return (
         <Card className="relative my-6 p-4 sm:flex sm:flex-row-reverse flex-col-reverse bg-transparent border-none shadow-none ">
             <div className="sm:w-1/2 w-full">
@@ -21,16 +25,16 @@ export default function Events({ event }) {
                 />
             </div>
             <div className="flex flex-col justify-between sm:w-1/2 w-full">
-                <CardHeader className="text-lg font-bold text-xl flex flex-row items-center justify-between">
+                <CardHeader className="font-bold text-xl flex flex-row items-center justify-between">
                     <div>{event.event_name}</div>
                     <div className="text-primary text-2xl font-bold">
-                        {event.event_price} {useTrans("DA")}{" "}
+                        {event.event_price} {t("da")}{" "}
                     </div>
                 </CardHeader>
                 <CardContent className="text-muted-foreground flex-grow">
                     {event.event_start_date == event.event_end_date ? (
                         <div className="mb-4">
-                            {useTrans("Le")} :{" "}
+                            {t("singleDate")} :{" "}
                             <span className=" text-lg">
                                 {event.event_start_date}
                             </span>
@@ -38,13 +42,13 @@ export default function Events({ event }) {
                     ) : (
                         <div className="flex gap-2 justify-between mb-4">
                             <div>
-                                {useTrans("De")} :{" "}
+                                {t("multipleDateStart")} :{" "}
                                 <span className=" text-lg">
                                     {event.event_start_date}
                                 </span>
                             </div>
                             <div>
-                                {useTrans("Jusqu'a")} :{" "}
+                                {t("multipleDateEnd")} :{" "}
                                 <span className=" text-lg">
                                     {event.event_end_date}
                                 </span>
@@ -63,13 +67,23 @@ export default function Events({ event }) {
                     <Button
                         variant="secondary"
                         size="sm"
+                        disabled={processing}
                         onClick={() =>
                             router.get(
-                                route("client.event.show", event.event_id)
+                                route("client.event.show", event.event_id),
+                                {},
+                                {
+                                    onStart: () => {
+                                        setProcessing(true);
+                                    },
+                                    onFinish: () => {
+                                        setProcessing(false);
+                                    },
+                                }
                             )
                         }
                     >
-                        {useTrans("Voir Plus")}
+                        {t("actionBtn")}
                     </Button>
                 </CardFooter>
             </div>

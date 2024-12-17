@@ -19,7 +19,7 @@ class PromotionController extends Controller
 
     public function show(Request $request)
     {
-        $promotion = Promotion::with("assets")->where('user_id', $request->id)->first();
+        $promotion = Promotion::with("assets")->where('promotion_id', $request->id)->first();
         return Inertia::render('Client/Promotions/Show', ['promotion' => $promotion]);
     }
 
@@ -115,7 +115,9 @@ class PromotionController extends Controller
                 'promo_start_date' => 'required|date',
                 'promo_end_date' => 'required|date',
                 'promo_value' => 'required|numeric',
-                'assets' => 'required|array',
+                'assets' => 'array|required_if:required_assets,true',
+                'required_assets' => 'boolean',
+                'remouved_assets' => 'array',
                 'assets.*' => 'file|mimes:jpg,png,jpeg|max:2048',
             ]
         );

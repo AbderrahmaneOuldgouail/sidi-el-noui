@@ -8,10 +8,11 @@ import Services from "@/Components/Client/Home/Services";
 import HomeHeading from "@/Components/Client/Home/HomeHeading";
 import { useToast } from "@/Components/ui/use-toast";
 import Contact from "@/Components/Client/Home/Contact";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function Home({ events, promotions, rooms, services }) {
     const { toast } = useToast();
+    const { t } = useTranslation("translation", { keyPrefix: "client.home" });
     const flash = usePage().props.flash;
     useEffect(() => {
         if (flash.message) {
@@ -21,13 +22,8 @@ export default function Home({ events, promotions, rooms, services }) {
     return (
         <ClientLayout>
             <Head>
-                <title>{useTrans("Accueil")}</title>
-                <meta
-                    name="description"
-                    content={useTrans(
-                        "Bienvenue sur le site officiel de l'hôtel Sidi El Noui. Découvrez nos chambres, services, promotions et réservez dès maintenant pour un séjour inoubliable."
-                    )}
-                />
+                <title>{t("title")}</title>
+                <meta name="description" content={t("metaDescreption")} />
             </Head>
 
             <div
@@ -41,13 +37,11 @@ export default function Home({ events, promotions, rooms, services }) {
                 <div className="my-6 relative min-h-screen max-h-sceen">
                     <div className="absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[0] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.2)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
                     <div className="font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ">
-                        {useTrans("Promotions")}
+                        {t("promotions")}
                     </div>
                     <div className="flex justify-center">
                         <div className="text-muted-foreground p-6 sm:w-2/3  text-center">
-                            {useTrans(
-                                "Offres Exclusives pour un Séjour Inoubliable Profitez de nos promotions exceptionnelles et réservez votre séjour à un prix avantageux. Découvrez nos offres spéciales et bénéficiez de réductions sur les chambres, les forfaits bien-être, et bien plus encore."
-                            )}
+                            {t("promotionsDescreption")}
                         </div>
                     </div>
                     <Promotion promotion={promotions} />
@@ -57,13 +51,11 @@ export default function Home({ events, promotions, rooms, services }) {
                 <div className="my-6 relative min-h-screen max-h-sceen">
                     <div className="absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[0] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.5)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
                     <div className="font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ">
-                        {useTrans("Evènements")}
+                        {t("events")}
                     </div>
                     <div className="flex justify-center">
                         <div className="text-muted-foreground p-6 sm:w-2/3  text-center">
-                            {useTrans(
-                                "Des Événements Inoubliables au Cœur d'Alger, Vivez des moments uniques en participant à nos événements exclusifs. Que ce soit pour des soirées thématiques, des concerts, ou des festivals locaux, notre hôtel est le point de départ idéal pour toutes vosaventures."
-                            )}
+                            {t("eventsDescreption")}
                         </div>
                     </div>
                     <Events event={events} />

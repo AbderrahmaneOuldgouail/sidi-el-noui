@@ -20,7 +20,6 @@ import {
 } from "@/Components/ui/dropdown-menu";
 import { LangSwitch } from "./LangSwitch";
 import { RedBeadge } from "@/Components/ui/red-badge";
-import LanguageSwitcher from "../Shared/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 
 export function UserNav() {

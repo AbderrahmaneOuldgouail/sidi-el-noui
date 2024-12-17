@@ -2,9 +2,12 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import RoomCard from "@/Components/Client/Home/RoomCard";
 import { ScrollArea, ScrollBar } from "@/Components/ui/scroll-area";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function Rooms({ rooms }) {
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.sections.rooms",
+    });
     return (
         <div
             className="relative flex flex-col justify-center items-center min-h-screen max-h-sceen"
@@ -12,13 +15,11 @@ export default function Rooms({ rooms }) {
         >
             <div className="absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <div className="font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ">
-                {useTrans("Nos Chambres")}
+                {t("title")}
             </div>
             <div className="flex justify-center">
                 <div className="text-muted-foreground p-6 sm:w-2/3  text-center">
-                    {useTrans(
-                        "Découvrez nos chambres spacieuses et décorées avec, offrant tout le confort moderne pour un séjour des plus agréables. Que vous voyagiez seul, en couple ou en famille, nous avons la chambre parfaite pour vous."
-                    )}
+                    {t("descreption")}
                 </div>
             </div>
             <Tabs
@@ -37,7 +38,7 @@ export default function Rooms({ rooms }) {
                                     {room.type_designation}
                                 </div>
                                 <div className="text-xs text-muted-foreground">
-                                    {room.rooms_count} Chambre
+                                    {room.rooms_count} {t("tabTrigger")}
                                 </div>
                             </TabsTrigger>
                         ))}
