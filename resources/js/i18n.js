@@ -12,15 +12,18 @@ const resources = {
         translation: ar,
     },
 };
-export const initI18n = (initialLang = "fr") => {
-    i18n.use(initReactI18next).init({
-        resources,
-        lng: initialLang,
-        fallbackLng: "ar",
-        interpolation: {
-            escapeValue: false,
-        },
-    });
+export const initI18n = (initialLang) => {
+    if (!i18n.isInitialized) {
+        i18n.use(initReactI18next).init({
+            resources,
+            lng: initialLang,
+            fallbackLng: "ar",
+            interpolation: {
+                escapeValue: false,
+            },
+        });
+    }
+    return i18n;
 };
 
 export default i18n;

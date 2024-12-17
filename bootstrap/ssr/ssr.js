@@ -1,6 +1,6 @@
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import * as React from "react";
-import React__default, { useState, useEffect, createContext, useContext, useMemo, useCallback, Fragment as Fragment$1, forwardRef, useRef } from "react";
+import React__default, { useState, useEffect, createContext, useContext, useMemo, useCallback, useRef, forwardRef } from "react";
 import { usePage, Link, router, useForm, Head, createInertiaApp } from "@inertiajs/react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -8,19 +8,20 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { ChevronLeft, Hotel, HandPlatter, ReceiptText, Megaphone, TicketMinus, Users as Users$1, LayoutGrid, BookmarkCheck, Archive, ChevronDown, Dot, Ellipsis, MenuIcon, PanelsTopLeft, Inbox, User, Languages, LogOut, Bell, CalendarPlus, CircleMinus, CirclePlus, Bold, Italic, Underline, Strikethrough, List, ListOrdered, Minus, WrapText, Undo, Redo, Heading1, Heading2, Heading3, Pilcrow, Link2, MoreHorizontal, HandCoins, Ticket, Eye, ArrowLeft, ArrowRight, Pencil, Trash, ImagePlus, ChevronUp, Send, Printer, FileDown, ClipboardList, Settings2, MessageSquareX, Check, X, LoaderCircle, Phone, Mail, MapPin, Facebook, Instagram, BedSingle, ChevronRight, Coffee, Utensils, Wifi, Tv, Bed, Bath, Armchair, Cigarette } from "lucide-react";
+import { ChevronLeft, Hotel, HandPlatter, ReceiptText, Megaphone, TicketMinus, Users, LayoutGrid, BookmarkCheck, Archive, ChevronDown, Dot, Ellipsis, MenuIcon, PanelsTopLeft, Inbox, User, Languages, LogOut, Bell, CalendarPlus, CircleMinus, CirclePlus, Bold, Italic, Underline, Strikethrough, List, ListOrdered, Minus, WrapText, Undo, Redo, Heading1, Heading2, Heading3, Pilcrow, Link2, MoreHorizontal, HandCoins, Ticket, Eye, ArrowLeft, ArrowRight, Pencil, Trash, ImagePlus, ChevronUp, Send, Printer, FileDown, ClipboardList, Settings2, MessageSquareX, Check, X, LoaderCircle, Phone, Mail, MapPin, Facebook, Instagram, BedSingle, ChevronRight } from "lucide-react";
+import { useTranslation, initReactI18next, I18nextProvider } from "react-i18next";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
-import { ChevronRightIcon, CheckIcon, DotFilledIcon, Cross2Icon, SunIcon, MoonIcon, ChevronLeftIcon, CalendarIcon, ChevronDownIcon, ArrowLeftIcon, ArrowRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon, MixerHorizontalIcon, MagnifyingGlassIcon, CaretSortIcon, DragHandleDots2Icon, ChevronUpIcon, ArrowDownIcon, ArrowUpIcon, EyeNoneIcon } from "@radix-ui/react-icons";
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import { ChevronRightIcon, CheckIcon, DotFilledIcon, Cross2Icon, SunIcon, MoonIcon, ChevronLeftIcon, CalendarIcon, ChevronDownIcon, ArrowLeftIcon, ArrowRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon, MixerHorizontalIcon, MagnifyingGlassIcon, CaretSortIcon, DragHandleDots2Icon, ChevronUpIcon } from "@radix-ui/react-icons";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { Drawer as Drawer$1 } from "vaul";
 import { format, isBefore } from "date-fns";
-import { fr } from "date-fns/locale";
+import { fr as fr$1 } from "date-fns/locale";
 import { DayPicker } from "react-day-picker";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
@@ -45,13 +46,13 @@ import isBetween from "dayjs/plugin/isBetween.js";
 import { Command as Command$1 } from "cmdk";
 import { FileUploader } from "react-drag-drop-files";
 import * as ResizablePrimitive from "react-resizable-panels";
-import { Transition, Dialog as Dialog$1 } from "@headlessui/react";
+import { Transition } from "@headlessui/react";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaWifi, FaTv, FaBed } from "react-icons/fa";
 import createServer from "@inertiajs/react/server";
 import ReactDOMServer from "react-dom/server";
+import i18n from "i18next";
 function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
@@ -136,9 +137,6 @@ function SidebarToggle({ isOpen, setIsOpen }) {
     }
   ) });
 }
-const Rooms$2 = {
-  Chambres: "الغرف"
-};
 const Chambres = "الغرف";
 const Management = "إدارة";
 const Type = "النوع";
@@ -148,26 +146,19 @@ const Enregistrer = "حفظ";
 const avec = "مع";
 const lits = "أسرة";
 const DA = "دج";
-const Features$1 = "==============================================================================";
 const Supprimer = "حذف";
 const Annuler = "إلغاء";
-const Servicess = "==============================================================================";
 const Services$2 = "الخدمات";
 const Disponible = "متوفره";
 const Indisponible = "غير متوفره";
 const Service = "الخدمة";
-const Eventss = "===============================================================================";
 const Prix = "السعر";
-const Promotionss = "===========================================================================";
 const Promotions$1 = "التخفيضات";
 const Active = "نشطة";
 const Inactive = "غير نشط";
-const Users = "================================================================================";
 const Utilisateurs = "المستخدمين";
 const Email = "البريد الإلكتروني";
-const roles = "================================================================================";
 const Permissions = "الأذونات";
-const Bookings$1 = "==========================================================================";
 const Recherche = "بحث";
 const Client = "الزبون";
 const Facture$1 = "فاتورة";
@@ -178,13 +169,10 @@ const Adresse = "العنوان";
 const Compte = "الحساب";
 const Notifications$1 = "إشعارات";
 const Profile = "الملف الشخصي";
-const notifs = "====================================================================================";
 const vers = "إلى";
-const facturess = "===========================================================================";
 const Factures$1 = "الفواتير";
 const Imprimer = "طباعة";
 const Ajouter = "إضافة";
-const messages$1 = "===========================================================================";
 const Tous = "الكل";
 const Cacher = "إخفاء";
 const Croissante = "تزايد";
@@ -210,7 +198,6 @@ const Tarif = "السعر";
 const Total = "المجموع";
 const Confirmer = "تأكيد";
 const translation = {
-  Rooms: Rooms$2,
   "Tableaux De Bord": "لوحات المعلومات",
   "Entrés d'aujourd'hui": "تسجيلات الدخول اليوم",
   "Sorties d'aujourd'hui": "تسجيلات الخروج اليوم",
@@ -254,7 +241,7 @@ const translation = {
   avec,
   lits,
   DA,
-  Features: Features$1,
+  "Aucun chambres pour l'instant, essayez de créer une nouvelle": "لا توجد غرف حتى الآن، حاول إنشاء واحدة جديدة",
   "Catégories": "الفئات",
   "Ajouter un categorie": "إضافة فئة",
   "Ajouter un nouveau Catégorie": "أضف فئة جديدة",
@@ -275,8 +262,7 @@ const translation = {
   "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette caractéristique et chaque chambre avoir cette caractéristique va le perdre": "لا يمكن التراجع عن هذا الإجراء. سوف تقوم بحذف هذه الخاصية نهائياً وكل غرفة بها هذه الخاصية سوف تفقدها",
   "Modifier cette caractéristique": "تعديل هذه الخاصية",
   "Aucun categories pour l'instant, essayez de créer une nouvelle": "لا توجد فئات حتى الآن، حاول إنشاء واحدة جديدة",
-  "Aucun caractéristiques pour l'instant, essayez de créer une nouvelle": "لا توجد الخاصيات حتى الآن، حاول إنشاء واحدة جديدة",
-  Servicess,
+  "Aucun caractéristiques pour l'instant, essayez de créer une nouvelle": "لا توجد خاصيات حتى الآن، حاول إنشاء واحدة جديدة",
   Services: Services$2,
   "Créer un service": "إنشاء خدمة",
   "Créer un nouveau service": "إنشاء خدمة جديدة",
@@ -304,7 +290,6 @@ const translation = {
   "Service Modification": "تحرير الخدمة",
   "Aucun services pour l'instant, essayez de créer un nouveau": "لا توجد خدمات حتى الآن، حاول إنشاء واحدة جديدة",
   "Aucun consommations pour l'instant, essayez de créer un nouveau": "لا توجد الاستهلاكات حتى الآن، حاول إنشاء واحد جديد",
-  Eventss,
   "Evènements": "الأحداث",
   "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette évènement": "لا يمكن التراجع عن هذا الإجراء. سوف تقوم بحذف هذا الحدث نهائيًا",
   "List des évènements": "قائمة الأحداث",
@@ -325,7 +310,6 @@ const translation = {
   "Créer un nouveau évènement": "إنشاء حدث جديد",
   "Modifier ce évènement": "تعديل هذا الحدث",
   "Aucun évènement pour l'instant, essayez de créer une nouvelle": "لا توجد أحداث حتى الآن، حاول إنشاء واحد جديد",
-  Promotionss,
   Promotions: Promotions$1,
   "Créer un promotion": "إنشاء تخفيض",
   "List des promotions": "قائمة التخفيضات",
@@ -341,14 +325,12 @@ const translation = {
   "Ajouter des photos au promotion (ne dépasse pas 10 photos par promotion)": "إضافة صور إلى التخفيض (لا تتجاوز 10 صور لكل تخفيض)",
   "Modification de promotion": "تعديل التخفيض",
   "Aucun promotion pour l'instant, essayez de créer une nouvelle": "لا توجد تخفيضات حتى الآن، حاول إنشاء واحد جديد",
-  Users,
   Utilisateurs,
   "List des utilisateurs": "قائمة المستخدمين",
   "Créer un utilisateur": "إنشاء مستخدم",
   "Nom de l'utilisateur": "اسم المستخدم",
   Email,
   "N° téléphone": "رقم الهاتف",
-  "Employéss": "================================================================================",
   "Employés": "الموظفون",
   "Ajouter un employé": "إضافة موظف",
   "Rôle": "الدور",
@@ -363,7 +345,6 @@ const translation = {
   "Assigne un role au ce employé": "عين دور لهذا الموظف",
   "Sélectionner un role...": "حدد الدور...",
   "Modification les informations d'employé": "تعديل معلومات الموظف",
-  roles,
   "Rôles": "الأدوار",
   "Ajouter un rôle": "أضف دورًا",
   Permissions,
@@ -374,7 +355,6 @@ const translation = {
   "Le nom de rôle doit être unique": "يجب أن يكون اسم الدور فريدًا",
   "Assigner des permissions a ce rôle": "تعيين الأذونات لهذا الدور",
   "List des permissions": "قائمة الأذونات",
-  Bookings: Bookings$1,
   "Réservations": "الحجوزات",
   "Ajouter une réservation": "أضف حجزًا",
   "Chercher des chambres disponible": "البحث عن الغرف المتاحة",
@@ -416,7 +396,6 @@ const translation = {
   "Informations de client": "معلومات الزبون",
   "Détails de réservation": "تفاصيل الحجز",
   "Aucun réservations pour l'instant, essayez de créer une nouvelle": "لا توجد حجوزات حتى الآن، حاول إنشاء واحد جديد",
-  "nav bar": "==============================================================================",
   Compte,
   "Se déconnecter": "تسجيل الخروج",
   Notifications: Notifications$1,
@@ -426,12 +405,10 @@ const translation = {
   Profile,
   "tableau de bord": "لوحة القيادة",
   "Changer le thème": "تبديل الوضع",
-  notifs,
   "Tout marquer comme lu": "وضع علامة على الكل كمقروءة",
   "Supprimer Tous": "حذف الكل",
   "a fait une réservation de": "قام بالحجز من",
   vers,
-  "user Profile": "==============================================================================",
   "Votre adresse email n'est pas vérifiée.": "لم يتم التحقق من عنوان بريدك الإلكتروني.",
   "Cliquez ici pour renvoyer l'e-mail de vérification.": "انقر هنا لإعادة إرسال رسالة التحقق عبر البريد الإلكتروني.",
   "Un nouveau lien de vérification a été envoyé à votre adresse e-mail.": "لقد تم إرسال رابط تحقق جديد إلى عنوان بريدك الإلكتروني.",
@@ -445,7 +422,6 @@ const translation = {
   "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver.": "بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته نهائيًا. قبل حذف حسابك، يرجى تنزيل أي بيانات أو معلومات ترغب في الاحتفاظ بها.",
   "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.": "بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته بشكل دائم. يُرجى إدخال كلمة المرور الخاصة بك لتأكيد رغبتك في حذف حسابك بشكل دائم.",
   "Etes-vous sûr de vouloir supprimer votre compte ?": "هل انت متأكد انك تريد حذف حسابك؟",
-  facturess,
   Factures: Factures$1,
   "Date": "التاريخ",
   "Générer pour une réservation": "إنشاء للحجز",
@@ -463,14 +439,12 @@ const translation = {
   Ajouter,
   "Ajouter des invités": "إضافة الضيوف",
   "Aucun factures pour l'instant, essayez de créer une nouvelle": "لا توجد فواتير حتى الآن، حاول إنشاء واحدة جديدة",
-  messages: messages$1,
   Tous,
   "Non lu": "الغير المقروءة",
   "Reprendre avec votre adresse mail": "استئناف مع عنوان البريد الإلكتروني الخاص بك",
   "Aucun message a afficher": "لا توجد رسائل لعرضها",
   "Repondre à :": "الرد على:",
   "Envoyé": "إرسال",
-  "Data Tabeles": "==========================================================================",
   "Contrôler la visibilité des colonnes": "التحكم في رؤية الأعمدة",
   Cacher,
   Croissante,
@@ -485,7 +459,6 @@ const translation = {
   "Lignes par page": "صفوف لكل صفحة",
   "ligne(s) sélectionné(s).": "سطر (سطور) محددة.",
   "à fait un nouveaux réservation": "قام بحجز جديد",
-  "client side ": "============",
   "Changer la langue": "تغيير اللغة",
   "Mes réservations": "حجوزاتي",
   De,
@@ -551,11 +524,14 @@ const translation = {
   "Réinitialiser le mot de passe": "إعادة تعيين كلمة المرور",
   "": ""
 };
-function useTrans(value, section = "") {
+function useTrans(value) {
   const locale = localStorage.getItem("locale") || "fr";
   return locale == "fr" ? value : translation[value];
 }
 function getMenuList(pathname) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "layout.sideBar"
+  });
   const permissions = usePage().props.auth.permissions;
   const roomsPathnames = [
     "rooms.index",
@@ -589,61 +565,61 @@ function getMenuList(pathname) {
   const facturePathnames = ["factures.index", "factures.show"];
   const eventPathnames = ["events.index", "events.create", "events.edit"];
   const propritaireGroup = {
-    groupLabel: "La propritaire",
+    groupLabel: t("owner"),
     menus: [
       (permissions.room.viewAny || permissions.room.update || permissions.room.create) && {
         href: "rooms.index",
-        label: useTrans("Chambres"),
+        label: t("rooms"),
         active: roomsPathnames.includes(pathname),
         icon: Hotel,
         submenus: [
           {
             href: "rooms.index",
-            label: useTrans("Tous Les Chambre"),
+            label: t("allRooms"),
             active: pathname === "rooms.index"
           },
           {
             href: "features.index",
-            label: useTrans("Caractéristiques"),
+            label: t("features"),
             active: pathname === "features.index"
           }
         ]
       },
       (permissions.service.viewAny || permissions.service.update || permissions.service.delete || permissions.service.create) && {
         href: "services.index",
-        label: useTrans("Services"),
+        label: t("services"),
         active: servicesPathnames.includes(pathname),
         icon: HandPlatter,
         submenus: [
           {
             href: "services.index",
-            label: useTrans("Tous Les Services"),
+            label: t("allServices"),
             active: pathname === "services.index"
           },
           {
             href: "consumptions.index",
-            label: useTrans("Consommations"),
+            label: t("consumption"),
             active: pathname === "consumptions.index"
           }
         ]
       },
       (permissions.facture.viewAny || permissions.facture.update || permissions.facture.delete || permissions.facture.create) && {
         href: "factures.index",
-        label: useTrans("Factures"),
+        label: t("bills"),
         active: facturePathnames.includes(pathname),
         icon: ReceiptText,
         submenus: []
       },
       (permissions.event.viewAny || permissions.event.update || permissions.event.delete || permissions.event.create) && {
         href: "events.index",
-        label: useTrans("Evènements"),
+        label: t("events"),
         active: eventPathnames.includes(pathname),
         icon: Megaphone,
         submenus: []
       },
       (permissions.promotion.viewAny || permissions.promotion.update || permissions.promotion.delete || permissions.promotion.create) && {
         href: "promotions.index",
-        label: useTrans("Promotions"),
+        label: t("promotions"),
         active: promoPathnames.includes(pathname),
         icon: TicketMinus,
         submenus: []
@@ -651,22 +627,22 @@ function getMenuList(pathname) {
     ].filter(Boolean)
   };
   const managementGroup = {
-    groupLabel: useTrans("Management"),
+    groupLabel: t("managment"),
     menus: [
       (permissions.employ.viewAny || permissions.employ.update || permissions.employ.delete || permissions.employ.create || permissions.role.viewAny || permissions.role.update || permissions.role.delete || permissions.role.create) && {
         href: "roles.index",
-        label: useTrans("Utilisateurs"),
+        label: t("users"),
         active: usersPathnames.includes(pathname),
-        icon: Users$1,
+        icon: Users,
         submenus: [
           (permissions.role.viewAny || permissions.role.update || permissions.role.delete || permissions.role.create) && {
             href: "roles.index",
-            label: useTrans("Rôles"),
+            label: t("roles"),
             active: rolesPathnames.includes(pathname)
           },
           (permissions.employ.viewAny || permissions.employ.update || permissions.employ.delete || permissions.employ.create) && {
             href: "users.index",
-            label: useTrans("Employés"),
+            label: t("employs"),
             active: userPathnames.includes(pathname)
           }
         ]
@@ -679,7 +655,7 @@ function getMenuList(pathname) {
       menus: [
         {
           href: "admin.dashboard",
-          label: useTrans("Tableaux De Bord"),
+          label: t("dashboard"),
           active: pathname === "admin.dashboard",
           icon: LayoutGrid,
           submenus: []
@@ -687,18 +663,18 @@ function getMenuList(pathname) {
       ]
     },
     (permissions.booking.viewAny || permissions.booking.update || permissions.booking.create) && {
-      groupLabel: useTrans("Moteur de réservation"),
+      groupLabel: t("bookingsGroupe"),
       menus: [
         permissions.booking.viewAny && {
           href: "bookings.index",
-          label: useTrans("Réservations"),
+          label: t("bookings"),
           active: pathname == "bookings.index",
           icon: BookmarkCheck,
           submenus: []
         },
         permissions.booking.viewAny && {
           href: "bookings.historique",
-          label: useTrans("Historique"),
+          label: t("historical"),
           active: pathname == "bookings.historique",
           icon: Archive,
           submenus: []
@@ -1136,79 +1112,11 @@ function Menu({ isOpen }) {
     )
   ) }) }) });
 }
-const RadioGroup = React.forwardRef(({ className, ...props }, ref) => {
-  return /* @__PURE__ */ jsx(RadioGroupPrimitive.Root, { className: cn("grid gap-2", className), ...props, ref });
-});
-RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
-const RadioGroupItem = React.forwardRef(({ className, ...props }, ref) => {
-  return /* @__PURE__ */ jsx(
-    RadioGroupPrimitive.Item,
-    {
-      ref,
-      className: cn(
-        "aspect-square h-4 w-4 rounded-full border border-primary text-primary shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-        className
-      ),
-      ...props,
-      children: /* @__PURE__ */ jsx(RadioGroupPrimitive.Indicator, { className: "flex items-center justify-center", children: /* @__PURE__ */ jsx(CheckIcon, { className: "h-3.5 w-3.5 fill-primary" }) })
-    }
-  );
-});
-RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
-function InputLabel({ value, className = "", children, ...props }) {
-  return /* @__PURE__ */ jsx("label", { ...props, className: `block font-medium text-sm text-gray-700 dark:text-gray-300 ` + className, children: value ? value : children });
-}
-function LangSwitch$1() {
-  const locale = localStorage.getItem("locale") || "fr";
-  const [lang, setLang] = React__default.useState(locale);
-  const switchLang = () => {
-    const newLang = lang === "ar" ? "fr" : "ar";
-    setLang(newLang);
-    localStorage.setItem("locale", newLang);
-    router.visit(route("switch.lang"), {
-      data: { lang: newLang },
-      preserveState: true,
-      preserveScroll: true
-    });
-  };
-  return /* @__PURE__ */ jsxs(
-    RadioGroup,
-    {
-      value: lang,
-      onValueChange: switchLang,
-      className: "flex gap-2",
-      children: [
-        /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
-          /* @__PURE__ */ jsx(RadioGroupItem, { value: "fr", id: "fr" }),
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "fr",
-              value: "Français",
-              className: "cursor-pointer"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
-          /* @__PURE__ */ jsx(RadioGroupItem, { value: "ar", id: "ar" }),
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "ar",
-              value: "العربية",
-              className: "cursor-pointer"
-            }
-          )
-        ] })
-      ]
-    }
-  );
-}
 function AppLogo({ className }) {
   return /* @__PURE__ */ jsx(
     "img",
     {
-      src: "http://localhost:8000/storage/sidi-el-noui-logo.png",
+      src: "/assets/sidi-el-noui-logo.png",
       alt: "Logo",
       className
     }
@@ -1412,6 +1320,74 @@ const AvatarFallback = React.forwardRef(({ className, ...props }, ref) => /* @__
   }
 ));
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
+const RadioGroup = React.forwardRef(({ className, ...props }, ref) => {
+  return /* @__PURE__ */ jsx(RadioGroupPrimitive.Root, { className: cn("grid gap-2", className), ...props, ref });
+});
+RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
+const RadioGroupItem = React.forwardRef(({ className, ...props }, ref) => {
+  return /* @__PURE__ */ jsx(
+    RadioGroupPrimitive.Item,
+    {
+      ref,
+      className: cn(
+        "aspect-square h-4 w-4 rounded-full border border-primary text-primary shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      ),
+      ...props,
+      children: /* @__PURE__ */ jsx(RadioGroupPrimitive.Indicator, { className: "flex items-center justify-center", children: /* @__PURE__ */ jsx(CheckIcon, { className: "h-3.5 w-3.5 fill-primary" }) })
+    }
+  );
+});
+RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
+function InputLabel({ value, className = "", children, ...props }) {
+  return /* @__PURE__ */ jsx("label", { ...props, className: `block font-medium text-sm text-gray-700 dark:text-gray-300 ` + className, children: value ? value : children });
+}
+function LangSwitch$1() {
+  const locale = localStorage.getItem("locale") || "fr";
+  const [lang, setLang] = React__default.useState(locale);
+  const switchLang = () => {
+    const newLang = lang === "ar" ? "fr" : "ar";
+    setLang(newLang);
+    localStorage.setItem("locale", newLang);
+    router.visit(route("switch.lang"), {
+      data: { lang: newLang },
+      preserveState: true,
+      preserveScroll: true
+    });
+  };
+  return /* @__PURE__ */ jsxs(
+    RadioGroup,
+    {
+      value: lang,
+      onValueChange: switchLang,
+      className: "flex gap-2",
+      children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsx(RadioGroupItem, { value: "fr", id: "fr" }),
+          /* @__PURE__ */ jsx(
+            InputLabel,
+            {
+              htmlFor: "fr",
+              value: "Français",
+              className: "cursor-pointer"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsx(RadioGroupItem, { value: "ar", id: "ar" }),
+          /* @__PURE__ */ jsx(
+            InputLabel,
+            {
+              htmlFor: "ar",
+              value: "العربية",
+              className: "cursor-pointer"
+            }
+          )
+        ] })
+      ]
+    }
+  );
+}
 function RedBeadge({ className }) {
   return /* @__PURE__ */ jsx(
     "span",
@@ -1422,8 +1398,12 @@ function RedBeadge({ className }) {
 }
 function UserNav$1() {
   const user = usePage().props.auth.user;
+  const [processing, setProcessing] = React__default.useState(false);
   const message_permission = usePage().props.auth.permissions.message;
   const hasUnreadMessages = usePage().props.hasUnreadMessages;
+  const { t } = useTranslation("translation", {
+    keyPrefix: "layout.navBar.userNav"
+  });
   return /* @__PURE__ */ jsxs(DropdownMenu, { children: [
     /* @__PURE__ */ jsx(TooltipProvider, { disableHoverableContent: true, children: /* @__PURE__ */ jsxs(Tooltip, { delayDuration: 100, children: [
       /* @__PURE__ */ jsx(TooltipTrigger, { asChild: true, children: /* @__PURE__ */ jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(
@@ -1444,7 +1424,7 @@ function UserNav$1() {
         }
       ) }) }),
       /* @__PURE__ */ jsxs(TooltipContent, { side: "bottom", children: [
-        useTrans("Profile"),
+        t("tolip"),
         " "
       ] })
     ] }) }),
@@ -1459,49 +1439,72 @@ function UserNav$1() {
       ] }) }),
       /* @__PURE__ */ jsx(DropdownMenuSeparator, {}),
       /* @__PURE__ */ jsxs(DropdownMenuGroup, { children: [
-        /* @__PURE__ */ jsx(DropdownMenuItem, { className: "hover:cursor-pointer", asChild: true, children: /* @__PURE__ */ jsxs(
-          Link,
-          {
-            href: route("admin.dashboard"),
-            className: "flex items-center",
-            children: [
-              /* @__PURE__ */ jsx(LayoutGrid, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
-              useTrans("tableau de bord")
-            ]
-          }
-        ) }),
-        (message_permission.viewAny || message_permission.update || message_permission.delete || message_permission.create) && /* @__PURE__ */ jsx(
+        /* @__PURE__ */ jsx(
           DropdownMenuItem,
           {
             className: "hover:cursor-pointer",
+            disabled: processing,
             asChild: true,
             children: /* @__PURE__ */ jsxs(
               Link,
               {
-                href: route("messages.index"),
+                href: route("admin.dashboard"),
                 className: "flex items-center",
+                onStart: () => setProcessing(true),
+                onFinish: () => setProcessing(false),
                 children: [
-                  hasUnreadMessages ? /* @__PURE__ */ jsxs("div", { className: "relative", children: [
-                    /* @__PURE__ */ jsx(Inbox, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
-                    /* @__PURE__ */ jsx(RedBeadge, { className: "right-1/3" })
-                  ] }) : /* @__PURE__ */ jsx(Inbox, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
-                  useTrans("Boîte de réception")
+                  /* @__PURE__ */ jsx(LayoutGrid, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
+                  t("dashboard")
                 ]
               }
             )
           }
         ),
-        /* @__PURE__ */ jsx(DropdownMenuItem, { className: "hover:cursor-pointer", asChild: true, children: /* @__PURE__ */ jsxs(
-          Link,
+        (message_permission.viewAny || message_permission.update || message_permission.delete || message_permission.create) && /* @__PURE__ */ jsx(
+          DropdownMenuItem,
           {
-            href: route("admin.profile.edit"),
-            className: "flex items-center",
-            children: [
-              /* @__PURE__ */ jsx(User, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
-              useTrans("Compte")
-            ]
+            className: "hover:cursor-pointer",
+            asChild: true,
+            disabled: processing,
+            children: /* @__PURE__ */ jsxs(
+              Link,
+              {
+                href: route("messages.index"),
+                className: "flex items-center",
+                onStart: () => setProcessing(true),
+                onFinish: () => setProcessing(false),
+                children: [
+                  hasUnreadMessages ? /* @__PURE__ */ jsxs("div", { className: "relative", children: [
+                    /* @__PURE__ */ jsx(Inbox, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
+                    /* @__PURE__ */ jsx(RedBeadge, { className: "right-1/3" })
+                  ] }) : /* @__PURE__ */ jsx(Inbox, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
+                  t("inbox")
+                ]
+              }
+            )
           }
-        ) }),
+        ),
+        /* @__PURE__ */ jsx(
+          DropdownMenuItem,
+          {
+            className: "hover:cursor-pointer",
+            asChild: true,
+            disabled: processing,
+            children: /* @__PURE__ */ jsxs(
+              Link,
+              {
+                href: route("admin.profile.edit"),
+                className: "flex items-center",
+                onStart: () => setProcessing(true),
+                onFinish: () => setProcessing(false),
+                children: [
+                  /* @__PURE__ */ jsx(User, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
+                  t("account")
+                ]
+              }
+            )
+          }
+        ),
         /* @__PURE__ */ jsxs(DropdownMenuItem, { children: [
           /* @__PURE__ */ jsx(Languages, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
           /* @__PURE__ */ jsx(LangSwitch$1, {})
@@ -1512,12 +1515,20 @@ function UserNav$1() {
         DropdownMenuItem,
         {
           className: "hover:cursor-pointer",
+          disabled: processing,
           onClick: () => {
-            router.post(route("admin.logout"));
+            router.post(
+              route("admin.logout"),
+              {},
+              {
+                onStart: () => setProcessing(true),
+                onFinish: () => setProcessing(false)
+              }
+            );
           },
           children: [
             /* @__PURE__ */ jsx(LogOut, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
-            useTrans("Se déconnecter")
+            t("logout")
           ]
         }
       )
@@ -1560,6 +1571,7 @@ const useTheme = () => {
 };
 function ThemeToggle() {
   const { setTheme, theme } = useTheme();
+  const { t } = useTranslation();
   return /* @__PURE__ */ jsx(TooltipProvider, { disableHoverableContent: true, children: /* @__PURE__ */ jsxs(Tooltip, { delayDuration: 100, children: [
     /* @__PURE__ */ jsx(TooltipTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(
       Button,
@@ -1576,13 +1588,16 @@ function ThemeToggle() {
       }
     ) }),
     /* @__PURE__ */ jsxs(TooltipContent, { side: "bottom", children: [
-      useTrans("Changer le thème"),
+      t("layout.navBar.themeTolip"),
       " "
     ] })
   ] }) });
 }
 function NotificationsNav() {
-  const notifs2 = usePage().props.notifs;
+  const notifs = usePage().props.notifs;
+  const { t } = useTranslation("translation", {
+    keyPrefix: "layout.navBar.notifications"
+  });
   function timeSince(date) {
     const now = /* @__PURE__ */ new Date();
     const past = new Date(date);
@@ -1620,26 +1635,24 @@ function NotificationsNav() {
           className: "relative h-8 w-8 rounded-full",
           children: /* @__PURE__ */ jsxs(Avatar, { className: "h-8 w-8", children: [
             /* @__PURE__ */ jsx(AvatarImage, { src: "#", alt: "Avatar" }),
-            /* @__PURE__ */ jsx(AvatarFallback, { className: "bg-transparent uppercase", children: notifs2.length > 0 ? /* @__PURE__ */ jsxs("span", { className: "relative", children: [
+            /* @__PURE__ */ jsx(AvatarFallback, { className: "bg-transparent uppercase", children: notifs.length > 0 ? /* @__PURE__ */ jsxs("span", { className: "relative", children: [
               /* @__PURE__ */ jsx(Bell, { size: 18 }),
               /* @__PURE__ */ jsx(RedBeadge, { className: "right-0" })
             ] }) : /* @__PURE__ */ jsx(Bell, { size: 18 }) })
           ] })
         }
       ) }) }),
-      /* @__PURE__ */ jsxs(TooltipContent, { side: "bottom", children: [
-        useTrans("Notifications"),
-        " "
-      ] })
+      /* @__PURE__ */ jsx(TooltipContent, { side: "bottom", children: t("tolip") })
     ] }) }),
     /* @__PURE__ */ jsxs(DropdownMenuContent, { className: "w-56", align: "end", forceMount: true, children: [
-      /* @__PURE__ */ jsx(DropdownMenuGroup, { children: notifs2.slice(0, 10).map((notif, idx) => /* @__PURE__ */ jsxs(
+      /* @__PURE__ */ jsx(DropdownMenuGroup, { children: notifs.slice(0, 10).map((notif, idx) => /* @__PURE__ */ jsxs(
         DropdownMenuItem,
         {
           className: "hover:cursor-pointer",
           onClick: () => ViewNotification(notif),
           children: [
-            useTrans("Nouvelle réservation"),
+            t("new"),
+            " ",
             /* @__PURE__ */ jsxs(DropdownMenuShortcut, { children: [
               timeSince(notif == null ? void 0 : notif.created_at),
               " "
@@ -1649,14 +1662,17 @@ function NotificationsNav() {
         idx
       )) }),
       /* @__PURE__ */ jsx(DropdownMenuSeparator, {}),
-      /* @__PURE__ */ jsx(
+      /* @__PURE__ */ jsxs(
         DropdownMenuItem,
         {
           className: "hover:cursor-pointer",
           onClick: () => {
             router.get(route("notifications.index"));
           },
-          children: useTrans("Tout notifications")
+          children: [
+            t("all"),
+            " "
+          ]
         }
       )
     ] })
@@ -2021,6 +2037,7 @@ function DatePickerWithRange({
   className,
   min
 }) {
+  const { t } = useTranslation();
   const disablePastDates = (date2) => {
     const today = /* @__PURE__ */ new Date();
     today.setHours(0, 0, 0, 0);
@@ -2044,7 +2061,7 @@ function DatePickerWithRange({
             " ",
             format(date.to, "LLL dd, y")
           ] }) : format(date.from, "LLL dd, y") : /* @__PURE__ */ jsxs("span", { children: [
-            useTrans("Choisis une date"),
+            t("components.datePicker.title"),
             " "
           ] })
         ]
@@ -2060,7 +2077,7 @@ function DatePickerWithRange({
         selected: date,
         onSelect: onDateChange,
         numberOfMonths: 2,
-        locale: fr,
+        locale: fr$1,
         weekStartsOn: 6,
         disabled: disablePastDates,
         showOutsideDays: false
@@ -2111,6 +2128,7 @@ function AddBooking() {
   const { width } = useWindowDimensions();
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
+  const { t } = useTranslation("translation", { keyPrefix: "layout.navBar" });
   useEffect(() => {
     var _a;
     if (flash.message) {
@@ -2153,12 +2171,12 @@ function AddBooking() {
     return /* @__PURE__ */ jsxs(Dialog, { open, onOpenChange: () => setOpen(!open), children: [
       /* @__PURE__ */ jsx(DialogTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(Button, { variant: "link", children: [
         /* @__PURE__ */ jsx(CalendarPlus, { size: 18, className: "mx-2" }),
-        useTrans("Ajouter une réservation")
+        t("addBooking")
       ] }) }),
       /* @__PURE__ */ jsxs(DialogContent, { children: [
         /* @__PURE__ */ jsxs(DialogHeader, { children: [
-          /* @__PURE__ */ jsx(DialogTitle, { children: useTrans("Ajouter une réservation") }),
-          /* @__PURE__ */ jsx(DialogDescription, { children: useTrans("Chercher des chambres disponible") })
+          /* @__PURE__ */ jsx(DialogTitle, { children: t("dialog.dialogDescreption") }),
+          /* @__PURE__ */ jsx(DialogDescription, { children: t("dialog.dialogDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("form", { onSubmit: submit, className: "grid items-start gap-4", children: [
           /* @__PURE__ */ jsxs("div", { className: "grid gap-2", children: [
@@ -2166,9 +2184,7 @@ function AddBooking() {
               InputLabel,
               {
                 htmlFor: "dates",
-                value: useTrans(
-                  "Date début et fin de réservation"
-                )
+                value: t("dialog.form.dates")
               }
             ),
             /* @__PURE__ */ jsx(
@@ -2200,7 +2216,7 @@ function AddBooking() {
                 InputLabel,
                 {
                   htmlFor: "guest_number",
-                  value: useTrans("Nombre des personne")
+                  value: t("dialog.form.guestNumber")
                 }
               ),
               /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-center w-1/4 border rounded p-1 bg-muted", children: [
@@ -2245,13 +2261,11 @@ function AddBooking() {
               InputLabel,
               {
                 htmlFor: "need_value",
-                value: useTrans(
-                  "Choisi cette option lors cette réservation est pour un société"
-                )
+                value: t("dialog.form.needValue")
               }
             )
           ] }),
-          /* @__PURE__ */ jsx(DialogFooter, { children: /* @__PURE__ */ jsx(Button, { variant: "secondary", type: "submit", children: useTrans("Recherche") }) })
+          /* @__PURE__ */ jsx(DialogFooter, { children: /* @__PURE__ */ jsx(Button, { variant: "secondary", type: "submit", children: t("dialog.form.submit") }) })
         ] })
       ] })
     ] });
@@ -2356,7 +2370,53 @@ function AddBooking() {
     ] })
   ] });
 }
-function Navbar({ title, isOpen }) {
+const LanguageSwitcher = () => {
+  const { i18n: i18n2 } = useTranslation();
+  const { locale } = usePage().props;
+  const changeLanguage = (lng) => {
+    i18n2.changeLanguage(lng);
+    document.documentElement.dir = lng == "ar" ? "rtl" : "ltr";
+    router.visit(route("switch.lang"), {
+      data: { lang: lng },
+      preserveState: true,
+      preserveScroll: true
+    });
+  };
+  return /* @__PURE__ */ jsxs(
+    RadioGroup,
+    {
+      value: locale,
+      onValueChange: changeLanguage,
+      className: "flex gap-2",
+      children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsx(RadioGroupItem, { value: "fr", id: "fr" }),
+          /* @__PURE__ */ jsx(
+            InputLabel,
+            {
+              htmlFor: "fr",
+              value: "Français",
+              className: "cursor-pointer"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsx(RadioGroupItem, { value: "ar", id: "ar" }),
+          /* @__PURE__ */ jsx(
+            InputLabel,
+            {
+              htmlFor: "ar",
+              value: "العربية",
+              className: "cursor-pointer"
+            }
+          )
+        ] })
+      ]
+    }
+  );
+};
+function Navbar({ isOpen }) {
+  const { t } = useTranslation();
   const booking_permission = usePage().props.auth.permissions.booking;
   return /* @__PURE__ */ jsx(
     "div",
@@ -2368,10 +2428,11 @@ function Navbar({ title, isOpen }) {
       children: /* @__PURE__ */ jsx("header", { className: "sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary", children: /* @__PURE__ */ jsxs("div", { className: "mx-4 sm:mx-8 flex h-14 items-center justify-between", children: [
         /* @__PURE__ */ jsxs("div", { className: "flex items-center space-x-4 lg:space-x-0", children: [
           /* @__PURE__ */ jsx(SheetMenu, {}),
-          /* @__PURE__ */ jsx("h1", { className: "font-bold", children: title })
+          /* @__PURE__ */ jsx("h1", { className: "font-bold", children: t("dashboard.title") })
         ] }),
         /* @__PURE__ */ jsx("div", { children: booking_permission.create && /* @__PURE__ */ jsx(AddBooking, {}) }),
         /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 justify-end", children: [
+          /* @__PURE__ */ jsx(LanguageSwitcher, {}),
           /* @__PURE__ */ jsx(NotificationsNav, {}),
           /* @__PURE__ */ jsx(ThemeToggle, {}),
           /* @__PURE__ */ jsx(UserNav$1, {})
@@ -2473,9 +2534,9 @@ function Toaster() {
 }
 function AdminPanelLayout({ children }) {
   const sidebar = useStore(useSidebarToggle, (state) => state);
-  const locale = localStorage.getItem("locale") || "fr";
   const { toast: toast2 } = useToast();
-  useEffect(() => {
+  const { locale } = usePage().props;
+  React__default.useEffect(() => {
     document.documentElement.dir = locale == "ar" ? "rtl" : "ltr";
   }, [locale]);
   Echo.channel(`booking-channel`).listen("NewBooking", (e) => {
@@ -2493,7 +2554,7 @@ function AdminPanelLayout({ children }) {
     return null;
   return /* @__PURE__ */ jsxs(ThemeProvider, { children: [
     /* @__PURE__ */ jsx(SideBar, {}),
-    /* @__PURE__ */ jsx(Navbar, { title: "Tableux de bord", isOpen: sidebar == null ? void 0 : sidebar.isOpen }),
+    /* @__PURE__ */ jsx(Navbar, { isOpen: sidebar == null ? void 0 : sidebar.isOpen }),
     /* @__PURE__ */ jsx(
       "main",
       {
@@ -2603,7 +2664,7 @@ function LabelDescreption({
   children,
   ...props
 }) {
-  return /* @__PURE__ */ jsx("div", { ...props, className: `text-muted-foreground text-sm` + className, children: value ? value : children });
+  return /* @__PURE__ */ jsx("div", { ...props, className: `text-muted-foreground text-sm ` + className, children: value ? value : children });
 }
 function FormInput({
   label,
@@ -2617,11 +2678,11 @@ function FormInput({
 }) {
   return /* @__PURE__ */ jsxs("div", { className: "md:flex my-4 w-full", children: [
     label_descreption && /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-      /* @__PURE__ */ jsx(InputLabel, { htmlFor: label, value: useTrans(label) }),
-      /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(label_descreption) })
+      /* @__PURE__ */ jsx(InputLabel, { htmlFor: label, value: label }),
+      /* @__PURE__ */ jsx(LabelDescreption, { children: label_descreption })
     ] }),
     /* @__PURE__ */ jsxs("div", { className: "w-full bg-muted p-4 shadow", children: [
-      /* @__PURE__ */ jsx(InputLabel, { htmlFor: label, value: useTrans(label) }),
+      /* @__PURE__ */ jsx(InputLabel, { htmlFor: label, value: label }),
       /* @__PURE__ */ jsx(
         Input,
         {
@@ -2672,10 +2733,11 @@ const badgeVariants = cva(
 function Badge({ className, variant, children, ...props }) {
   return /* @__PURE__ */ jsx("span", { className: cn(badgeVariants({ variant }), className), ...props, children });
 }
-function AviableRooms$1({ rooms, bookingData, services }) {
+function AviableRooms$1({ rooms: rooms2, bookingData, services: services2 }) {
   var _a;
   const [count2, setCount] = useState(0);
-  const { data, setData: setData2, post, errors } = useForm({
+  const { t } = useTranslation("translation", { keyPrefix: "aviableRooms" });
+  const { data, setData: setData2, post, errors, processing } = useForm({
     rooms: [],
     consomation: [],
     check_in: bookingData.check_in,
@@ -2756,15 +2818,15 @@ function AviableRooms$1({ rooms, bookingData, services }) {
     post(route("bookings.store"));
   };
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Chambres disponible" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Chambres disponible") }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
     /* @__PURE__ */ jsxs(PlaceholderContent, { children: [
       /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
         bookingData.is_company == 1 ? /* @__PURE__ */ jsxs("div", { className: "flex gap-2 w-full", children: [
           /* @__PURE__ */ jsx(
             FormInput,
             {
-              label: "Nom",
+              label: t("name"),
               error: errors.first_name,
               type: "text",
               data: data.first_name,
@@ -2775,7 +2837,7 @@ function AviableRooms$1({ rooms, bookingData, services }) {
           /* @__PURE__ */ jsx(
             FormInput,
             {
-              label: "Adresse",
+              label: t("adress"),
               error: errors.adresse,
               type: "text",
               data: data.adresse,
@@ -2787,7 +2849,7 @@ function AviableRooms$1({ rooms, bookingData, services }) {
           /* @__PURE__ */ jsx(
             FormInput,
             {
-              label: "Nom",
+              label: t("name"),
               error: errors.first_name,
               type: "text",
               data: data.first_name,
@@ -2798,7 +2860,7 @@ function AviableRooms$1({ rooms, bookingData, services }) {
           /* @__PURE__ */ jsx(
             FormInput,
             {
-              label: "Prénom",
+              label: t("lastName"),
               error: errors.last_name,
               type: "text",
               data: data.last_name,
@@ -2813,7 +2875,7 @@ function AviableRooms$1({ rooms, bookingData, services }) {
             /* @__PURE__ */ jsx(
               FormInput,
               {
-                label: "Numéro d'Identification Fiscale",
+                label: t("nif"),
                 error: errors.nif,
                 type: "text",
                 data: data.nif,
@@ -2824,7 +2886,7 @@ function AviableRooms$1({ rooms, bookingData, services }) {
             /* @__PURE__ */ jsx(
               FormInput,
               {
-                label: "Numéro d'Identification Statistique",
+                label: t("nis"),
                 error: errors.nis,
                 type: "text",
                 data: data.nis,
@@ -2838,7 +2900,7 @@ function AviableRooms$1({ rooms, bookingData, services }) {
             /* @__PURE__ */ jsx(
               FormInput,
               {
-                label: "Numéro  de registre de commerce",
+                label: t("nrc"),
                 error: errors.nrc,
                 type: "text",
                 data: data.nrc,
@@ -2849,7 +2911,7 @@ function AviableRooms$1({ rooms, bookingData, services }) {
             /* @__PURE__ */ jsx(
               FormInput,
               {
-                label: "Numéro d'article",
+                label: t("na"),
                 error: errors.n_article,
                 type: "text",
                 data: data.n_article,
@@ -2863,8 +2925,8 @@ function AviableRooms$1({ rooms, bookingData, services }) {
         /* @__PURE__ */ jsx(
           FormInput,
           {
-            label: "Email",
-            label_descreption: "L'email doit être unique pour chaque utilisateur",
+            label: t("email"),
+            label_descreption: t("emailDescreption"),
             error: errors.email,
             type: "email",
             data: data.email,
@@ -2876,8 +2938,8 @@ function AviableRooms$1({ rooms, bookingData, services }) {
         /* @__PURE__ */ jsx(
           FormInput,
           {
-            label: "N° téléphone",
-            label_descreption: "Le N° téléphone doit être unique pour chaque utilisateur",
+            label: t("phone"),
+            label_descreption: t("phoneDescreption"),
             error: errors.phone,
             type: "text",
             data: data.phone,
@@ -2887,37 +2949,38 @@ function AviableRooms$1({ rooms, bookingData, services }) {
         )
       ] }),
       /* @__PURE__ */ jsx(Separator, { className: "my-2" }),
-      /* @__PURE__ */ jsx(InputLabel, { className: "mb-2", children: useTrans("Choisi un ou plusieur chambres à réserver") }),
+      /* @__PURE__ */ jsx(InputLabel, { className: "mb-2", children: t("tableHeader") }),
       /* @__PURE__ */ jsxs("table", { className: "table-auto border-collapse w-full border", children: [
-        /* @__PURE__ */ jsxs("thead", { children: [
-          /* @__PURE__ */ jsx("th", { children: useTrans("Numéro de chambre") }),
-          /* @__PURE__ */ jsx("th", { children: useTrans("Type de chambre") }),
+        /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
+          /* @__PURE__ */ jsx("th", { children: t("roomNumber") }),
+          /* @__PURE__ */ jsx("th", { children: t("type") }),
           /* @__PURE__ */ jsxs("th", { children: [
-            useTrans("Prix TTC"),
+            t("ttc"),
             " "
           ] }),
-          /* @__PURE__ */ jsx("th", { children: useTrans("Caractéristiques") })
-        ] }),
-        /* @__PURE__ */ jsx("tbody", { children: rooms.map((room) => /* @__PURE__ */ jsxs(
+          /* @__PURE__ */ jsx("th", { children: t("features") })
+        ] }) }),
+        /* @__PURE__ */ jsx("tbody", { children: rooms2.map((room) => /* @__PURE__ */ jsxs(
           "tr",
           {
             onClick: () => handleRooms(room),
             className: cn(
-              "hover:bg-gray-200 hover:dark:bg-gray-600 text-center border cursor-pointer",
+              "hover:bg-muted text-center border cursor-pointer",
               data.rooms.findIndex(
                 (r) => r.id === room.id
-              ) !== -1 ? "bg-muted" : ""
+              ) !== -1 ? "bg-secondary hover:bg-secondary/90" : ""
             ),
             children: [
               /* @__PURE__ */ jsxs("td", { children: [
-                "Chambre N° ",
+                t("roomCode"),
+                " ",
                 room.room_number
               ] }),
               /* @__PURE__ */ jsx("td", { children: room.type.type_designation }),
               /* @__PURE__ */ jsxs("td", { children: [
                 room.room_price,
                 " ",
-                useTrans("DA")
+                t("da")
               ] }),
               /* @__PURE__ */ jsx("td", { className: "flex flex-wrap flex-row p-2 ", children: room.features.map((feature) => /* @__PURE__ */ jsxs(Badge, { children: [
                 feature.features_name,
@@ -2930,9 +2993,9 @@ function AviableRooms$1({ rooms, bookingData, services }) {
         )) })
       ] }),
       /* @__PURE__ */ jsx(Separator, { className: "my-2" }),
-      /* @__PURE__ */ jsx(InputLabel, { children: useTrans("Ajouter les consommation de cetter réservation") }),
+      /* @__PURE__ */ jsx(InputLabel, { children: t("cunsumptionHeader") }),
       /* @__PURE__ */ jsxs(Accordion, { type: "multiple", className: "", children: [
-        services.map((service) => /* @__PURE__ */ jsxs(
+        services2.map((service) => /* @__PURE__ */ jsxs(
           AccordionItem,
           {
             value: service.service_name,
@@ -3000,7 +3063,8 @@ function AviableRooms$1({ rooms, bookingData, services }) {
           size: "sm",
           type: "submit",
           onClick: submit,
-          children: useTrans("Réserver")
+          disabled: processing,
+          children: t("submit")
         }
       ) })
     ] })
@@ -3542,125 +3606,127 @@ const RichEditor = ({
     }
   );
 };
-function Booking({ booking }) {
+function Booking({ booking: booking2 }) {
+  const { t } = useTranslation("translation", { keyPrefix: "booking" });
   const totalPrice = () => {
     let total = 0;
-    let days = (new Date(booking.check_out) - new Date(booking.check_in)) / (1e3 * 60 * 60 * 24);
-    booking.rooms.map((room) => {
+    let days = (new Date(booking2.check_out) - new Date(booking2.check_in)) / (1e3 * 60 * 60 * 24);
+    booking2.rooms.map((room) => {
       total += room.pivot.room_price * days;
     });
-    booking.consomation.map((consomation) => {
+    booking2.consomation.map((consomation) => {
       total += consomation.consumption_price * consomation.pivot.quantity;
     });
     return total;
   };
+  console.log(t("title"));
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Réservation" }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
     /* @__PURE__ */ jsx(
       PageHeading,
       {
-        title: useTrans("Réservation de ") + booking.user.first_name + " " + booking.user.last_name
+        title: t("pageHeading") + booking2.user.first_name + " " + booking2.user.last_name
       }
     ),
     /* @__PURE__ */ jsxs(PlaceholderContent, { className: "flex flex-col md:flex-row gap-2", children: [
       /* @__PURE__ */ jsxs("div", { className: "md:w-1/3 w-full flex md:flex-col gap-2", children: [
         /* @__PURE__ */ jsxs(Card, { children: [
-          /* @__PURE__ */ jsx(CardHeader, { className: "font-bold p-2", children: useTrans("Informations de client") }),
+          /* @__PURE__ */ jsx(CardHeader, { className: "font-bold p-2", children: t("clientCard") }),
           /* @__PURE__ */ jsx(CardContent, { className: "flex justify-between p-2", children: /* @__PURE__ */ jsxs("div", { children: [
             /* @__PURE__ */ jsxs("div", { className: "font-bold", children: [
-              booking.user.first_name,
+              booking2.user.first_name,
               " ",
-              booking.user.last_name,
+              booking2.user.last_name,
               " "
             ] }),
-            /* @__PURE__ */ jsx("div", { children: booking.user.email }),
-            /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: booking.user.phone })
+            /* @__PURE__ */ jsx("div", { children: booking2.user.email }),
+            /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: booking2.user.phone })
           ] }) })
         ] }),
         /* @__PURE__ */ jsxs(Card, { children: [
-          /* @__PURE__ */ jsx(CardHeader, { className: "font-bold p-2", children: useTrans("Détails de réservation") }),
+          /* @__PURE__ */ jsx(CardHeader, { className: "font-bold p-2", children: t("bookingCard") }),
           /* @__PURE__ */ jsxs(CardContent, { className: "flex justify-between p-2", children: [
             /* @__PURE__ */ jsxs("div", { children: [
               /* @__PURE__ */ jsxs("div", { children: [
-                useTrans("Arrivée"),
+                t("checkIn"),
                 " "
               ] }),
-              /* @__PURE__ */ jsx("div", { className: "font-bold", children: booking.check_in }),
+              /* @__PURE__ */ jsx("div", { className: "font-bold", children: booking2.check_in }),
               /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: "12h00 - 23h00" })
             ] }),
             /* @__PURE__ */ jsxs("div", { children: [
               /* @__PURE__ */ jsxs("div", { children: [
-                useTrans("Départ"),
+                t("checkOut"),
                 " "
               ] }),
-              /* @__PURE__ */ jsx("div", { className: "font-bold", children: booking.check_out }),
+              /* @__PURE__ */ jsx("div", { className: "font-bold", children: booking2.check_out }),
               /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: "07h00 - 12h00" })
             ] })
           ] }),
           /* @__PURE__ */ jsx(CardContent, { className: "flex justify-between p-2", children: /* @__PURE__ */ jsxs("div", { children: [
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Nombre des personnes"),
+              t("guestNumber"),
               " "
             ] }),
             /* @__PURE__ */ jsxs("span", { className: "font-bold", children: [
-              booking.guest_number,
+              booking2.guest_number,
               " "
             ] }),
-            /* @__PURE__ */ jsx("span", { className: "text-sm text-muted-foreground", children: useTrans("adult") }),
-            booking.kids_number ? /* @__PURE__ */ jsxs(Fragment, { children: [
+            /* @__PURE__ */ jsx("span", { className: "text-sm text-muted-foreground", children: t("adult") }),
+            booking2.kids_number ? /* @__PURE__ */ jsxs(Fragment, { children: [
               " ",
-              useTrans("et"),
+              t("and"),
               " ",
               /* @__PURE__ */ jsxs("span", { className: "font-bold", children: [
-                booking.kids_number,
+                booking2.kids_number,
                 " "
               ] }),
-              /* @__PURE__ */ jsx("span", { className: "text-sm text-muted-foreground", children: useTrans("bébés") })
+              /* @__PURE__ */ jsx("span", { className: "text-sm text-muted-foreground", children: t("babys") })
             ] }) : null
           ] }) }),
           /* @__PURE__ */ jsxs(CardFooter, { className: "flex-col items-start p-2", children: [
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Durée de séjour"),
+              t(""),
               " "
             ] }),
             /* @__PURE__ */ jsxs("div", { className: "font-bold", children: [
-              (new Date(booking.check_out) - new Date(booking.check_in)) / (1e3 * 60 * 60 * 24),
+              (new Date(booking2.check_out) - new Date(booking2.check_in)) / (1e3 * 60 * 60 * 24),
               " ",
-              useTrans("nuit")
+              t("nights")
             ] })
           ] })
         ] }),
         /* @__PURE__ */ jsxs(Card, { children: [
-          /* @__PURE__ */ jsx(CardHeader, { className: "p-2 font-bold", children: useTrans("Récapitulatif du montant") }),
+          /* @__PURE__ */ jsx(CardHeader, { className: "p-2 font-bold", children: t("pricingCard") }),
           /* @__PURE__ */ jsxs(CardContent, { className: "p-2 text-3xl font-bold text-primary", children: [
-            totalPrice(booking.rooms),
+            totalPrice(booking2.rooms),
             " ",
-            useTrans("DA")
+            t("da")
           ] }),
-          /* @__PURE__ */ jsx(CardFooter, { className: "p-2 text-muted-foreground", children: useTrans("Ce prix avec tout tax inclus") })
+          /* @__PURE__ */ jsx(CardFooter, { className: "p-2 text-muted-foreground", children: t("pricingFooter") })
         ] })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "md:w-2/3 w-full h-fit bg-card p-2 pb-6 rounded-lg", children: [
-        booking.rooms.map((room) => /* @__PURE__ */ jsxs(Card, { className: "w-full mb-2", children: [
+        booking2.rooms.map((room) => /* @__PURE__ */ jsxs(Card, { className: "w-full mb-2", children: [
           /* @__PURE__ */ jsxs(CardHeader, { className: "font-bold p-2 pb-0 flex-row items-center justify-between", children: [
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Chambre"),
+              t("rooms"),
               " ",
               room.type.type_designation,
               " ",
-              useTrans("avec"),
+              t("with"),
               " ",
               room.beeds_number,
               " ",
-              useTrans("lits")
+              t("beeds")
             ] }),
             /* @__PURE__ */ jsxs("div", { className: "text-xl text-primary", children: [
-              (new Date(booking.check_out) - new Date(booking.check_in)) / (1e3 * 60 * 60 * 24),
+              (new Date(booking2.check_out) - new Date(booking2.check_in)) / (1e3 * 60 * 60 * 24),
               " ",
               "x ",
               room.pivot.room_price,
               " ",
-              useTrans("DA")
+              t("da")
             ] })
           ] }),
           /* @__PURE__ */ jsx(CardContent, { className: "p-2 ", children: room.features.slice(0, 4).map((feature) => /* @__PURE__ */ jsxs(
@@ -3681,82 +3747,86 @@ function Booking({ booking }) {
                 className: buttonVariants({
                   variant: "link"
                 }),
-                children: useTrans("Voir Plus")
+                children: t("showMore")
               }
             ),
-            /* @__PURE__ */ jsxs(DialogContent, { className: "p-0", children: [
-              /* @__PURE__ */ jsx(DialogHeader, { children: /* @__PURE__ */ jsx(DialogTitle, { className: "p-0", children: /* @__PURE__ */ jsxs(Carousel, { children: [
-                /* @__PURE__ */ jsx(CarouselContent, { children: room.assets.map(
-                  (asset) => /* @__PURE__ */ jsx(CarouselItem, { children: /* @__PURE__ */ jsx(
-                    "img",
-                    {
-                      src: asset.url,
-                      alt: asset.name,
-                      className: "w-full"
-                    }
-                  ) })
-                ) }),
-                /* @__PURE__ */ jsx(CarouselPrevious, {}),
-                /* @__PURE__ */ jsx(CarouselNext, {})
-              ] }) }) }),
-              /* @__PURE__ */ jsxs(DialogDescription, { className: "p-4", children: [
-                /* @__PURE__ */ jsxs("div", { className: "font-bold text-foreground flex justify-between", children: [
-                  /* @__PURE__ */ jsxs("div", { children: [
-                    useTrans("Chambre"),
-                    " ",
-                    room.type.type_designation,
-                    " ",
-                    useTrans("avec"),
-                    " ",
-                    room.beeds_number,
-                    " ",
-                    useTrans("lits")
-                  ] }),
-                  /* @__PURE__ */ jsxs("div", { className: "text-xl text-primary", children: [
-                    " ",
-                    room.pivot.room_price,
-                    " ",
-                    useTrans("DA")
+            /* @__PURE__ */ jsxs(
+              DialogContent,
+              {
+                className: "p-0",
+                "aria-describedby": void 0,
+                children: [
+                  /* @__PURE__ */ jsx(DialogHeader, { className: "p-0", children: /* @__PURE__ */ jsx(DialogTitle, { className: "p-0", children: /* @__PURE__ */ jsxs(Carousel, { children: [
+                    /* @__PURE__ */ jsx(CarouselContent, { children: room.assets.map(
+                      (asset) => /* @__PURE__ */ jsx(CarouselItem, { children: /* @__PURE__ */ jsx(
+                        "img",
+                        {
+                          src: asset.url,
+                          alt: asset.name,
+                          className: "w-full"
+                        }
+                      ) })
+                    ) }),
+                    /* @__PURE__ */ jsx(CarouselPrevious, {}),
+                    /* @__PURE__ */ jsx(CarouselNext, {})
+                  ] }) }) }),
+                  /* @__PURE__ */ jsxs("div", { className: "p-4", children: [
+                    /* @__PURE__ */ jsxs("div", { className: "font-bold text-foreground flex justify-between", children: [
+                      /* @__PURE__ */ jsxs("div", { children: [
+                        t("rooms"),
+                        " ",
+                        room.type.type_designation,
+                        " ",
+                        t("with"),
+                        " ",
+                        room.beeds_number,
+                        " ",
+                        t("beeds")
+                      ] }),
+                      /* @__PURE__ */ jsxs("div", { className: "text-xl text-primary", children: [
+                        " ",
+                        room.pivot.room_price,
+                        " ",
+                        t("da")
+                      ] })
+                    ] }),
+                    room.features.length > 0 && /* @__PURE__ */ jsxs("div", { className: "my-2", children: [
+                      /* @__PURE__ */ jsx(Separator, {}),
+                      /* @__PURE__ */ jsxs("div", { className: "font-bold text-foreground pb-2 flex justify-start", children: [
+                        t("features"),
+                        " :"
+                      ] }),
+                      room.features.slice(0, 4).map((feature) => /* @__PURE__ */ jsxs(
+                        Badge,
+                        {
+                          className: "m-0 w-autot",
+                          children: [
+                            feature.features_name,
+                            feature.need_value == true && ": " + feature.pivot.valeur
+                          ]
+                        },
+                        feature.feature_id
+                      ))
+                    ] }),
+                    /* @__PURE__ */ jsxs("div", { className: "my-2", children: [
+                      /* @__PURE__ */ jsx(Separator, {}),
+                      /* @__PURE__ */ jsx(
+                        RichEditor,
+                        {
+                          className: "bg-transparent border-none max-h-[200px] overflow-auto",
+                          autofocus: false,
+                          editable: false,
+                          content: room.room_descreption
+                        }
+                      )
+                    ] })
                   ] })
-                ] }),
-                room.features.length > 0 && /* @__PURE__ */ jsxs("div", { className: "my-2 ", children: [
-                  /* @__PURE__ */ jsx(Separator, {}),
-                  /* @__PURE__ */ jsxs("div", { className: "font-bold text-foreground pb-2 flex justify-start", children: [
-                    useTrans(
-                      "Caractéristiques"
-                    ),
-                    " ",
-                    ":"
-                  ] }),
-                  room.features.slice(0, 4).map((feature) => /* @__PURE__ */ jsxs(
-                    Badge,
-                    {
-                      className: "m-0 w-autot",
-                      children: [
-                        feature.features_name,
-                        feature.need_value == true && ": " + feature.pivot.valeur
-                      ]
-                    },
-                    feature.feature_id
-                  ))
-                ] }),
-                /* @__PURE__ */ jsxs("div", { className: "my-2", children: [
-                  /* @__PURE__ */ jsx(Separator, {}),
-                  /* @__PURE__ */ jsx(
-                    RichEditor,
-                    {
-                      className: "bg-transparent border-none max-h-[200px] overflow-auto",
-                      autofocus: false,
-                      editable: false,
-                      content: room.room_descreption
-                    }
-                  )
-                ] })
-              ] })
-            ] })
+                ]
+              }
+            )
           ] }) })
         ] }, room.room_number)),
-        booking.consomation.map((consomation) => /* @__PURE__ */ jsx(
+        booking2.consomation.map((consomation) => /* @__PURE__ */ jsx(
           Card,
           {
             className: "w-full mb-2",
@@ -3767,7 +3837,8 @@ function Booking({ booking }) {
                 " x",
                 " ",
                 consomation.consumption_price,
-                " DA"
+                " ",
+                t("da")
               ] })
             ] })
           },
@@ -3880,6 +3951,9 @@ PaginationContent.displayName = "PaginationContent";
 const PaginationItem = React.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsx("li", { ref, className: cn("", className), ...props }));
 PaginationItem.displayName = "PaginationItem";
 function DataTablePagination({ tabledata }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "components.dataTable.pagination"
+  });
   const navigateTo = (url) => {
     router.visit(url, {
       preserveState: true,
@@ -3892,7 +3966,7 @@ function DataTablePagination({ tabledata }) {
       " / ",
       tabledata.total,
       " ",
-      useTrans("ligne(s) afficher")
+      t("footer")
     ] }),
     /* @__PURE__ */ jsx("div", { className: "flex items-center space-x-2", children: /* @__PURE__ */ jsx(Pagination, { children: /* @__PURE__ */ jsxs(PaginationContent, { children: [
       /* @__PURE__ */ jsx(PaginationItem, { children: /* @__PURE__ */ jsxs(
@@ -3962,21 +4036,25 @@ function DataTablePagination({ tabledata }) {
 function DataTableViewOptions({
   table
 }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "components.dataTable.viewOption"
+  });
   return /* @__PURE__ */ jsxs(DropdownMenu, { children: [
-    /* @__PURE__ */ jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(
-      Button,
+    /* @__PURE__ */ jsxs(
+      DropdownMenuTrigger,
       {
-        variant: "outline",
-        size: "sm",
-        className: "ml-auto h-8 lg:flex",
+        className: buttonVariants({
+          variant: "outline",
+          size: "sm"
+        }) + " ml-auto h-8 lg:flex",
         children: [
           /* @__PURE__ */ jsx(MixerHorizontalIcon, { className: "mr-2 h-4 w-4" }),
-          useTrans("Voir")
+          t("show")
         ]
       }
-    ) }),
-    /* @__PURE__ */ jsxs(DropdownMenuContent, { align: "end", className: "w-[150px]", children: [
-      /* @__PURE__ */ jsx(DropdownMenuLabel, { children: useTrans("Basculer les colonnes") }),
+    ),
+    /* @__PURE__ */ jsxs(DropdownMenuContent, { align: "end", className: "w-fit", children: [
+      /* @__PURE__ */ jsx(DropdownMenuLabel, { children: t("title") }),
       /* @__PURE__ */ jsx(DropdownMenuSeparator, {}),
       table.getAllColumns().filter(
         (column) => typeof column.accessorFn !== "undefined" && column.getCanHide()
@@ -3984,10 +4062,9 @@ function DataTableViewOptions({
         return /* @__PURE__ */ jsx(
           DropdownMenuCheckboxItem,
           {
-            className: "capitalize",
             checked: column.getIsVisible(),
             onCheckedChange: (value) => column.toggleVisibility(!!value),
-            children: column.id
+            children: t(column.id)
           },
           column.id
         );
@@ -4006,6 +4083,9 @@ function DataTable({
   const [columnFilters, setColumnFilters] = React__default.useState([]);
   const [columnVisibility, setColumnVisibility] = React__default.useState({});
   const [rowSelection, setRowSelection] = React__default.useState({});
+  const { t } = useTranslation("translation", {
+    keyPrefix: "components.dataTable"
+  });
   const table = useReactTable({
     data,
     columns: columns2,
@@ -4024,12 +4104,7 @@ function DataTable({
     }
   });
   return /* @__PURE__ */ jsxs("div", { children: [
-    /* @__PURE__ */ jsx("div", { className: "flex items-center justify-between py-4", children: /* @__PURE__ */ jsx(TooltipProvider, { children: /* @__PURE__ */ jsxs(Tooltip, { children: [
-      /* @__PURE__ */ jsx(TooltipTrigger, { children: /* @__PURE__ */ jsx(DataTableViewOptions, { table }) }),
-      /* @__PURE__ */ jsx(TooltipContent, { children: /* @__PURE__ */ jsx("p", { children: useTrans(
-        "Contrôler la visibilité des colonnes"
-      ) }) })
-    ] }) }) }),
+    /* @__PURE__ */ jsx("div", { className: " w-full py-4", children: /* @__PURE__ */ jsx(DataTableViewOptions, { table }) }),
     /* @__PURE__ */ jsx("div", { className: "rounded-md border", children: /* @__PURE__ */ jsxs(Table, { children: [
       /* @__PURE__ */ jsx(TableHeader, { children: table.getHeaderGroups().map((headerGroup) => /* @__PURE__ */ jsx(TableRow, { children: headerGroup.headers.map((header) => {
         return /* @__PURE__ */ jsx(TableHead, { children: header.isPlaceholder ? null : flexRender(
@@ -4061,99 +4136,86 @@ function DataTable({
       " / ",
       table.getFilteredRowModel().rows.length,
       " ",
-      useTrans("ligne(s) sélectionné(s).")
+      t("viewOption.selection")
     ] }),
     paginate && /* @__PURE__ */ jsx(DataTablePagination, { tabledata: paginate })
   ] });
 }
 function ColumnHeader({ title }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "components.dataTable.viewOption"
+  });
   return /* @__PURE__ */ jsxs("div", { className: "rtl:text-right", children: [
     " ",
-    useTrans(title),
+    t(title),
     " "
   ] });
 }
 const historiqueColumns = [
   {
-    accessorKey: "Client",
+    accessorKey: "client",
     cell: ({ row }) => {
-      const booking = row.original;
+      const booking2 = row.original;
       return /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsxs("div", { className: "font-bold text-base", children: [
-          booking.user.first_name,
+          booking2.user.first_name,
           " ",
-          booking.user.last_name
+          booking2.user.last_name
         ] }),
-        booking.user.email
+        booking2.user.email
       ] });
     },
-    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "Client" })
+    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "client" })
   },
   {
-    accessorKey: "Check in",
+    accessorKey: "checkIn",
     cell: ({ row }) => {
-      const booking = row.original;
-      return /* @__PURE__ */ jsx("span", { children: booking.check_in });
+      const booking2 = row.original;
+      return /* @__PURE__ */ jsx("span", { children: booking2.check_in });
     },
-    header: ({ column }) => (
-      // <DataTableColumnHeader
-      //     column={column}
-      //     title={useTrans("Check in")}
-      // />
-      /* @__PURE__ */ jsx(ColumnHeader, { title: "Check in" })
-    )
+    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "checkIn" })
   },
   {
-    accessorKey: "Check out",
+    accessorKey: "checkOut",
     cell: ({ row }) => {
-      const booking = row.original;
-      return /* @__PURE__ */ jsx("span", { children: booking.check_out });
+      const booking2 = row.original;
+      return /* @__PURE__ */ jsx("span", { children: booking2.check_out });
     },
-    header: ({ column }) => (
-      // <DataTableColumnHeader
-      //     column={column}
-      //     title={useTrans("Check out")}
-      // />
-      // <div> {useTrans("Check out")} </div>
-      /* @__PURE__ */ jsx(ColumnHeader, { title: "Check out" })
-    )
+    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "checkOut" })
   },
   {
-    accessorKey: "Date de réservation",
+    accessorKey: "bookingDate",
     cell: ({ row }) => {
-      const booking = row.original;
+      const booking2 = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
-        booking.created_at.split("T")[0],
+        booking2.created_at.split("T")[0],
         " "
       ] });
     },
-    header: ({ column }) => (
-      // <DataTableColumnHeader
-      //     column={column}
-      //     title={useTrans("Date de réservation")}
-      // />
-      /* @__PURE__ */ jsx(ColumnHeader, { title: "Date de réservation" })
-    )
+    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "bookingDate" })
   },
   {
-    accessorKey: "Status",
+    accessorKey: "status",
     cell: ({ row }) => {
-      const booking = row.original;
-      return booking.booking_status == "confirmer" ? /* @__PURE__ */ jsx(Badge, { variant: "success", children: booking.booking_status }) : booking.booking_status == "en attente" ? /* @__PURE__ */ jsx(Badge, { variant: "warning", children: booking.booking_status }) : /* @__PURE__ */ jsx(Badge, { variant: "danger", children: booking.booking_status });
+      const booking2 = row.original;
+      return booking2.booking_status == "confirmer" ? /* @__PURE__ */ jsx(Badge, { variant: "success", children: booking2.booking_status }) : booking2.booking_status == "en attente" ? /* @__PURE__ */ jsx(Badge, { variant: "warning", children: booking2.booking_status }) : /* @__PURE__ */ jsx(Badge, { variant: "danger", children: booking2.booking_status });
     },
-    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "Status" })
+    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "status" })
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const booking = row.original;
+      const booking2 = row.original;
       const { width } = useWindowDimensions();
       const [open, setopen] = React__default.useState(false);
       const [isopen, setIsOpen] = React__default.useState(false);
+      const { t } = useTranslation("translation", {
+        keyPrefix: "bookings.tableHeader"
+      });
       const booking_permission = usePage().props.auth.permissions.booking;
       const handleBookingStatus = (status) => {
         router.post(
-          route("bookings.change.status", booking.booking_id),
+          route("bookings.change.status", booking2.booking_id),
           { booking_status: status },
           {
             preserveScroll: true,
@@ -4192,7 +4254,7 @@ const historiqueColumns = [
               }
             ),
             /* @__PURE__ */ jsxs(DropdownMenuContent, { align: "end", children: [
-              booking.booking_status == "confirmer" ? /* @__PURE__ */ jsx(DropdownMenuItem, { children: width >= 767 ? /* @__PURE__ */ jsxs(
+              booking2.booking_status == "confirmer" ? /* @__PURE__ */ jsx(DropdownMenuItem, { children: width >= 767 ? /* @__PURE__ */ jsxs(
                 Dialog,
                 {
                   open: isopen,
@@ -4200,16 +4262,12 @@ const historiqueColumns = [
                   children: [
                     /* @__PURE__ */ jsxs(DialogTrigger, { className: "cursor-pointer flex", children: [
                       /* @__PURE__ */ jsx(ReceiptText, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                      /* @__PURE__ */ jsx("span", { children: useTrans("Facture") })
+                      /* @__PURE__ */ jsx("span", { children: t("bill") })
                     ] }),
                     /* @__PURE__ */ jsxs(DialogContent, { children: [
                       /* @__PURE__ */ jsxs(DialogHeader, { children: [
-                        /* @__PURE__ */ jsx(DialogTitle, { children: useTrans(
-                          "Mode de payment"
-                        ) }),
-                        /* @__PURE__ */ jsx(DialogDescription, { children: useTrans(
-                          "Choisi le mode de payment pour cette facture"
-                        ) })
+                        /* @__PURE__ */ jsx(DialogTitle, { children: t("dialogTitle") }),
+                        /* @__PURE__ */ jsx(DialogDescription, { children: t("dialogDescreption") })
                       ] }),
                       /* @__PURE__ */ jsxs(DialogFooter, { className: "gap-2 ", children: [
                         /* @__PURE__ */ jsxs(
@@ -4217,14 +4275,14 @@ const historiqueColumns = [
                           {
                             variant: "secondary",
                             onClick: () => handleBill(
-                              booking.booking_id,
+                              booking2.booking_id,
                               "espece"
                             ),
                             className: "flex justify-center",
                             size: "sm",
                             children: [
                               /* @__PURE__ */ jsx(HandCoins, { className: "mx-2 h-3.5 w-3.5" }),
-                              useTrans("Espece")
+                              t("opt1")
                             ]
                           }
                         ),
@@ -4233,14 +4291,14 @@ const historiqueColumns = [
                           {
                             variant: "secondary",
                             onClick: () => handleBill(
-                              booking.booking_id,
+                              booking2.booking_id,
                               "chèque"
                             ),
                             className: "flex justify-center",
                             size: "sm",
                             children: [
                               /* @__PURE__ */ jsx(Ticket, { className: "mx-2 h-3.5 w-3.5" }),
-                              useTrans("Chèque")
+                              t("opt2")
                             ]
                           }
                         )
@@ -4256,16 +4314,12 @@ const historiqueColumns = [
                   children: [
                     /* @__PURE__ */ jsxs(DrawerTrigger, { className: "cursor-pointer flex", children: [
                       /* @__PURE__ */ jsx(ReceiptText, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                      /* @__PURE__ */ jsx("span", { children: useTrans("Facture") })
+                      /* @__PURE__ */ jsx("span", { children: t("bill") })
                     ] }),
                     /* @__PURE__ */ jsxs(DrawerContent, { children: [
                       /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
-                        /* @__PURE__ */ jsx(DrawerTitle, { children: useTrans(
-                          "Mode de payment"
-                        ) }),
-                        /* @__PURE__ */ jsx(DrawerDescription, { children: useTrans(
-                          "Choisi le mode de payment pour cette facture"
-                        ) })
+                        /* @__PURE__ */ jsx(DrawerTitle, { children: t("dialogTitle") }),
+                        /* @__PURE__ */ jsx(DrawerDescription, { children: t("dialogDescreption") })
                       ] }),
                       /* @__PURE__ */ jsxs(DrawerFooter, { className: "pt-2", children: [
                         /* @__PURE__ */ jsxs(
@@ -4273,14 +4327,14 @@ const historiqueColumns = [
                           {
                             variant: "secondary",
                             onClick: () => handleBill(
-                              booking.booking_id,
+                              booking2.booking_id,
                               "espece"
                             ),
                             className: "flex justify-center",
                             size: "sm",
                             children: [
                               /* @__PURE__ */ jsx(HandCoins, { className: "mx-2 h-3.5 w-3.5" }),
-                              useTrans("Espece")
+                              t("opt1")
                             ]
                           }
                         ),
@@ -4289,14 +4343,14 @@ const historiqueColumns = [
                           {
                             variant: "secondary",
                             onClick: () => handleBill(
-                              booking.booking_id,
+                              booking2.booking_id,
                               "check"
                             ),
                             className: "flex justify-center",
                             size: "sm",
                             children: [
                               /* @__PURE__ */ jsx(Ticket, { className: "mx-2 h-3.5 w-3.5" }),
-                              useTrans("Chèque")
+                              t("opt2")
                             ]
                           }
                         )
@@ -4304,13 +4358,13 @@ const historiqueColumns = [
                     ] })
                   ]
                 }
-              ) }) : booking.booking_status == "en attente" && booking_permission.update && route().current("bookings.index") ? /* @__PURE__ */ jsxs(DropdownMenuItem, { className: "flex gap-2", children: [
+              ) }) : booking2.booking_status == "en attente" && booking_permission.update && route().current("bookings.index") ? /* @__PURE__ */ jsxs(DropdownMenuItem, { className: "flex gap-2", children: [
                 /* @__PURE__ */ jsx(
                   Button,
                   {
                     variant: "secondary",
                     onClick: () => handleBookingStatus("confirmer"),
-                    children: "Confirmer"
+                    children: t("approve")
                   }
                 ),
                 /* @__PURE__ */ jsx(
@@ -4318,7 +4372,7 @@ const historiqueColumns = [
                   {
                     variant: "destructive",
                     onClick: () => handleBookingStatus("refusé"),
-                    children: "Refusé"
+                    children: t("cancel")
                   }
                 )
               ] }) : null,
@@ -4326,13 +4380,13 @@ const historiqueColumns = [
                 DropdownMenuItem,
                 {
                   onClick: () => router.get(
-                    route("bookings.show", booking.booking_id)
+                    route("bookings.show", booking2.booking_id)
                   ),
                   className: "cursor-pointer",
                   children: [
                     /* @__PURE__ */ jsx(Eye, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
                     /* @__PURE__ */ jsxs("span", { children: [
-                      useTrans("Voir"),
+                      t("show"),
                       " "
                     ] })
                   ]
@@ -4347,13 +4401,14 @@ const historiqueColumns = [
 ];
 function EmptyPage({ text, icon: Icon }) {
   return /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-center gap-6 items-center py-36", children: [
-    /* @__PURE__ */ jsx("div", { className: "font-bold text-xl", children: useTrans(text) }),
+    /* @__PURE__ */ jsx("div", { className: "font-bold text-xl", children: text }),
     /* @__PURE__ */ jsx(Icon, { size: 100, className: "text-primary" })
   ] });
 }
-function Bookings({ bookings }) {
+function Bookings({ bookings: bookings2 }) {
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
+  const { t } = useTranslation("translation", { keyPrefix: "bookings" });
   useEffect(() => {
     var _a, _b, _c;
     if (flash.message) {
@@ -4366,32 +4421,26 @@ function Bookings({ bookings }) {
         action: ((_c = flash.message) == null ? void 0 : _c.action) != null && /* @__PURE__ */ jsx(
           ToastAction,
           {
-            altText: "Paramètre de facturation",
+            altText: t("toastMessage"),
             onClick: () => router.get(route("factures.index")),
-            children: "Paramètre de facturation"
+            children: t("toastMessage")
           }
         )
       });
     }
   }, [flash.message, toast2]);
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Bookings" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Réservations") }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: bookings.data.length ? /* @__PURE__ */ jsx(
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
+    /* @__PURE__ */ jsx(PlaceholderContent, { children: bookings2.data.length ? /* @__PURE__ */ jsx(
       DataTable,
       {
         columns: historiqueColumns,
-        data: bookings.data,
-        paginate: bookings,
+        data: bookings2.data,
+        paginate: bookings2,
         selection: false
       }
-    ) : /* @__PURE__ */ jsx(
-      EmptyPage,
-      {
-        text: "Aucun réservations pour l'instant, essayez de créer une nouvelle",
-        icon: BookmarkCheck
-      }
-    ) })
+    ) : /* @__PURE__ */ jsx(EmptyPage, { text: t("emptyPage"), icon: BookmarkCheck }) })
   ] });
 }
 const __vite_glob_0_2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
@@ -4399,7 +4448,7 @@ const __vite_glob_0_2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.def
   default: Bookings
 }, Symbol.toStringTag, { value: "Module" }));
 dayjs.extend(isBetween);
-function Calender({ rooms }) {
+function Calender({ rooms: rooms2 }) {
   const [open, setOpen] = useState(false);
   const [drawerData, setDrawerData] = useState();
   const [range, setRange] = useState({
@@ -4413,7 +4462,7 @@ function Calender({ rooms }) {
   const handleItemClick = (data) => {
     console.log(data.label.title);
   };
-  const transformedRooms = rooms.map((room) => {
+  const transformedRooms = rooms2.map((room) => {
     var _a;
     return {
       id: room.room_number,
@@ -4422,12 +4471,12 @@ function Calender({ rooms }) {
         title: `Chambres N° ${room.room_number}`,
         subtitle: room.type.type_designation
       },
-      data: room.bookings.map((booking) => ({
-        id: booking.booking_id,
-        startDate: new Date(booking.check_in),
-        endDate: new Date(booking.check_out),
-        title: booking.user_id,
-        subtitle: booking.guest_number
+      data: room.bookings.map((booking2) => ({
+        id: booking2.booking_id,
+        startDate: new Date(booking2.check_in),
+        endDate: new Date(booking2.check_out),
+        title: booking2.user_id,
+        subtitle: booking2.guest_number
       }))
     };
   });
@@ -4435,16 +4484,16 @@ function Calender({ rooms }) {
     () => transformedRooms.map((room) => ({
       ...room,
       data: room.data.filter(
-        (booking) => dayjs(booking.startDate).isBetween(
+        (booking2) => dayjs(booking2.startDate).isBetween(
           range.startDate,
           range.endDate
-        ) || dayjs(booking.endDate).isBetween(
+        ) || dayjs(booking2.endDate).isBetween(
           range.startDate,
           range.endDate
-        ) || dayjs(booking.startDate).isBefore(
+        ) || dayjs(booking2.startDate).isBefore(
           range.startDate,
           "day"
-        ) && dayjs(booking.endDate).isAfter(
+        ) && dayjs(booking2.endDate).isAfter(
           range.endDate,
           "day"
         )
@@ -4511,36 +4560,31 @@ function Calender({ rooms }) {
     )
   ] });
 }
-function Calendar({ rooms }) {
+function Calendar({ rooms: rooms2 }) {
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Dashboard" }),
+    /* @__PURE__ */ jsx(Head, { title: "Calendrier" }),
     /* @__PURE__ */ jsx(PageHeading, { title: "Calendrier" }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsx("div", { className: "w-full relative h-[600px]", children: /* @__PURE__ */ jsx(Calender, { rooms }) }) })
+    /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsx("div", { className: "w-full relative h-[600px]", children: /* @__PURE__ */ jsx(Calender, { rooms: rooms2 }) }) })
   ] });
 }
 const __vite_glob_0_3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Calendar
 }, Symbol.toStringTag, { value: "Module" }));
-function Historique({ bookings }) {
+function Historique({ bookings: bookings2 }) {
+  const { t } = useTranslation();
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Historique" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Historique") }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: bookings.data.length ? /* @__PURE__ */ jsx(
+    /* @__PURE__ */ jsx(Head, { title: t("bookings.historicalTitle") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("bookings.historicalTitle") }),
+    /* @__PURE__ */ jsx(PlaceholderContent, { children: bookings2.data.length ? /* @__PURE__ */ jsx(
       DataTable,
       {
         columns: historiqueColumns,
-        data: bookings.data,
-        paginate: bookings,
+        data: bookings2.data,
+        paginate: bookings2,
         selection: false
       }
-    ) : /* @__PURE__ */ jsx(
-      EmptyPage,
-      {
-        text: "Aucun réservations pour l'instant, essayez de créer une nouvelle",
-        icon: Archive
-      }
-    ) })
+    ) : /* @__PURE__ */ jsx(EmptyPage, { text: t("bookings.emptyPage"), icon: Archive }) })
   ] });
 }
 const __vite_glob_0_4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
@@ -4570,7 +4614,7 @@ function DataCart({
           side && "flex-row justify-between items-center"
         ),
         children: [
-          /* @__PURE__ */ jsx("span", { children: useTrans(header_text) }),
+          /* @__PURE__ */ jsx("span", { children: header_text }),
           side == "left" && /* @__PURE__ */ jsx(ArrowLeft, { className: "text-green-600 dark:text-green-400 " }),
           side == "right" && /* @__PURE__ */ jsx(ArrowRight, { className: "text-red-600 dark:text-red-600" })
         ]
@@ -4591,14 +4635,14 @@ function DataCart({
           calculate(last_data, data) > 0 && "+",
           calculate(last_data, data),
           "% ",
-          useTrans(footer_text)
+          footer_text
         ]
       }
     )
   ] });
 }
-const Chart = React__default.lazy(() => import("./assets/Chart-Di3lsD_P.js"));
-function Dashboard$1({
+const Chart = React__default.lazy(() => import("./assets/Chart-DwaOjb3l.js"));
+function Dashboard({
   check_ins,
   check_outs,
   day_bookings,
@@ -4607,16 +4651,17 @@ function Dashboard$1({
   last_month_bookings,
   bookingCounts
 }) {
+  const { t } = useTranslation();
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
     /* @__PURE__ */ jsx(Head, { title: "Dashboard" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Tableaux De Bord") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("dashboard.title") }),
     /* @__PURE__ */ jsxs(PlaceholderContent, { children: [
       /* @__PURE__ */ jsxs("div", { className: "flex flex-col lg:flex-row gap-6", children: [
         /* @__PURE__ */ jsxs("div", { className: "flex gap-6 flex-full lg:w-1/2", children: [
           /* @__PURE__ */ jsx(
             DataCart,
             {
-              header_text: "Entrés d'aujourd'hui",
+              header_text: t("dashboard.dataChart1"),
               left: true,
               data: check_ins,
               side: "left"
@@ -4625,7 +4670,7 @@ function Dashboard$1({
           /* @__PURE__ */ jsx(
             DataCart,
             {
-              header_text: "Sorties d'aujourd'hui",
+              header_text: t("dashboard.dataChart2"),
               right: true,
               data: check_outs,
               side: "right"
@@ -4636,19 +4681,19 @@ function Dashboard$1({
           /* @__PURE__ */ jsx(
             DataCart,
             {
-              header_text: "Réservations de jour",
+              header_text: t("dashboard.dataChart3"),
               data: day_bookings,
               last_data: last_day_bookings,
-              footer_text: "du dernier jour"
+              footer_text: t("dashboard.dataChartFooter1")
             }
           ),
           /* @__PURE__ */ jsx(
             DataCart,
             {
-              header_text: "Réservations de mois",
+              header_text: t("dashboard.dataChart4"),
               data: month_bookings,
               last_data: last_month_bookings,
-              footer_text: "du mois dernier"
+              footer_text: t("dashboard.dataChartFooter2")
             }
           )
         ] })
@@ -4665,7 +4710,7 @@ function Dashboard$1({
 }
 const __vite_glob_0_5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: Dashboard$1
+  default: Dashboard
 }, Symbol.toStringTag, { value: "Module" }));
 const Command = React.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsx(
   Command$1,
@@ -4731,22 +4776,23 @@ const CommandItem = React.forwardRef(({ className, ...props }, ref) => /* @__PUR
   }
 ));
 CommandItem.displayName = Command$1.Item.displayName;
-function CreateEmployes({ roles: roles2 }) {
+function EmployeForm({ roles: roles2, user }) {
+  const { t } = useTranslation("translation", { keyPrefix: "users.form" });
   const [open, setOpen] = useState(false);
-  const { data, setData: setData2, post, errors } = useForm({
-    first_name: "",
-    last_name: "",
-    email: "",
-    phone: "",
-    role: ""
+  const { data, setData: setData2, post, put, errors, processing } = useForm({
+    first_name: user ? user.first_name : "",
+    last_name: user ? user.last_name : "",
+    email: user ? user.email : "",
+    phone: user ? user.phone : "",
+    role: user ? user.role.role_name : ""
   });
   const submit = (e) => {
     e.preventDefault();
-    post(route("users.store"));
+    user ? put(route("users.update", user.id)) : post(route("users.store"));
   };
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Employes" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Inscription d'employé") }),
+    /* @__PURE__ */ jsx(Head, { title: user ? t("editTitle") : t("createTitle") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: user ? t("editTitle") : t("createTitle") }),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4 gap-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/2 bg-muted p-4 shadow", children: [
@@ -4754,7 +4800,7 @@ function CreateEmployes({ roles: roles2 }) {
             InputLabel,
             {
               htmlFor: "first_name",
-              value: useTrans("Prénom d'employé")
+              value: t("firstName")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -4780,7 +4826,7 @@ function CreateEmployes({ roles: roles2 }) {
             InputLabel,
             {
               htmlFor: "last_name",
-              value: useTrans("Nom d'employé")
+              value: t("lastName")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -4804,25 +4850,11 @@ function CreateEmployes({ roles: roles2 }) {
       /* @__PURE__ */ jsx(Separator, {}),
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "email",
-              value: useTrans("Email d'employé")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "L'email doit être unique pour chaque utilisateur"
-          ) })
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: t("email") }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("emailDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "email",
-              value: useTrans("Email d'employé")
-            }
-          ),
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: t("email") }),
           /* @__PURE__ */ jsx(
             Input,
             {
@@ -4844,25 +4876,11 @@ function CreateEmployes({ roles: roles2 }) {
       /* @__PURE__ */ jsx(Separator, {}),
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "phone",
-              value: useTrans("N° téléphone d'employé")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Le N° téléphone doit être unique pour chaque utilisateur"
-          ) })
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "phone", value: t("phone") }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("phoneDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "phone",
-              value: useTrans("N° téléphone d'employé")
-            }
-          ),
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "phone", value: t("phone") }),
           /* @__PURE__ */ jsx(
             Input,
             {
@@ -4884,21 +4902,15 @@ function CreateEmployes({ roles: roles2 }) {
       /* @__PURE__ */ jsx(Separator, {}),
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "role",
-              value: useTrans("Rôle")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans("Assigne un role au ce employé") })
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "role", value: t("role") }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("roleDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "role",
-              value: useTrans("Rôle"),
+              value: t("role"),
               className: "mb-2"
             }
           ),
@@ -4911,9 +4923,7 @@ function CreateEmployes({ roles: roles2 }) {
                 "aria-expanded": open,
                 className: "w-full justify-between",
                 children: [
-                  data.role ? data.role : useTrans(
-                    "Sélectionner un role..."
-                  ),
+                  data.role ? data.role : t("rolePlaceholder"),
                   /* @__PURE__ */ jsx(CaretSortIcon, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })
                 ]
               }
@@ -4922,13 +4932,11 @@ function CreateEmployes({ roles: roles2 }) {
               /* @__PURE__ */ jsx(
                 CommandInput,
                 {
-                  placeholder: useTrans(
-                    "Chercher un role..."
-                  )
+                  placeholder: t("rolePlaceholder2")
                 }
               ),
               /* @__PURE__ */ jsxs(CommandList, { children: [
-                /* @__PURE__ */ jsx(CommandEmpty, { children: "Auccun role" }),
+                /* @__PURE__ */ jsx(CommandEmpty, { children: t("emptyRole") }),
                 /* @__PURE__ */ jsx(CommandGroup, { children: roles2.map((role) => /* @__PURE__ */ jsxs(
                   CommandItem,
                   {
@@ -4953,7 +4961,7 @@ function CreateEmployes({ roles: roles2 }) {
                       )
                     ]
                   },
-                  role.id
+                  role.role_id
                 )) })
               ] })
             ] }) })
@@ -4974,7 +4982,8 @@ function CreateEmployes({ roles: roles2 }) {
           type: "submit",
           className: "mt-2 w-1/4",
           variant: "secondary",
-          children: useTrans("Créer")
+          disabled: processing,
+          children: user ? t("editBtn") : t("createBtn")
         }
       ) })
     ] }) })
@@ -4982,269 +4991,11 @@ function CreateEmployes({ roles: roles2 }) {
 }
 const __vite_glob_0_6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: CreateEmployes
-}, Symbol.toStringTag, { value: "Module" }));
-function EditEmployes({ roles: roles2, user }) {
-  const [open, setOpen] = useState(false);
-  const { data, setData: setData2, put, errors } = useForm({
-    first_name: user.first_name,
-    last_name: user.last_name,
-    email: user.email,
-    phone: user.phone,
-    role: user.role.role_name
-  });
-  const submit = (e) => {
-    e.preventDefault();
-    put(route("users.update", user.id));
-  };
-  return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Employes" }),
-    /* @__PURE__ */ jsx(
-      PageHeading,
-      {
-        title: useTrans("Modification les infromation d'employé")
-      }
-    ),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4 gap-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/2 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "first_name",
-              value: useTrans("Prénom d'employé")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            Input,
-            {
-              className: "mt-2 w-full bg-card",
-              id: "first_name",
-              value: data.first_name,
-              onChange: (e) => setData2("first_name", e.target.value)
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.first_name,
-              className: "mt-2"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsx(Separator, { className: "md:hidden my-4" }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/2 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "last_name",
-              value: useTrans("Nom d'employé")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            Input,
-            {
-              className: "mt-2 w-full bg-card",
-              id: "last_name",
-              value: data.last_name,
-              onChange: (e) => setData2("last_name", e.target.value)
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.last_name,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "email",
-              value: useTrans("Email d'employé")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "L'email doit être unique pour chaque utilisateur"
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "email",
-              value: useTrans("Email d'employé")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            Input,
-            {
-              className: "mt-2 w-full bg-card",
-              id: "email",
-              value: data.email,
-              onChange: (e) => setData2("email", e.target.value)
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.email,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "phone",
-              value: useTrans("N° téléphone d'employé")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Le N° téléphone doit être unique pour chaque utilisateur"
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "phone",
-              value: useTrans("N° téléphone d'employé")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            Input,
-            {
-              className: "mt-2 w-full bg-card",
-              id: "phone",
-              value: data.phone,
-              onChange: (e) => setData2("phone", e.target.value)
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.phone,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "role",
-              value: useTrans("Rôle")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans("Assigne un role au ce employé") })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "role",
-              value: useTrans("Rôle"),
-              className: "mb-2"
-            }
-          ),
-          /* @__PURE__ */ jsxs(Popover, { open, onOpenChange: setOpen, children: [
-            /* @__PURE__ */ jsx(PopoverTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(
-              Button,
-              {
-                variant: "outline",
-                role: "combobox",
-                "aria-expanded": open,
-                className: "w-full justify-between",
-                children: [
-                  data.role ? data.role : useTrans(
-                    "Sélectionner un role..."
-                  ),
-                  /* @__PURE__ */ jsx(CaretSortIcon, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })
-                ]
-              }
-            ) }),
-            /* @__PURE__ */ jsx(PopoverContent, { children: /* @__PURE__ */ jsxs(Command, { children: [
-              /* @__PURE__ */ jsx(
-                CommandInput,
-                {
-                  placeholder: useTrans(
-                    "Chercher un role..."
-                  )
-                }
-              ),
-              /* @__PURE__ */ jsxs(CommandList, { children: [
-                /* @__PURE__ */ jsx(CommandEmpty, { children: "Auccun role" }),
-                /* @__PURE__ */ jsx(CommandGroup, { children: roles2.map((role) => /* @__PURE__ */ jsxs(
-                  CommandItem,
-                  {
-                    value: role.role_name,
-                    onSelect: () => {
-                      setData2(
-                        "role",
-                        role.role_name
-                      );
-                      setOpen(false);
-                    },
-                    children: [
-                      role.role_name,
-                      /* @__PURE__ */ jsx(
-                        CheckIcon,
-                        {
-                          className: cn(
-                            "ml-auto h-4 w-4",
-                            data.role === role.role_name ? "opacity-100" : "opacity-0"
-                          )
-                        }
-                      )
-                    ]
-                  },
-                  role.id
-                )) })
-              ] })
-            ] }) })
-          ] }),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.role,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
-        Button,
-        {
-          type: "submit",
-          className: "mt-2 w-1/4",
-          variant: "secondary",
-          children: useTrans("Enregistrer")
-        }
-      ) })
-    ] }) })
-  ] });
-}
-const __vite_glob_0_7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: EditEmployes
+  default: EmployeForm
 }, Symbol.toStringTag, { value: "Module" }));
 const userColumns = [
   {
-    accessorKey: "Utilisateurs",
+    accessorKey: "utilisateurs",
     cell: ({ row }) => {
       const user = row.original;
       return /* @__PURE__ */ jsxs("div", { children: [
@@ -5253,10 +5004,10 @@ const userColumns = [
         user.last_name
       ] });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "Utilisateurs" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "utilisateurs" })
   },
   {
-    accessorKey: "Email",
+    accessorKey: "email",
     cell: ({ row }) => {
       const user = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
@@ -5264,10 +5015,10 @@ const userColumns = [
         " "
       ] });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "Email" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "email" })
   },
   {
-    accessorKey: "N° téléphone",
+    accessorKey: "phone",
     cell: ({ row }) => {
       const user = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
@@ -5275,10 +5026,10 @@ const userColumns = [
         " "
       ] });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "N° téléphone" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "phone" })
   },
   {
-    accessorKey: "Rôle",
+    accessorKey: "role",
     cell: ({ row }) => {
       const user = row.original;
       return /* @__PURE__ */ jsxs(Badge, { children: [
@@ -5286,10 +5037,10 @@ const userColumns = [
         " "
       ] });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "Rôle" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "role" })
   },
   {
-    accessorKey: "date d'inscription",
+    accessorKey: "createdAtDate",
     cell: ({ row }) => {
       const user = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
@@ -5297,7 +5048,7 @@ const userColumns = [
         user.created_at.split("T")[0]
       ] });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "date d'inscription" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "createdAtDate" })
   },
   {
     id: "actions",
@@ -5306,8 +5057,9 @@ const userColumns = [
       const { width } = useWindowDimensions();
       const [open, setopen] = React__default.useState(false);
       const [isopen, setIsOpen] = React__default.useState(false);
+      const [processing, setProcessing] = React__default.useState(false);
       const employ_permission = usePage().props.auth.permissions.employ;
-      usePage().props.roles;
+      const { t } = useTranslation("translation", { keyPrefix: "users" });
       const handleDelete = () => {
         router.delete(route("users.destroy", user.id), {
           preserveScroll: true,
@@ -5315,13 +5067,19 @@ const userColumns = [
           onSuccess: () => {
             setopen(false);
             setIsOpen(false);
+          },
+          onStart: () => {
+            setProcessing(true);
+          },
+          onFinish: () => {
+            setProcessing(false);
           }
         });
       };
       return /* @__PURE__ */ jsxs(
         DropdownMenu,
         {
-          open: isopen ? true : open,
+          open: isopen || open,
           onOpenChange: () => setopen(!open),
           children: [
             /* @__PURE__ */ jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(Button, { variant: "ghost", className: "h-8 w-8 p-0", children: [
@@ -5333,10 +5091,22 @@ const userColumns = [
                 DropdownMenuItem,
                 {
                   className: "cursor-pointer flex",
-                  onClick: () => router.get(route("users.edit", user.id)),
+                  disabled: processing,
+                  onClick: () => router.get(
+                    route("users.edit", user.id),
+                    {},
+                    {
+                      onStart: () => {
+                        setProcessing(true);
+                      },
+                      onFinish: () => {
+                        setProcessing(false);
+                      }
+                    }
+                  ),
                   children: [
                     /* @__PURE__ */ jsx(Pencil, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                    /* @__PURE__ */ jsx("span", { children: useTrans("Modifier") })
+                    /* @__PURE__ */ jsx("span", { children: t("edit") })
                   ]
                 }
               ),
@@ -5344,7 +5114,7 @@ const userColumns = [
                 Dialog,
                 {
                   open: isopen,
-                  onOpenChange: () => setIsOpen(!isopen),
+                  onOpenChange: setIsOpen,
                   children: [
                     /* @__PURE__ */ jsxs(
                       DialogTrigger,
@@ -5354,21 +5124,17 @@ const userColumns = [
                         }),
                         children: [
                           /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-                          useTrans("Supprimer")
+                          t("delete")
                         ]
                       }
                     ),
                     /* @__PURE__ */ jsxs(DialogContent, { children: [
                       /* @__PURE__ */ jsxs(DialogHeader, { children: [
                         /* @__PURE__ */ jsxs(DialogTitle, { children: [
-                          useTrans(
-                            "Vous êtes sure?"
-                          ),
+                          t("dialogHeader"),
                           " "
                         ] }),
-                        /* @__PURE__ */ jsx(DialogDescription, { children: useTrans(
-                          "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce utilisateur"
-                        ) })
+                        /* @__PURE__ */ jsx(DialogDescription, { children: t("dialogDescreption") })
                       ] }),
                       /* @__PURE__ */ jsxs(DialogFooter, { className: "gap-2 ", children: [
                         /* @__PURE__ */ jsx(
@@ -5376,7 +5142,7 @@ const userColumns = [
                           {
                             variant: "secondary",
                             onClick: () => setIsOpen(false),
-                            children: useTrans("Annuler")
+                            children: t("cancel")
                           }
                         ),
                         /* @__PURE__ */ jsxs(
@@ -5384,10 +5150,11 @@ const userColumns = [
                           {
                             variant: "destructive",
                             onClick: () => handleDelete(),
+                            disabled: processing,
                             className: "flex justify-center",
                             children: [
                               /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-                              useTrans("Supprimer")
+                              t("delete")
                             ]
                           }
                         )
@@ -5399,7 +5166,7 @@ const userColumns = [
                 Drawer,
                 {
                   open: isopen,
-                  onOpenChange: () => etIsOpen(!isopen),
+                  onOpenChange: setIsOpen,
                   children: [
                     /* @__PURE__ */ jsxs(
                       DrawerTrigger,
@@ -5409,22 +5176,18 @@ const userColumns = [
                         }),
                         children: [
                           /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-                          useTrans("Supprimer")
+                          t("delete")
                         ]
                       }
                     ),
                     /* @__PURE__ */ jsxs(DrawerContent, { children: [
                       /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
                         /* @__PURE__ */ jsxs(DrawerTitle, { children: [
-                          useTrans(
-                            "Vous êtes sure?"
-                          ),
+                          t("dialogHeader"),
                           " "
                         ] }),
                         /* @__PURE__ */ jsxs(DrawerDescription, { children: [
-                          useTrans(
-                            "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce utilisateur"
-                          ),
+                          t("dialogDescreption"),
                           " "
                         ] })
                       ] }),
@@ -5434,14 +5197,15 @@ const userColumns = [
                           {
                             variant: "destructive",
                             onClick: () => handleDelete(),
+                            disabled: processing,
                             className: "flex justify-center",
                             children: [
                               /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-                              useTrans("Supprimer")
+                              t("delete")
                             ]
                           }
                         ),
-                        /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) })
+                        /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: t("cancel") }) })
                       ] })
                     ] })
                   ]
@@ -5454,11 +5218,12 @@ const userColumns = [
     }
   }
 ];
-function Employees({ users }) {
+function Employees({ users: users2 }) {
+  const { t } = useTranslation("translation", { keyPrefix: "users" });
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
+  const [processing, setProcessing] = React__default.useState(false);
   const employ_permission = usePage().props.auth.permissions.employ;
-  console.log(employ_permission);
   useEffect(() => {
     var _a;
     if (flash.message) {
@@ -5466,36 +5231,58 @@ function Employees({ users }) {
     }
   }, [flash.message, toast2]);
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Employees" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Employés") }),
-    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: employ_permission.create && /* @__PURE__ */ jsx(Button, { variant: "secondary", children: /* @__PURE__ */ jsxs(Link, { href: route("users.create"), children: [
-      useTrans("Ajouter un employé"),
-      " "
-    ] }) }) }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
+    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: employ_permission.create && /* @__PURE__ */ jsxs(
+      Button,
+      {
+        variant: "secondary",
+        disabled: processing,
+        onClick: () => router.get(
+          route("users.create"),
+          {},
+          {
+            onStart: () => {
+              setProcessing(true);
+            },
+            onFinish: () => {
+              setProcessing(false);
+            }
+          }
+        ),
+        children: [
+          t("createBtn"),
+          " "
+        ]
+      }
+    ) }),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsx(
       DataTable,
       {
         columns: userColumns,
-        data: users.data,
-        paginate: users,
+        data: users2.data,
+        paginate: users2,
         selection: false
       }
     ) })
   ] });
 }
-const __vite_glob_0_8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Employees
 }, Symbol.toStringTag, { value: "Module" }));
-const fileTypes$8 = ["JPG", "PNG", "GIF"];
+const fileTypes$5 = ["JPG", "PNG", "GIF"];
 function MyFileUploader() {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "components"
+  });
   return /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs("div", { className: "bg-card mt-2 p-4 rounded flex justify-between items-center border-dashed border-2 border-secondary", children: [
     /* @__PURE__ */ jsxs("div", { className: "flex gap-4 items-center", children: [
       /* @__PURE__ */ jsx(ImagePlus, {}),
-      /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: useTrans("Télécharger ou déposer des images ici") })
+      /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: t("fileUploader") })
     ] }),
     /* @__PURE__ */ jsxs("p", { className: "text-sm text-gray-600", children: [
-      fileTypes$8.map((type) => type + ","),
+      fileTypes$5.map((type) => type + ","),
       " "
     ] })
   ] }) });
@@ -5530,310 +5317,7 @@ function ImagesViewer({ images, errors, deleteImage }) {
     )
   ] }, index)) }) });
 }
-const fileTypes$7 = ["JPG", "PNG", "GIF"];
-function CreateEvent() {
-  const [importedFiles, setImportedFiles] = useState([]);
-  const [dateRange, setDateRange] = useState({
-    from: "",
-    to: ""
-  });
-  const { data, setData: setData2, post, errors, clearErrors } = useForm({
-    event_name: "",
-    event_descreption: "",
-    event_start_date: "",
-    event_end_date: "",
-    event_price: "",
-    assets: []
-  });
-  const submit = (e) => {
-    e.preventDefault();
-    post(route("events.store"));
-  };
-  const handleFiles = (files) => {
-    if (!files || !files.length)
-      return;
-    const newFiles = Array.from(files);
-    setImportedFiles((prevData) => {
-      const updatedFiles = newFiles.map((file) => ({
-        file,
-        url: URL.createObjectURL(file)
-      }));
-      return [...prevData, ...updatedFiles];
-    });
-    setData2("assets", [...data.assets, ...newFiles]);
-  };
-  const deleteImage = (index) => {
-    setImportedFiles((prevData) => {
-      const updatedFiles = [...prevData];
-      updatedFiles.splice(index, 1);
-      return updatedFiles;
-    });
-    const updatedAssets = [...data.assets];
-    updatedAssets.splice(index, 1);
-    setData2("assets", updatedAssets);
-    clearErrors(`assets.${index}`);
-  };
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const formattedDate = `${year}-${month}-${day}`;
-    return formattedDate;
-  }
-  const handleDateChange = (range) => {
-    if (range == null ? void 0 : range.from) {
-      const formattedDate = formatDate(range.from);
-      setData2("event_start_date", formattedDate);
-    }
-    if (range == null ? void 0 : range.to) {
-      const formattedDate = formatDate(range.to);
-      setData2("event_end_date", formattedDate);
-    }
-    setDateRange(range);
-  };
-  return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Service" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Création d'évènement") }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "Date d'évènement",
-              value: useTrans("Date d'évènement")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Entrer la date ou le range de date de début et fin d'évènement"
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "Date d'évènement",
-              value: useTrans("Date d'évènement")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            DatePickerWithRange,
-            {
-              date: dateRange,
-              onDateChange: handleDateChange
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.event_start_date,
-              className: "mt-2"
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.event_end_date,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "event_name",
-              value: useTrans("Nom de l'évènement")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Entrer un nom claire et simple pour le nom de l'évènement"
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "event_name",
-              value: useTrans("Nom de l'évènement")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            Input,
-            {
-              className: "mt-2 w-full bg-card",
-              placeholder: useTrans(
-                "Exemple : fête 16 Avrile"
-              ),
-              id: "event_name",
-              value: data.event_name,
-              onChange: (e) => setData2("event_name", e.target.value)
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.event_name,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "event_price",
-              value: useTrans("Prix")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Quelle est le prix d'accés d'évènement"
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "event_price",
-              value: useTrans("Prix")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            Input,
-            {
-              className: "mt-2 w-full bg-card",
-              id: "event_price",
-              value: data.event_price,
-              onChange: (e) => setData2("event_price", e.target.value)
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.event_price,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "event_descreption",
-              value: useTrans("Description")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Vous pouvez ajouter des titre ou bien des style au desciption"
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "event_descreption",
-              value: useTrans("Description")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            RichEditor,
-            {
-              autofocus: false,
-              content: data.event_descreption,
-              onContentChange: ({ html }) => {
-                setData2("event_descreption", html);
-              }
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.event_descreption,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-          /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-            /* @__PURE__ */ jsx(
-              InputLabel,
-              {
-                htmlFor: "assets",
-                value: useTrans("Photos")
-              }
-            ),
-            /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-              "Ajouter des photos au l'évènement (ne dépasse pas 10 photos par évènement)"
-            ) })
-          ] }),
-          /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-            /* @__PURE__ */ jsx(
-              InputLabel,
-              {
-                htmlFor: "assets",
-                value: useTrans("Photos")
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              FileUploader,
-              {
-                handleChange: handleFiles,
-                name: "file",
-                id: "assets",
-                types: fileTypes$7,
-                multiple: true,
-                children: /* @__PURE__ */ jsx(MyFileUploader, {})
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              InputError,
-              {
-                message: errors.assets,
-                className: "mt-2"
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsx(
-          ImagesViewer,
-          {
-            images: importedFiles,
-            errors,
-            deleteImage
-          }
-        ),
-        " "
-      ] }),
-      /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
-        Button,
-        {
-          type: "submit",
-          className: "mt-2 w-1/4",
-          variant: "secondary",
-          children: useTrans("Créer")
-        }
-      ) })
-    ] }) })
-  ] });
-}
-const __vite_glob_0_9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: CreateEvent
-}, Symbol.toStringTag, { value: "Module" }));
-function DbImageViewer({ assets, importedFiles }) {
+function DbImageViewer({ assets, remouveAsset }) {
   return /* @__PURE__ */ jsx("div", { className: "grid grid-cols-2 md:grid-cols-5 gap-2", children: assets.map((image, index) => /* @__PURE__ */ jsxs("div", { className: "relative", children: [
     /* @__PURE__ */ jsx(
       "img",
@@ -5846,13 +5330,7 @@ function DbImageViewer({ assets, importedFiles }) {
     /* @__PURE__ */ jsx(
       "div",
       {
-        onClick: () => {
-          (importedFiles > 1 || assets.length > 0) && router.visit(route("assets.delete", image.id), {
-            method: "GET",
-            preserveState: true,
-            preserveScroll: true
-          });
-        },
+        onClick: () => remouveAsset(image.id),
         className: buttonVariants({
           variant: "destructive",
           className: "absolute bottom-0 left-1/2 -translate-x-1/2 cursor-pointer"
@@ -5862,24 +5340,44 @@ function DbImageViewer({ assets, importedFiles }) {
     )
   ] }, index)) });
 }
-const fileTypes$6 = ["JPG", "PNG", "GIF"];
-function EditEvent({ event }) {
+const fileTypes$4 = ["JPG", "PNG", "GIF"];
+function EventForm({ event }) {
+  const { t } = useTranslation("translation", { keyPrefix: "events.form" });
+  const [dbImages, setDbImages] = useState(event == null ? void 0 : event.assets);
   const [importedFiles, setImportedFiles] = useState([]);
   const [dateRange, setDateRange] = useState({
-    from: new Date(event.event_start_date),
-    to: new Date(event.event_end_date)
+    from: event ? new Date(event.event_start_date) : "",
+    to: event ? new Date(event.event_end_date) : ""
   });
-  const { data, setData: setData2, post, errors, clearErrors } = useForm({
-    event_name: event.event_name,
-    event_descreption: event.event_descreption,
-    event_start_date: event.event_start_date,
-    event_end_date: event.event_end_date,
-    event_price: event.event_price,
-    assets: []
+  const { data, setData: setData2, post, errors, clearErrors, processing } = useForm({
+    event_name: event ? event.event_name : "",
+    event_descreption: event ? event.event_descreption : "",
+    event_start_date: event ? event.event_start_date : "",
+    event_end_date: event ? event.event_end_date : "",
+    event_price: event ? event.event_price : "",
+    assets: [],
+    remouved_assets: [],
+    required_assets: false
   });
+  const remouveAsset = (index) => {
+    setData2((prevData) => ({
+      ...prevData,
+      remouved_assets: [...prevData.remouved_assets, index]
+    }));
+    setDbImages((prevDbImages) => {
+      const updatedDbImages = prevDbImages.filter(
+        (image) => image.id !== index
+      );
+      setData2((prevData) => ({
+        ...prevData,
+        required_assets: updatedDbImages.length === 0
+      }));
+      return updatedDbImages;
+    });
+  };
   const submit = (e) => {
     e.preventDefault();
-    post(route("events.update", event.event_id));
+    event ? post(route("events.update", event.event_id)) : post(route("events.store"));
   };
   const handleFiles = (files) => {
     if (!files || !files.length)
@@ -5925,8 +5423,8 @@ function EditEvent({ event }) {
     setDateRange(range);
   };
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Service" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Modification d'évènement") }),
+    /* @__PURE__ */ jsx(Head, { title: event ? t("editTitle") : t("createTitle") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: event ? t("editTitle") : t("createTitle") }),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
@@ -5934,19 +5432,17 @@ function EditEvent({ event }) {
             InputLabel,
             {
               htmlFor: "Date d'évènement",
-              value: useTrans("Date d'évènement")
+              value: t("eventDate")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Entrer la date ou le range de date de début et fin d'évènement"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("eventDateDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "Date d'évènement",
-              value: useTrans("Date d'évènement")
+              value: t("eventDate")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -5979,28 +5475,24 @@ function EditEvent({ event }) {
             InputLabel,
             {
               htmlFor: "event_name",
-              value: useTrans("Nom de l'évènement")
+              value: t("Name")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Entrer un nom claire et simple pour le nom de l'évènement"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("nameDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "event_name",
-              value: useTrans("Nom de l'évènement")
+              value: t("Name")
             }
           ),
           /* @__PURE__ */ jsx(
             Input,
             {
               className: "mt-2 w-full bg-card",
-              placeholder: useTrans(
-                "Exemple : fête 16 Avrile"
-              ),
+              placeholder: t("namePlaceholder"),
               id: "event_name",
               value: data.event_name,
               onChange: (e) => setData2("event_name", e.target.value)
@@ -6022,19 +5514,17 @@ function EditEvent({ event }) {
             InputLabel,
             {
               htmlFor: "event_price",
-              value: useTrans("Prix")
+              value: t("price")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Quelle est le prix d'accés d'évènement"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("priceDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "event_price",
-              value: useTrans("Prix")
+              value: t("price")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -6062,19 +5552,17 @@ function EditEvent({ event }) {
             InputLabel,
             {
               htmlFor: "event_descreption",
-              value: useTrans("Description")
+              value: t("descreption")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Vous pouvez ajouter des titre ou bien des style au desciption"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("descreptionDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "event_descreption",
-              value: useTrans("Description")
+              value: t("descreption")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -6104,19 +5592,17 @@ function EditEvent({ event }) {
               InputLabel,
               {
                 htmlFor: "assets",
-                value: useTrans("Photos")
+                value: t("assets")
               }
             ),
-            /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-              "Ajouter des photos au l'évènement (ne dépasse pas 10 photos par évènement)"
-            ) })
+            /* @__PURE__ */ jsx(LabelDescreption, { children: t("assetsDescreption") })
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
             /* @__PURE__ */ jsx(
               InputLabel,
               {
                 htmlFor: "assets",
-                value: useTrans("Photos")
+                value: t("assets")
               }
             ),
             /* @__PURE__ */ jsx(
@@ -6125,7 +5611,7 @@ function EditEvent({ event }) {
                 handleChange: handleFiles,
                 name: "file",
                 id: "assets",
-                types: fileTypes$6,
+                types: fileTypes$4,
                 multiple: true,
                 children: /* @__PURE__ */ jsx(MyFileUploader, {})
               }
@@ -6148,14 +5634,13 @@ function EditEvent({ event }) {
           }
         ),
         " ",
-        /* @__PURE__ */ jsx(
+        event && /* @__PURE__ */ jsx(
           DbImageViewer,
           {
-            assets: event.assets,
-            importedFiles: importedFiles.length
+            assets: dbImages,
+            remouveAsset
           }
-        ),
-        " "
+        )
       ] }),
       /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
         Button,
@@ -6163,26 +5648,37 @@ function EditEvent({ event }) {
           type: "submit",
           className: "mt-2 w-1/4",
           variant: "secondary",
-          children: useTrans("Enregistrer")
+          disabled: processing,
+          children: event ? t("editBtn") : t("createBtn")
         }
       ) })
     ] }) })
   ] });
 }
-const __vite_glob_0_10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: EditEvent
+  default: EventForm
 }, Symbol.toStringTag, { value: "Module" }));
 function DeleteeDialog({ id, url, message }) {
   const [open, setOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const { width } = useWindowDimensions();
+  const { t } = useTranslation("translation", {
+    keyPrefix: "features.form"
+  });
   const handleDelete = (id2) => {
-    router.delete(route(url, id2), {
+    router.delete(route(url, id2, message), {
       method: "delete",
       preserveScroll: true,
       preserveState: true,
       onSuccess: () => {
         setOpen(false);
+      },
+      onStart: () => {
+        setDeleting(true);
+      },
+      onFinish: () => {
+        setDeleting(false);
       }
     });
   };
@@ -6194,17 +5690,17 @@ function DeleteeDialog({ id, url, message }) {
           className: buttonVariants({ variant: "destructive" }),
           children: [
             /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-            useTrans("Supprimer")
+            t("delete")
           ]
         }
       ),
       /* @__PURE__ */ jsxs(DialogContent, { children: [
         /* @__PURE__ */ jsxs(DialogHeader, { children: [
           /* @__PURE__ */ jsxs(DialogTitle, { children: [
-            useTrans("Vous êtes sure?"),
+            t("deleteHeader"),
             " "
           ] }),
-          /* @__PURE__ */ jsx(DialogDescription, { children: useTrans(message) })
+          /* @__PURE__ */ jsx(DialogDescription, { children: message })
         ] }),
         /* @__PURE__ */ jsxs(DialogFooter, { className: "gap-2 ", children: [
           /* @__PURE__ */ jsx(
@@ -6212,7 +5708,7 @@ function DeleteeDialog({ id, url, message }) {
             {
               variant: "secondary",
               onClick: () => setOpen(false),
-              children: useTrans("Annuler")
+              children: t("cancel")
             }
           ),
           /* @__PURE__ */ jsxs(
@@ -6221,9 +5717,10 @@ function DeleteeDialog({ id, url, message }) {
               variant: "destructive",
               onClick: () => handleDelete(id),
               className: "flex justify-center",
+              disabled: deleting,
               children: [
                 /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-                useTrans("Supprimer")
+                t("delete")
               ]
             }
           )
@@ -6238,19 +5735,19 @@ function DeleteeDialog({ id, url, message }) {
         className: buttonVariants({ variant: "destructive" }),
         children: [
           /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-          useTrans("Supprimer")
+          t("delete")
         ]
       }
     ),
     /* @__PURE__ */ jsxs(DrawerContent, { children: [
       /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
         /* @__PURE__ */ jsxs(DrawerTitle, { children: [
-          useTrans("Vous êtes sure?"),
+          t("deleteHeader"),
           " "
         ] }),
         /* @__PURE__ */ jsxs(DrawerDescription, { children: [
-          useTrans(message),
-          " "
+          " ",
+          t("deleteCategorieDescreption")
         ] })
       ] }),
       /* @__PURE__ */ jsxs(DrawerFooter, { className: "pt-2", children: [
@@ -6262,22 +5759,25 @@ function DeleteeDialog({ id, url, message }) {
               handleDelete(id);
             },
             className: "flex justify-center",
+            disabled: deleting,
             children: [
               /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-              useTrans("Supprimer")
+              t("delete")
             ]
           }
         ),
-        /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) })
+        /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: t("cancel") }) })
       ] })
     ] })
   ] });
 }
 function EventCardFooter$1({ event }) {
   const event_permission = usePage().props.event_permission;
+  const { t } = useTranslation("translation", { keyPrefix: "events.card" });
+  const [processing, setProcessing] = React__default.useState(false);
   return /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-4 justify-between w-full", children: [
     /* @__PURE__ */ jsxs("div", { children: [
-      useTrans("Créé par"),
+      t("createdBy"),
       " :",
       " ",
       /* @__PURE__ */ jsxs("span", { children: [
@@ -6287,20 +5787,32 @@ function EventCardFooter$1({ event }) {
       ] })
     ] }),
     /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
-      event_permission.update && /* @__PURE__ */ jsx(Button, { variant: "secondary", children: /* @__PURE__ */ jsx(
-        Link,
+      event_permission.update && /* @__PURE__ */ jsx(
+        Button,
         {
-          href: route("events.edit", event.event_id),
-          as: "button",
-          children: useTrans("Modifier")
+          variant: "secondary",
+          disabled: processing,
+          onClick: () => router.get(
+            route("events.edit", event.event_id),
+            {},
+            {
+              onStart: () => {
+                setProcessing(true);
+              },
+              onFinish: () => {
+                setProcessing(false);
+              }
+            }
+          ),
+          children: t("editBtn")
         }
-      ) }),
+      ),
       event_permission.delete && /* @__PURE__ */ jsx(
         DeleteeDialog,
         {
           id: event.event_id,
           url: "events.destroy",
-          message: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette évènement"
+          message: t("eventDeleteDescreption")
         }
       )
     ] })
@@ -6309,6 +5821,7 @@ function EventCardFooter$1({ event }) {
 function EventCard({ event }) {
   const { width } = useWindowDimensions();
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation("translation", { keyPrefix: "events.card" });
   return /* @__PURE__ */ jsxs(Card, { className: "transition-transform ease-in-out duration-700 relative my-6 ", children: [
     /* @__PURE__ */ jsx("div", { className: "w-full", children: /* @__PURE__ */ jsxs(Carousel, { children: [
       /* @__PURE__ */ jsx(CarouselContent, { className: "h-full ", children: event.assets.map((asset, index) => /* @__PURE__ */ jsx(
@@ -6330,18 +5843,18 @@ function EventCard({ event }) {
       /* @__PURE__ */ jsx(CarouselNext, { className: "bg-secondary right-0 text-secondary-foreground" })
     ] }) }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-between w-full", children: [
-      /* @__PURE__ */ jsxs(CardHeader, { className: "text-lg font-bold text-xl flex flex-row items-center justify-between", children: [
+      /* @__PURE__ */ jsxs(CardHeader, { className: "font-bold text-xl flex flex-row items-center justify-between", children: [
         /* @__PURE__ */ jsx("div", { children: event.event_name }),
         /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 bg-muted p-2 rounded", children: [
           /* @__PURE__ */ jsxs("span", { children: [
-            useTrans("Prix"),
+            t("price"),
             " "
           ] }),
           ":",
           /* @__PURE__ */ jsx("span", { className: "text-destructive text-2xl font-bold", children: event.event_price }),
           " ",
           /* @__PURE__ */ jsxs("span", { children: [
-            useTrans("DA"),
+            t("da"),
             " "
           ] })
         ] })
@@ -6349,19 +5862,19 @@ function EventCard({ event }) {
       isOpen && /* @__PURE__ */ jsxs(Fragment, { children: [
         /* @__PURE__ */ jsxs(CardContent, { children: [
           event.event_start_date == event.event_end_date ? /* @__PURE__ */ jsxs("div", { children: [
-            useTrans("Date d'évènement"),
+            t("eventDate"),
             " :",
             " ",
             /* @__PURE__ */ jsx("span", { className: "font-bold text-lg", children: event.event_start_date })
           ] }) : /* @__PURE__ */ jsxs("div", { children: [
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Date début d'évènement"),
+              t("eventStartDate"),
               " :",
               " ",
               /* @__PURE__ */ jsx("span", { className: "font-bold text-lg", children: event.event_start_date })
             ] }),
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Date fin d'évènement"),
+              t("eventEndDate"),
               " :",
               " ",
               /* @__PURE__ */ jsx("span", { className: "font-bold text-lg", children: event.event_end_date })
@@ -6369,7 +5882,7 @@ function EventCard({ event }) {
           ] }),
           /* @__PURE__ */ jsxs("div", { children: [
             /* @__PURE__ */ jsxs("div", { className: "font-bold text-lg my-4", children: [
-              useTrans("Description"),
+              t("descreption"),
               " :",
               " "
             ] }),
@@ -6407,52 +5920,74 @@ function EventCard({ event }) {
     ) })
   ] });
 }
-function Events$1({ events, event_permission }) {
+function Events$1({ events: events2, event_permission }) {
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
-  useEffect(() => {
+  const { t } = useTranslation("translation", { keyPrefix: "events" });
+  const [processing, setProcessing] = React__default.useState(false);
+  React__default.useEffect(() => {
     var _a;
     if (flash.message) {
       toast2({ description: (_a = flash.message) == null ? void 0 : _a.message });
     }
   }, [flash.message, toast2]);
-  console.log(events);
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Events" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Evènements") }),
-    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: event_permission.create && /* @__PURE__ */ jsx(Button, { variant: "secondary", children: /* @__PURE__ */ jsx(Link, { href: route("events.create"), children: useTrans("Créer un évènement") }) }) }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: events.lenght ? /* @__PURE__ */ jsxs(Fragment, { children: [
-      /* @__PURE__ */ jsxs("div", { className: "font-bold p-4", children: [
-        useTrans("List des évènements"),
-        " :"
-      ] }),
-      events.map((event) => /* @__PURE__ */ jsx(EventCard, { event }, event.event_id))
-    ] }) : /* @__PURE__ */ jsx(
-      EmptyPage,
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
+    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: event_permission.create && /* @__PURE__ */ jsx(
+      Button,
       {
-        text: "Aucun évènement pour l'instant, essayez de créer une nouvelle",
-        icon: Megaphone
+        variant: "secondary",
+        disabled: processing,
+        onClick: () => router.get(
+          route("events.create"),
+          {},
+          {
+            onStart: () => {
+              setProcessing(true);
+            },
+            onFinish: () => {
+              setProcessing(false);
+            }
+          }
+        ),
+        children: t("createLink")
       }
-    ) })
+    ) }),
+    /* @__PURE__ */ jsx(PlaceholderContent, { children: events2.length ? /* @__PURE__ */ jsxs(Fragment, { children: [
+      /* @__PURE__ */ jsx("div", { className: "font-bold p-4", children: t("pageHeading") }),
+      events2.map((event) => /* @__PURE__ */ jsx(EventCard, { event }, event.event_id))
+    ] }) : /* @__PURE__ */ jsx(EmptyPage, { text: t("emptyEvents"), icon: Megaphone }) })
   ] });
 }
-const __vite_glob_0_11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Events$1
 }, Symbol.toStringTag, { value: "Module" }));
 function CreateFacture() {
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
     /* @__PURE__ */ jsx(Head, { title: "Facture Création" }),
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: "Facture Création" }),
+      /* @__PURE__ */ jsx(
+        "meta",
+        {
+          name: "description",
+          content: "Créez et gérez facilement vos factures pour une gestion simplifiée des réservations à l'hôtel Sidi El Noui."
+        }
+      )
+    ] }),
     /* @__PURE__ */ jsx(PageHeading, { title: "Facture Création" }),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: "Facture Création " })
   ] });
 }
-const __vite_glob_0_12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: CreateFacture
 }, Symbol.toStringTag, { value: "Module" }));
 function CreateGuests({ facture_id }) {
-  const { data, setData: setData2, post, errors } = useForm({
+  const { t } = useTranslation("translation", { keyPrefix: "guests" });
+  const { data, setData: setData2, post, errors, processing } = useForm({
     facture_id,
     guests_list: [{ guest_first_name: "", guest_last_name: "" }]
   });
@@ -6480,20 +6015,20 @@ function CreateGuests({ facture_id }) {
     post(route("guests.store"));
   };
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "List d'invités" }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
     /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsxs(Button, { variant: "secondary", size: "sm", onClick: addGuest, children: [
       /* @__PURE__ */ jsx(CirclePlus, { className: "mr-2 rtl:ml-2" }),
-      useTrans("Ajouter")
+      t("addBtn")
     ] }) }),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
-      data.guests_list.map((guest, index) => /* @__PURE__ */ jsxs(Fragment, { children: [
+      data.guests_list.map((guest, index) => /* @__PURE__ */ jsxs(React__default.Fragment, { children: [
         /* @__PURE__ */ jsxs("div", { className: "md:flex my-4 gap-4", children: [
           /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/2 bg-muted p-4 shadow", children: [
             /* @__PURE__ */ jsx(
               InputLabel,
               {
                 htmlFor: `guest_first_name_${index}`,
-                value: useTrans("Prénom")
+                value: t("firstName")
               }
             ),
             /* @__PURE__ */ jsx(
@@ -6512,7 +6047,7 @@ function CreateGuests({ facture_id }) {
             /* @__PURE__ */ jsx(
               InputError,
               {
-                message: errors[`guests_list.${index}.first_name`],
+                message: errors[`guests_list.${index}.guest_first_name`],
                 className: "mt-2"
               }
             )
@@ -6522,7 +6057,7 @@ function CreateGuests({ facture_id }) {
               InputLabel,
               {
                 htmlFor: `guest_last_name_${index}`,
-                value: useTrans("Nom")
+                value: t("lastName")
               }
             ),
             /* @__PURE__ */ jsx(
@@ -6555,18 +6090,30 @@ function CreateGuests({ facture_id }) {
           ) })
         ] }),
         /* @__PURE__ */ jsx(Separator, { className: "my-4" })
-      ] })),
-      /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(Button, { variant: "secondary", size: "sm", children: useTrans("Enregistrer") }) })
+      ] }, index)),
+      /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
+        Button,
+        {
+          variant: "secondary",
+          size: "sm",
+          disabled: processing,
+          children: t("saveBtn")
+        }
+      ) })
     ] }) })
   ] });
 }
-const __vite_glob_0_13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: CreateGuests
 }, Symbol.toStringTag, { value: "Module" }));
 function Facture({ facture, data, mail, total_ttc_words }) {
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
+  const [processing, setProcessing] = React__default.useState(false);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "factures.table"
+  });
   useEffect(() => {
     var _a;
     if (flash.message) {
@@ -6574,20 +6121,30 @@ function Facture({ facture, data, mail, total_ttc_words }) {
     }
   }, [flash.message, toast2]);
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Facture" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: "Facture" }),
+    /* @__PURE__ */ jsx(Head, { title: t("factureTitle") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("factureTitle") }),
     /* @__PURE__ */ jsxs("div", { className: "flex justify-end gap-2", children: [
       /* @__PURE__ */ jsxs(
-        Link,
+        Button,
         {
-          href: route("factures.send", {
-            id: facture.facture_id
-          }),
-          className: "flex w-full" + buttonVariants({ variant: "secondary", size: "sm" }),
-          as: "button",
+          variant: "secondary",
+          size: "sm",
+          disabled: processing,
+          onClick: () => router.get(
+            route("factures.send", { id: facture.facture_id }),
+            {},
+            {
+              onStart: () => {
+                setProcessing(true);
+              },
+              onFinish: () => {
+                setProcessing(false);
+              }
+            }
+          ),
           children: [
             /* @__PURE__ */ jsx(Send, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-            /* @__PURE__ */ jsx("span", { children: useTrans("Email") })
+            /* @__PURE__ */ jsx("span", { children: t("email") })
           ]
         }
       ),
@@ -6598,9 +6155,9 @@ function Facture({ facture, data, mail, total_ttc_words }) {
             id: facture.facture_id
           }),
           target: "_blank",
-          children: /* @__PURE__ */ jsxs(Button, { variant: "secondary", size: "sm", children: [
+          children: /* @__PURE__ */ jsxs(Button, { variant: "secondary", size: "sm", disabled: processing, children: [
             /* @__PURE__ */ jsx(Printer, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-            /* @__PURE__ */ jsx("span", { children: useTrans("Imprimer") })
+            /* @__PURE__ */ jsx("span", { children: t("print") })
           ] })
         }
       ),
@@ -6610,9 +6167,9 @@ function Facture({ facture, data, mail, total_ttc_words }) {
           href: route("factures.download", {
             id: facture.facture_id
           }),
-          children: /* @__PURE__ */ jsxs(Button, { variant: "secondary", size: "sm", children: [
+          children: /* @__PURE__ */ jsxs(Button, { variant: "secondary", size: "sm", disabled: processing, children: [
             /* @__PURE__ */ jsx(FileDown, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-            /* @__PURE__ */ jsx("span", { children: useTrans("Télécharger") })
+            /* @__PURE__ */ jsx("span", { children: t("download") })
           ] })
         }
       )
@@ -6749,13 +6306,13 @@ function Facture({ facture, data, mail, total_ttc_words }) {
     ] }) })
   ] });
 }
-const __vite_glob_0_14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Facture
 }, Symbol.toStringTag, { value: "Module" }));
 const factureColumns = [
   {
-    accessorKey: "N° Facture",
+    accessorKey: "billNumber",
     cell: ({ row }) => {
       const facture = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
@@ -6763,10 +6320,10 @@ const factureColumns = [
         " "
       ] });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "N° Facture" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "billNumber" })
   },
   {
-    accessorKey: "Client",
+    accessorKey: "client",
     cell: ({ row }) => {
       const facture = row.original;
       return /* @__PURE__ */ jsxs("div", { children: [
@@ -6775,10 +6332,10 @@ const factureColumns = [
         facture.booking.user.last_name
       ] });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "Client" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "client" })
   },
   {
-    accessorKey: "Email",
+    accessorKey: "email",
     cell: ({ row }) => {
       const facture = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
@@ -6786,10 +6343,10 @@ const factureColumns = [
         " "
       ] });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "Email" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "email" })
   },
   {
-    accessorKey: "Date",
+    accessorKey: "date",
     cell: ({ row }) => {
       function formatDate(dateString) {
         const date = new Date(dateString);
@@ -6804,13 +6361,13 @@ const factureColumns = [
         " "
       ] });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "Date" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "date" })
   },
   {
     id: "actions",
     cell: ({ row }) => {
       const facture = row.original;
-      console.log(facture.booking.user.role.role_name);
+      const { t } = useTranslation("translation", { keyPrefix: "factures.table" });
       return /* @__PURE__ */ jsxs(DropdownMenu, { children: [
         /* @__PURE__ */ jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(Button, { variant: "ghost", className: "h-8 w-8 p-0", children: [
           /* @__PURE__ */ jsx("span", { className: "sr-only", children: "Open menu" }),
@@ -6826,7 +6383,7 @@ const factureColumns = [
               className: "flex w-full",
               children: [
                 /* @__PURE__ */ jsx(ClipboardList, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                useTrans("List des invités")
+                t("guestsList")
               ]
             }
           ) }),
@@ -6840,7 +6397,7 @@ const factureColumns = [
               className: "flex w-full",
               children: [
                 /* @__PURE__ */ jsx(Eye, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                useTrans("Voir")
+                t("show")
               ]
             }
           ) }),
@@ -6853,7 +6410,7 @@ const factureColumns = [
               className: "flex w-full",
               children: [
                 /* @__PURE__ */ jsx(Send, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                /* @__PURE__ */ jsx("span", { children: useTrans("Email") })
+                /* @__PURE__ */ jsx("span", { children: t("email") })
               ]
             }
           ) }),
@@ -6867,7 +6424,7 @@ const factureColumns = [
               className: "flex w-full",
               children: [
                 /* @__PURE__ */ jsx(Printer, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                /* @__PURE__ */ jsx("span", { children: useTrans("Imprimer") })
+                /* @__PURE__ */ jsx("span", { children: t("print") })
               ]
             }
           ) }),
@@ -6880,7 +6437,7 @@ const factureColumns = [
               className: "flex w-full",
               children: [
                 /* @__PURE__ */ jsx(FileDown, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                /* @__PURE__ */ jsx("span", { children: useTrans("Télécharger") })
+                /* @__PURE__ */ jsx("span", { children: t("download") })
               ]
             }
           ) })
@@ -6891,10 +6448,13 @@ const factureColumns = [
 ];
 function FactureSettings({ bill_settings }) {
   const [open, setOpen] = React__default.useState(false);
-  const { data, setData: setData2, errors, post } = useForm({
-    tva: bill_settings == null ? void 0 : bill_settings.tva,
-    timbre: bill_settings == null ? void 0 : bill_settings.timbre,
-    tourist_tax: bill_settings == null ? void 0 : bill_settings.tourist_tax
+  const { t } = useTranslation("translation", {
+    keyPrefix: "factures.settings"
+  });
+  const { data, setData: setData2, errors, post, processing } = useForm({
+    tva: bill_settings ? bill_settings == null ? void 0 : bill_settings.tva : "",
+    timbre: bill_settings ? bill_settings == null ? void 0 : bill_settings.timbre : "",
+    tourist_tax: bill_settings ? bill_settings == null ? void 0 : bill_settings.tourist_tax : ""
   });
   const submit = (e) => {
     e.preventDefault();
@@ -6905,12 +6465,12 @@ function FactureSettings({ bill_settings }) {
   return /* @__PURE__ */ jsxs(Sheet, { open: open || !bill_settings, onOpenChange: setOpen, children: [
     /* @__PURE__ */ jsx(SheetTrigger, { children: /* @__PURE__ */ jsx(Settings2, {}) }),
     /* @__PURE__ */ jsx(SheetContent, { children: /* @__PURE__ */ jsxs(SheetHeader, { children: [
-      /* @__PURE__ */ jsx(SheetTitle, { children: useTrans("Parametre de facture") }),
-      /* @__PURE__ */ jsx(SheetDescription, { children: useTrans("Modifier les constant de facturation içi") }),
+      /* @__PURE__ */ jsx(SheetTitle, { children: t("title") }),
+      /* @__PURE__ */ jsx(SheetDescription, { children: t("descreption") }),
       /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full bg-muted p-4 shadow my-4", children: [
           /* @__PURE__ */ jsx(InputLabel, { htmlFor: "tva", value: "TVA" }),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans("La valeur de TVA en %") }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("tva") }),
           /* @__PURE__ */ jsx(
             Input,
             {
@@ -6928,12 +6488,10 @@ function FactureSettings({ bill_settings }) {
             InputLabel,
             {
               htmlFor: "tourist_tax",
-              value: useTrans("Taxe de séjour")
+              value: t("taxes")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "la valeur de taxe de séjour en DA/personne"
-          ) }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("taxesDescreption") }),
           /* @__PURE__ */ jsx(
             Input,
             {
@@ -6953,14 +6511,8 @@ function FactureSettings({ bill_settings }) {
         ] }),
         /* @__PURE__ */ jsx(Separator, {}),
         /* @__PURE__ */ jsxs("div", { className: "w-full bg-muted p-4 shadow my-4", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "timbre",
-              value: useTrans("Droit de timbre")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans("La valeur de tibmre en %") }),
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "timbre", value: t("timbre") }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("timbreDescreption") }),
           /* @__PURE__ */ jsx(
             Input,
             {
@@ -6984,17 +6536,20 @@ function FactureSettings({ bill_settings }) {
             variant: "secondary",
             size: "sm",
             className: "w-full",
-            children: useTrans("Enregistrer")
+            disabled: processing,
+            children: t("save")
           }
         )
       ] })
     ] }) })
   ] });
 }
-function Factures({ factures, bill_settings }) {
+function Factures({ factures: factures2, bill_settings }) {
+  const [processing, setProcessing] = React__default.useState(false);
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
   const facture_permissions = usePage().props.auth.permissions.facture;
+  const { t } = useTranslation("translation", { keyPrefix: "factures" });
   useEffect(() => {
     var _a;
     if (flash.message) {
@@ -7002,34 +6557,49 @@ function Factures({ factures, bill_settings }) {
     }
   }, [flash.message, toast2]);
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Factures" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Factures") }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
     facture_permissions.create && /* @__PURE__ */ jsxs("div", { className: "flex justify-end gap-2", children: [
-      /* @__PURE__ */ jsx(Button, { variant: "secondary", size: "sm", children: /* @__PURE__ */ jsx(Link, { href: route("bookings.index"), children: useTrans("Générer pour une réservation") }) }),
+      /* @__PURE__ */ jsx(
+        Button,
+        {
+          variant: "secondary",
+          size: "sm",
+          disabled: processing,
+          onClick: () => router.get(
+            route("bookings.index"),
+            {},
+            {
+              onStart: () => {
+                setProcessing(true);
+              },
+              onFinish: () => {
+                setProcessing(false);
+              }
+            }
+          ),
+          children: t("topBtn")
+        }
+      ),
       /* @__PURE__ */ jsx(FactureSettings, { bill_settings })
     ] }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: factures.data.lenght ? /* @__PURE__ */ jsx(
+    /* @__PURE__ */ jsx(PlaceholderContent, { children: factures2.data.length ? /* @__PURE__ */ jsx(
       DataTable,
       {
         columns: factureColumns,
-        data: factures.data,
-        paginate: factures,
+        data: factures2.data,
+        paginate: factures2,
         selection: false
       }
-    ) : /* @__PURE__ */ jsx(
-      EmptyPage,
-      {
-        text: "Aucun factures pour l'instant, essayez de créer une nouvelle",
-        icon: ReceiptText
-      }
-    ) })
+    ) : /* @__PURE__ */ jsx(EmptyPage, { text: t("emptyBill"), icon: ReceiptText }) })
   ] });
 }
-const __vite_glob_0_15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Factures
 }, Symbol.toStringTag, { value: "Module" }));
-function GuestList({ guests }) {
+function GuestList({ guests: guests2 }) {
+  const { t } = useTranslation("translation", { keyPrefix: "guests" });
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
     /* @__PURE__ */ jsx(Head, { title: "List d'invités" }),
     /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
@@ -7038,31 +6608,31 @@ function GuestList({ guests }) {
         variant: "secondary",
         size: "sm",
         onClick: () => router.get(route("guests.create", 5)),
-        children: useTrans("Ajouter des invités")
+        children: t("addGuestsBtn")
       }
     ) }),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("table", { className: "border w-full", children: [
       /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
         /* @__PURE__ */ jsxs("th", { className: "border px-4 ", children: [
-          useTrans("Nom"),
+          t("lastName"),
           " "
         ] }),
         /* @__PURE__ */ jsxs("th", { className: "border px-4 ", children: [
-          useTrans("Prénom"),
+          t("firstName"),
           " "
         ] })
       ] }) }),
-      /* @__PURE__ */ jsx("tbody", { children: guests.map((guest) => /* @__PURE__ */ jsxs("tr", { className: "hover:bg-muted", children: [
+      /* @__PURE__ */ jsx("tbody", { children: guests2.map((guest) => /* @__PURE__ */ jsxs("tr", { className: "hover:bg-muted", children: [
         /* @__PURE__ */ jsxs("td", { className: "border px-4 ", children: [
           guest.guest_first_name,
           " "
         ] }),
         /* @__PURE__ */ jsx("td", { className: "border px-4 ", children: guest.guest_last_name })
-      ] })) })
+      ] }, guest.guest_id)) })
     ] }) })
   ] });
 }
-const __vite_glob_0_16 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: GuestList
 }, Symbol.toStringTag, { value: "Module" }));
@@ -7102,14 +6672,16 @@ const Textarea = React.forwardRef(({ className, ...props }, ref) => {
   );
 });
 Textarea.displayName = "Textarea";
-function messages({ messages: messages2, filter }) {
+function messages$1({ messages: messages2, filter }) {
   var _a, _b, _c, _d, _e, _f, _g;
   const [selectedMessage, setSelectedMessage] = useState(0);
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
   const hasUnreadMessages = usePage().props.hasUnreadMessages;
   const permission = usePage().props.auth.permissions.message;
-  const { data, setData: setData2, post, errors } = useForm({
+  const { t } = useTranslation("translation", { keyPrefix: "messages" });
+  const [deleteProgress, setDeleteProgress] = useState(false);
+  const { data, setData: setData2, post, errors, processing } = useForm({
     message: "",
     client_email: (_a = messages2[selectedMessage]) == null ? void 0 : _a.client_email
   });
@@ -7156,59 +6728,104 @@ function messages({ messages: messages2, filter }) {
       {},
       {
         preserveState: true,
-        preserveScroll: true
+        preserveScroll: true,
+        nStart: () => {
+          setDeleteProgress(true);
+        },
+        onFinish: () => {
+          setDeleteProgress(false);
+        }
       }
     );
   };
   const readAll = () => {
-    router.get(route("messages.readAll"));
+    router.get(route("messages.readAll"), {
+      nStart: () => {
+        setDeleteProgress(true);
+      },
+      onFinish: () => {
+        setDeleteProgress(false);
+      }
+    });
   };
   const getUnRead = () => {
     router.get(
       route("messages.index"),
       { filter: "unread" },
-      { preserveState: true, preserveScroll: true }
+      {
+        preserveState: true,
+        preserveScroll: true,
+        nStart: () => {
+          setDeleteProgress(true);
+        },
+        onFinish: () => {
+          setDeleteProgress(false);
+        }
+      }
     );
   };
   const getAll = () => {
     router.get(
       route("messages.index"),
       { filter: "all" },
-      { preserveState: true, preserveScroll: true }
+      {
+        preserveState: true,
+        preserveScroll: true,
+        nStart: () => {
+          setDeleteProgress(true);
+        },
+        onFinish: () => {
+          setDeleteProgress(false);
+        }
+      }
     );
   };
   const deleteMessage = (id) => {
-    router.delete(route("messages.destroy", id));
+    router.delete(route("messages.destroy", id), {
+      onStart: () => {
+        setDeleteProgress(true);
+      },
+      onFinish: () => {
+        setDeleteProgress(false);
+      }
+    });
   };
   const deleteAll = () => {
-    router.delete(route("messages.destroyAll"));
+    router.delete(route("messages.destroyAll"), {
+      onStart: () => {
+        setDeleteProgress(true);
+      },
+      onFinish: () => {
+        setDeleteProgress(false);
+      }
+    });
   };
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Boîte de réception" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Boîte de réception") }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
     /* @__PURE__ */ jsxs("div", { className: "flex justify-end mt-2 gap-4", children: [
       permission.update && /* @__PURE__ */ jsx(
         Button,
         {
-          disabled: messages2.length < 1 || !hasUnreadMessages,
+          disabled: messages2.length < 1 || !hasUnreadMessages || deleteProgress,
           onClick: () => {
             readAll();
           },
           variant: "ghost",
           className: "font-bold ",
-          children: useTrans("Tout marquer comme lu")
+          children: t("readAll")
         }
       ),
       permission.delete && /* @__PURE__ */ jsx(
         Button,
         {
-          disabled: messages2.length < 1,
+          disabled: messages2.length < 1 || deleteProgress,
           onClick: () => {
             deleteAll();
           },
           variant: "ghost",
           className: "font-bold",
-          children: useTrans("Supprimer Tous")
+          children: t("deleteAll")
         }
       )
     ] }),
@@ -7225,7 +6842,8 @@ function messages({ messages: messages2, filter }) {
               "font-bold mx-2",
               filter != "unread" && "bg-accent text-accent-foreground"
             ),
-            children: useTrans("Tous")
+            disabled: deleteProgress,
+            children: t("all")
           }
         ),
         /* @__PURE__ */ jsx(
@@ -7239,7 +6857,8 @@ function messages({ messages: messages2, filter }) {
               "font-bold",
               filter == "unread" && "bg-accent text-accent-foreground"
             ),
-            children: useTrans("Non lu")
+            disabled: deleteProgress,
+            children: t("unread")
           }
         ),
         messages2.length > 0 ? /* @__PURE__ */ jsx(ScrollArea, { className: "h-96 mt-2", children: /* @__PURE__ */ jsx("div", { children: messages2.map((message, idx) => /* @__PURE__ */ jsxs(Card, { className: "mb-2", children: [
@@ -7259,7 +6878,7 @@ function messages({ messages: messages2, filter }) {
                 children: [
                   /* @__PURE__ */ jsxs("div", { className: "font-bold", children: [
                     message.subject,
-                    /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: message.user ? message.user.first_name : "Utilisateur" })
+                    /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: message.user ? message.user.first_name : t("user") })
                   ] }),
                   /* @__PURE__ */ jsxs("div", { className: "flex gap-2 items-center", children: [
                     /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground opacity-60", children: timeSince(
@@ -7299,9 +6918,7 @@ function messages({ messages: messages2, filter }) {
                   "a",
                   {
                     href: "mailto:" + message.client_email,
-                    children: useTrans(
-                      "Reprendre avec votre adresse mail"
-                    )
+                    children: t("replyToMail")
                   }
                 )
               }
@@ -7314,7 +6931,8 @@ function messages({ messages: messages2, filter }) {
                 onClick: () => deleteMessage(
                   message.message_id
                 ),
-                children: useTrans("Supprimer")
+                disabled: deleteProgress,
+                children: t("delete")
               }
             )
           ] })
@@ -7322,7 +6940,7 @@ function messages({ messages: messages2, filter }) {
           /* @__PURE__ */ jsx(MessageSquareX, { size: 70 }),
           /* @__PURE__ */ jsxs("div", { children: [
             " ",
-            useTrans("Aucun message a afficher"),
+            t("noMessage"),
             " "
           ] })
         ] })
@@ -7331,10 +6949,10 @@ function messages({ messages: messages2, filter }) {
       /* @__PURE__ */ jsxs(ResizablePanel, { className: "relative", children: [
         /* @__PURE__ */ jsxs("div", { className: "my-2 flex justify-between itmes-center flex-row", children: [
           /* @__PURE__ */ jsxs("div", { className: "font-bold", children: [
-            ((_b = messages2[selectedMessage]) == null ? void 0 : _b.user) ? messages2[selectedMessage].user.first_name : "Utilisateur",
-            /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: ((_c = messages2[selectedMessage]) == null ? void 0 : _c.subject) ? messages2[selectedMessage].subject : "Sujet" }),
+            ((_b = messages2[selectedMessage]) == null ? void 0 : _b.user) ? messages2[selectedMessage].user.first_name : t("user"),
+            /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: ((_c = messages2[selectedMessage]) == null ? void 0 : _c.subject) ? messages2[selectedMessage].subject : t("subject") }),
             /* @__PURE__ */ jsxs("div", { className: "text-sm text-muted-foreground", children: [
-              useTrans("Repondre à :"),
+              t("replyTo"),
               " ",
               ((_d = messages2[selectedMessage]) == null ? void 0 : _d.client_email) ? (_e = messages2[selectedMessage]) == null ? void 0 : _e.client_email : "client@gmail.com"
             ] })
@@ -7344,14 +6962,14 @@ function messages({ messages: messages2, filter }) {
           ) : "00-00-0000, 00:00:00 " })
         ] }),
         /* @__PURE__ */ jsx(Separator, {}),
-        /* @__PURE__ */ jsx(ScrollArea, { className: "h-1/2", children: /* @__PURE__ */ jsx("div", { className: "py-2", children: ((_g = messages2[selectedMessage]) == null ? void 0 : _g.message) ? messages2[selectedMessage].message : "Message" }) }),
+        /* @__PURE__ */ jsx(ScrollArea, { className: "h-1/2", children: /* @__PURE__ */ jsx("div", { className: "py-2", children: ((_g = messages2[selectedMessage]) == null ? void 0 : _g.message) ? messages2[selectedMessage].message : t("message") }) }),
         /* @__PURE__ */ jsxs("div", { className: "absolute bottom-0 w-full", children: [
           /* @__PURE__ */ jsx(Separator, { className: "my-2 " }),
           /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
             /* @__PURE__ */ jsx(
               Textarea,
               {
-                placeholder: "Répendre à CLIENT",
+                placeholder: t("placeholder"),
                 value: data.message,
                 onChange: (e) => setData2("message", e.target.value)
               }
@@ -7368,8 +6986,8 @@ function messages({ messages: messages2, filter }) {
               {
                 variant: "secondary",
                 size: "sm",
-                disabled: messages2.length < 1,
-                children: useTrans("Envoyé")
+                disabled: messages2.length < 1 || processing,
+                children: t("submit")
               }
             ) })
           ] })
@@ -7378,11 +6996,12 @@ function messages({ messages: messages2, filter }) {
     ] }) })
   ] });
 }
-const __vite_glob_0_17 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: messages
+  default: messages$1
 }, Symbol.toStringTag, { value: "Module" }));
-function Notifications({ notifications }) {
+function Notifications({ notifications: notifications2 }) {
+  const { t } = useTranslation("translation", { keyPrefix: "notifications" });
   function timeSince(date) {
     const now = /* @__PURE__ */ new Date();
     const past = new Date(date);
@@ -7420,8 +7039,8 @@ function Notifications({ notifications }) {
     );
   };
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Notifications" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Notifications") }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
     /* @__PURE__ */ jsxs("div", { className: "flex justify-end mt-2 -mb-4 gap-4", children: [
       /* @__PURE__ */ jsx(
         Button,
@@ -7431,7 +7050,7 @@ function Notifications({ notifications }) {
           },
           variant: "ghost",
           className: "font-bold",
-          children: useTrans("Tout marquer comme lu")
+          children: t("readAll")
         }
       ),
       /* @__PURE__ */ jsx(
@@ -7442,11 +7061,11 @@ function Notifications({ notifications }) {
           },
           variant: "ghost",
           className: "font-bold",
-          children: useTrans("Supprimer Tous")
+          children: t("deleteAll")
         }
       )
     ] }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: notifications.map((notification, index) => /* @__PURE__ */ jsxs(
+    /* @__PURE__ */ jsx(PlaceholderContent, { children: notifications2.map((notification, index) => /* @__PURE__ */ jsxs(
       Button,
       {
         variant: "ghost",
@@ -7456,7 +7075,6 @@ function Notifications({ notifications }) {
         ),
         onClick: () => ViewNotification(notification),
         children: [
-          console.log(notification),
           /* @__PURE__ */ jsxs("span", { children: [
             /* @__PURE__ */ jsxs("span", { className: "font-bold", children: [
               notification.data.first_name,
@@ -7464,11 +7082,11 @@ function Notifications({ notifications }) {
               notification.data.last_name
             ] }),
             " ",
-            useTrans("a fait une réservation de"),
+            t("text1"),
             " ",
             /* @__PURE__ */ jsx("span", { className: "font-bold", children: notification.data.check_in }),
             " ",
-            useTrans("vers"),
+            t("text2"),
             " ",
             /* @__PURE__ */ jsx("span", { className: "font-bold", children: notification.data.check_out }),
             " "
@@ -7486,112 +7104,17 @@ function Notifications({ notifications }) {
     )) })
   ] });
 }
-const __vite_glob_0_18 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_16 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Notifications
 }, Symbol.toStringTag, { value: "Module" }));
-function DangerButton({ className = "", disabled, children, ...props }) {
-  return /* @__PURE__ */ jsx(
-    "button",
-    {
-      ...props,
-      className: `inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 ${disabled && "opacity-25"} ` + className,
-      disabled,
-      children
-    }
-  );
-}
-function Modal({ children, show = false, maxWidth = "2xl", closeable = true, onClose = () => {
-} }) {
-  const close = () => {
-    if (closeable) {
-      onClose();
-    }
-  };
-  const maxWidthClass = {
-    sm: "sm:max-w-sm",
-    md: "sm:max-w-md",
-    lg: "sm:max-w-lg",
-    xl: "sm:max-w-xl",
-    "2xl": "sm:max-w-2xl"
-  }[maxWidth];
-  return /* @__PURE__ */ jsx(Transition, { show, as: Fragment$1, leave: "duration-200", children: /* @__PURE__ */ jsxs(
-    Dialog$1,
-    {
-      as: "div",
-      id: "modal",
-      className: "fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all",
-      onClose: close,
-      children: [
-        /* @__PURE__ */ jsx(
-          Transition.Child,
-          {
-            as: Fragment$1,
-            enter: "ease-out duration-300",
-            enterFrom: "opacity-0",
-            enterTo: "opacity-100",
-            leave: "ease-in duration-200",
-            leaveFrom: "opacity-100",
-            leaveTo: "opacity-0",
-            children: /* @__PURE__ */ jsx("div", { className: "absolute inset-0 bg-gray-500/75 dark:bg-gray-900/75" })
-          }
-        ),
-        /* @__PURE__ */ jsx(
-          Transition.Child,
-          {
-            as: Fragment$1,
-            enter: "ease-out duration-300",
-            enterFrom: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
-            enterTo: "opacity-100 translate-y-0 sm:scale-100",
-            leave: "ease-in duration-200",
-            leaveFrom: "opacity-100 translate-y-0 sm:scale-100",
-            leaveTo: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
-            children: /* @__PURE__ */ jsx(
-              Dialog$1.Panel,
-              {
-                className: `mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto ${maxWidthClass}`,
-                children
-              }
-            )
-          }
-        )
-      ]
-    }
-  ) });
-}
-function SecondaryButton({ type = "button", className = "", disabled, children, ...props }) {
-  return /* @__PURE__ */ jsx(
-    "button",
-    {
-      ...props,
-      type,
-      className: `inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150 ${disabled && "opacity-25"} ` + className,
-      disabled,
-      children
-    }
-  );
-}
-const TextInput = forwardRef(function TextInput2({ type = "text", className = "", isFocused = false, ...props }, ref) {
-  const input = ref ? ref : useRef();
-  useEffect(() => {
-    if (isFocused) {
-      input.current.focus();
-    }
-  }, []);
-  return /* @__PURE__ */ jsx(
-    "input",
-    {
-      ...props,
-      type,
-      className: "border-input dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary dark:focus:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-md shadow-sm " + className,
-      ref: input
-    }
-  );
-});
-function DeleteUserForm$2({ className = "" }) {
+function DeleteUserForm$1({ className = "" }) {
   const [open, setOpen] = useState(false);
   const passwordInput = useRef();
   const { width } = useWindowDimensions();
+  const { t } = useTranslation("translation", {
+    keyPrefix: "profile.section3"
+  });
   const {
     data,
     setData: setData2,
@@ -7603,7 +7126,7 @@ function DeleteUserForm$2({ className = "" }) {
   });
   const deleteUser = (e) => {
     e.preventDefault();
-    destroy(route("profile.destroy"), {
+    destroy(route("admin.profile.destroy"), {
       preserveScroll: true,
       onSuccess: () => {
         setOpen(false);
@@ -7615,10 +7138,8 @@ function DeleteUserForm$2({ className = "" }) {
   };
   return /* @__PURE__ */ jsxs("section", { className: `space-y-6 ${className}`, children: [
     /* @__PURE__ */ jsxs("header", { children: [
-      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: useTrans("Supprimer le compte") }),
-      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: useTrans(
-        "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver."
-      ) })
+      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: t("title") }),
+      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: t("subtitle") })
     ] }),
     width >= 767 ? /* @__PURE__ */ jsxs(Dialog, { open, onOpenChange: setOpen, children: [
       /* @__PURE__ */ jsxs(
@@ -7627,22 +7148,18 @@ function DeleteUserForm$2({ className = "" }) {
           className: buttonVariants({ variant: "destructive" }),
           children: [
             /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-            useTrans("Supprimer le compte")
+            t("submit")
           ]
         }
       ),
       /* @__PURE__ */ jsxs(DialogContent, { children: [
         /* @__PURE__ */ jsxs(DialogHeader, { children: [
           /* @__PURE__ */ jsxs(DialogTitle, { children: [
-            useTrans(
-              "Etes-vous sûr de vouloir supprimer votre compte ?"
-            ),
+            t("dialogTitle"),
             " "
           ] }),
           /* @__PURE__ */ jsxs(DialogDescription, { children: [
-            useTrans(
-              "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte."
-            ),
+            t("dialogDescreption"),
             " "
           ] })
         ] }),
@@ -7667,7 +7184,7 @@ function DeleteUserForm$2({ className = "" }) {
                 onChange: (e) => setData2("password", e.target.value),
                 className: "mt-1 ",
                 isFocused: true,
-                placeholder: "Password"
+                placeholder: t("placeholder")
               }
             ),
             /* @__PURE__ */ jsx(
@@ -7684,7 +7201,7 @@ function DeleteUserForm$2({ className = "" }) {
               {
                 variant: "outline",
                 onClick: () => setOpen(false),
-                children: useTrans("Annuler")
+                children: t("cancel")
               }
             ),
             /* @__PURE__ */ jsxs(
@@ -7697,7 +7214,7 @@ function DeleteUserForm$2({ className = "" }) {
                 className: "flex justify-center",
                 children: [
                   /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-                  useTrans("Supprimer")
+                  t("delete")
                 ]
               }
             )
@@ -7711,22 +7228,18 @@ function DeleteUserForm$2({ className = "" }) {
           className: buttonVariants({ variant: "destructive" }),
           children: [
             /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-            useTrans("Supprimer le compte")
+            t("submit")
           ]
         }
       ),
       /* @__PURE__ */ jsxs(DrawerContent, { children: [
         /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
           /* @__PURE__ */ jsxs(DrawerTitle, { children: [
-            useTrans(
-              "Etes-vous sûr de vouloir supprimer votre compte ?"
-            ),
+            t("dialogTitle"),
             " "
           ] }),
           /* @__PURE__ */ jsxs(DrawerDescription, { children: [
-            useTrans(
-              "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte."
-            ),
+            t("dialogDescreption"),
             " "
           ] })
         ] }),
@@ -7751,7 +7264,7 @@ function DeleteUserForm$2({ className = "" }) {
                 onChange: (e) => setData2("password", e.target.value),
                 className: "mt-1",
                 isFocused: true,
-                placeholder: "Password"
+                placeholder: t("placeholder")
               }
             ),
             /* @__PURE__ */ jsx(
@@ -7773,22 +7286,22 @@ function DeleteUserForm$2({ className = "" }) {
                 className: "flex justify-center",
                 children: [
                   /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-                  useTrans("Supprimer")
+                  t("delete")
                 ]
               }
             ),
-            /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) })
+            /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: t("cancel") }) })
           ] })
         ] })
       ] })
     ] })
   ] });
 }
-const __vite_glob_0_20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_18 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: DeleteUserForm$2
+  default: DeleteUserForm$1
 }, Symbol.toStringTag, { value: "Module" }));
-function UpdatePasswordForm$2({ className = "" }) {
+function UpdatePasswordForm$1({ className = "" }) {
   const passwordInput = useRef();
   const currentPasswordInput = useRef();
   const {
@@ -7806,6 +7319,7 @@ function UpdatePasswordForm$2({ className = "" }) {
   });
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
+  const { t } = useTranslation("translation", { keyPrefix: "profile.section2" });
   useEffect(() => {
     var _a;
     if (flash.message) {
@@ -7831,10 +7345,8 @@ function UpdatePasswordForm$2({ className = "" }) {
   };
   return /* @__PURE__ */ jsxs("section", { className, children: [
     /* @__PURE__ */ jsxs("header", { children: [
-      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: useTrans("Mettre à jour le mot de passe") }),
-      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: useTrans(
-        "Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester en sécurité"
-      ) })
+      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: t("title") }),
+      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: t("subtitle") })
     ] }),
     /* @__PURE__ */ jsxs("form", { onSubmit: updatePassword, children: [
       /* @__PURE__ */ jsx("div", { className: "md:flex my-4", children: /* @__PURE__ */ jsxs("div", { className: "w-full  bg-muted p-4 shadow", children: [
@@ -7842,7 +7354,7 @@ function UpdatePasswordForm$2({ className = "" }) {
           InputLabel,
           {
             htmlFor: "current_password",
-            value: useTrans("Mot de passe actuel")
+            value: t("form.password")
           }
         ),
         /* @__PURE__ */ jsx(
@@ -7872,7 +7384,7 @@ function UpdatePasswordForm$2({ className = "" }) {
             InputLabel,
             {
               htmlFor: "password",
-              value: useTrans("nouveau mot de passe")
+              value: t("form.newPassword")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -7901,7 +7413,7 @@ function UpdatePasswordForm$2({ className = "" }) {
             InputLabel,
             {
               htmlFor: "password_confirmation",
-              value: useTrans("Confirmez le mot de passe")
+              value: t("form.confirmPassword")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -7932,7 +7444,7 @@ function UpdatePasswordForm$2({ className = "" }) {
             type: "submit",
             className: "mt-2 w-1/4",
             variant: "secondary",
-            children: useTrans("Enregistrer")
+            children: t("form.submit")
           }
         ) }),
         /* @__PURE__ */ jsx(
@@ -7943,23 +7455,26 @@ function UpdatePasswordForm$2({ className = "" }) {
             enterFrom: "opacity-0",
             leave: "transition ease-in-out",
             leaveTo: "opacity-0",
-            children: /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 dark:text-gray-400", children: useTrans("Enregistrer") })
+            children: /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 dark:text-gray-400", children: t("form.submit") })
           }
         )
       ] })
     ] })
   ] });
 }
-const __vite_glob_0_21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_19 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: UpdatePasswordForm$2
+  default: UpdatePasswordForm$1
 }, Symbol.toStringTag, { value: "Module" }));
-function UpdateProfileInformation$2({
+function UpdateProfileInformation$1({
   mustVerifyEmail,
   status,
   className = ""
 }) {
   const user = usePage().props.auth.user;
+  const { t } = useTranslation("translation", {
+    keyPrefix: "profile.section1"
+  });
   const { data, setData: setData2, patch, errors, processing } = useForm({
     first_name: user.first_name,
     last_name: user.last_name,
@@ -7971,7 +7486,7 @@ function UpdateProfileInformation$2({
     patch(route("admin.profile.update"));
   };
   return /* @__PURE__ */ jsxs("section", { className, children: [
-    /* @__PURE__ */ jsx("header", { children: /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium", children: useTrans("Les informations personnelles") }) }),
+    /* @__PURE__ */ jsx("header", { children: /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium", children: t("title") }) }),
     /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4 gap-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/2 bg-muted p-4 shadow", children: [
@@ -7979,7 +7494,7 @@ function UpdateProfileInformation$2({
             InputLabel,
             {
               htmlFor: "first_name",
-              value: useTrans("Prénom")
+              value: t("form.firstName")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -8005,7 +7520,7 @@ function UpdateProfileInformation$2({
             InputLabel,
             {
               htmlFor: "last_name",
-              value: useTrans("Nom")
+              value: t("form.lastName")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -8029,13 +7544,11 @@ function UpdateProfileInformation$2({
       /* @__PURE__ */ jsx(Separator, {}),
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: useTrans("Email") }),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "L'email doit être unique pour chaque utilisateur"
-          ) })
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: t("form.email") }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("form.emailDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: useTrans("Email") }),
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: t("form.email") }),
           /* @__PURE__ */ jsx(
             Input,
             {
@@ -8051,25 +7564,11 @@ function UpdateProfileInformation$2({
       /* @__PURE__ */ jsx(Separator, {}),
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "phone",
-              value: useTrans("N° téléphone d'employé")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Le N° téléphone doit être unique pour chaque utilisateur"
-          ) })
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "phone", value: t("form.phone") }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("form.phoneDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "phone",
-              value: useTrans("N° téléphone d'employé")
-            }
-          ),
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "phone", value: t("form.phone") }),
           /* @__PURE__ */ jsx(
             Input,
             {
@@ -8084,28 +7583,22 @@ function UpdateProfileInformation$2({
       ] }),
       mustVerifyEmail && user.email_verified_at === null && /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsxs("p", { className: "text-sm mt-2 text-gray-800 dark:text-gray-200", children: [
-          useTrans(
-            "Votre adresse email n'est pas vérifiée."
-          ),
+          t("form.emailValidation"),
           /* @__PURE__ */ jsxs(
             Link,
             {
-              href: route("verification.send"),
+              href: route("form.verification.send"),
               method: "post",
               as: "button",
               className: "underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800",
               children: [
-                useTrans(
-                  "Cliquez ici pour renvoyer l'e-mail de vérification."
-                ),
+                t("form.sendEmailValidation"),
                 " "
               ]
             }
           )
         ] }),
-        status === "verification-link-sent" && /* @__PURE__ */ jsx("div", { className: "mt-2 font-medium text-sm text-green-600 dark:text-green-400", children: useTrans(
-          "Un nouveau lien de vérification a été envoyé à votre adresse e-mail."
-        ) })
+        status === "verification-link-sent" && /* @__PURE__ */ jsx("div", { className: "mt-2 font-medium text-sm text-green-600 dark:text-green-400", children: t("form.validationSended") })
       ] }),
       /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
         Button,
@@ -8114,50 +7607,55 @@ function UpdateProfileInformation$2({
           type: "submit",
           className: "mt-2 w-1/4",
           variant: "secondary",
-          children: useTrans("Enregistrer")
+          children: t("form.submit")
         }
       ) })
     ] })
   ] });
 }
-const __vite_glob_0_22 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: UpdateProfileInformation$2
+  default: UpdateProfileInformation$1
 }, Symbol.toStringTag, { value: "Module" }));
-function Edit$2({ mustVerifyEmail, status }) {
+function Edit$1({ mustVerifyEmail, status }) {
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
     /* @__PURE__ */ jsx(Head, { title: "Profile" }),
     /* @__PURE__ */ jsx("div", { className: "py-12", children: /* @__PURE__ */ jsxs("div", { className: "max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6", children: [
       /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(
-        UpdateProfileInformation$2,
+        UpdateProfileInformation$1,
         {
           mustVerifyEmail,
           status
         }
       ) }),
-      /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(UpdatePasswordForm$2, {}) }),
-      /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(DeleteUserForm$2, { className: "max-w-xl" }) })
+      /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(UpdatePasswordForm$1, {}) }),
+      /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(DeleteUserForm$1, { className: "max-w-xl" }) })
     ] }) })
   ] });
 }
-const __vite_glob_0_19 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_17 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: Edit$2
+  default: Edit$1
 }, Symbol.toStringTag, { value: "Module" }));
-const fileTypes$5 = ["JPG", "PNG", "GIF"];
-function CreatePromotion() {
+const fileTypes$3 = ["JPG", "PNG", "GIF"];
+function CreatePromotion({ promotion }) {
   const [importedFiles, setImportedFiles] = useState([]);
-  const { data, setData: setData2, post, errors, clearErrors } = useForm({
-    promo_value: "",
-    promo_descreption: "",
-    promo_start_date: "",
-    promo_end_date: "",
-    is_active: false,
-    assets: []
+  const [dbImages, setDbImages] = useState(promotion == null ? void 0 : promotion.assets);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "promotions.form"
+  });
+  const { data, setData: setData2, post, errors, clearErrors, processing } = useForm({
+    promo_value: promotion ? promotion.promo_value : "",
+    promo_descreption: promotion ? promotion.promo_descreption : "",
+    promo_start_date: promotion ? promotion.promo_start_date : "",
+    promo_end_date: promotion ? promotion.promo_end_date : "",
+    assets: [],
+    remouved_assets: [],
+    required_assets: false
   });
   const [dateRange, setDateRange] = useState({
-    from: "",
-    to: ""
+    from: promotion ? new Date(promotion.promo_start_date) : "",
+    to: promotion ? new Date(promotion.promo_end_date) : ""
   });
   const handleFiles = (files) => {
     if (!files || !files.length)
@@ -8183,9 +7681,25 @@ function CreatePromotion() {
     setData2("assets", updatedAssets);
     clearErrors(`assets.${index}`);
   };
+  const remouveAsset = (index) => {
+    setData2((prevData) => ({
+      ...prevData,
+      remouved_assets: [...prevData.remouved_assets, index]
+    }));
+    setDbImages((prevDbImages) => {
+      const updatedDbImages = prevDbImages.filter(
+        (image) => image.id !== index
+      );
+      setData2((prevData) => ({
+        ...prevData,
+        required_assets: updatedDbImages.length === 0
+      }));
+      return updatedDbImages;
+    });
+  };
   const submit = (e) => {
     e.preventDefault();
-    post(route("promotions.store"));
+    promotion ? post(route("promotions.update", promotion.promotion_id)) : post(route("promotions.store"));
   };
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -8207,8 +7721,13 @@ function CreatePromotion() {
     setDateRange(range);
   };
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Création de Promotion" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Création de promotion") }),
+    /* @__PURE__ */ jsx(Head, { title: promotion ? t("editTitle") : t("createTitle") }),
+    /* @__PURE__ */ jsx(
+      PageHeading,
+      {
+        title: promotion ? t("editTitle") : t("createTitle")
+      }
+    ),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
@@ -8216,19 +7735,17 @@ function CreatePromotion() {
             InputLabel,
             {
               htmlFor: "Date de promotion",
-              value: useTrans("Date de promotion")
+              value: t("date")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Entrer la date ou le range de date de début et fin de promotion"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("dateDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "Date de promotion",
-              value: useTrans("Date de promotion")
+              value: t("date")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -8261,19 +7778,17 @@ function CreatePromotion() {
             InputLabel,
             {
               htmlFor: "promo_value",
-              value: useTrans("Valeur de promotion")
+              value: t("value")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Entrer la Valeur de promotion en DA"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("valueDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "promo_value",
-              value: useTrans("Valeur de promotion")
+              value: t("value")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -8301,19 +7816,17 @@ function CreatePromotion() {
             InputLabel,
             {
               htmlFor: "promo_descreption",
-              value: useTrans("Description")
+              value: t("descreption")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Vous pouvez ajouter des titre ou bien des style au desciption"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("descreptionDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "promo_descreption",
-              value: useTrans("Description")
+              value: t("descreption")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -8343,19 +7856,17 @@ function CreatePromotion() {
               InputLabel,
               {
                 htmlFor: "assets",
-                value: useTrans("Photos")
+                value: t("assets")
               }
             ),
-            /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-              "Ajouter des photos au promotion (ne dépasse pas 10 photos par promotion)"
-            ) })
+            /* @__PURE__ */ jsx(LabelDescreption, { children: t("assetsDescreption") })
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
             /* @__PURE__ */ jsx(
               InputLabel,
               {
                 htmlFor: "assets",
-                value: useTrans("Photos")
+                value: t("assets")
               }
             ),
             /* @__PURE__ */ jsx(
@@ -8364,266 +7875,7 @@ function CreatePromotion() {
                 handleChange: handleFiles,
                 name: "file",
                 id: "assets",
-                types: fileTypes$5,
-                multiple: true,
-                children: /* @__PURE__ */ jsx(MyFileUploader, {})
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              InputError,
-              {
-                message: errors.assets,
-                className: "mt-2"
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsx(
-          ImagesViewer,
-          {
-            images: importedFiles,
-            errors,
-            deleteImage
-          }
-        ),
-        " "
-      ] }),
-      /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
-        Button,
-        {
-          type: "submit",
-          className: "mt-2 w-1/4",
-          variant: "secondary",
-          children: useTrans("Créer")
-        }
-      ) })
-    ] }) })
-  ] });
-}
-const __vite_glob_0_23 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: CreatePromotion
-}, Symbol.toStringTag, { value: "Module" }));
-const fileTypes$4 = ["JPG", "PNG", "GIF"];
-function EditPromotion({ promotion }) {
-  const [importedFiles, setImportedFiles] = useState([]);
-  const [dateRange, setDateRange] = useState({
-    from: new Date(promotion.promo_start_date),
-    to: new Date(promotion.promo_end_date)
-  });
-  const { data, setData: setData2, post, errors, clearErrors } = useForm({
-    promo_value: promotion.promo_value,
-    promo_descreption: promotion.promo_descreption,
-    promo_start_date: promotion.promo_start_date,
-    promo_end_date: promotion.promo_end_date,
-    assets: []
-  });
-  const submit = (e) => {
-    e.preventDefault();
-    post(route("promotions.update", promotion.promotion_id));
-  };
-  const handleFiles = (files) => {
-    if (!files || !files.length)
-      return;
-    const newFiles = Array.from(files);
-    setImportedFiles((prevData) => {
-      const updatedFiles = newFiles.map((file) => ({
-        file,
-        url: URL.createObjectURL(file)
-      }));
-      return [...prevData, ...updatedFiles];
-    });
-    setData2("assets", [...data.assets, ...newFiles]);
-  };
-  const deleteImage = (index) => {
-    setImportedFiles((prevData) => {
-      const updatedFiles = [...prevData];
-      updatedFiles.splice(index, 1);
-      return updatedFiles;
-    });
-    const updatedAssets = [...data.assets];
-    updatedAssets.splice(index, 1);
-    setData2("assets", updatedAssets);
-    clearErrors(`assets.${index}`);
-  };
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const formattedDate = `${year}-${month}-${day}`;
-    return formattedDate;
-  }
-  const handleDateChange = (range) => {
-    if (range == null ? void 0 : range.from) {
-      const formattedDate = formatDate(range.from);
-      setData2("promo_start_date", formattedDate);
-    }
-    if (range == null ? void 0 : range.to) {
-      const formattedDate = formatDate(range.to);
-      setData2("promo_end_date", formattedDate);
-    }
-    setDateRange(range);
-  };
-  return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Service" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Modification de promotion") }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "Date de promotion",
-              value: useTrans("Date de promotion")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Entrer la date ou le range de date de début et fin de promotion"
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "Date de promotion",
-              value: useTrans("Date de promotion")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            DatePickerWithRange,
-            {
-              date: dateRange,
-              onDateChange: handleDateChange
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.promo_start_date,
-              className: "mt-2"
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.promo_end_date,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "promo_value",
-              value: useTrans("Valeur de promotion")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Entrer la Valeur de promotion en DA"
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "promo_value",
-              value: useTrans("Valeur de promotion")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            Input,
-            {
-              className: "mt-2 w-full bg-card",
-              id: "promo_value",
-              value: data.promo_value,
-              onChange: (e) => setData2("promo_value", e.target.value)
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.promo_value,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "promo_descreption",
-              value: useTrans("Description")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Vous pouvez ajouter des titre ou bien des style au desciption"
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "promo_descreption",
-              value: useTrans("Description")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            RichEditor,
-            {
-              autofocus: false,
-              content: data.promo_descreption,
-              onContentChange: ({ html }) => {
-                setData2("promo_descreption", html);
-              }
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.promo_descreption,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-          /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-            /* @__PURE__ */ jsx(
-              InputLabel,
-              {
-                htmlFor: "assets",
-                value: useTrans("Photos")
-              }
-            ),
-            /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-              "Ajouter des photos au promotion (ne dépasse pas 10 photos par promotion)"
-            ) })
-          ] }),
-          /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-            /* @__PURE__ */ jsx(
-              InputLabel,
-              {
-                htmlFor: "assets",
-                value: useTrans("Photos")
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              FileUploader,
-              {
-                handleChange: handleFiles,
-                name: "file",
-                id: "assets",
-                types: fileTypes$4,
+                types: fileTypes$3,
                 multiple: true,
                 children: /* @__PURE__ */ jsx(MyFileUploader, {})
               }
@@ -8646,14 +7898,13 @@ function EditPromotion({ promotion }) {
           }
         ),
         " ",
-        /* @__PURE__ */ jsx(
+        promotion && /* @__PURE__ */ jsx(
           DbImageViewer,
           {
-            assets: promotion.assets,
-            importedFiles: importedFiles.length
+            assets: dbImages,
+            remouveAsset
           }
-        ),
-        " "
+        )
       ] }),
       /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
         Button,
@@ -8661,15 +7912,16 @@ function EditPromotion({ promotion }) {
           type: "submit",
           className: "mt-2 w-1/4",
           variant: "secondary",
-          children: useTrans("Enregistrer")
+          disabled: processing,
+          children: promotion ? t("editBtn") : t("createBtn")
         }
       ) })
     ] }) })
   ] });
 }
-const __vite_glob_0_24 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: EditPromotion
+  default: CreatePromotion
 }, Symbol.toStringTag, { value: "Module" }));
 const Switch = React.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsx(
   SwitchPrimitives.Root,
@@ -8692,10 +7944,14 @@ const Switch = React.forwardRef(({ className, ...props }, ref) => /* @__PURE__ *
 ));
 Switch.displayName = SwitchPrimitives.Root.displayName;
 function EventCardFooter({ promotion }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "promotions.card"
+  });
   const promotion_permission = usePage().props.promotion_permission;
+  const [processing, setProcessing] = React__default.useState(false);
   return /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between gap-4 w-full", children: [
     /* @__PURE__ */ jsxs("div", { children: [
-      useTrans("Créé par"),
+      t("createdBy"),
       " :",
       " ",
       /* @__PURE__ */ jsxs("span", { children: [
@@ -8710,6 +7966,7 @@ function EventCardFooter({ promotion }) {
           Switch,
           {
             checked: promotion.is_active,
+            disabled: processing,
             onCheckedChange: () => {
               router.post(
                 route("promotions.toggle.activity"),
@@ -8718,32 +7975,50 @@ function EventCardFooter({ promotion }) {
                 },
                 {
                   preserveState: true,
-                  preserveScroll: true
+                  preserveScroll: true,
+                  onStart: () => {
+                    setProcessing(true);
+                  },
+                  onFinish: () => {
+                    setProcessing(false);
+                  }
                 }
               );
             }
           }
         ),
-        /* @__PURE__ */ jsx("span", { className: "ml-2 ", children: promotion.is_active ? useTrans("Désactivé la promotin") : useTrans("Activé la promotion") })
+        /* @__PURE__ */ jsx("span", { className: "ml-2 ", children: promotion.is_active ? t("swichOn") : t("swichOff") })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-4", children: [
-        promotion_permission.update && /* @__PURE__ */ jsx(Button, { variant: "secondary", children: /* @__PURE__ */ jsx(
-          Link,
+        promotion_permission.update && /* @__PURE__ */ jsx(
+          Button,
           {
-            href: route(
-              "promotions.edit",
-              promotion.promotion_id
+            variant: "secondary",
+            disabled: processing,
+            onClick: () => router.get(
+              route(
+                "promotions.edit",
+                promotion.promotion_id
+              ),
+              {},
+              {
+                onStart: () => {
+                  setProcessing(true);
+                },
+                onFinish: () => {
+                  setProcessing(false);
+                }
+              }
             ),
-            as: "button",
-            children: useTrans("Modifier")
+            children: t("edit")
           }
-        ) }),
+        ),
         promotion_permission.delete && /* @__PURE__ */ jsx(
           DeleteeDialog,
           {
             id: promotion.promotion_id,
             url: "promotions.destroy",
-            message: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette promotion"
+            message: t("deletePromotionDescreption")
           }
         )
       ] })
@@ -8753,6 +8028,9 @@ function EventCardFooter({ promotion }) {
 function PromotionCard({ promotion }) {
   const { width } = useWindowDimensions();
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "promotions.card"
+  });
   return /* @__PURE__ */ jsxs(Card, { className: "transition-transform ease-in-out duration-700 relative my-6 ", children: [
     /* @__PURE__ */ jsx("div", { className: "w-full", children: /* @__PURE__ */ jsxs(Carousel, { children: [
       /* @__PURE__ */ jsx(CarouselContent, { className: "h-full ", children: promotion.assets.map((asset, index) => /* @__PURE__ */ jsx(
@@ -8774,32 +8052,32 @@ function PromotionCard({ promotion }) {
       /* @__PURE__ */ jsx(CarouselNext, { className: "bg-secondary right-0 text-secondary-foreground" })
     ] }) }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-between w-full", children: [
-      /* @__PURE__ */ jsxs(CardHeader, { className: "text-lg font-bold text-xl flex flex-row items-center justify-between", children: [
+      /* @__PURE__ */ jsxs(CardHeader, { className: " font-bold text-xl flex flex-row items-center justify-between", children: [
         /* @__PURE__ */ jsxs("div", { className: "text-destructive text-2xl font-bold", children: [
           "- ",
           promotion.promo_value,
           " ",
-          useTrans("DA"),
+          t("da"),
           " "
         ] }),
-        /* @__PURE__ */ jsx("div", { children: promotion.is_active ? /* @__PURE__ */ jsx(Badge, { variant: "success", children: useTrans("Active") }) : /* @__PURE__ */ jsx(Badge, { variant: "danger", children: useTrans("Désactivé") }) })
+        /* @__PURE__ */ jsx("div", { children: promotion.is_active ? /* @__PURE__ */ jsx(Badge, { variant: "success", children: t("activeState") }) : /* @__PURE__ */ jsx(Badge, { variant: "danger", children: t("inactiveState") }) })
       ] }),
       isOpen && /* @__PURE__ */ jsxs(Fragment, { children: [
         /* @__PURE__ */ jsxs(CardContent, { children: [
           promotion.promo_start_date == promotion.promo_end_date ? /* @__PURE__ */ jsxs("div", { children: [
-            useTrans("Date de promotion"),
+            t("date"),
             " :",
             " ",
             /* @__PURE__ */ jsx("span", { className: "font-bold text-lg", children: promotion.promo_start_date })
           ] }) : /* @__PURE__ */ jsxs("div", { children: [
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Date début de promotion"),
+              t("startDate"),
               " :",
               " ",
               /* @__PURE__ */ jsx("span", { className: "font-bold text-lg", children: promotion.promo_start_date })
             ] }),
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Date fin de promotion"),
+              t("endDate"),
               " :",
               " ",
               /* @__PURE__ */ jsx("span", { className: "font-bold text-lg", children: promotion.promo_end_date })
@@ -8807,7 +8085,7 @@ function PromotionCard({ promotion }) {
           ] }),
           /* @__PURE__ */ jsxs("div", { children: [
             /* @__PURE__ */ jsxs("div", { className: "font-bold text-lg my-4", children: [
-              useTrans("Description"),
+              t("descreption"),
               " :",
               " "
             ] }),
@@ -8845,9 +8123,11 @@ function PromotionCard({ promotion }) {
     ) })
   ] });
 }
-function Promotions({ promotions, promotion_permission }) {
+function Promotions({ promotions: promotions2, promotion_permission }) {
+  const { t } = useTranslation("translation", { keyPrefix: "promotions" });
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
+  const [processing, setProcessing] = React__default.useState(false);
   useEffect(() => {
     var _a;
     if (flash.message) {
@@ -8855,38 +8135,50 @@ function Promotions({ promotions, promotion_permission }) {
     }
   }, [flash.message, toast2]);
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Promotions" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Promotions") }),
-    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: promotion_permission.create && /* @__PURE__ */ jsx(Button, { variant: "secondary", children: /* @__PURE__ */ jsx(Link, { href: route("promotions.create"), children: useTrans("Créer un promotion") }) }) }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: promotions.lenght ? /* @__PURE__ */ jsxs(Fragment, { children: [
-      /* @__PURE__ */ jsxs("div", { className: "font-bold p-4", children: [
-        useTrans("List des promotions"),
-        " :"
-      ] }),
-      promotions.map((promo) => /* @__PURE__ */ jsx(
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
+    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: promotion_permission.create && /* @__PURE__ */ jsx(
+      Button,
+      {
+        variant: "secondary",
+        disabled: processing,
+        onClick: () => router.get(
+          route("promotions.create"),
+          {},
+          {
+            onStart: () => {
+              setProcessing(true);
+            },
+            onFinish: () => {
+              setProcessing(false);
+            }
+          }
+        ),
+        children: t("createBtn")
+      }
+    ) }),
+    /* @__PURE__ */ jsx(PlaceholderContent, { children: promotions2.length ? /* @__PURE__ */ jsxs(Fragment, { children: [
+      /* @__PURE__ */ jsx("div", { className: "font-bold p-4", children: t("pageHeading") }),
+      promotions2.map((promo) => /* @__PURE__ */ jsx(
         PromotionCard,
         {
           promotion: promo
         },
         promo.promotion_id
       ))
-    ] }) : /* @__PURE__ */ jsx(
-      EmptyPage,
-      {
-        text: "Aucun promotion pour l'instant, essayez de créer une nouvelle",
-        icon: TicketMinus
-      }
-    ) })
+    ] }) : /* @__PURE__ */ jsx(EmptyPage, { text: t("emptyPromotions"), icon: TicketMinus }) })
   ] });
 }
-const __vite_glob_0_25 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_22 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Promotions
 }, Symbol.toStringTag, { value: "Module" }));
-function CreateRole({ permissions, permissions_actions }) {
-  const { data, setData: setData2, post, errors } = useForm({
-    role_name: "",
-    permissions: []
+function RoleForm({ role, permissions, permissions_actions }) {
+  const { t } = useTranslation("translation", { keyPrefix: "roles.form" });
+  const { data, setData: setData2, put, post, errors, processing } = useForm({
+    role_name: role ? role.role_name : "",
+    prevName: role ? role.role_name : "",
+    permissions: role ? role.permissions.map((permission) => permission.permission_id) : []
   });
   const handleCheckboxChange = (id) => {
     if (data.permissions.includes(id)) {
@@ -8935,31 +8227,19 @@ function CreateRole({ permissions, permissions_actions }) {
   };
   const submit = (e) => {
     e.preventDefault();
-    post(route("roles.store"));
+    role ? put(route("roles.update", role.role_id)) : post(route("roles.store"));
   };
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Rools" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: "Roles" }),
+    /* @__PURE__ */ jsx(Head, { title: role ? t("editTitle") : t("createTitle") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: role ? t("editTitle") : t("createTitle") }),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "role_name",
-              value: useTrans("Nom de rôle")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans("Le nom de rôle doit être unique") })
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "role_name", value: t("name") }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("nameDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "role_name",
-              value: useTrans("Nom de rôle")
-            }
-          ),
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "role_name", value: t("name") }),
           /* @__PURE__ */ jsx(
             Input,
             {
@@ -8981,13 +8261,8 @@ function CreateRole({ permissions, permissions_actions }) {
       /* @__PURE__ */ jsx(Separator, {}),
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4 ", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              value: useTrans("List des permissions")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans("Assigner des permissions a ce rôle") })
+          /* @__PURE__ */ jsx(InputLabel, { value: t("promotions") }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("promotionsDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsxs("div", { className: "mb-4 flex bg-card p-2 rounded", children: [
@@ -8996,7 +8271,7 @@ function CreateRole({ permissions, permissions_actions }) {
               {
                 htmlFor: "permissions",
                 className: "w-1/4 ",
-                value: useTrans("List des permissions")
+                value: t("promotions")
               }
             ),
             /* @__PURE__ */ jsx("div", { className: "flex justify-between w-3/4", children: permissions_actions.map((action) => /* @__PURE__ */ jsx(
@@ -9054,227 +8329,24 @@ function CreateRole({ permissions, permissions_actions }) {
                   "-"
                 )[0] == permission.permission_name.split(
                   "-"
-                )[0] && /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx(
-                  Checkbox,
+                )[0] && /* @__PURE__ */ jsx(
+                  "div",
                   {
-                    id: perm.permission_id,
-                    checked: data.permissions.includes(
-                      perm.permission_id
-                    ),
-                    onCheckedChange: () => handleCheckboxChange(
-                      perm.permission_id
+                    children: /* @__PURE__ */ jsx(
+                      Checkbox,
+                      {
+                        id: perm.permission_id,
+                        checked: data.permissions.includes(
+                          perm.permission_id
+                        ),
+                        onCheckedChange: () => handleCheckboxChange(
+                          perm.permission_id
+                        )
+                      }
                     )
-                  }
-                ) })
-              ) })
-            ] }) }, idx);
-          })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
-        Button,
-        {
-          type: "submit",
-          className: "mt-2 w-1/4",
-          variant: "secondary",
-          children: useTrans("Créer")
-        }
-      ) })
-    ] }) })
-  ] });
-}
-const __vite_glob_0_26 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: CreateRole
-}, Symbol.toStringTag, { value: "Module" }));
-function EditRole({ role, permissions, permissions_actions }) {
-  const { data, setData: setData2, put, errors } = useForm({
-    role_name: role.role_name,
-    prevName: role.role_name,
-    permissions: role.permissions.map(
-      (permission) => permission.permission_id
-    )
-  });
-  const handleCheckboxChange = (id) => {
-    if (data.permissions.includes(id)) {
-      setData2(
-        "permissions",
-        data.permissions.filter((permissionId) => permissionId !== id)
-      );
-    } else {
-      setData2("permissions", [...data.permissions, id]);
-    }
-  };
-  const handleAllPermissionsCheck = (entity, e) => {
-    if (e) {
-      permissions.map(
-        (permission) => permission.permission_name.split("-")[0] == entity && data.permissions.find((p) => p == permission.permission_id) ? setData2((data2) => {
-          data2.permissions.splice(
-            data2.permissions.findIndex(
-              (p) => p == permission.permission_id
-            ),
-            1
-          );
-          return { ...data2 };
-        }) : null
-      );
-      permissions.map(
-        (permission) => permission.permission_name.split("-")[0] == entity ? setData2((data2) => {
-          data2.permissions.push(permission.permission_id);
-          return { ...data2 };
-        }) : null
-      );
-    } else {
-      permissions.forEach(
-        (permission) => permission.permission_name.split("-")[0] == entity && setData2((data2) => {
-          data2.permissions.splice(
-            data2.permissions.indexOf(
-              data2.permissions.find(
-                (p) => p == permission.permission_id
-              )
-            ),
-            1
-          );
-          return { ...data2 };
-        })
-      );
-    }
-  };
-  const submit = (e) => {
-    e.preventDefault();
-    put(route("roles.update", role.role_id));
-  };
-  console.log(errors);
-  return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Rools" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: "Roles" }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "role_name",
-              value: useTrans("Nom de rôle")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans("Le nom de rôle doit être unique") })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "role_name",
-              value: useTrans("Nom de rôle")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            Input,
-            {
-              className: "mt-2 w-full bg-card",
-              id: "role_name",
-              value: data.role_name,
-              onChange: (e) => setData2("role_name", e.target.value)
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            InputError,
-            {
-              message: errors.role_name,
-              className: "mt-2"
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(Separator, {}),
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4 ", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              value: useTrans("List des permissions")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans("Assigner des permissions a ce rôle") })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsxs("div", { className: "mb-4 flex bg-card p-2 rounded", children: [
-            /* @__PURE__ */ jsx(
-              InputLabel,
-              {
-                htmlFor: "permissions",
-                className: "w-1/4 ",
-                value: useTrans("List des permissions")
-              }
-            ),
-            /* @__PURE__ */ jsx("div", { className: "flex justify-between w-3/4", children: permissions_actions.map((action) => /* @__PURE__ */ jsx(
-              "div",
-              {
-                className: "flex items-center mb-2",
-                children: /* @__PURE__ */ jsx(InputLabel, { htmlFor: action, children: action })
-              },
-              action
-            )) })
-          ] }),
-          permissions.map((permission, idx) => {
-            var _a;
-            return /* @__PURE__ */ jsx("div", { children: permissions[idx] != 0 && ((_a = permissions[idx - 1]) == null ? void 0 : _a.permission_name.split("-")[0]) != permission.permission_name.split(
-              "-"
-            )[0] && /* @__PURE__ */ jsxs("div", { className: "mb-4 flex bg-card p-2 rounded", children: [
-              /* @__PURE__ */ jsxs("div", { className: "flex gap-2 w-1/4", children: [
-                /* @__PURE__ */ jsx(
-                  Checkbox,
-                  {
-                    id: permission.permission_name,
-                    checked: permissions.filter(
-                      (per) => per.permission_name.split(
-                        "-"
-                      )[0] == permission.permission_name.split(
-                        "-"
-                      )[0]
-                    ).every(
-                      (element) => data.permissions.includes(
-                        element.permission_id
-                      )
-                    ),
-                    onCheckedChange: (e) => handleAllPermissionsCheck(
-                      permission.permission_name.split(
-                        "-"
-                      )[0],
-                      e
-                    )
-                  }
-                ),
-                /* @__PURE__ */ jsx(
-                  InputLabel,
-                  {
-                    htmlFor: permission.permission_name.split(
-                      "-"
-                    )[0],
-                    children: permission.permission_name.split(
-                      "-"
-                    )[0]
-                  }
+                  },
+                  perm.permission_id
                 )
-              ] }),
-              /* @__PURE__ */ jsx("div", { className: "flex justify-between w-3/4", children: permissions.map(
-                (perm) => perm.permission_name.split(
-                  "-"
-                )[0] == permission.permission_name.split(
-                  "-"
-                )[0] && /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx(
-                  Checkbox,
-                  {
-                    id: perm.permission_id,
-                    checked: data.permissions.includes(
-                      perm.permission_id
-                    ),
-                    onCheckedChange: () => handleCheckboxChange(
-                      perm.permission_id
-                    )
-                  }
-                ) })
               ) })
             ] }) }, idx);
           })
@@ -9287,40 +8359,47 @@ function EditRole({ role, permissions, permissions_actions }) {
           type: "submit",
           className: "mt-2 w-1/4",
           variant: "secondary",
-          children: useTrans("Modifier")
+          disabled: processing,
+          children: role ? t("editBtn") : t("createBtn")
         }
       ) })
     ] }) })
   ] });
 }
-const __vite_glob_0_27 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_23 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: EditRole
+  default: RoleForm
 }, Symbol.toStringTag, { value: "Module" }));
 const roleColumns = [
   {
-    accessorKey: "Rôle",
+    accessorKey: "role",
     cell: ({ row }) => {
       const role = row.original;
       return /* @__PURE__ */ jsx("div", { children: role.role_name });
     },
-    header: ({ column }) => (
-      // <DataTableColumnHeader column={column} title={useTrans("Rôle")} />
-      /* @__PURE__ */ jsx(ColumnHeader, { title: "Rôle" })
-    )
+    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "role" })
   },
   {
-    accessorKey: "Permissions",
+    accessorKey: "permissions",
     cell: ({ row }) => {
       const role = row.original;
       const { width } = useWindowDimensions();
       const [isopen, setIsOpen] = React__default.useState(false);
+      const { t } = useTranslation("translation", {
+        keyPrefix: "roles"
+      });
       return width >= 767 ? /* @__PURE__ */ jsxs(Dialog, { open: isopen, onOpenChange: setIsOpen, children: [
-        /* @__PURE__ */ jsx(DialogTrigger, { children: useTrans("Permissions") }),
+        /* @__PURE__ */ jsx(
+          DialogTrigger,
+          {
+            className: cn(buttonVariants({ variant: "outline" })),
+            children: t("permissions")
+          }
+        ),
         /* @__PURE__ */ jsxs(DialogContent, { children: [
           /* @__PURE__ */ jsxs(DialogHeader, { children: [
             /* @__PURE__ */ jsxs(DialogTitle, { className: "text-left rtl:text-right rtl:pr-4", children: [
-              useTrans("List des permissions pour le rôle"),
+              t("dialogHeader"),
               " ",
               role.role_name
             ] }),
@@ -9338,19 +8417,19 @@ const roleColumns = [
             {
               variant: "outline",
               onClick: () => setIsOpen(false),
-              children: useTrans("Annuler")
+              children: t("cancel")
             }
           ) })
         ] })
       ] }) : /* @__PURE__ */ jsxs(Drawer, { open: isopen, onOpenChange: setIsOpen, children: [
         /* @__PURE__ */ jsxs(DrawerTrigger, { children: [
-          useTrans("Permissions"),
+          t("permissions"),
           " "
         ] }),
         /* @__PURE__ */ jsxs(DrawerContent, { children: [
           /* @__PURE__ */ jsxs(DrawerHeader, { children: [
             /* @__PURE__ */ jsxs(DrawerTitle, { className: "text-left rtl:text-right", children: [
-              useTrans("List des permissions pour le rôle"),
+              t("dialogHeader"),
               " ",
               role.role_name,
               " "
@@ -9364,17 +8443,11 @@ const roleColumns = [
               permission.permission_id
             )) })
           ] }),
-          /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) }) })
+          /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: t("cancel") }) }) })
         ] })
       ] });
     },
-    header: ({ column }) => (
-      // <DataTableColumnHeader
-      //     column={column}
-      //     title={useTrans("Permissions")}
-      // />
-      /* @__PURE__ */ jsx(ColumnHeader, { title: "Permissions" })
-    )
+    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "permissions" })
   },
   {
     id: "actions",
@@ -9383,7 +8456,11 @@ const roleColumns = [
       const { width } = useWindowDimensions();
       const [open, setopen] = React__default.useState(false);
       const [isopen, setIsOpen] = React__default.useState(false);
+      const [processing, setProcessing] = React__default.useState(false);
       const role_permission = usePage().props.role_permission;
+      const { t } = useTranslation("translation", {
+        keyPrefix: "roles"
+      });
       const handleDelete = () => {
         router.delete(route("roles.destroy", role.role_id), {
           preserveScroll: true,
@@ -9391,6 +8468,12 @@ const roleColumns = [
           onSuccess: () => {
             setopen(false);
             setIsOpen(false);
+          },
+          onStart: () => {
+            setProcessing(true);
+          },
+          onFinish: () => {
+            setProcessing(false);
           }
         });
       };
@@ -9405,14 +8488,30 @@ const roleColumns = [
               /* @__PURE__ */ jsx(MoreHorizontal, { className: "h-4 w-4" })
             ] }) }),
             /* @__PURE__ */ jsxs(DropdownMenuContent, { align: "end", children: [
-              role_permission.update && /* @__PURE__ */ jsx(DropdownMenuItem, { children: /* @__PURE__ */ jsxs(
-                Link,
+              role_permission.update && /* @__PURE__ */ jsx(DropdownMenuItem, { className: "p-0", children: /* @__PURE__ */ jsxs(
+                Button,
                 {
-                  href: route("roles.edit", role.role_id),
-                  className: "flex",
+                  onClick: () => router.get(
+                    route("roles.edit", role.role_id),
+                    {},
+                    {
+                      onSuccess: () => {
+                        setopen(false);
+                        setIsOpen(false);
+                      },
+                      onStart: () => {
+                        setProcessing(true);
+                      },
+                      onFinish: () => {
+                        setProcessing(false);
+                      }
+                    }
+                  ),
+                  disabled: processing,
+                  variant: "ghost",
                   children: [
                     /* @__PURE__ */ jsx(Pencil, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                    /* @__PURE__ */ jsx("span", { children: useTrans("Modifier") })
+                    /* @__PURE__ */ jsx("span", { children: t("edit") })
                   ]
                 }
               ) }),
@@ -9430,21 +8529,17 @@ const roleColumns = [
                         }),
                         children: [
                           /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-                          useTrans("Supprimer")
+                          t("delete")
                         ]
                       }
                     ),
                     /* @__PURE__ */ jsxs(DialogContent, { children: [
                       /* @__PURE__ */ jsxs(DialogHeader, { children: [
                         /* @__PURE__ */ jsxs(DialogTitle, { children: [
-                          useTrans(
-                            "Vous êtes sure?"
-                          ),
+                          t("deleteDialogHeader"),
                           " "
                         ] }),
-                        /* @__PURE__ */ jsx(DialogDescription, { children: useTrans(
-                          "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions"
-                        ) })
+                        /* @__PURE__ */ jsx(DialogDescription, { children: t("deleteRoleDescreption") })
                       ] }),
                       /* @__PURE__ */ jsxs(DialogFooter, { className: "gap-2 ", children: [
                         /* @__PURE__ */ jsx(
@@ -9452,7 +8547,7 @@ const roleColumns = [
                           {
                             variant: "secondary",
                             onClick: () => setIsOpen(false),
-                            children: useTrans("Annuler")
+                            children: t("cancel")
                           }
                         ),
                         /* @__PURE__ */ jsxs(
@@ -9460,10 +8555,11 @@ const roleColumns = [
                           {
                             variant: "destructive",
                             onClick: () => handleDelete(),
+                            disabled: processing,
                             className: "flex justify-center",
                             children: [
                               /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-                              useTrans("Supprimer")
+                              t("delete")
                             ]
                           }
                         )
@@ -9485,22 +8581,18 @@ const roleColumns = [
                         }),
                         children: [
                           /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-                          useTrans("Supprimer")
+                          t("delete")
                         ]
                       }
                     ),
                     /* @__PURE__ */ jsxs(DrawerContent, { children: [
                       /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
                         /* @__PURE__ */ jsxs(DrawerTitle, { children: [
-                          useTrans(
-                            "Vous êtes sure?"
-                          ),
+                          t("deleteDialogHeader"),
                           " "
                         ] }),
                         /* @__PURE__ */ jsxs(DrawerDescription, { children: [
-                          useTrans(
-                            "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions"
-                          ),
+                          t("deleteRoleDescreption"),
                           " "
                         ] })
                       ] }),
@@ -9510,14 +8602,15 @@ const roleColumns = [
                           {
                             variant: "destructive",
                             onClick: () => handleDelete(),
+                            disabled: processing,
                             className: "flex justify-center",
                             children: [
                               /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-                              useTrans("Supprimer")
+                              t("delete")
                             ]
                           }
                         ),
-                        /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) })
+                        /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: t("cancel") }) })
                       ] })
                     ] })
                   ]
@@ -9533,6 +8626,10 @@ const roleColumns = [
 function Roles({ roles: roles2, role_permission }) {
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
+  const [processing, setProcessing] = React__default.useState(false);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "roles"
+  });
   useEffect(() => {
     var _a;
     if (flash.message) {
@@ -9540,9 +8637,28 @@ function Roles({ roles: roles2, role_permission }) {
     }
   }, [flash.message, toast2]);
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Rools" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Rôles") }),
-    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: role_permission.create && /* @__PURE__ */ jsx(Button, { variant: "secondary", children: /* @__PURE__ */ jsx(Link, { href: route("roles.create"), children: useTrans("Ajouter un rôle") }) }) }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
+    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: role_permission.create && /* @__PURE__ */ jsx(
+      Button,
+      {
+        variant: "secondary",
+        disabled: processing,
+        onClick: () => router.get(
+          route("roles.create"),
+          {},
+          {
+            onStart: () => {
+              setProcessing(true);
+            },
+            onFinish: () => {
+              setProcessing(false);
+            }
+          }
+        ),
+        children: t("create")
+      }
+    ) }),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsx(
       DataTable,
       {
@@ -9554,24 +8670,24 @@ function Roles({ roles: roles2, role_permission }) {
     ) })
   ] });
 }
-const __vite_glob_0_28 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_24 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Roles
 }, Symbol.toStringTag, { value: "Module" }));
 const featuresColumns = [
   {
-    accessorKey: "Nom",
+    accessorKey: "featureName",
     cell: ({ row }) => {
-      const features = row.original;
+      const features2 = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
         " ",
-        features.features_name
+        features2.features_name
       ] });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "Nom de caractéristique" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "featureName" })
   },
   {
-    accessorKey: "Valeur",
+    accessorKey: "needValue",
     cell: ({ row }) => {
       const feature = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
@@ -9580,15 +8696,15 @@ const featuresColumns = [
         " "
       ] });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "Besoin de valeur" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "needValue" })
   },
   {
-    accessorKey: "Categorie",
+    accessorKey: "categorie",
     cell: ({ row }) => {
       const feature = row.original;
       return /* @__PURE__ */ jsx("span", { children: feature.category.categorie_name });
     },
-    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "Catégorie" })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "categorie" })
   },
   {
     id: "actions",
@@ -9598,7 +8714,11 @@ const featuresColumns = [
       const [Editopen, setEditOpen] = React__default.useState(false);
       const [open, setopen] = React__default.useState(false);
       const { width } = useWindowDimensions();
-      const { data, setData: setData2, put, errors } = useForm({
+      const [deleting, setDeleting] = React__default.useState(false);
+      const { t } = useTranslation("translation", {
+        keyPrefix: "features.form"
+      });
+      const { data, setData: setData2, put, errors, processing } = useForm({
         features_name: feature.features_name,
         categorie_id: feature.category.categorie_id,
         need_value: feature.need_value
@@ -9617,8 +8737,14 @@ const featuresColumns = [
           preserveScroll: true,
           preserveState: true,
           onSuccess: () => {
-            setIsOpen(false);
             setopen(false);
+            setIsOpen(false);
+          },
+          onStart: () => {
+            setDeleting(true);
+          },
+          onFinish: () => {
+            setDeleting(false);
           }
         });
       };
@@ -9628,10 +8754,16 @@ const featuresColumns = [
           open: isopen || Editopen ? true : open,
           onOpenChange: () => setopen(!open),
           children: [
-            /* @__PURE__ */ jsx(DropdownMenuTrigger, { children: /* @__PURE__ */ jsxs(Button, { variant: "ghost", className: "h-8 ", children: [
-              /* @__PURE__ */ jsx("span", { className: "sr-only", children: "Open menu" }),
-              /* @__PURE__ */ jsx(MoreHorizontal, { className: "h-4 w-4" })
-            ] }) }),
+            /* @__PURE__ */ jsxs(
+              DropdownMenuTrigger,
+              {
+                className: cn(buttonVariants({ variant: "ghost" })),
+                children: [
+                  /* @__PURE__ */ jsx("span", { className: "sr-only", children: "Open menu" }),
+                  /* @__PURE__ */ jsx(MoreHorizontal, { className: "h-4 w-4" })
+                ]
+              }
+            ),
             /* @__PURE__ */ jsxs(DropdownMenuContent, { children: [
               /* @__PURE__ */ jsx(DropdownMenuItem, { children: width >= 767 ? /* @__PURE__ */ jsxs(
                 Dialog,
@@ -9641,16 +8773,12 @@ const featuresColumns = [
                   children: [
                     /* @__PURE__ */ jsxs(DialogTrigger, { className: "flex justify-center", children: [
                       /* @__PURE__ */ jsx(Pencil, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                      /* @__PURE__ */ jsx("span", { children: useTrans("Modifier") })
+                      /* @__PURE__ */ jsx("span", { children: t("edit") })
                     ] }),
                     /* @__PURE__ */ jsxs(DialogContent, { children: [
                       /* @__PURE__ */ jsxs(DialogHeader, { children: [
-                        /* @__PURE__ */ jsx(DialogTitle, { children: useTrans(
-                          "Modifier cette caractéristique"
-                        ) }),
-                        /* @__PURE__ */ jsx(DialogDescription, { children: useTrans(
-                          "Modifier cette caractéristique"
-                        ) })
+                        /* @__PURE__ */ jsx(DialogTitle, { children: t("editHeader") }),
+                        /* @__PURE__ */ jsx(DialogDescription, { children: t("editHeader") })
                       ] }),
                       /* @__PURE__ */ jsxs(
                         "form",
@@ -9663,16 +8791,14 @@ const featuresColumns = [
                                 InputLabel,
                                 {
                                   htmlFor: "features_name",
-                                  value: useTrans(
-                                    "Nom de caractéristique"
-                                  )
+                                  value: t("name")
                                 }
                               ),
                               /* @__PURE__ */ jsx(
                                 Input,
                                 {
-                                  placeholder: useTrans(
-                                    "Example : wifi, dimension"
+                                  placeholder: t(
+                                    "placeholder"
                                   ),
                                   id: "features_name",
                                   value: data.features_name,
@@ -9695,9 +8821,7 @@ const featuresColumns = [
                                 InputLabel,
                                 {
                                   htmlFor: "categorie_id",
-                                  value: useTrans(
-                                    "Catégorie"
-                                  )
+                                  value: t("categorie")
                                 }
                               ),
                               /* @__PURE__ */ jsx(
@@ -9732,9 +8856,7 @@ const featuresColumns = [
                                 InputLabel,
                                 {
                                   htmlFor: "need_value",
-                                  value: useTrans(
-                                    "Besoin de valeur"
-                                  )
+                                  value: t("needValue")
                                 }
                               )
                             ] }),
@@ -9743,7 +8865,8 @@ const featuresColumns = [
                               {
                                 variant: "secondary",
                                 type: "submit",
-                                children: useTrans("Enregistrer")
+                                disabled: processing,
+                                children: t("save")
                               }
                             )
                           ]
@@ -9760,16 +8883,12 @@ const featuresColumns = [
                   children: [
                     /* @__PURE__ */ jsxs(DrawerTrigger, { className: "flex justify-center", children: [
                       /* @__PURE__ */ jsx(Pencil, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                      /* @__PURE__ */ jsx("span", { children: useTrans("Modifier") })
+                      /* @__PURE__ */ jsx("span", { children: t("edit") })
                     ] }),
                     /* @__PURE__ */ jsxs(DrawerContent, { children: [
                       /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
-                        /* @__PURE__ */ jsx(DrawerTitle, { children: useTrans(
-                          "Modifier cette caractéristique"
-                        ) }),
-                        /* @__PURE__ */ jsx(DrawerDescription, { children: useTrans(
-                          "Modifier cette caractéristique"
-                        ) })
+                        /* @__PURE__ */ jsx(DrawerTitle, { children: t("editHeader") }),
+                        /* @__PURE__ */ jsx(DrawerDescription, { children: t("editHeader") })
                       ] }),
                       /* @__PURE__ */ jsxs(
                         "form",
@@ -9782,16 +8901,14 @@ const featuresColumns = [
                                 InputLabel,
                                 {
                                   htmlFor: "features_name",
-                                  value: useTrans(
-                                    "Nom de caractéristique"
-                                  )
+                                  value: t("name")
                                 }
                               ),
                               /* @__PURE__ */ jsx(
                                 Input,
                                 {
-                                  placeholder: useTrans(
-                                    "Example : wifi, dimension"
+                                  placeholder: t(
+                                    "placeholder"
                                   ),
                                   id: "features_name",
                                   value: data.features_name,
@@ -9814,9 +8931,7 @@ const featuresColumns = [
                                 InputLabel,
                                 {
                                   htmlFor: "categorie_id",
-                                  value: useTrans(
-                                    "Catégorie"
-                                  )
+                                  value: t("categorie")
                                 }
                               ),
                               /* @__PURE__ */ jsx(
@@ -9851,9 +8966,7 @@ const featuresColumns = [
                                 InputLabel,
                                 {
                                   htmlFor: "need_value",
-                                  value: useTrans(
-                                    "Besoin de valeur"
-                                  )
+                                  value: t("needValue")
                                 }
                               )
                             ] }),
@@ -9862,13 +8975,14 @@ const featuresColumns = [
                               {
                                 variant: "secondary",
                                 type: "submit",
-                                children: useTrans("Enregistrer")
+                                disabled: processing,
+                                children: t("save")
                               }
                             )
                           ]
                         }
                       ),
-                      /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) }) })
+                      /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: t("cancel") }) }) })
                     ] })
                   ]
                 }
@@ -9882,19 +8996,17 @@ const featuresColumns = [
                     }),
                     children: [
                       /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-                      useTrans("Supprimer")
+                      t("delete")
                     ]
                   }
                 ),
                 /* @__PURE__ */ jsxs(DialogContent, { children: [
                   /* @__PURE__ */ jsxs(DialogHeader, { children: [
                     /* @__PURE__ */ jsxs(DialogTitle, { children: [
-                      useTrans("Vous êtes sure?"),
+                      t("deleteHeader"),
                       " "
                     ] }),
-                    /* @__PURE__ */ jsx(DialogDescription, { children: useTrans(
-                      "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette caractéristique et chaque chambre avoir cette caractéristique va le perdre"
-                    ) })
+                    /* @__PURE__ */ jsx(DialogDescription, { children: t("deleteDescreption") })
                   ] }),
                   /* @__PURE__ */ jsxs(DialogFooter, { className: "gap-2 ", children: [
                     /* @__PURE__ */ jsx(
@@ -9902,7 +9014,7 @@ const featuresColumns = [
                       {
                         variant: "secondary",
                         onClick: () => setIsOpen(false),
-                        children: useTrans("Annuler")
+                        children: t("cancel")
                       }
                     ),
                     /* @__PURE__ */ jsxs(
@@ -9911,9 +9023,10 @@ const featuresColumns = [
                         variant: "destructive",
                         onClick: () => handleDelete(),
                         className: "flex justify-center",
+                        disabled: deleting,
                         children: [
                           /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-                          useTrans("Supprimer")
+                          t("delete")
                         ]
                       }
                     )
@@ -9928,20 +9041,18 @@ const featuresColumns = [
                     }),
                     children: [
                       /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-                      useTrans("Supprimer")
+                      t("delete")
                     ]
                   }
                 ),
                 /* @__PURE__ */ jsxs(DrawerContent, { children: [
                   /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
                     /* @__PURE__ */ jsxs(DrawerTitle, { children: [
-                      useTrans("Vous êtes sure?"),
+                      t("deleteHeader"),
                       " "
                     ] }),
                     /* @__PURE__ */ jsxs(DrawerDescription, { children: [
-                      useTrans(
-                        "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette caractéristique et chaque chambre avoir cette caractéristique va le perdre"
-                      ),
+                      t("deleteDescreption"),
                       " "
                     ] })
                   ] }),
@@ -9952,13 +9063,14 @@ const featuresColumns = [
                         variant: "destructive",
                         onClick: () => handleDelete(),
                         className: "flex justify-center",
+                        disabled: deleting,
                         children: [
                           /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-                          useTrans("Supprimer")
+                          t("delete")
                         ]
                       }
                     ),
-                    /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) })
+                    /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: t("cancel") }) })
                   ] })
                 ] })
               ] }) })
@@ -10007,12 +9119,13 @@ const TabsContent = React.forwardRef(({ className, ...props }, ref) => /* @__PUR
 ));
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 function FeatureCreateDialog({ categorys }) {
+  const { t } = useTranslation("translation", { keyPrefix: "features.form" });
   const [selectedCategory, setSelectedCategory] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const { width } = useWindowDimensions();
-  const { data, setData: setData2, post, errors } = useForm({
+  const { data, setData: setData2, post, errors, processing } = useForm({
     features_name: "",
     categorie_id: "",
     need_value: false
@@ -10039,19 +9152,16 @@ function FeatureCreateDialog({ categorys }) {
   };
   if (width >= 767) {
     return /* @__PURE__ */ jsxs(Dialog, { open, onOpenChange: setOpen, children: [
-      /* @__PURE__ */ jsx(DialogTrigger, { asChild: true, children: /* @__PURE__ */ jsx(
-        Button,
+      /* @__PURE__ */ jsx(
+        DialogTrigger,
         {
-          variant: "secondary",
+          className: cn(buttonVariants({ variant: "secondary" })),
           onClick: () => !categorys && router.reload({ only: ["categorys"] }),
-          children: useTrans("Créer un Caractéristique")
+          children: t("create")
         }
-      ) }),
-      /* @__PURE__ */ jsxs(DialogContent, { children: [
-        /* @__PURE__ */ jsxs(DialogHeader, { children: [
-          /* @__PURE__ */ jsx(DialogTitle, { children: useTrans("Ajouter un nouveau Caractéristique") }),
-          /* @__PURE__ */ jsx(DialogDescription, { children: useTrans("Ajouter un nouveau Caractéristique") })
-        ] }),
+      ),
+      /* @__PURE__ */ jsxs(DialogContent, { "aria-describedby": void 0, children: [
+        /* @__PURE__ */ jsx(DialogHeader, { children: /* @__PURE__ */ jsx(DialogTitle, { children: t("dialogHeader") }) }),
         /* @__PURE__ */ jsxs(
           "form",
           {
@@ -10063,15 +9173,13 @@ function FeatureCreateDialog({ categorys }) {
                   InputLabel,
                   {
                     htmlFor: "features_name",
-                    value: useTrans("Nom de caractéristique")
+                    value: t("name")
                   }
                 ),
                 /* @__PURE__ */ jsx(
                   Input,
                   {
-                    placeholder: useTrans(
-                      "Example : wifi, dimension"
-                    ),
+                    placeholder: t("placeholder"),
                     id: "features_name",
                     value: data.features_name,
                     onChange: (e) => setData2("features_name", e.target.value)
@@ -10090,7 +9198,7 @@ function FeatureCreateDialog({ categorys }) {
                   InputLabel,
                   {
                     htmlFor: "categorie_id",
-                    value: useTrans("Catégorie"),
+                    value: t("categorie"),
                     className: "w-fit"
                   }
                 ),
@@ -10103,9 +9211,7 @@ function FeatureCreateDialog({ categorys }) {
                       "aria-expanded": open,
                       className: "w-full justify-between",
                       children: [
-                        selectedCategory ? selectedCategory : useTrans(
-                          "Selectioner un categorie..."
-                        ),
+                        selectedCategory ? selectedCategory : t("selectInput"),
                         /* @__PURE__ */ jsx(CaretSortIcon, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })
                       ]
                     }
@@ -10114,9 +9220,7 @@ function FeatureCreateDialog({ categorys }) {
                     /* @__PURE__ */ jsx(
                       CommandInput,
                       {
-                        placeholder: useTrans(
-                          "Chercher un categorie..."
-                        ),
+                        placeholder: t("searchInput"),
                         value: searchValue,
                         onValueChange: (newValue) => setSearchValue(newValue)
                       }
@@ -10130,14 +9234,15 @@ function FeatureCreateDialog({ categorys }) {
                             searchValue
                           ),
                           children: /* @__PURE__ */ jsxs("div", { children: [
-                            /* @__PURE__ */ jsx("div", { children: "Ajouter" }),
-                            /* @__PURE__ */ jsx("div", { className: "font-bold", children: searchValue }),
-                            /* @__PURE__ */ jsx("div", { children: "au categorie" })
+                            /* @__PURE__ */ jsxs("div", { children: [
+                              t("add"),
+                              " "
+                            ] }),
+                            /* @__PURE__ */ jsx("div", { className: "font-bold my-2", children: searchValue }),
+                            /* @__PURE__ */ jsx("div", { children: t("add2") })
                           ] })
                         }
-                      ) : /* @__PURE__ */ jsx("span", { children: useTrans(
-                        "Chercher un categorie..."
-                      ) }) }),
+                      ) : /* @__PURE__ */ jsx("span", { children: t("searchInput") }) }),
                       /* @__PURE__ */ jsx(CommandGroup, { children: categorys && categorys.map(
                         (category) => /* @__PURE__ */ jsxs(
                           CommandItem,
@@ -10195,11 +9300,19 @@ function FeatureCreateDialog({ categorys }) {
                   InputLabel,
                   {
                     htmlFor: "need_value",
-                    value: useTrans("Besoin de valeur")
+                    value: t("needValue")
                   }
                 )
               ] }),
-              /* @__PURE__ */ jsx(Button, { variant: "secondary", type: "submit", children: useTrans("Créer") })
+              /* @__PURE__ */ jsx(
+                Button,
+                {
+                  variant: "secondary",
+                  type: "submit",
+                  disabled: processing,
+                  children: t("createSubmit")
+                }
+              )
             ]
           }
         )
@@ -10207,32 +9320,26 @@ function FeatureCreateDialog({ categorys }) {
     ] });
   }
   return /* @__PURE__ */ jsxs(Drawer, { open, onOpenChange: setOpen, children: [
-    /* @__PURE__ */ jsx(DrawerTrigger, { asChild: true, children: /* @__PURE__ */ jsx(
-      Button,
+    /* @__PURE__ */ jsx(
+      DrawerTrigger,
       {
-        variant: "secondary",
+        className: cn(buttonVariants({ variant: "secondary" })),
         onClick: () => !categorys && router.reload({ only: ["categorys"] }),
-        children: useTrans("Créer un Caractéristique")
+        children: t("create")
       }
-    ) }),
-    /* @__PURE__ */ jsxs(DrawerContent, { children: [
-      /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
-        /* @__PURE__ */ jsx(DrawerTitle, { children: useTrans("Ajouter un nouveau Caractéristique") }),
-        /* @__PURE__ */ jsx(DrawerDescription, { children: useTrans("Ajouter un nouveau Caractéristique") })
-      ] }),
+    ),
+    /* @__PURE__ */ jsxs(DrawerContent, { "aria-describedby": void 0, children: [
+      /* @__PURE__ */ jsx(DrawerHeader, { className: "text-left", children: /* @__PURE__ */ jsxs(DrawerTitle, { children: [
+        t("dialogHeader"),
+        " "
+      ] }) }),
       /* @__PURE__ */ jsxs("form", { className: "grid items-start gap-4 px-4", onSubmit: submit, children: [
         /* @__PURE__ */ jsxs("div", { className: "grid gap-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "features_name",
-              value: useTrans("Nom de caractéristique")
-            }
-          ),
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "features_name", value: t("name") }),
           /* @__PURE__ */ jsx(
             Input,
             {
-              placeholder: useTrans("Example : wifi, dimension"),
+              placeholder: t("placeholder"),
               id: "features_name",
               value: data.features_name,
               onChange: (e) => setData2("features_name", e.target.value)
@@ -10251,7 +9358,7 @@ function FeatureCreateDialog({ categorys }) {
             InputLabel,
             {
               htmlFor: "categorie_id",
-              value: useTrans("Catégorie"),
+              value: t("categorie"),
               className: "w-fit"
             }
           ),
@@ -10264,9 +9371,7 @@ function FeatureCreateDialog({ categorys }) {
                 "aria-expanded": open,
                 className: "w-full justify-between",
                 children: [
-                  selectedCategory ? selectedCategory : useTrans(
-                    "Selectioner un categorie..."
-                  ),
+                  selectedCategory ? selectedCategory : t("selectInput"),
                   /* @__PURE__ */ jsx(CaretSortIcon, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })
                 ]
               }
@@ -10275,9 +9380,7 @@ function FeatureCreateDialog({ categorys }) {
               /* @__PURE__ */ jsx(
                 CommandInput,
                 {
-                  placeholder: useTrans(
-                    "Chercher un categorie..."
-                  ),
+                  placeholder: t("searchInput"),
                   value: searchValue,
                   onValueChange: (newValue) => setSearchValue(newValue)
                 }
@@ -10291,14 +9394,19 @@ function FeatureCreateDialog({ categorys }) {
                       searchValue
                     ),
                     children: /* @__PURE__ */ jsxs("div", { children: [
-                      /* @__PURE__ */ jsx("div", { children: "Ajouter" }),
+                      /* @__PURE__ */ jsxs("div", { children: [
+                        " ",
+                        t("add"),
+                        " "
+                      ] }),
                       /* @__PURE__ */ jsx("div", { className: "font-bold", children: searchValue }),
-                      /* @__PURE__ */ jsx("div", { children: "au categorie" })
+                      /* @__PURE__ */ jsxs("div", { children: [
+                        " ",
+                        t("add2")
+                      ] })
                     ] })
                   }
-                ) : /* @__PURE__ */ jsx("span", { children: useTrans(
-                  "Chercher un categorie..."
-                ) }) }),
+                ) : /* @__PURE__ */ jsx("span", { children: t("searchInput") }) }),
                 /* @__PURE__ */ jsx(CommandGroup, { children: categorys && categorys.map((category) => /* @__PURE__ */ jsxs(
                   CommandItem,
                   {
@@ -10352,21 +9460,30 @@ function FeatureCreateDialog({ categorys }) {
             InputLabel,
             {
               htmlFor: "need_value",
-              value: useTrans("Besoin de valeur")
+              value: t("needValue")
             }
           )
         ] }),
-        /* @__PURE__ */ jsx(Button, { variant: "secondary", type: "submit", children: useTrans("Créer") })
+        /* @__PURE__ */ jsx(
+          Button,
+          {
+            variant: "secondary",
+            type: "submit",
+            disabled: processing,
+            children: t("createSubmit")
+          }
+        )
       ] }),
-      /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) }) })
+      /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: t("cancel") }) }) })
     ] })
   ] });
 }
 function CategoryDialog({ category, mode }) {
   const [open, setOpen] = React.useState(false);
   const { width } = useWindowDimensions();
-  const { data, setData: setData2, post, put, errors } = useForm({
-    categorie_name: category == null ? void 0 : category.categorie_name
+  const { t } = useTranslation("translation", { keyPrefix: "features.form" });
+  const { data, setData: setData2, post, put, errors, processing } = useForm({
+    categorie_name: category ? category == null ? void 0 : category.categorie_name : ""
   });
   const submit = (e) => {
     e.preventDefault();
@@ -10384,17 +9501,11 @@ function CategoryDialog({ category, mode }) {
   };
   if (width >= 767) {
     return /* @__PURE__ */ jsxs(Dialog, { open, onOpenChange: setOpen, children: [
-      /* @__PURE__ */ jsx(DialogTrigger, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "secondary", children: mode == "create" ? useTrans("Ajouter un categorie") : useTrans("Modifier") }) }),
+      /* @__PURE__ */ jsx(DialogTrigger, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "secondary", children: mode == "create" ? t("addCategorie") : t("edit") }) }),
       /* @__PURE__ */ jsxs(DialogContent, { children: [
         /* @__PURE__ */ jsxs(DialogHeader, { children: [
-          /* @__PURE__ */ jsxs(DialogTitle, { children: [
-            mode == "create" ? useTrans("Ajouter un nouveau Catégorie") : useTrans("Modifier cette Catégorie"),
-            " "
-          ] }),
-          /* @__PURE__ */ jsxs(DialogDescription, { children: [
-            mode == "create" ? useTrans("Ajouter un nouveau Catégorie") : useTrans("Modifier cette Catégorie"),
-            " "
-          ] })
+          /* @__PURE__ */ jsx(DialogTitle, { children: mode == "create" ? t("addCategorieHeader") : t("editCategorietHeader") }),
+          /* @__PURE__ */ jsx(DialogDescription, { children: mode == "create" ? t("addCategorieHeader") : t("editCategorietHeader") })
         ] }),
         /* @__PURE__ */ jsxs(
           "form",
@@ -10407,15 +9518,13 @@ function CategoryDialog({ category, mode }) {
                   InputLabel,
                   {
                     htmlFor: "categorie_name",
-                    value: useTrans("Nom de catégorie :")
+                    value: t("categorieName")
                   }
                 ),
                 /* @__PURE__ */ jsx(
                   Input,
                   {
-                    placeholder: useTrans(
-                      "Example : wifi, dimension"
-                    ),
+                    placeholder: t("categoriePlaceholder"),
                     id: "categorie_name",
                     value: data.categorie_name,
                     onChange: (e) => setData2("categorie_name", e.target.value)
@@ -10429,10 +9538,18 @@ function CategoryDialog({ category, mode }) {
                   }
                 )
               ] }),
-              /* @__PURE__ */ jsxs(Button, { variant: "secondary", type: "submit", children: [
-                mode == "create" ? useTrans("Créer") : useTrans("Enregistrer"),
-                " "
-              ] })
+              /* @__PURE__ */ jsxs(
+                Button,
+                {
+                  variant: "secondary",
+                  type: "submit",
+                  disabled: processing,
+                  children: [
+                    mode == "create" ? t("createSubmit") : t("save"),
+                    " "
+                  ]
+                }
+              )
             ]
           }
         )
@@ -10440,20 +9557,11 @@ function CategoryDialog({ category, mode }) {
     ] });
   }
   return /* @__PURE__ */ jsxs(Drawer, { open, onOpenChange: setOpen, children: [
-    /* @__PURE__ */ jsx(DrawerTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(Button, { variant: "secondary", children: [
-      mode == "create" ? useTrans("Ajouter un categorie") : useTrans("Modifier"),
-      " "
-    ] }) }),
+    /* @__PURE__ */ jsx(DrawerTrigger, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "secondary", children: mode == "create" ? t("addCategorie") : t("edit") }) }),
     /* @__PURE__ */ jsxs(DrawerContent, { children: [
       /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
-        /* @__PURE__ */ jsxs(DrawerTitle, { children: [
-          mode == "create" ? useTrans("Ajouter un nouveau Catégorie") : useTrans("Modifier cette Catégorie"),
-          " "
-        ] }),
-        /* @__PURE__ */ jsxs(DrawerDescription, { children: [
-          mode == "create" ? useTrans("Ajouter un nouveau Catégorie") : useTrans("Modifier cette Catégorie"),
-          " "
-        ] })
+        /* @__PURE__ */ jsx(DrawerTitle, { children: mode == "create" ? t("addCategorieHeader") : t("editCategorietHeader") }),
+        /* @__PURE__ */ jsx(DrawerDescription, { children: mode == "create" ? t("addCategorieHeader") : t("editCategorietHeader") })
       ] }),
       /* @__PURE__ */ jsxs("form", { className: "grid items-start gap-4 px-4", onSubmit: submit, children: [
         /* @__PURE__ */ jsxs("div", { className: "grid gap-2", children: [
@@ -10461,13 +9569,13 @@ function CategoryDialog({ category, mode }) {
             InputLabel,
             {
               htmlFor: "categorie_name",
-              value: useTrans("Nom de catégorie :")
+              value: t("categorieName")
             }
           ),
           /* @__PURE__ */ jsx(
             Input,
             {
-              placeholder: useTrans("Example : wifi, dimension"),
+              placeholder: t("categoriePlaceholder"),
               id: "categorie_name",
               value: data.categorie_name,
               onChange: (e) => setData2("categorie_name", e.target.value)
@@ -10481,41 +9589,44 @@ function CategoryDialog({ category, mode }) {
             }
           )
         ] }),
-        /* @__PURE__ */ jsxs(Button, { variant: "secondary", type: "submit", children: [
-          mode == "create" ? useTrans("Créer") : useTrans("Enregistrer"),
-          " "
-        ] })
+        /* @__PURE__ */ jsxs(
+          Button,
+          {
+            variant: "secondary",
+            type: "submit",
+            disabled: processing,
+            children: [
+              mode == "create" ? t("createSubmit") : t("save"),
+              " "
+            ]
+          }
+        )
       ] }),
-      /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) }) })
+      /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: t("cancel") }) }) })
     ] })
   ] });
 }
 function CategoryCard({ category }) {
-  return /* @__PURE__ */ jsxs(
-    Card,
-    {
-      className: "rounded-lg border-none mt-6 bg-muted",
-      children: [
-        /* @__PURE__ */ jsx(CardContent, { className: "p-6", children: /* @__PURE__ */ jsx("div", { className: "bg-card p-2 rounded", children: category.categorie_name }) }),
-        /* @__PURE__ */ jsxs(CardFooter, { className: "flex justify-end gap-2", children: [
-          /* @__PURE__ */ jsx(CategoryDialog, { mode: "edit", category }),
-          /* @__PURE__ */ jsx(
-            DeleteeDialog,
-            {
-              id: category.categorie_id,
-              url: "categorys.destroy",
-              message: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce élément et chaque caractéristique de cette categorie va supprimé"
-            }
-          )
-        ] })
-      ]
-    },
-    category.categorie_id
-  );
+  const { t } = useTranslation("translation", { keyPrefix: "features.form" });
+  return /* @__PURE__ */ jsxs(Card, { className: "rounded-lg border-none mt-6 bg-muted", children: [
+    /* @__PURE__ */ jsx(CardContent, { className: "p-6", children: /* @__PURE__ */ jsx("div", { className: "bg-card p-2 rounded", children: category.categorie_name }) }),
+    /* @__PURE__ */ jsxs(CardFooter, { className: "flex justify-end gap-2", children: [
+      /* @__PURE__ */ jsx(CategoryDialog, { mode: "edit", category }),
+      /* @__PURE__ */ jsx(
+        DeleteeDialog,
+        {
+          id: category.categorie_id,
+          url: "categorys.destroy",
+          message: t("deleteCategorieDescreption")
+        }
+      )
+    ] })
+  ] });
 }
-function Features({ features, categorys }) {
+function Features({ features: features2, categorys }) {
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
+  const { t } = useTranslation("translation", { keyPrefix: "features" });
   useEffect(() => {
     var _a;
     if (flash.message) {
@@ -10523,8 +9634,8 @@ function Features({ features, categorys }) {
     }
   }, [flash.message, toast2]);
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Rooms" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Caractéristiques") }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
     /* @__PURE__ */ jsxs(Tabs, { defaultValue: "features", className: "mt-2", children: [
       /* @__PURE__ */ jsx(TabsList, { className: "w-full flex justify-start rtl:justify-end bg-transparent border-b-2 rounded-none	", children: /* @__PURE__ */ jsxs("div", { className: "flex justify-start", children: [
         /* @__PURE__ */ jsx(
@@ -10532,7 +9643,7 @@ function Features({ features, categorys }) {
           {
             value: "features",
             className: "mr-2 font-bold text-xl rounded-none bg-transparent data-[state=active]:bg-transparent data-[state=active]:border-b-2 border-primary data-[state=active]:text-primary shadow-none ",
-            children: useTrans("Caractéristiques")
+            children: t("title")
           }
         ),
         /* @__PURE__ */ jsx(
@@ -10541,56 +9652,53 @@ function Features({ features, categorys }) {
             onClick: () => !categorys && router.reload({ only: ["categorys"] }),
             value: "category",
             className: "mr-2 font-bold text-xl rounded-none bg-transparent shadow-none data-[state=active]:bg-transparent data-[state=active]:border-b-2 border-primary data-[state=active]:text-primary ",
-            children: useTrans("Catégories")
+            children: t("categorie")
           }
         )
       ] }) }),
       /* @__PURE__ */ jsxs(TabsContent, { value: "features", children: [
         /* @__PURE__ */ jsx("div", { className: "flex justify-end rtl:justify-start ", children: /* @__PURE__ */ jsx(FeatureCreateDialog, { categorys }) }),
-        /* @__PURE__ */ jsx(PlaceholderContent, { children: features.length ? /* @__PURE__ */ jsx(
+        /* @__PURE__ */ jsx(PlaceholderContent, { children: features2.length ? /* @__PURE__ */ jsx(
           DataTable,
           {
             columns: featuresColumns,
-            data: features,
+            data: features2,
             selection: true
           }
-        ) : /* @__PURE__ */ jsx(
-          EmptyPage,
-          {
-            icon: Hotel,
-            text: "Aucun caractéristiques pour l'instant, essayez de créer une nouvelle"
-          }
-        ) })
+        ) : /* @__PURE__ */ jsx(EmptyPage, { icon: Hotel, text: t("emptyFeatures") }) })
       ] }),
       /* @__PURE__ */ jsxs(TabsContent, { value: "category", children: [
         /* @__PURE__ */ jsx("div", { className: "flex justify-end rtl:justify-start", children: /* @__PURE__ */ jsx(CategoryDialog, { mode: "create" }) }),
-        /* @__PURE__ */ jsx(PlaceholderContent, { children: categorys.length ? /* @__PURE__ */ jsx("div", { className: "grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3", children: categorys && categorys.map((category) => /* @__PURE__ */ jsx(CategoryCard, { category })) }) : /* @__PURE__ */ jsx(
+        /* @__PURE__ */ jsx(PlaceholderContent, { children: categorys.length ? /* @__PURE__ */ jsx("div", { className: "grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3", children: categorys && categorys.map((category) => /* @__PURE__ */ jsx(
+          CategoryCard,
+          {
+            category
+          },
+          category.categorie_id
+        )) }) : /* @__PURE__ */ jsx(
           EmptyPage,
           {
             icon: Hotel,
-            text: "Aucun categories pour l'instant, essayez de créer une nouvelle"
+            text: t("emptyCategories")
           }
         ) })
       ] })
     ] })
   ] });
 }
-const __vite_glob_0_29 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_25 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Features
 }, Symbol.toStringTag, { value: "Module" }));
 function Room({ room, categorys }) {
-  const categoryExists = (features, category_id) => {
-    return features.some((item) => item.categorie_id === category_id);
+  const { t } = useTranslation("translation", { keyPrefix: "rooms.room" });
+  const [processing, setProcessing] = React__default.useState(false);
+  const categoryExists = (features2, category_id) => {
+    return features2.some((item) => item.categorie_id === category_id);
   };
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Rooms" }),
-    /* @__PURE__ */ jsx(
-      PageHeading,
-      {
-        title: useTrans("La Chambre N°") + " " + room.room_number
-      }
-    ),
+    /* @__PURE__ */ jsx(Head, { title: t("title") + " " + room.room_number }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") + " " + room.room_number }),
     /* @__PURE__ */ jsxs(PlaceholderContent, { children: [
       /* @__PURE__ */ jsxs(Carousel, { children: [
         /* @__PURE__ */ jsx(CarouselContent, { children: room.assets.map((asset, index) => /* @__PURE__ */ jsx(
@@ -10613,25 +9721,25 @@ function Room({ room, categorys }) {
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "mt-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxs("div", { className: "text-lg font-bold text-xl", children: [
+          /* @__PURE__ */ jsxs("div", { className: "font-bold text-xl", children: [
             room.type.type_designation,
             " ",
-            useTrans("avec"),
+            t("with"),
             " ",
             room.beeds_number,
             " ",
-            useTrans("lits"),
+            t("beeds"),
             " "
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "font-bold text-xl bg-muted p-2 rounded", children: [
             /* @__PURE__ */ jsxs("span", { children: [
-              useTrans("Prix de chmabre"),
+              t("price"),
               " : "
             ] }),
             /* @__PURE__ */ jsxs("span", { className: "text-destructive", children: [
               room.room_price,
               " ",
-              useTrans("DA")
+              t("da")
             ] })
           ] })
         ] }),
@@ -10660,7 +9768,7 @@ function Room({ room, categorys }) {
         ] }) }) }, category.categorie_id)) }),
         /* @__PURE__ */ jsxs("div", { children: [
           /* @__PURE__ */ jsxs("div", { className: "font-bold text-lg my-4", children: [
-            useTrans("Description"),
+            t("description"),
             " :",
             " "
           ] }),
@@ -10677,40 +9785,81 @@ function Room({ room, categorys }) {
           )
         ] })
       ] }),
-      /* @__PURE__ */ jsx("div", { className: "flex justify-end mt-4", children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: /* @__PURE__ */ jsxs(
-        Link,
+      /* @__PURE__ */ jsx("div", { className: "flex justify-end mt-4", children: /* @__PURE__ */ jsxs(
+        Button,
         {
-          href: route("rooms.edit", room.room_number),
-          className: "flex w-full",
+          variant: "outline",
+          disabled: processing,
+          onClick: () => router.get(
+            route("rooms.edit", room.room_number),
+            {},
+            {
+              onStart: () => {
+                setProcessing(true);
+              },
+              onFinish: () => {
+                setProcessing(false);
+              }
+            }
+          ),
           children: [
-            useTrans("Modifier"),
+            t("edit"),
             " ",
-            /* @__PURE__ */ jsx(Pencil, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" })
+            /* @__PURE__ */ jsx(Pencil, { className: "mx-2 h-3.5 w-3.5 text-muted-foreground/70" })
           ]
         }
-      ) }) })
+      ) })
     ] })
   ] });
 }
-const __vite_glob_0_30 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_26 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Room
 }, Symbol.toStringTag, { value: "Module" }));
-const fileTypes$3 = ["JPG", "PNG", "GIF"];
-function CreateRoomForm({ types, categorys }) {
-  const [type, setType] = React__default.useState("");
+const fileTypes$2 = ["JPG", "PNG", "GIF"];
+function RoomForm({ types, categorys, room }) {
+  const [type, setType] = React__default.useState(room == null ? void 0 : room.type.type_designation);
   const [open, setOpen] = React__default.useState(false);
   const [searchValue, setSearchValue] = React__default.useState("");
   const [importedFiles, setImportedFiles] = useState([]);
-  const { data, setData: setData2, post, errors, clearErrors } = useForm({
-    room_number: "",
-    room_price: "",
-    room_descreption: "",
-    type_id: "",
-    beeds_number: "",
-    features: [],
-    assets: []
+  const [dbImages, setDbImages] = useState(room == null ? void 0 : room.assets);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "rooms.roomForm"
   });
+  const { data, setData: setData2, post, errors, clearErrors, processing } = useForm({
+    room_number: room ? room.room_number : "",
+    type_id: room ? room.type_id : "",
+    room_descreption: room ? room.room_descreption : "",
+    room_price: room ? room.room_price : "",
+    beeds_number: room ? room.beeds_number : "",
+    features: room ? room.features.map((feature) => {
+      return {
+        feature_id: feature.feature_id,
+        features_name: feature.features_name,
+        need_value: feature.need_value,
+        value: feature.pivot.valeur
+      };
+    }) : [],
+    assets: [],
+    remouved_assets: [],
+    required_assets: room && (room == null ? void 0 : room.assets.length) > 0 ? false : true
+  });
+  const remouveAsset = (index) => {
+    setData2((prevData) => ({
+      ...prevData,
+      remouved_assets: [...prevData.remouved_assets, index]
+    }));
+    setDbImages((prevDbImages) => {
+      const updatedDbImages = prevDbImages.filter(
+        (image) => image.id !== index
+      );
+      setData2((prevData) => ({
+        ...prevData,
+        required_assets: updatedDbImages.length === 0
+      }));
+      return updatedDbImages;
+    });
+  };
   const handleFiles = (files) => {
     if (!files || !files.length)
       return;
@@ -10737,7 +9886,7 @@ function CreateRoomForm({ types, categorys }) {
   };
   const submit = (e) => {
     e.preventDefault();
-    post(route("rooms.store"));
+    room ? post(route("rooms.update", room.room_number)) : post(route("rooms.store"));
   };
   const isPressedFn = (feature) => data.features.some((f) => f.id === feature.feature_id);
   const handleFeatures = (pressed, feature) => {
@@ -10763,25 +9912,11 @@ function CreateRoomForm({ types, categorys }) {
   return /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
     /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
       /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_number",
-            value: useTrans("Numéro de chmabre")
-          }
-        ),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-          "Quel est le numéro unique de cette chambre ?"
-        ) })
+        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "room_number", value: t("roomNumber") }),
+        /* @__PURE__ */ jsx(LabelDescreption, { children: t("roomNumberDescreption") })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_number",
-            value: useTrans("Numéro de chmabre")
-          }
-        ),
+        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "room_number", value: t("roomNumber") }),
         /* @__PURE__ */ jsx(
           Input,
           {
@@ -10798,25 +9933,11 @@ function CreateRoomForm({ types, categorys }) {
     /* @__PURE__ */ jsx(Separator, {}),
     /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
       /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_price",
-            value: useTrans("Prix de chmabre")
-          }
-        ),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-          "Ce sont les prix de la chambre avec tous taxe inclus"
-        ) })
+        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "room_price", value: t("price") }),
+        /* @__PURE__ */ jsx(LabelDescreption, { children: t("priceDescreption") })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_price",
-            value: useTrans("Prix de chmabre")
-          }
-        ),
+        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "room_price", value: t("price") }),
         /* @__PURE__ */ jsx(
           Input,
           {
@@ -10837,19 +9958,17 @@ function CreateRoomForm({ types, categorys }) {
           InputLabel,
           {
             htmlFor: "beeds_number",
-            value: useTrans("Nombre de lits")
+            value: t("beedsNumber")
           }
         ),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-          "Quel est le nombre de lits dans cette chambre"
-        ) })
+        /* @__PURE__ */ jsx(LabelDescreption, { children: t("beedsNumberDescreption") })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
         /* @__PURE__ */ jsx(
           InputLabel,
           {
             htmlFor: "beeds_number",
-            value: useTrans("Nombre de lits")
+            value: t("beedsNumber")
           }
         ),
         /* @__PURE__ */ jsx(
@@ -10874,15 +9993,15 @@ function CreateRoomForm({ types, categorys }) {
     /* @__PURE__ */ jsx(Separator, {}),
     /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
       /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "room_type", value: useTrans("Type") }),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans("Quel est le type de cette chambre") })
+        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "room_type", value: t("type") }),
+        /* @__PURE__ */ jsx(LabelDescreption, { children: t("typeDescreption") })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
         /* @__PURE__ */ jsx(
           InputLabel,
           {
             htmlFor: "room_type",
-            value: useTrans("Type"),
+            value: t("type"),
             className: "mb-2"
           }
         ),
@@ -10895,7 +10014,7 @@ function CreateRoomForm({ types, categorys }) {
               "aria-expanded": open,
               className: "w-full justify-between",
               children: [
-                type ? type : useTrans("Selectioner un Type..."),
+                type ? type : t("typeSelect"),
                 /* @__PURE__ */ jsx(CaretSortIcon, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })
               ]
             }
@@ -10904,30 +10023,33 @@ function CreateRoomForm({ types, categorys }) {
             /* @__PURE__ */ jsx(
               CommandInput,
               {
-                placeholder: useTrans(
-                  "Chercher un Type..."
-                ),
+                placeholder: t("typeSearch"),
                 value: searchValue,
                 onValueChange: (newValue) => setSearchValue(newValue)
               }
             ),
             /* @__PURE__ */ jsxs(CommandList, { children: [
-              /* @__PURE__ */ jsx(CommandEmpty, { children: /* @__PURE__ */ jsxs(
-                Link,
-                {
-                  href: route("types.store"),
-                  method: "post",
-                  as: "button",
-                  data: {
-                    type_designation: searchValue
-                  },
-                  children: [
-                    "Ajouter ",
-                    /* @__PURE__ */ jsx("b", { children: searchValue }),
-                    " au Types"
-                  ]
-                }
-              ) }),
+              /* @__PURE__ */ jsxs(CommandEmpty, { children: [
+                /* @__PURE__ */ jsx("div", { children: t("emptyTypeMessage") }),
+                /* @__PURE__ */ jsx("div", { className: "font-bold py-2", children: searchValue }),
+                /* @__PURE__ */ jsx(
+                  Link,
+                  {
+                    href: route("types.store"),
+                    method: "post",
+                    as: "button",
+                    data: {
+                      type_designation: searchValue
+                    },
+                    className: cn(
+                      buttonVariants({
+                        variant: "secondary"
+                      })
+                    ),
+                    children: t("emptyTypeButton")
+                  }
+                )
+              ] }),
               /* @__PURE__ */ jsx(CommandGroup, { children: types.map(
                 ({ type_id, type_designation }) => /* @__PURE__ */ jsxs(
                   CommandItem,
@@ -10972,19 +10094,17 @@ function CreateRoomForm({ types, categorys }) {
           InputLabel,
           {
             htmlFor: "room_descreption",
-            value: useTrans("Description")
+            value: t("descreption")
           }
         ),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-          "Entrer une description générale sur cette chambre"
-        ) })
+        /* @__PURE__ */ jsx(LabelDescreption, { children: t("descreptionDescreption") })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
         /* @__PURE__ */ jsx(
           InputLabel,
           {
             htmlFor: "room_descreption",
-            value: useTrans("Description")
+            value: t("descreption")
           }
         ),
         /* @__PURE__ */ jsx(
@@ -11009,24 +10129,16 @@ function CreateRoomForm({ types, categorys }) {
     /* @__PURE__ */ jsx(Separator, {}),
     /* @__PURE__ */ jsxs("div", { className: "md:flex  my-4", children: [
       /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_descreption",
-            value: useTrans("Caractéristiques")
-          }
-        ),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-          "Choisis parmi ces caractéristiques, et ajouter des valeur aux caractéristiques qui'il besoin"
-        ) })
+        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "room_features", value: t("features") }),
+        /* @__PURE__ */ jsx(LabelDescreption, { children: t("featuresDescreption") })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow flex gap-2", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-2/3", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
-              htmlFor: "room_descreption",
-              value: useTrans("Caractéristiques")
+              htmlFor: "room_features",
+              value: t("features")
             }
           ),
           /* @__PURE__ */ jsxs(Accordion, { type: "multiple", children: [
@@ -11092,32 +10204,18 @@ function CreateRoomForm({ types, categorys }) {
     /* @__PURE__ */ jsxs("div", { children: [
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "assets",
-              value: useTrans("Photos")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Ajouter des photos au chambres (ne dépasse pas 10 photos par chambres)"
-          ) })
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "assets", value: t("assets") }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("assetsDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "assets",
-              value: useTrans("Photos")
-            }
-          ),
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "assets", value: t("assets") }),
           /* @__PURE__ */ jsx(
             FileUploader,
             {
               handleChange: handleFiles,
               name: "file",
               id: "assets",
-              types: fileTypes$3,
+              types: fileTypes$2,
               multiple: true,
               children: /* @__PURE__ */ jsx(MyFileUploader, {})
             }
@@ -11133,493 +10231,11 @@ function CreateRoomForm({ types, categorys }) {
           deleteImage
         }
       ),
-      " "
-    ] }),
-    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
-      Button,
-      {
-        type: "submit",
-        className: "mt-2 w-1/4",
-        variant: "secondary",
-        children: useTrans("Crée")
-      }
-    ) })
-  ] });
-}
-function RoomCreate({ types, categorys }) {
-  return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Rooms crete" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Chambre Création") }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsx("div", { className: "max-w-7xl mx-auto ", children: /* @__PURE__ */ jsx(CreateRoomForm, { types, categorys }) }) })
-  ] });
-}
-const __vite_glob_0_31 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: RoomCreate
-}, Symbol.toStringTag, { value: "Module" }));
-const fileTypes$2 = ["JPG", "PNG", "GIF"];
-function EditRoomForm({ types, categorys, room }) {
-  const [type, setType] = React__default.useState(room.type.type_designation);
-  const [open, setOpen] = React__default.useState(false);
-  const [searchValue, setSearchValue] = React__default.useState("");
-  const [importedFiles, setImportedFiles] = useState([]);
-  const { data, setData: setData2, post, errors, clearErrors } = useForm({
-    room_number: room.room_number,
-    type_id: room.type_id,
-    room_descreption: room.room_descreption,
-    room_price: room.room_price,
-    beeds_number: room.beeds_number,
-    features: room.features.map((feature) => {
-      return {
-        feature_id: feature.feature_id,
-        features_name: feature.features_name,
-        need_value: feature.need_value,
-        value: feature.pivot.valeur
-      };
-    }),
-    assets: []
-  });
-  const handleFiles = (files) => {
-    if (!files || !files.length)
-      return;
-    const newFiles = Array.from(files);
-    setImportedFiles((prevData) => {
-      const updatedFiles = newFiles.map((file) => ({
-        file,
-        url: URL.createObjectURL(file)
-      }));
-      return [...prevData, ...updatedFiles];
-    });
-    setData2("assets", [...data.assets, ...newFiles]);
-  };
-  const deleteImage = (index) => {
-    setImportedFiles((prevData) => {
-      const updatedFiles = [...prevData];
-      updatedFiles.splice(index, 1);
-      return updatedFiles;
-    });
-    const updatedAssets = [...data.assets];
-    updatedAssets.splice(index, 1);
-    setData2("assets", updatedAssets);
-    clearErrors(`assets.${index}`);
-  };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    post(route("rooms.update", room.room_number));
-  };
-  const isPressedFn = (feature) => data.features.some((f) => f.feature_id === feature.feature_id);
-  const handleFeatures = (pressed, feature) => {
-    setData2((data2) => {
-      if (pressed) {
-        data2.features.push({
-          feature_id: feature.feature_id,
-          features_name: feature.features_name,
-          need_value: feature.need_value,
-          value: ""
-        });
-      } else {
-        data2.features.splice(
-          data2.features.indexOf(
-            data2.features.find(
-              (f) => f.feature_id === feature.feature_id
-            )
-          ),
-          1
-        );
-      }
-      return { ...data2 };
-    });
-  };
-  return /* @__PURE__ */ jsxs("form", { onSubmit, children: [
-    /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_number",
-            value: useTrans("Numéro de chmabre")
-          }
-        ),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-          "Quel est le numéro unique de cette chambre ?"
-        ) })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_number",
-            value: useTrans("Numéro de chmabre")
-          }
-        ),
-        /* @__PURE__ */ jsx(
-          Input,
-          {
-            className: "mt-2 w-full bg-card",
-            placeholder: "102",
-            id: "room_number",
-            value: data.room_number,
-            onChange: (e) => setData2("room_number", e.target.value)
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { message: errors.room_number, className: "mt-2" })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsx(Separator, {}),
-    /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_price",
-            value: useTrans("Prix de chmabre")
-          }
-        ),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-          "Ce sont les prix de la chambre avec tous taxe inclus"
-        ) })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_price",
-            value: useTrans("Prix de chmabre")
-          }
-        ),
-        /* @__PURE__ */ jsx(
-          Input,
-          {
-            className: "mt-2 w-full bg-card",
-            placeholder: "5500 DA",
-            id: "room_price",
-            value: data.room_price,
-            onChange: (e) => setData2("room_price", e.target.value)
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { message: errors.room_price, className: "mt-2" })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsx(Separator, {}),
-    /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "beeds_number",
-            value: useTrans("Nombre de lits")
-          }
-        ),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-          "Quel est le nombre de lits dans cette chambre"
-        ) })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "beeds_number",
-            value: useTrans("Nombre de lits")
-          }
-        ),
-        /* @__PURE__ */ jsx(
-          Input,
-          {
-            className: "mt-2 w-full bg-card",
-            placeholder: "3",
-            id: "beeds_number",
-            value: data.beeds_number,
-            onChange: (e) => setData2("beeds_number", e.target.value)
-          }
-        ),
-        /* @__PURE__ */ jsx(
-          InputError,
-          {
-            message: errors.beeds_number,
-            className: "mt-2"
-          }
-        )
-      ] })
-    ] }),
-    /* @__PURE__ */ jsx(Separator, {}),
-    /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "room_type", value: useTrans("Type") }),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans("Quel est le type de cette chambre") })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_type",
-            value: useTrans("Type"),
-            className: "mb-2"
-          }
-        ),
-        /* @__PURE__ */ jsxs(Popover, { open, onOpenChange: setOpen, children: [
-          /* @__PURE__ */ jsx(PopoverTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(
-            Button,
-            {
-              variant: "outline",
-              role: "combobox",
-              "aria-expanded": open,
-              className: "w-full justify-between",
-              children: [
-                type ? type : useTrans("Selectioner un Type..."),
-                /* @__PURE__ */ jsx(CaretSortIcon, { className: "ml-2 h-4 w-4 shrink-0 opacity-50" })
-              ]
-            }
-          ) }),
-          /* @__PURE__ */ jsx(PopoverContent, { children: /* @__PURE__ */ jsxs(Command, { children: [
-            /* @__PURE__ */ jsx(
-              CommandInput,
-              {
-                placeholder: useTrans(
-                  "Chercher un Type..."
-                ),
-                value: searchValue,
-                onValueChange: (newValue) => setSearchValue(newValue)
-              }
-            ),
-            /* @__PURE__ */ jsxs(CommandList, { children: [
-              /* @__PURE__ */ jsx(CommandEmpty, { children: /* @__PURE__ */ jsxs(
-                Link,
-                {
-                  href: route("types.store"),
-                  method: "post",
-                  as: "button",
-                  data: {
-                    type_designation: searchValue
-                  },
-                  children: [
-                    "Ajouter ",
-                    /* @__PURE__ */ jsx("b", { children: searchValue }),
-                    " au Types"
-                  ]
-                }
-              ) }),
-              /* @__PURE__ */ jsx(CommandGroup, { children: types.map(
-                ({ type_id, type_designation }) => /* @__PURE__ */ jsxs(
-                  CommandItem,
-                  {
-                    value: type_designation,
-                    onSelect: (currentValue) => {
-                      setData2(
-                        "type_id",
-                        type_id
-                      );
-                      setType(
-                        currentValue === type ? "" : currentValue
-                      );
-                      setOpen(false);
-                    },
-                    children: [
-                      type_designation,
-                      /* @__PURE__ */ jsx(
-                        CheckIcon,
-                        {
-                          className: cn(
-                            "ml-auto h-4 w-4",
-                            type === type_designation ? "opacity-100" : "opacity-0"
-                          )
-                        }
-                      )
-                    ]
-                  },
-                  type_id
-                )
-              ) })
-            ] })
-          ] }) })
-        ] }),
-        /* @__PURE__ */ jsx(InputError, { message: errors.type_id, className: "mt-2" })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsx(Separator, {}),
-    /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_descreption",
-            value: useTrans("Description")
-          }
-        ),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-          "Entrer une description générale sur cette chambre"
-        ) })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_descreption",
-            value: useTrans("Description")
-          }
-        ),
-        /* @__PURE__ */ jsx(
-          RichEditor,
-          {
-            autofocus: false,
-            content: data.room_descreption,
-            onContentChange: ({ html }) => {
-              setData2("room_descreption", html);
-            }
-          }
-        ),
-        /* @__PURE__ */ jsx(
-          InputError,
-          {
-            message: errors.room_descreption,
-            className: "mt-2"
-          }
-        )
-      ] })
-    ] }),
-    /* @__PURE__ */ jsx(Separator, {}),
-    /* @__PURE__ */ jsxs("div", { className: "md:flex  my-4", children: [
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "room_descreption",
-            value: useTrans("Caractéristiques")
-          }
-        ),
-        /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-          "Choisis parmi ces caractéristiques, et ajouter des valeur aux caractéristiques qui'il besoin"
-        ) })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow flex gap-2", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-2/3", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "room_descreption",
-              value: useTrans("Caractéristiques")
-            }
-          ),
-          /* @__PURE__ */ jsxs(Accordion, { type: "multiple", children: [
-            categorys.map((category) => /* @__PURE__ */ jsxs(
-              AccordionItem,
-              {
-                className: "my-2 bg-card ",
-                value: category.categorie_name,
-                children: [
-                  /* @__PURE__ */ jsx(AccordionTrigger, { className: "flex flex-wrap justify-center", children: category.categorie_name }),
-                  /* @__PURE__ */ jsx(AccordionContent, { className: " px-4", children: /* @__PURE__ */ jsx("div", { className: "flex flex-wrap items-center gap-4", children: category.feature.map(
-                    (feature, idx) => {
-                      return /* @__PURE__ */ jsx(
-                        Toggle,
-                        {
-                          pressed: isPressedFn(
-                            feature
-                          ),
-                          onPressedChange: (p) => handleFeatures(
-                            p,
-                            feature
-                          ),
-                          children: feature.features_name
-                        },
-                        idx
-                      );
-                    }
-                  ) }) })
-                ]
-              },
-              category.categorie_id
-            )),
-            /* @__PURE__ */ jsx(
-              InputError,
-              {
-                message: errors.features,
-                className: "mt-2"
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsx("div", { className: "space-y-4 w-1/3 ", children: data.features.map(
-          (feature, idx) => feature.need_value ? /* @__PURE__ */ jsxs("div", { children: [
-            /* @__PURE__ */ jsx(InputLabel, { children: feature.features_name }),
-            /* @__PURE__ */ jsx(
-              Input,
-              {
-                className: "mt-2 w-full bg-card",
-                value: feature.value,
-                onChange: (e) => {
-                  setData2((data2) => {
-                    data2.features[idx].value = e.target.value;
-                    return { ...data2 };
-                  });
-                }
-              }
-            )
-          ] }, idx) : null
-        ) })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsx(Separator, {}),
-    /* @__PURE__ */ jsxs("div", { children: [
-      /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "assets",
-              value: useTrans("Photos")
-            }
-          ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Ajouter des photos au chambres (ne dépasse pas 10 photos par chambres)"
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "assets",
-              value: useTrans("Photos")
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            FileUploader,
-            {
-              handleChange: handleFiles,
-              name: "file",
-              id: "assets",
-              types: fileTypes$2,
-              multiple: true,
-              children: /* @__PURE__ */ jsxs("div", { className: "bg-card mt-2 p-4 rounded flex justify-between items-center border-dashed border-2 border-secondary", children: [
-                /* @__PURE__ */ jsxs("div", { className: "flex gap-4 items-center", children: [
-                  /* @__PURE__ */ jsx(ImagePlus, {}),
-                  /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: useTrans(
-                    "Télécharger ou déposer des images ici"
-                  ) })
-                ] }),
-                /* @__PURE__ */ jsxs("p", { className: "text-sm text-gray-600", children: [
-                  fileTypes$2.map((type2) => type2 + ","),
-                  " "
-                ] })
-              ] })
-            }
-          ),
-          /* @__PURE__ */ jsx(InputError, { message: errors.assets, className: "mt-2" })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsx(
-        ImagesViewer,
-        {
-          images: importedFiles,
-          errors,
-          deleteImage
-        }
-      ),
-      " ",
-      /* @__PURE__ */ jsx(
+      room && /* @__PURE__ */ jsx(
         DbImageViewer,
         {
-          assets: room.assets,
-          importedFiles: importedFiles.length
+          assets: dbImages,
+          remouveAsset
         }
       )
     ] }),
@@ -11629,17 +10245,31 @@ function EditRoomForm({ types, categorys, room }) {
         type: "submit",
         className: "mt-2 w-1/4",
         variant: "secondary",
-        children: useTrans("Enregistrer")
+        disabled: processing,
+        children: room ? t("edit") : t("submit")
       }
     ) })
   ] });
 }
-function RoomEdit({ room, types, categorys }) {
+function RoomCreate({ types, categorys }) {
+  const { t } = useTranslation();
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Rooms crete" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Chambre Modification") }),
+    /* @__PURE__ */ jsx(Head, { title: t("rooms.createTitle") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("rooms.createTitle") }),
+    /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsx("div", { className: "max-w-7xl mx-auto ", children: /* @__PURE__ */ jsx(RoomForm, { types, categorys }) }) })
+  ] });
+}
+const __vite_glob_0_27 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: RoomCreate
+}, Symbol.toStringTag, { value: "Module" }));
+function RoomEdit({ room, types, categorys }) {
+  const { t } = useTranslation();
+  return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
+    /* @__PURE__ */ jsx(Head, { title: t("rooms.editTitle") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("rooms.editTitle") }),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsx("div", { className: "max-w-7xl mx-auto ", children: /* @__PURE__ */ jsx(
-      EditRoomForm,
+      RoomForm,
       {
         types,
         categorys,
@@ -11648,13 +10278,13 @@ function RoomEdit({ room, types, categorys }) {
     ) }) })
   ] });
 }
-const __vite_glob_0_32 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_28 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: RoomEdit
 }, Symbol.toStringTag, { value: "Module" }));
 const columns = [
   {
-    accessorKey: "Numéro de chambre",
+    accessorKey: "roomNumber",
     cell: ({ row }) => {
       const room = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
@@ -11662,10 +10292,10 @@ const columns = [
         room.room_number
       ] });
     },
-    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "Numéro de chambre" })
+    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "roomNumber" })
   },
   {
-    accessorKey: "Type",
+    accessorKey: "type",
     cell: ({ row }) => {
       const room = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
@@ -11674,10 +10304,10 @@ const columns = [
         " "
       ] });
     },
-    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "Type" })
+    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "type" })
   },
   {
-    accessorKey: "Status",
+    accessorKey: "status",
     cell: ({ row }) => {
       const room = row.original;
       return /* @__PURE__ */ jsx("div", { className: "flex items-center justify-center rtl:justify-start space-x-2", children: room.room_status === "hors service" ? /* @__PURE__ */ jsxs(Badge, { variant: "danger", children: [
@@ -11691,11 +10321,11 @@ const columns = [
         " "
       ] }) });
     },
-    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "Status" })
+    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "status" })
   },
   {
-    accessorKey: "Prix",
-    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "Prix de chambre" }),
+    accessorKey: "price",
+    header: ({ column }) => /* @__PURE__ */ jsx(ColumnHeader, { title: "price" }),
     cell: ({ row }) => {
       const formatted = new Intl.NumberFormat("fr-FR", {
         style: "currency",
@@ -11709,6 +10339,7 @@ const columns = [
     cell: ({ row }) => {
       const room = row.original;
       const room_permission = usePage().props.room_permission;
+      const { t } = useTranslation("translation", { keyPrefix: "rooms" });
       return /* @__PURE__ */ jsxs(DropdownMenu, { children: [
         /* @__PURE__ */ jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(Button, { variant: "ghost", className: "h-8 w-8 p-0", children: [
           /* @__PURE__ */ jsx("span", { className: "sr-only", children: "Open menu" }),
@@ -11722,7 +10353,7 @@ const columns = [
               className: "flex w-full",
               children: [
                 /* @__PURE__ */ jsx(Eye, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                useTrans("Voir")
+                t("show")
               ]
             }
           ) }),
@@ -11733,7 +10364,7 @@ const columns = [
               className: "flex w-full",
               children: [
                 /* @__PURE__ */ jsx(Pencil, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-                useTrans("Modifier")
+                t("edit")
               ]
             }
           ) }),
@@ -11754,30 +10385,31 @@ const columns = [
                 }
               }
             ),
-            /* @__PURE__ */ jsx("span", { className: "ml-2 ", children: room.room_status === "hors service" ? useTrans("Marqué comme disponible") : useTrans("Marqué comme hors service") })
+            /* @__PURE__ */ jsx("span", { className: "ml-2 ", children: room.room_status === "hors service" ? t("aviable") : t("inaviable") })
           ] })
         ] })
       ] });
     }
   }
 ];
-function RoomCard$2({ room }) {
+function RoomCard$1({ room }) {
+  const { t } = useTranslation("translation", { keyPrefix: "rooms" });
   return /* @__PURE__ */ jsxs(Card, { className: "rounded-lg border-none mt-6", children: [
     /* @__PURE__ */ jsxs(CardContent, { className: "p-6 flex justify-between items-center", children: [
       /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsxs(CardTitle, { children: [
-          useTrans("La Chambre N°"),
+          t("roomNumber"),
           " ",
           room.room_number,
           " / ",
           room.type.type_designation
         ] }),
         /* @__PURE__ */ jsxs(CardDescription, { children: [
-          useTrans("Prix de chmabre"),
+          t("price"),
           " : ",
           room.room_price,
           " ",
-          useTrans("DA")
+          t("da")
         ] })
       ] }),
       /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx("div", { className: "flex items-center justify-center space-x-2", children: room.room_status === "hors service" ? /* @__PURE__ */ jsxs(Badge, { variant: "danger", children: [
@@ -11812,7 +10444,7 @@ function RoomCard$2({ room }) {
             }
           }
         ),
-        /* @__PURE__ */ jsx("span", { className: "mx-2 ", children: room.room_status === "hors service" ? useTrans("Marqué comme disponible") : useTrans("Marqué comme hors service") })
+        /* @__PURE__ */ jsx("span", { className: "mx-2 ", children: room.room_status === "hors service" ? t("aviable") : t("inaviable") })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "flex gap-4", children: [
         /* @__PURE__ */ jsx(Button, { variant: "outline", children: /* @__PURE__ */ jsxs(
@@ -11823,7 +10455,7 @@ function RoomCard$2({ room }) {
             children: [
               /* @__PURE__ */ jsx(Eye, { className: "mx-2 h-3.5 w-3.5 text-muted-foreground/70" }),
               " ",
-              useTrans("Voir")
+              t("show")
             ]
           }
         ) }),
@@ -11834,7 +10466,7 @@ function RoomCard$2({ room }) {
             className: "flex w-full",
             children: [
               /* @__PURE__ */ jsx(Pencil, { className: "mx-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-              useTrans("Modifier")
+              t("edit")
             ]
           }
         ) })
@@ -11844,8 +10476,17 @@ function RoomCard$2({ room }) {
 }
 function TopButton({ href, text }) {
   const { width } = useWindowDimensions();
+  const [processing, setProcessing] = React__default.useState(false);
   const handleButton = () => {
-    router.visit(href, { method: "get" });
+    router.visit(href, {
+      method: "get",
+      onStart: () => {
+        setProcessing(true);
+      },
+      onFinish: () => {
+        setProcessing(false);
+      }
+    });
   };
   return width <= 767 ? /* @__PURE__ */ jsx("div", { className: "fixed bottom-10 right-10 ", children: /* @__PURE__ */ jsx(
     Button,
@@ -11855,6 +10496,7 @@ function TopButton({ href, text }) {
       onClick: () => {
         handleButton();
       },
+      disabled: processing,
       children: /* @__PURE__ */ jsx(CirclePlus, {})
     }
   ) }) : /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
@@ -11864,11 +10506,13 @@ function TopButton({ href, text }) {
       onClick: () => {
         handleButton();
       },
+      disabled: processing,
       children: text
     }
   ) });
 }
 function MobilePagination({ data }) {
+  useTranslation("translation", { keyPrefix: "rooms" });
   const navigateTo = (url) => {
     router.visit(url, {
       preserveState: true,
@@ -11952,39 +10596,40 @@ function MobilePagination({ data }) {
     ] }) }) })
   ] });
 }
-function Rooms$1({ rooms, room_permission }) {
+function Rooms$1({ rooms: rooms2, room_permission }) {
   const { width } = useWindowDimensions();
+  const { t } = useTranslation("translation", { keyPrefix: "rooms" });
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Rooms" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Chambres", "Rooms") }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
     room_permission.create && /* @__PURE__ */ jsx(
       TopButton,
       {
         href: route("rooms.create"),
-        text: useTrans("Crée un chambre")
+        text: t("topButton")
       }
     ),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: rooms.data.lenght ? width <= 767 ? /* @__PURE__ */ jsxs("div", { children: [
-      rooms.data.map((room) => /* @__PURE__ */ jsx(RoomCard$2, { room }, room.room_number)),
-      /* @__PURE__ */ jsx(MobilePagination, { data: rooms })
+    /* @__PURE__ */ jsx(PlaceholderContent, { children: rooms2.data.length ? width <= 767 ? /* @__PURE__ */ jsxs("div", { children: [
+      rooms2.data.map((room) => /* @__PURE__ */ jsx(RoomCard$1, { room }, room.room_number)),
+      /* @__PURE__ */ jsx(MobilePagination, { data: rooms2 })
     ] }) : /* @__PURE__ */ jsx("div", { className: "max-w-7xl mx-auto invisible md:visible", children: /* @__PURE__ */ jsx(
       DataTable,
       {
         columns,
-        data: rooms.data,
-        paginate: rooms,
+        data: rooms2.data,
+        paginate: rooms2,
         selection: false
       }
     ) }) : /* @__PURE__ */ jsx(
       EmptyPage,
       {
         icon: Hotel,
-        text: "No Rooms to show, try creating new Rooms!"
+        text: t("emptyText")
       }
     ) })
   ] });
 }
-const __vite_glob_0_33 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_29 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Rooms$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12088,20 +10733,30 @@ const SelectSeparator = React.forwardRef(({ className, ...props }, ref) => /* @_
   }
 ));
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
-function ConsommationDialog({ services, mode, consumption }) {
+function ConsommationDialog({ services: services2, mode, consumption }) {
   var _a, _b;
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "consumptions.form"
+  });
   const { width } = useWindowDimensions();
-  const { data, setData: setData2, post, put, errors } = useForm({
-    consumption_name: consumption == null ? void 0 : consumption.consumption_name,
-    consumption_price: consumption == null ? void 0 : consumption.consumption_price,
-    service_id: consumption == null ? void 0 : consumption.service_id
+  const { data, setData: setData2, post, put, errors, processing, reset } = useForm({
+    consumption_name: consumption ? consumption == null ? void 0 : consumption.consumption_name : "",
+    consumption_price: consumption ? consumption == null ? void 0 : consumption.consumption_price : "",
+    service_id: consumption ? consumption == null ? void 0 : consumption.service_id : ""
   });
   const submit = (e) => {
     e.preventDefault();
     if (mode == "create") {
       post(route("consumptions.store"), {
-        onSuccess: () => setOpen(false)
+        onSuccess: () => {
+          setOpen(false);
+          reset(
+            "consumption_name",
+            "consumption_price",
+            "service_id"
+          );
+        }
       });
     } else {
       put(route("consumptions.update", consumption.consumption_id), {
@@ -12111,9 +10766,9 @@ function ConsommationDialog({ services, mode, consumption }) {
   };
   if (width >= 767) {
     return /* @__PURE__ */ jsxs(Dialog, { open, onOpenChange: setOpen, children: [
-      /* @__PURE__ */ jsx(DialogTrigger, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "secondary", children: mode == "create" ? useTrans("Créer un consommation") : useTrans("Modifier") }) }),
-      /* @__PURE__ */ jsxs(DialogContent, { children: [
-        /* @__PURE__ */ jsx(DialogHeader, { children: /* @__PURE__ */ jsx(DialogTitle, { children: mode == "create" ? useTrans("Créer un nouveau consommation") : useTrans("Modifier cette consommation") }) }),
+      /* @__PURE__ */ jsx(DialogTrigger, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "secondary", children: mode == "create" ? t("createBtn") : t("editBtn") }) }),
+      /* @__PURE__ */ jsxs(DialogContent, { "aria-describedby": void 0, children: [
+        /* @__PURE__ */ jsx(DialogHeader, { children: /* @__PURE__ */ jsx(DialogTitle, { children: mode == "create" ? t("createDialogTitle") : t("editDialogTitle") }) }),
         /* @__PURE__ */ jsxs(
           "form",
           {
@@ -12125,7 +10780,7 @@ function ConsommationDialog({ services, mode, consumption }) {
                   InputLabel,
                   {
                     htmlFor: "service_id",
-                    value: useTrans("Service"),
+                    value: t("service"),
                     className: "w-fit"
                   }
                 ),
@@ -12141,18 +10796,19 @@ function ConsommationDialog({ services, mode, consumption }) {
                         /* @__PURE__ */ jsx(
                           SelectValue,
                           {
-                            placeholder: data.service_id ? "" : useTrans(
-                              "Selectionner un service"
-                            )
+                            placeholder: data.service_id ? "" : t("servicePlaceholder")
                           }
                         ),
-                        (_a = services.find(
+                        (_a = services2.find(
                           (s) => s.service_id == data.service_id
                         )) == null ? void 0 : _a.service_name
                       ] }),
                       /* @__PURE__ */ jsx(SelectContent, { children: /* @__PURE__ */ jsxs(SelectGroup, { children: [
-                        /* @__PURE__ */ jsx(SelectLabel, { children: "Services" }),
-                        services.map((service) => /* @__PURE__ */ jsx(
+                        /* @__PURE__ */ jsxs(SelectLabel, { children: [
+                          t("service"),
+                          " "
+                        ] }),
+                        services2.map((service) => /* @__PURE__ */ jsx(
                           SelectItem,
                           {
                             value: service.service_id,
@@ -12177,13 +10833,13 @@ function ConsommationDialog({ services, mode, consumption }) {
                   InputLabel,
                   {
                     htmlFor: "consumption_name",
-                    value: useTrans("Nom de consommation")
+                    value: t("name")
                   }
                 ),
                 /* @__PURE__ */ jsx(
                   Input,
                   {
-                    placeholder: useTrans("Exemple : Diner"),
+                    placeholder: t("namePlaceholder"),
                     id: "consumption_name",
                     value: data.consumption_name,
                     onChange: (e) => setData2("consumption_name", e.target.value)
@@ -12202,7 +10858,7 @@ function ConsommationDialog({ services, mode, consumption }) {
                   InputLabel,
                   {
                     htmlFor: "consumption_price",
-                    value: useTrans("Prix de consommation")
+                    value: t("price")
                   }
                 ),
                 /* @__PURE__ */ jsx(
@@ -12222,7 +10878,15 @@ function ConsommationDialog({ services, mode, consumption }) {
                   }
                 )
               ] }),
-              /* @__PURE__ */ jsx(Button, { variant: "secondary", type: "submit", children: mode == "create" ? useTrans("Créer") : useTrans("Enregistrer") })
+              /* @__PURE__ */ jsx(
+                Button,
+                {
+                  variant: "secondary",
+                  type: "submit",
+                  disabled: processing,
+                  children: mode == "create" ? t("createSubmit") : t("editSubmit")
+                }
+              )
             ]
           }
         )
@@ -12230,22 +10894,16 @@ function ConsommationDialog({ services, mode, consumption }) {
     ] });
   }
   return /* @__PURE__ */ jsxs(Drawer, { open, onOpenChange: setOpen, children: [
-    /* @__PURE__ */ jsx(DrawerTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(Button, { variant: "secondary", children: [
-      mode == "create" ? useTrans("Créer un consommation") : useTrans("Modifier"),
-      " "
-    ] }) }),
-    /* @__PURE__ */ jsxs(DrawerContent, { children: [
-      /* @__PURE__ */ jsx(DrawerHeader, { className: "text-left", children: /* @__PURE__ */ jsxs(DrawerTitle, { children: [
-        mode == "create" ? useTrans("Créer un nouveau consommation") : useTrans("Modifier cette consommation"),
-        " "
-      ] }) }),
+    /* @__PURE__ */ jsx(DrawerTrigger, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "secondary", children: mode == "create" ? t("createDialogTitle") : t("editDialogTitle") }) }),
+    /* @__PURE__ */ jsxs(DrawerContent, { "aria-describedby": void 0, children: [
+      /* @__PURE__ */ jsx(DrawerHeader, { className: "text-left", children: /* @__PURE__ */ jsx(DrawerTitle, { children: mode == "create" ? t("createDialogTitle") : t("editDialogTitle") }) }),
       /* @__PURE__ */ jsxs("form", { className: "grid items-start gap-4 px-4", onSubmit: submit, children: [
         /* @__PURE__ */ jsxs("div", { className: "grid gap-2", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "service_id",
-              value: useTrans("Service"),
+              value: t("service"),
               className: "w-fit"
             }
           ),
@@ -12261,18 +10919,20 @@ function ConsommationDialog({ services, mode, consumption }) {
                   /* @__PURE__ */ jsx(
                     SelectValue,
                     {
-                      placeholder: data.service_id ? "" : useTrans(
-                        "Selectionner un service"
-                      )
+                      placeholder: data.service_id ? "" : t("servicePlaceholder")
                     }
                   ),
-                  (_b = services.find(
+                  (_b = services2.find(
                     (s) => s.service_id == data.service_id
                   )) == null ? void 0 : _b.service_name
                 ] }),
                 /* @__PURE__ */ jsx(SelectContent, { children: /* @__PURE__ */ jsxs(SelectGroup, { children: [
-                  /* @__PURE__ */ jsx(SelectLabel, { children: "Services" }),
-                  services.map((service) => /* @__PURE__ */ jsx(
+                  /* @__PURE__ */ jsxs(SelectLabel, { children: [
+                    " ",
+                    t("service"),
+                    " "
+                  ] }),
+                  services2.map((service) => /* @__PURE__ */ jsx(
                     SelectItem,
                     {
                       value: service.service_id,
@@ -12297,13 +10957,13 @@ function ConsommationDialog({ services, mode, consumption }) {
             InputLabel,
             {
               htmlFor: "consumption_name",
-              value: useTrans("Nom de consommation")
+              value: t("name")
             }
           ),
           /* @__PURE__ */ jsx(
             Input,
             {
-              placeholder: useTrans("Exemple : Diner"),
+              placeholder: t("namePlaceholder"),
               id: "consumption_name",
               value: data.consumption_name,
               onChange: (e) => setData2("consumption_name", e.target.value)
@@ -12322,7 +10982,7 @@ function ConsommationDialog({ services, mode, consumption }) {
             InputLabel,
             {
               htmlFor: "consumption_price",
-              value: useTrans("Prix de consommation")
+              value: t("price")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -12342,16 +11002,24 @@ function ConsommationDialog({ services, mode, consumption }) {
             }
           )
         ] }),
-        /* @__PURE__ */ jsx(Button, { variant: "secondary", type: "submit", children: mode == "create" ? useTrans("Créer") : useTrans("Enregistrer") })
+        /* @__PURE__ */ jsx(
+          Button,
+          {
+            variant: "secondary",
+            type: "submit",
+            disabled: processing,
+            children: mode == "create" ? t("createSubmit") : t("editSubmit")
+          }
+        )
       ] }),
-      /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) }) })
+      /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: t("cancel") }) }) })
     ] })
   ] });
 }
-function ConsommationCard({
-  consumption,
-  services
-}) {
+function ConsommationCard({ consumption, services: services2 }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "consumptions.card"
+  });
   return /* @__PURE__ */ jsxs(Card, { className: "w-full", children: [
     /* @__PURE__ */ jsxs(CardHeader, { className: "flex-row items-center justify-between", children: [
       /* @__PURE__ */ jsx("div", { className: "font-bold text-xl", children: consumption.consumption_name }),
@@ -12361,11 +11029,11 @@ function ConsommationCard({
       ] }) })
     ] }),
     /* @__PURE__ */ jsxs(CardContent, { children: [
-      useTrans("Prix Unitaire:"),
+      t("price"),
       " ",
       /* @__PURE__ */ jsx("span", { className: "text-destructive font-bold", children: consumption.consumption_price }),
       " ",
-      useTrans("DA")
+      t("da")
     ] }),
     /* @__PURE__ */ jsxs(CardFooter, { className: "gap-4", children: [
       /* @__PURE__ */ jsx(
@@ -12373,23 +11041,24 @@ function ConsommationCard({
         {
           id: consumption.consumption_id,
           url: "consumptions.destroy",
-          message: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette consommation"
+          message: t("deleteConsumptionDescreption")
         }
       ),
       /* @__PURE__ */ jsx(
         ConsommationDialog,
         {
           consumption,
-          services,
+          services: services2,
           mode: "edit"
         }
       )
     ] })
   ] });
 }
-function Consumptions({ consumptions, services }) {
+function Consumptions({ consumptions: consumptions2, services: services2 }) {
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
+  const { t } = useTranslation("translation", { keyPrefix: "consumptions" });
   useEffect(() => {
     var _a;
     if (flash.message) {
@@ -12397,37 +11066,35 @@ function Consumptions({ consumptions, services }) {
     }
   }, [flash.message, toast2]);
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Consumptions" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Consommations") }),
-    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(ConsommationDialog, { services, mode: "create" }) }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: consumptions.lenght ? /* @__PURE__ */ jsxs(Fragment, { children: [
-      /* @__PURE__ */ jsxs("div", { className: "font-bold p-4", children: [
-        useTrans("List des consommations"),
-        " :"
-      ] }),
-      /* @__PURE__ */ jsx("div", { className: "grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3", children: consumptions.map((consumption) => /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx(
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
+    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(ConsommationDialog, { services: services2, mode: "create" }) }),
+    /* @__PURE__ */ jsx(PlaceholderContent, { children: consumptions2.length ? /* @__PURE__ */ jsxs(Fragment, { children: [
+      /* @__PURE__ */ jsx("div", { className: "font-bold p-4", children: t("listHeader") }),
+      /* @__PURE__ */ jsx("div", { className: "grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3", children: consumptions2.map((consumption) => /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx(
         ConsommationCard,
         {
           consumption,
-          services
+          services: services2
         }
       ) }, consumption.consumption_id)) })
     ] }) : /* @__PURE__ */ jsx(
       EmptyPage,
       {
-        text: "Aucun consommations pour l'instant, essayez de créer un nouveau",
+        text: t("emptyConsumptions"),
         icon: HandPlatter
       }
     ) })
   ] });
 }
-const __vite_glob_0_34 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_30 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Consumptions
 }, Symbol.toStringTag, { value: "Module" }));
 const fileTypes$1 = ["JPG", "PNG", "GIF"];
 function CreateService() {
-  const { data, setData: setData2, post, errors, clearErrors } = useForm({
+  const { t } = useTranslation("translation", { keyPrefix: "services.form" });
+  const { data, setData: setData2, post, errors, clearErrors, processing } = useForm({
     service_name: "",
     service_descreption: "",
     assets: []
@@ -12462,8 +11129,8 @@ function CreateService() {
     post(route("services.store"));
   };
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Service" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Service Création") }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
@@ -12471,26 +11138,24 @@ function CreateService() {
             InputLabel,
             {
               htmlFor: "service_name",
-              value: useTrans("Nom de service")
+              value: t("name")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Entrer un nom claire et simple pour le nom de service"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("nameDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "service_name",
-              value: useTrans("Nom de service")
+              value: t("name")
             }
           ),
           /* @__PURE__ */ jsx(
             Input,
             {
               className: "mt-2 w-full bg-card",
-              placeholder: useTrans("Exemple : Restaurant"),
+              placeholder: t("placeholder"),
               id: "service_name",
               value: data.service_name,
               onChange: (e) => setData2("service_name", e.target.value)
@@ -12512,19 +11177,17 @@ function CreateService() {
             InputLabel,
             {
               htmlFor: "service_descreption",
-              value: useTrans("Description")
+              value: t("descreption")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Vous pouvez ajouter des titre ou bien des style au desciption"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("descreptionDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "service_descreption",
-              value: useTrans("Description")
+              value: t("descreption")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -12554,19 +11217,17 @@ function CreateService() {
               InputLabel,
               {
                 htmlFor: "assets",
-                value: useTrans("Photos")
+                value: t("assets")
               }
             ),
-            /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-              "Ajouter des photos au service (ne dépasse pas 10 photos par service)"
-            ) })
+            /* @__PURE__ */ jsx(LabelDescreption, { children: t("assetsDescreption") })
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
             /* @__PURE__ */ jsx(
               InputLabel,
               {
                 htmlFor: "assets",
-                value: useTrans("Photos")
+                value: t("assets")
               }
             ),
             /* @__PURE__ */ jsx(
@@ -12604,24 +11265,45 @@ function CreateService() {
           type: "submit",
           className: "mt-2 w-1/4",
           variant: "secondary",
-          children: useTrans("Créer")
+          disabled: processing,
+          children: t("createBtn")
         }
       ) })
     ] }) })
   ] });
 }
-const __vite_glob_0_35 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_31 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: CreateService
 }, Symbol.toStringTag, { value: "Module" }));
 const fileTypes = ["JPG", "PNG", "GIF"];
-function EditService({ service }) {
-  const { data, setData: setData2, post, errors, clearErrors } = useForm({
-    service_name: service.service_name,
-    service_descreption: service.service_descreption,
-    assets: []
-  });
+function ServiceForm({ service }) {
+  const { t } = useTranslation("translation", { keyPrefix: "services.form" });
   const [importedFiles, setImportedFiles] = useState([]);
+  const [dbImages, setDbImages] = useState(service == null ? void 0 : service.assets);
+  const { data, setData: setData2, post, errors, clearErrors, processing } = useForm({
+    service_name: service ? service == null ? void 0 : service.service_name : "",
+    service_descreption: service ? service == null ? void 0 : service.service_descreption : "",
+    assets: [],
+    remouved_assets: [],
+    required_assets: false
+  });
+  const remouveAsset = (index) => {
+    setData2((prevData) => ({
+      ...prevData,
+      remouved_assets: [...prevData.remouved_assets, index]
+    }));
+    setDbImages((prevDbImages) => {
+      const updatedDbImages = prevDbImages.filter(
+        (image) => image.id !== index
+      );
+      setData2((prevData) => ({
+        ...prevData,
+        required_assets: updatedDbImages.length === 0
+      }));
+      return updatedDbImages;
+    });
+  };
   const handleFiles = (files) => {
     if (!files || !files.length)
       return;
@@ -12648,11 +11330,11 @@ function EditService({ service }) {
   };
   const submit = (e) => {
     e.preventDefault();
-    post(route("services.update", service.service_id));
+    service ? post(route("services.update", service.service_id)) : post(route("services.store"));
   };
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Service" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Service Modification") }),
+    /* @__PURE__ */ jsx(Head, { title: service ? t("editTitle") : t("createTitle") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: service ? t("editTitle") : t("createTitle") }),
     /* @__PURE__ */ jsx(PlaceholderContent, { children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
@@ -12660,26 +11342,24 @@ function EditService({ service }) {
             InputLabel,
             {
               htmlFor: "service_name",
-              value: useTrans("Nom de service")
+              value: t("name")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Entrer un nom claire et simple pour le nom de service"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("nameDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "service_name",
-              value: useTrans("Nom de service")
+              value: t("name")
             }
           ),
           /* @__PURE__ */ jsx(
             Input,
             {
               className: "mt-2 w-full bg-card",
-              placeholder: useTrans("Exemple : Restaurant"),
+              placeholder: t("placeholder"),
               id: "service_name",
               value: data.service_name,
               onChange: (e) => setData2("service_name", e.target.value)
@@ -12701,19 +11381,17 @@ function EditService({ service }) {
             InputLabel,
             {
               htmlFor: "service_descreption",
-              value: useTrans("Description")
+              value: t("descreption")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Vous pouvez ajouter des titre ou bien des style au desciption"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("descreptionDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "service_descreption",
-              value: useTrans("Description")
+              value: t("descreption")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -12743,19 +11421,17 @@ function EditService({ service }) {
               InputLabel,
               {
                 htmlFor: "assets",
-                value: useTrans("Photos")
+                value: t("assets")
               }
             ),
-            /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-              "Ajouter des photos au service (ne dépasse pas 10 photos par service)"
-            ) })
+            /* @__PURE__ */ jsx(LabelDescreption, { children: t("assetsDescreption") })
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
             /* @__PURE__ */ jsx(
               InputLabel,
               {
                 htmlFor: "assets",
-                value: useTrans("Photos")
+                value: t("assets")
               }
             ),
             /* @__PURE__ */ jsx(
@@ -12786,11 +11462,11 @@ function EditService({ service }) {
             deleteImage
           }
         ),
-        /* @__PURE__ */ jsx(
+        service && /* @__PURE__ */ jsx(
           DbImageViewer,
           {
-            assets: service.assets,
-            importedFiles: importedFiles.length
+            assets: dbImages,
+            remouveAsset
           }
         )
       ] }),
@@ -12800,24 +11476,30 @@ function EditService({ service }) {
           type: "submit",
           className: "mt-2 w-1/4",
           variant: "secondary",
-          children: useTrans("Enregistrer")
+          disabled: processing,
+          children: service ? t("editBtn") : t("createBtn")
         }
       ) })
     ] }) })
   ] });
 }
-const __vite_glob_0_36 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_32 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: EditService
+  default: ServiceForm
 }, Symbol.toStringTag, { value: "Module" }));
 function ServiceCardFooter({ service }) {
   const service_permission = usePage().props.service_permission;
+  const [process, setProcess] = React__default.useState(false);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "services.card"
+  });
   return /* @__PURE__ */ jsxs(Fragment, { children: [
     service_permission.update && /* @__PURE__ */ jsxs("div", { children: [
       /* @__PURE__ */ jsx(
         Switch,
         {
           checked: service.availability,
+          disabled: process,
           onCheckedChange: () => {
             router.post(
               route("services.toggle.availability"),
@@ -12826,29 +11508,47 @@ function ServiceCardFooter({ service }) {
               },
               {
                 preserveState: true,
-                preserveScroll: true
+                preserveScroll: true,
+                onStart: () => {
+                  setProcess(true);
+                },
+                onFinish: () => {
+                  setProcess(false);
+                }
               }
             );
           }
         }
       ),
-      /* @__PURE__ */ jsx("span", { className: "ml-2 ", children: service.availability ? useTrans("Marqué comme hors service") : useTrans("Marqué comme disponible") })
+      /* @__PURE__ */ jsx("span", { className: "ml-2 ", children: service.availability ? t("toggleOff") : t("toggleOn") })
     ] }),
     /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-4", children: [
-      service_permission.update && /* @__PURE__ */ jsx(Button, { variant: "secondary", children: /* @__PURE__ */ jsx(
-        Link,
+      service_permission.update && /* @__PURE__ */ jsx(
+        Button,
         {
-          href: route("services.edit", service.service_id),
-          as: "button",
-          children: useTrans("Modifier")
+          variant: "secondary",
+          disabled: process,
+          onClick: () => router.get(
+            route("services.edit", service.service_id),
+            {},
+            {
+              onStart: () => {
+                setProcess(true);
+              },
+              onFinish: () => {
+                setProcess(false);
+              }
+            }
+          ),
+          children: t("editBtn")
         }
-      ) }),
+      ),
       service_permission.delete && /* @__PURE__ */ jsx(
         DeleteeDialog,
         {
           id: service.service_id,
           url: "services.destroy",
-          message: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce élément et chaque caractéristique de cette categorie va supprimé"
+          message: t("deleteServiceDescreption")
         }
       )
     ] })
@@ -12856,11 +11556,12 @@ function ServiceCardFooter({ service }) {
 }
 function ServiceCard$1({ service }) {
   const { width } = useWindowDimensions();
+  const { t } = useTranslation("translation", { keyPrefix: "services.card" });
   const [isOpen, setIsOpen] = useState(false);
   return /* @__PURE__ */ jsxs(
     Card,
     {
-      className: "transition-transform ease-in-out duration-700 relative my-6 ",
+      className: "transition-all ease-in-out duration-700 relative my-6 ",
       children: [
         /* @__PURE__ */ jsx("div", { className: "w-full", children: /* @__PURE__ */ jsxs(Carousel, { children: [
           /* @__PURE__ */ jsx(CarouselContent, { className: "h-full ", children: service.assets.map((asset, index) => /* @__PURE__ */ jsx(
@@ -12882,14 +11583,14 @@ function ServiceCard$1({ service }) {
           /* @__PURE__ */ jsx(CarouselNext, { className: "bg-secondary right-0 text-secondary-foreground" })
         ] }) }),
         /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-between w-full", children: [
-          /* @__PURE__ */ jsxs(CardHeader, { className: "text-lg font-bold text-xl flex flex-row items-start justify-between", children: [
+          /* @__PURE__ */ jsxs(CardHeader, { className: "font-bold text-xl flex flex-row items-start justify-between", children: [
             /* @__PURE__ */ jsx("div", { children: service.service_name }),
-            /* @__PURE__ */ jsx("div", { className: "m-0", children: service.availability ? /* @__PURE__ */ jsx(Badge, { variant: "success", children: useTrans("Disponible") }) : /* @__PURE__ */ jsx(Badge, { variant: "danger", children: useTrans("Indisponible") }) })
+            /* @__PURE__ */ jsx("div", { className: "m-0", children: service.availability ? /* @__PURE__ */ jsx(Badge, { variant: "success", children: t("aviable") }) : /* @__PURE__ */ jsx(Badge, { variant: "danger", children: t("inaviable") }) })
           ] }),
           isOpen && /* @__PURE__ */ jsxs(Fragment, { children: [
             /* @__PURE__ */ jsxs(CardContent, { children: [
               /* @__PURE__ */ jsxs("div", { className: "font-bold text-lg my-4", children: [
-                useTrans("Description"),
+                t("descreption"),
                 " :",
                 " "
               ] }),
@@ -12929,8 +11630,10 @@ function ServiceCard$1({ service }) {
     service.service_id
   );
 }
-function Services$1({ services, service_permission }) {
+function Services$1({ services: services2, service_permission }) {
   const { toast: toast2 } = useToast();
+  const [process, setProcess] = React__default.useState(false);
+  const { t } = useTranslation("translation", { keyPrefix: "services" });
   const flash = usePage().props.flash;
   useEffect(() => {
     var _a;
@@ -12939,25 +11642,35 @@ function Services$1({ services, service_permission }) {
     }
   }, [flash.message, toast2]);
   return /* @__PURE__ */ jsxs(AdminPanelLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Services" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: useTrans("Services") }),
-    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: service_permission.create && /* @__PURE__ */ jsx(Button, { variant: "secondary", children: /* @__PURE__ */ jsx(Link, { href: route("services.create"), as: "button", children: useTrans("Créer un service") }) }) }),
-    /* @__PURE__ */ jsx(PlaceholderContent, { children: services.lenght ? /* @__PURE__ */ jsxs(Fragment, { children: [
-      /* @__PURE__ */ jsxs("div", { className: "font-bold p-4", children: [
-        useTrans("List des services"),
-        " :"
-      ] }),
-      services.map((service) => /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx(ServiceCard$1, { service }) }, service.service_id))
-    ] }) : /* @__PURE__ */ jsx(
-      EmptyPage,
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title") }),
+    /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: service_permission.create && /* @__PURE__ */ jsx(
+      Button,
       {
-        text: "Aucun services pour l'instant, essayez de créer un nouveau",
-        icon: HandPlatter
+        variant: "secondary",
+        disabled: process,
+        onClick: () => router.get(
+          route("services.create"),
+          {},
+          {
+            onStart: () => {
+              setProcess(true);
+            },
+            onFinish: () => {
+              setProcess(false);
+            }
+          }
+        ),
+        children: t("createBtn")
       }
-    ) })
+    ) }),
+    /* @__PURE__ */ jsx(PlaceholderContent, { children: services2.length ? /* @__PURE__ */ jsxs(Fragment, { children: [
+      /* @__PURE__ */ jsx("div", { className: "font-bold p-4", children: t("listHeader") }),
+      services2.map((service) => /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx(ServiceCard$1, { service }) }, service.service_id))
+    ] }) : /* @__PURE__ */ jsx(EmptyPage, { text: t("emptyServices"), icon: HandPlatter }) })
   ] });
 }
-const __vite_glob_0_37 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_33 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Services$1
 }, Symbol.toStringTag, { value: "Module" }));
@@ -12975,17 +11688,6 @@ function Guest({ children }) {
       /* @__PURE__ */ jsx("div", { className: "w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg", children })
     ] })
   ] });
-}
-function PrimaryButton({ className = "", disabled, children, ...props }) {
-  return /* @__PURE__ */ jsx(
-    "button",
-    {
-      ...props,
-      className: `inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 ${disabled && "opacity-25"} ` + className,
-      disabled,
-      children
-    }
-  );
 }
 function AdminLogin({ status, canResetPassword }) {
   const { data, setData: setData2, post, processing, errors, reset } = useForm({
@@ -13093,7 +11795,7 @@ function AdminLogin({ status, canResetPassword }) {
     ] })
   ] });
 }
-const __vite_glob_0_38 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_34 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AdminLogin
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13138,7 +11840,7 @@ function ConfirmPassword() {
     ] })
   ] });
 }
-const __vite_glob_0_39 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_35 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ConfirmPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13176,7 +11878,7 @@ function ForgotPassword({ status }) {
     ] })
   ] });
 }
-const __vite_glob_0_40 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_36 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ForgotPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13286,119 +11988,31 @@ function Login({ status, canResetPassword }) {
     ] })
   ] });
 }
-const __vite_glob_0_41 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_37 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Login
 }, Symbol.toStringTag, { value: "Module" }));
-function Register() {
-  const { data, setData: setData2, post, processing, errors, reset } = useForm({
-    name: "",
-    email: "",
-    password: "",
-    password_confirmation: ""
-  });
+const TextInput = forwardRef(function TextInput2({ type = "text", className = "", isFocused = false, ...props }, ref) {
+  const input = ref ? ref : useRef();
   useEffect(() => {
-    return () => {
-      reset("password", "password_confirmation");
-    };
+    if (isFocused) {
+      input.current.focus();
+    }
   }, []);
-  const submit = (e) => {
-    e.preventDefault();
-    post(route("register"));
-  };
-  return /* @__PURE__ */ jsxs(Guest, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Register" }),
-    /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "name", value: "Name" }),
-        /* @__PURE__ */ jsx(
-          TextInput,
-          {
-            id: "name",
-            name: "name",
-            value: data.name,
-            className: "mt-1 block w-full",
-            autoComplete: "name",
-            isFocused: true,
-            onChange: (e) => setData2("name", e.target.value),
-            required: true
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { message: errors.name, className: "mt-2" })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "mt-4", children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: "Email" }),
-        /* @__PURE__ */ jsx(
-          TextInput,
-          {
-            id: "email",
-            type: "email",
-            name: "email",
-            value: data.email,
-            className: "mt-1 block w-full",
-            autoComplete: "username",
-            onChange: (e) => setData2("email", e.target.value),
-            required: true
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { message: errors.email, className: "mt-2" })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "mt-4", children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "password", value: "Password" }),
-        /* @__PURE__ */ jsx(
-          TextInput,
-          {
-            id: "password",
-            type: "password",
-            name: "password",
-            value: data.password,
-            className: "mt-1 block w-full",
-            autoComplete: "new-password",
-            onChange: (e) => setData2("password", e.target.value),
-            required: true
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { message: errors.password, className: "mt-2" })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "mt-4", children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "password_confirmation", value: "Confirm Password" }),
-        /* @__PURE__ */ jsx(
-          TextInput,
-          {
-            id: "password_confirmation",
-            type: "password",
-            name: "password_confirmation",
-            value: data.password_confirmation,
-            className: "mt-1 block w-full",
-            autoComplete: "new-password",
-            onChange: (e) => setData2("password_confirmation", e.target.value),
-            required: true
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { message: errors.password_confirmation, className: "mt-2" })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-end mt-4", children: [
-        /* @__PURE__ */ jsx(
-          Link,
-          {
-            href: route("login"),
-            className: "underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800",
-            children: "Already registered?"
-          }
-        ),
-        /* @__PURE__ */ jsx(PrimaryButton, { className: "ms-4", disabled: processing, children: "Register" })
-      ] })
-    ] })
-  ] });
-}
-const __vite_glob_0_42 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: Register
-}, Symbol.toStringTag, { value: "Module" }));
-function ResetPassword({ token, email }) {
+  return /* @__PURE__ */ jsx(
+    "input",
+    {
+      ...props,
+      type,
+      className: "border-input dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary dark:focus:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-md shadow-sm " + className,
+      ref: input
+    }
+  );
+});
+function ResetPassword({ token, email: email2 }) {
   const { data, setData: setData2, post, processing, errors, reset } = useForm({
     token,
-    email,
+    email: email2,
     password: "",
     password_confirmation: ""
   });
@@ -13481,11 +12095,11 @@ function ResetPassword({ token, email }) {
           }
         )
       ] }),
-      /* @__PURE__ */ jsx("div", { className: "flex items-center justify-end mt-4", children: /* @__PURE__ */ jsx(PrimaryButton, { className: "ms-4", disabled: processing, children: useTrans("Réinitialiser le mot de passe") }) })
+      /* @__PURE__ */ jsx("div", { className: "flex items-center justify-end mt-4", children: /* @__PURE__ */ jsx(Button, { disabled: processing, variant: "secondary", children: useTrans("Réinitialiser le mot de passe") }) })
     ] })
   ] });
 }
-const __vite_glob_0_43 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_38 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: ResetPassword
 }, Symbol.toStringTag, { value: "Module" }));
@@ -13500,7 +12114,7 @@ function VerifyEmail({ status }) {
     /* @__PURE__ */ jsx("div", { className: "mb-4 text-sm text-gray-600 dark:text-gray-400", children: "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another." }),
     status === "verification-link-sent" && /* @__PURE__ */ jsx("div", { className: "mb-4 font-medium text-sm text-green-600 dark:text-green-400", children: "A new verification link has been sent to the email address you provided during registration." }),
     /* @__PURE__ */ jsx("form", { onSubmit: submit, children: /* @__PURE__ */ jsxs("div", { className: "mt-4 flex items-center justify-between", children: [
-      /* @__PURE__ */ jsx(PrimaryButton, { disabled: processing, children: "Resend Verification Email" }),
+      /* @__PURE__ */ jsx(Button, { disabled: processing, children: "Resend Verification Email" }),
       /* @__PURE__ */ jsx(
         Link,
         {
@@ -13514,29 +12128,30 @@ function VerifyEmail({ status }) {
     ] }) })
   ] });
 }
-const __vite_glob_0_44 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_39 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: VerifyEmail
 }, Symbol.toStringTag, { value: "Module" }));
 function getNavList(activeSection) {
+  const { t } = useTranslation("translation", { keyPrefix: "client.navbar" });
   return [
     {
-      label: useTrans("Accueil"),
+      label: t("home"),
       href: "#home-section",
       active: activeSection === "home-section"
     },
     {
-      label: useTrans("Nos Chambres"),
+      label: t("rooms"),
       href: "#rooms-section",
       active: activeSection === "rooms-section"
     },
     {
-      label: useTrans("Services"),
+      label: t("services"),
       href: "#services-section",
       active: activeSection === "services-section"
     },
     {
-      label: useTrans("contactez-nous"),
+      label: t("contactUs"),
       href: "#contact-section",
       active: activeSection === "contact-section"
     }
@@ -13627,6 +12242,10 @@ function LinkSheet() {
 }
 function UserNav() {
   const user = usePage().props.auth.user;
+  const [processing, setProcessing] = React__default.useState(false);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.navbar.userNav"
+  });
   return /* @__PURE__ */ jsxs(DropdownMenu, { children: [
     /* @__PURE__ */ jsx(TooltipProvider, { disableHoverableContent: true, children: /* @__PURE__ */ jsxs(Tooltip, { delayDuration: 100, children: [
       /* @__PURE__ */ jsx(TooltipTrigger, { asChild: true, children: /* @__PURE__ */ jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsx(
@@ -13643,7 +12262,7 @@ function UserNav() {
           ] })
         }
       ) }) }),
-      /* @__PURE__ */ jsx(TooltipContent, { side: "bottom", children: useTrans("Profile") })
+      /* @__PURE__ */ jsx(TooltipContent, { side: "bottom", children: t("profile") })
     ] }) }),
     /* @__PURE__ */ jsxs(DropdownMenuContent, { className: "w-56", align: "end", forceMount: true, children: [
       /* @__PURE__ */ jsx(DropdownMenuLabel, { className: "font-normal", children: /* @__PURE__ */ jsxs("div", { className: "flex flex-col space-y-1", children: [
@@ -13656,28 +12275,56 @@ function UserNav() {
       ] }) }),
       /* @__PURE__ */ jsx(DropdownMenuSeparator, {}),
       /* @__PURE__ */ jsxs(DropdownMenuGroup, { children: [
-        /* @__PURE__ */ jsx(DropdownMenuItem, { className: "hover:cursor-pointer", asChild: true, children: /* @__PURE__ */ jsxs(
-          Link,
+        /* @__PURE__ */ jsxs(
+          DropdownMenuItem,
           {
-            href: route("client.profile.edit"),
-            className: "flex items-center",
+            className: "hover:cursor-pointer",
+            disabled: processing,
+            onClick: () => {
+              router.get(
+                route("client.profile.edit"),
+                {},
+                {
+                  onStart: () => {
+                    setProcessing(true);
+                  },
+                  onFinish: () => {
+                    setProcessing(false);
+                  }
+                }
+              );
+            },
             children: [
               /* @__PURE__ */ jsx(User, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
-              useTrans("Compte")
+              t("compte")
             ]
           }
-        ) }),
-        /* @__PURE__ */ jsx(DropdownMenuItem, { className: "hover:cursor-pointer", asChild: true, children: /* @__PURE__ */ jsxs(
-          Link,
+        ),
+        /* @__PURE__ */ jsxs(
+          DropdownMenuItem,
           {
-            href: route("client.bookings.index"),
-            className: "flex items-center",
+            className: "hover:cursor-pointer",
+            disabled: processing,
+            onClick: () => {
+              router.get(
+                route("client.bookings.index"),
+                {},
+                {
+                  onStart: () => {
+                    setProcessing(true);
+                  },
+                  onFinish: () => {
+                    setProcessing(false);
+                  }
+                }
+              );
+            },
             children: [
               /* @__PURE__ */ jsx(BookmarkCheck, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
-              useTrans("Mes réservations")
+              t("myBookings")
             ]
           }
-        ) })
+        )
       ] }),
       /* @__PURE__ */ jsx(DropdownMenuSeparator, {}),
       /* @__PURE__ */ jsxs(
@@ -13685,11 +12332,23 @@ function UserNav() {
         {
           className: "hover:cursor-pointer",
           onClick: () => {
-            router.post(route("logout"));
+            router.post(
+              route("logout"),
+              {},
+              {
+                onStart: () => {
+                  setProcessing(true);
+                },
+                onFinish: () => {
+                  setProcessing(false);
+                }
+              }
+            );
           },
+          disabled: processing,
           children: [
             /* @__PURE__ */ jsx(LogOut, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
-            useTrans("Se déconnecter")
+            t("logOut")
           ]
         }
       )
@@ -13697,16 +12356,22 @@ function UserNav() {
   ] });
 }
 function LangSwitch() {
-  const locale = localStorage.getItem("locale") || "fr";
-  const [lang, setLang] = React.useState(locale);
-  const handleSwitch = () => {
-    const newLang = lang === "ar" ? "fr" : "ar";
-    setLang(newLang);
-    localStorage.setItem("locale", newLang);
+  const { t } = useTranslation("translation", { keyPrefix: "client.navbar" });
+  const [processing, setProcessing] = React.useState(false);
+  const { i18n: i18n2 } = useTranslation();
+  const { locale } = usePage().props;
+  const handleSwitch = (lng) => {
+    i18n2.changeLanguage(lng);
     router.visit(route("client.switch.lang"), {
-      data: { lang: newLang },
+      data: { lang: lng },
       preserveState: true,
-      preserveScroll: true
+      preserveScroll: true,
+      onStart: () => {
+        setProcessing(true);
+      },
+      onFinish: () => {
+        setProcessing(false);
+      }
     });
   };
   return /* @__PURE__ */ jsx(TooltipProvider, { disableHoverableContent: true, children: /* @__PURE__ */ jsxs(Tooltip, { delayDuration: 100, children: [
@@ -13716,14 +12381,15 @@ function LangSwitch() {
         className: "rounded-full w-8 h-8 bg-background",
         variant: "outline",
         size: "icon",
-        onClick: handleSwitch,
+        onClick: () => handleSwitch(locale == "ar" ? "fr" : "ar"),
+        disabled: processing,
         children: [
           /* @__PURE__ */ jsx(
             "span",
             {
               className: cn(
                 "absolute w-[1.2rem] h-[1.2rem] rotate-90 scale-0 transition-transform ease-in-out duration-500 ",
-                lang === "ar" ? "rotate-0 scale-100" : "-rotate-90 scale-0"
+                locale === "ar" ? "rotate-0 scale-100" : "-rotate-90 scale-0"
               ),
               children: "ar"
             }
@@ -13733,7 +12399,7 @@ function LangSwitch() {
             {
               className: cn(
                 "absolute w-[1.2rem] h-[1.2rem] rotate-0 scale-1000 transition-transform ease-in-out duration-500 ",
-                lang === "fr" ? "rotate-0 scale-100" : "rotate-90 scale-0"
+                locale === "fr" ? "rotate-0 scale-100" : "rotate-90 scale-0"
               ),
               children: "fr"
             }
@@ -13743,13 +12409,14 @@ function LangSwitch() {
       }
     ) }),
     /* @__PURE__ */ jsxs(TooltipContent, { side: "bottom", children: [
-      useTrans("Changer la langue"),
+      t("swichLang"),
       " "
     ] })
   ] }) });
 }
 function NavBar() {
   const user = usePage().props.auth.user;
+  const { t } = useTranslation("translation", { keyPrefix: "client.navbar" });
   return /* @__PURE__ */ jsx("header", { className: "sticky top-0 z-50 w-full shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary", children: /* @__PURE__ */ jsxs("div", { className: "mx-4 sm:mx-8 flex h-14 items-center justify-between", children: [
     /* @__PURE__ */ jsx("div", { className: "flex items-center space-x-4 lg:space-x-0", children: /* @__PURE__ */ jsx(Link, { href: route("client.index"), children: /* @__PURE__ */ jsx(AppLogo, { className: "w-10 h-10" }) }) }),
     /* @__PURE__ */ jsx("div", { className: "invisible md:visible", children: /* @__PURE__ */ jsx(NavLinks, {}) }),
@@ -13760,7 +12427,7 @@ function NavBar() {
           size: "sm",
           variant: "secondary",
           onClick: () => router.get(route("login")),
-          children: "Se Connecter"
+          children: t("login")
         }
       ),
       /* @__PURE__ */ jsx(LangSwitch, {}),
@@ -13769,26 +12436,35 @@ function NavBar() {
     ] })
   ] }) });
 }
+const email = "contact@hotelsidielnoui.dz";
+const phone = "023358230";
+const address = "chéraga alger, Algerie";
+const maps = "https://maps.app.goo.gl/PKkyi9AU14F6bXYd9";
+const facebook = "https://web.facebook.com/p/Hotel-sidi-el-noui-100088684863459/?locale=fr_FR&_rdc=1&_rdr";
+const instagram = "https://www.instagram.com/hotelsidielnoui?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==";
 function Footer() {
   const menuList = getNavList();
   const current = route().current();
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.footer"
+  });
   return /* @__PURE__ */ jsxs("footer", { className: "relative", children: [
     /* @__PURE__ */ jsxs("div", { className: "lg:px-28 px-10 py-4 flex flex-col  gap-4 ", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex sm:flex-row pb-4 flex-col justify-between items-center gap-4 w-full", children: [
         /* @__PURE__ */ jsxs(
           "a",
           {
-            href: "phone:04505050",
+            href: `phone:${phone}`,
             className: "flex gap-4 items-center justify-start w-full",
             children: [
               /* @__PURE__ */ jsx("div", { className: "text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center", children: /* @__PURE__ */ jsx(Phone, {}) }),
               /* @__PURE__ */ jsxs("div", { className: "flex sm:flex-col gap-4 sm:gap-1 ", children: [
                 /* @__PURE__ */ jsxs("div", { className: "text-xs text-muted-foreground", children: [
-                  useTrans("N° téléphone"),
+                  t("phone"),
                   " :",
                   " "
                 ] }),
-                /* @__PURE__ */ jsx("div", { className: "text-sm font-medium ", children: "0540304050" })
+                /* @__PURE__ */ jsx("div", { className: "text-sm font-medium ", children: phone })
               ] })
             ]
           }
@@ -13796,17 +12472,17 @@ function Footer() {
         /* @__PURE__ */ jsxs(
           "a",
           {
-            href: "mailto:sidielnoui@gmail.com",
+            href: `mailto:${email}`,
             className: "flex gap-4 items-center justify-start w-full",
             children: [
               /* @__PURE__ */ jsx("div", { className: "text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center", children: /* @__PURE__ */ jsx(Mail, {}) }),
               /* @__PURE__ */ jsxs("div", { className: "flex sm:flex-col gap-4 sm:gap-1", children: [
                 /* @__PURE__ */ jsxs("div", { className: "text-xs text-muted-foreground", children: [
-                  useTrans("Email"),
+                  t("email"),
                   " :",
                   " "
                 ] }),
-                /* @__PURE__ */ jsx("div", { className: "text-sm font-medium", children: "sidielnoui@gmail.com" })
+                /* @__PURE__ */ jsx("div", { className: "text-sm font-medium", children: email })
               ] })
             ]
           }
@@ -13814,17 +12490,18 @@ function Footer() {
         /* @__PURE__ */ jsxs(
           "a",
           {
-            href: "https://www.googlemap.com",
+            target: "blank",
+            href: maps,
             className: "flex gap-4 items-center justify-start w-full",
             children: [
               /* @__PURE__ */ jsx("div", { className: "text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center", children: /* @__PURE__ */ jsx(MapPin, {}) }),
               /* @__PURE__ */ jsxs("div", { className: "flex sm:flex-col gap-4 sm:gap-1", children: [
                 /* @__PURE__ */ jsxs("div", { className: "text-xs text-muted-foreground", children: [
-                  useTrans("Adresse"),
+                  t("address"),
                   " :",
                   " "
                 ] }),
-                /* @__PURE__ */ jsx("div", { className: "text-sm font-medium", children: "chéraga alger, Algerie" })
+                /* @__PURE__ */ jsx("div", { className: "text-sm font-medium", children: address })
               ] })
             ]
           }
@@ -13834,7 +12511,7 @@ function Footer() {
         /* @__PURE__ */ jsxs("div", { className: "flex items-start justify-center gap-4 sm:w-2/4 w-full", children: [
           /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-2 w-1/2", children: [
             /* @__PURE__ */ jsxs("span", { className: "text-lg font-bold", children: [
-              useTrans("Liens"),
+              t("links"),
               " "
             ] }),
             current != "client.index" ? menuList.map((link, idx) => /* @__PURE__ */ jsx(
@@ -13856,11 +12533,11 @@ function Footer() {
             ))
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-center items-center gap-4 w-1/2", children: [
-            /* @__PURE__ */ jsx("span", { className: "text-lg font-bold", children: useTrans("Réseaux Sociaux") }),
+            /* @__PURE__ */ jsx("span", { className: "text-lg font-bold", children: t("socialMedia") }),
             /* @__PURE__ */ jsxs(
               "a",
               {
-                href: "https://web.facebook.com/p/Hotel-sidi-el-noui-100088684863459/?locale=fr_FR&_rdc=1&_rdr",
+                href: facebook,
                 className: "flex gap-4 items-center ",
                 children: [
                   /* @__PURE__ */ jsx("div", { className: "text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center", children: /* @__PURE__ */ jsx(Facebook, {}) }),
@@ -13871,7 +12548,7 @@ function Footer() {
             /* @__PURE__ */ jsxs(
               "a",
               {
-                href: "https://www.instagram.com/hotelsidielnoui?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+                href: instagram,
                 className: "flex gap-4 items-center  ",
                 children: [
                   /* @__PURE__ */ jsx("div", { className: "text-primary bg-secondary p-1 rounded-md h-9 w-9 flex justify-center items-center", children: /* @__PURE__ */ jsx(Instagram, {}) }),
@@ -13881,25 +12558,34 @@ function Footer() {
             )
           ] })
         ] }),
-        /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 w-2/4", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 sm:w-2/4 w-full", children: [
           /* @__PURE__ */ jsx(AppLogo, { className: "w-20 h-20" }),
           /* @__PURE__ */ jsxs("div", { children: [
-            useTrans(
-              "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable."
-            ),
+            t("description"),
             " "
           ] })
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ jsxs("div", { className: "bg-secondary text-secondary-foreground p-4 text-center", children: [
-      /* @__PURE__ */ jsx("span", { children: "© 2024 Copyright: " }),
-      /* @__PURE__ */ jsx("a", { className: "font-semibold", href: "https://sidielnouihotel.com", children: "SIDI EL NOUI" })
+    /* @__PURE__ */ jsxs("div", { className: "bg-secondary text-secondary-foreground py-4 px-16 flex justify-between items-center ", children: [
+      /* @__PURE__ */ jsx("a", { target: "blank", href: "https://duobix.com", children: "Duobix Software" }),
+      /* @__PURE__ */ jsxs("div", { children: [
+        /* @__PURE__ */ jsx("span", { children: "© 2024 Copyright " }),
+        /* @__PURE__ */ jsx(
+          "a",
+          {
+            className: "font-semibold",
+            href: "https://hotelsidielnoui.dz",
+            target: "blank",
+            children: "SIDI EL NOUI"
+          }
+        )
+      ] })
     ] })
   ] });
 }
 function ClientLayout({ children }) {
-  const locale = localStorage.getItem("locale") || "fr";
+  const { locale } = usePage().props;
   useEffect(() => {
     document.documentElement.dir = locale == "ar" ? "rtl" : "ltr";
   }, [locale]);
@@ -13921,17 +12607,21 @@ function UserDataForm({
   data,
   submit,
   total,
-  promotion
+  promotion,
+  processing
 }) {
   const auth = usePage().props.auth;
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.aviableRooms"
+  });
   return /* @__PURE__ */ jsxs("div", { className: "relative flex gap-2 m-6", children: [
     /* @__PURE__ */ jsxs("div", { className: "w-1/3 flex flex-col gap-2", children: [
       /* @__PURE__ */ jsxs(Card, { children: [
-        /* @__PURE__ */ jsx(CardHeader, { className: "font-bold p-2", children: useTrans("Détails de votre réservation") }),
+        /* @__PURE__ */ jsx(CardHeader, { className: "font-bold p-2", children: t("detailsCard.header") }),
         /* @__PURE__ */ jsxs(CardContent, { className: "flex justify-between p-2", children: [
           /* @__PURE__ */ jsxs("div", { children: [
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Arrivée"),
+              t("detailsCard.checkIn"),
               " "
             ] }),
             /* @__PURE__ */ jsx("div", { className: "font-bold", children: booking_data.check_in }),
@@ -13939,7 +12629,7 @@ function UserDataForm({
           ] }),
           /* @__PURE__ */ jsxs("div", { children: [
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Départ"),
+              t("detailsCard.checkOut"),
               " "
             ] }),
             /* @__PURE__ */ jsx("div", { className: "font-bold", children: booking_data.check_out }),
@@ -13948,30 +12638,30 @@ function UserDataForm({
         ] }),
         /* @__PURE__ */ jsxs(CardFooter, { className: "flex-col items-start p-2", children: [
           /* @__PURE__ */ jsxs("div", { children: [
-            useTrans("Durée de séjour"),
+            t("detailsCard.time"),
             " "
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "font-bold", children: [
             (new Date(booking_data.check_out) - new Date(booking_data.check_in)) / (1e3 * 60 * 60 * 24),
             " ",
-            useTrans("nuit")
+            t("detailsCard.nights")
           ] })
         ] })
       ] }),
       /* @__PURE__ */ jsxs(Card, { children: [
         /* @__PURE__ */ jsxs(CardHeader, { className: "font-bold p-2", children: [
-          useTrans("Vous avez sélectionné pour"),
+          t("selectionCard.header"),
           " ",
           booking_data.guest_number,
           " ",
-          useTrans("adult"),
+          t("selectionCard.adult"),
           " ",
           booking_data.kids_number && /* @__PURE__ */ jsxs(Fragment, { children: [
-            useTrans("et"),
+            t("selectionCard.and"),
             " ",
             booking_data.kids_number,
             " ",
-            useTrans("bébés"),
+            t("selectionCard.babays"),
             " :",
             " "
           ] }),
@@ -13983,7 +12673,7 @@ function UserDataForm({
             className: "shadow rounded-lg py-1 px-2 mb-1 flex justify-between",
             children: [
               /* @__PURE__ */ jsxs("div", { children: [
-                useTrans("chambre"),
+                t("selectionCard.rooms"),
                 " ",
                 room.type.type_designation,
                 " "
@@ -13991,34 +12681,34 @@ function UserDataForm({
               /* @__PURE__ */ jsxs("div", { className: "font-bold text-primary", children: [
                 room.room_price,
                 " ",
-                useTrans("DA"),
+                t("da"),
                 " x",
                 " ",
                 (new Date(booking_data.check_out) - new Date(booking_data.check_in)) / (1e3 * 60 * 60 * 24),
                 " ",
-                useTrans("nuit")
+                t("selectionCard.nights")
               ] })
             ]
           },
           room.room_number
         )) }),
-        /* @__PURE__ */ jsx(CardFooter, { className: "justify-center p-2", children: /* @__PURE__ */ jsx(Button, { variant: "link", onClick: () => setFinal(false), children: useTrans("Modifier la selection") }) })
+        /* @__PURE__ */ jsx(CardFooter, { className: "justify-center p-2", children: /* @__PURE__ */ jsx(Button, { variant: "link", onClick: () => setFinal(false), children: t("selectionCard.btn") }) })
       ] }),
       /* @__PURE__ */ jsxs(Card, { children: [
-        /* @__PURE__ */ jsx(CardHeader, { className: "p-2 font-bold", children: useTrans("Récapitulatif du montant") }),
+        /* @__PURE__ */ jsx(CardHeader, { className: "p-2 font-bold", children: t("pricingCard.header") }),
         /* @__PURE__ */ jsxs(CardContent, { className: "p-2 text-3xl font-bold text-primary", children: [
           promotion ? /* @__PURE__ */ jsxs("div", { className: "text-xl line-through", children: [
             " ",
             total + promotion.promo_value * selectedRooms.length * (new Date(booking_data.check_out) - new Date(booking_data.check_in)) / (1e3 * 60 * 60 * 24),
             " ",
-            useTrans("DA"),
+            t("da"),
             " "
           ] }) : null,
           total,
           " ",
-          useTrans("DA")
+          t("da")
         ] }),
-        /* @__PURE__ */ jsx(CardFooter, { className: "p-2 text-muted-foreground", children: useTrans("Ce prix avec tout tax inclus") })
+        /* @__PURE__ */ jsx(CardFooter, { className: "p-2 text-muted-foreground", children: t("pricingCard.footer") })
       ] })
     ] }),
     /* @__PURE__ */ jsx("div", { className: "w-2/3 h-fit bg-card p-2 pb-6 rounded-lg", children: /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
@@ -14026,7 +12716,7 @@ function UserDataForm({
         /* @__PURE__ */ jsx(
           FormInput,
           {
-            label: "Nom",
+            label: t("form.lastName"),
             error: errors.first_name,
             type: "text",
             data: data.first_name,
@@ -14038,7 +12728,7 @@ function UserDataForm({
         /* @__PURE__ */ jsx(
           FormInput,
           {
-            label: "Prénom",
+            label: t("form.firstName"),
             error: errors.last_name,
             type: "text",
             data: data.last_name,
@@ -14052,7 +12742,7 @@ function UserDataForm({
       /* @__PURE__ */ jsx(
         FormInput,
         {
-          label: "Email",
+          label: t("form.email"),
           error: errors.email,
           type: "email",
           data: data.email,
@@ -14065,7 +12755,7 @@ function UserDataForm({
       /* @__PURE__ */ jsx(
         FormInput,
         {
-          label: "N° téléphone",
+          label: t("form.phone"),
           error: errors.phone,
           type: "phone",
           data: data.phone,
@@ -14074,13 +12764,21 @@ function UserDataForm({
           disabled: auth.user != null
         }
       ),
-      /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(Button, { variant: "secondary", className: "w-1/4", children: useTrans("Réserver") }) })
+      /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
+        Button,
+        {
+          variant: "secondary",
+          className: "w-1/4",
+          disabled: processing,
+          children: t("form.submit")
+        }
+      ) })
     ] }) })
   ] });
 }
 function RoomsServces({
-  rooms,
-  services,
+  rooms: rooms2,
+  services: services2,
   booking_data,
   selectedRooms,
   setSelectedRooms,
@@ -14092,6 +12790,9 @@ function RoomsServces({
   setBeedsNumber,
   promotion
 }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.aviableRooms.roomServce"
+  });
   const addRoom = (room) => {
     let nights = (new Date(booking_data.check_out) - new Date(booking_data.check_in)) / (1e3 * 60 * 60 * 24);
     promotion ? setTotal(
@@ -14115,7 +12816,7 @@ function RoomsServces({
       for (const [bedNumber, prices] of Object.entries(beds)) {
         let bedRowSpan = Object.keys(prices).length;
         let firstBedRow = true;
-        for (const [price, rooms2] of Object.entries(prices)) {
+        for (const [price, rooms22] of Object.entries(prices)) {
           rows.push(
             /* @__PURE__ */ jsxs("tr", { children: [
               firstTypeRow && /* @__PURE__ */ jsx(
@@ -14125,7 +12826,7 @@ function RoomsServces({
                   rowSpan: typeRowSpan,
                   children: /* @__PURE__ */ jsxs("div", { className: "flex flex-col items-start ", children: [
                     /* @__PURE__ */ jsx("div", { children: roomType }),
-                    /* @__PURE__ */ jsx("div", { children: rooms2[0].features.map(
+                    /* @__PURE__ */ jsx("div", { children: rooms22[0].features.map(
                       (feature) => /* @__PURE__ */ jsxs(
                         Badge,
                         {
@@ -14169,33 +12870,33 @@ function RoomsServces({
                 " "
               ] }),
               /* @__PURE__ */ jsxs("td", { className: "boreder-b border-2 border-b-secondary px-3 flex justify-between items-center", children: [
-                rooms2.length,
+                rooms22.length,
                 " ",
                 useTrans("Chambre"),
-                rooms2.length == 1 ? "" : useTrans("s"),
+                rooms22.length == 1 ? "" : useTrans("s"),
                 /* @__PURE__ */ jsx(
                   Button,
                   {
                     size: "icon",
                     variant: "outline",
                     className: "z-[1]",
-                    disabled: beedsNumber >= booking_data.guest_number || rooms2.length <= 1 && selectedRooms.includes(
-                      rooms2[rooms2.length - 1]
+                    disabled: beedsNumber >= booking_data.guest_number || rooms22.length <= 1 && selectedRooms.includes(
+                      rooms22[rooms22.length - 1]
                     ) || selectedRooms.includes(
-                      rooms2.filter(
-                        (r) => r.id !== rooms2[rooms2.length - 1].id
-                      )[rooms2.filter(
-                        (r) => r.id !== rooms2[rooms2.length - 1].id
+                      rooms22.filter(
+                        (r) => r.id !== rooms22[rooms22.length - 1].id
+                      )[rooms22.filter(
+                        (r) => r.id !== rooms22[rooms22.length - 1].id
                       ).length - 1]
                     ),
                     onClick: () => addRoom(
                       selectedRooms.includes(
-                        rooms2[rooms2.length - 1]
-                      ) ? rooms2.filter(
-                        (r) => r.id !== rooms2[rooms2.length - 1].id
-                      )[rooms2.filter(
-                        (r) => r.id !== rooms2[rooms2.length - 1].id
-                      ).length - 1] : rooms2[rooms2.length - 1]
+                        rooms22[rooms22.length - 1]
+                      ) ? rooms22.filter(
+                        (r) => r.id !== rooms22[rooms22.length - 1].id
+                      )[rooms22.filter(
+                        (r) => r.id !== rooms22[rooms22.length - 1].id
+                      ).length - 1] : rooms22[rooms22.length - 1]
                     ),
                     children: /* @__PURE__ */ jsx(CirclePlus, {})
                   }
@@ -14260,29 +12961,29 @@ function RoomsServces({
       defaultValue: "rooms",
       children: [
         /* @__PURE__ */ jsxs(AccordionItem, { value: "rooms", children: [
-          /* @__PURE__ */ jsx(AccordionTrigger, { className: "bg-card mb-2 p-3 rounded", children: useTrans("Chambres") }),
+          /* @__PURE__ */ jsx(AccordionTrigger, { className: "bg-card mb-2 p-3 rounded", children: t("rooms") }),
           /* @__PURE__ */ jsx(AccordionContent, { children: /* @__PURE__ */ jsxs("table", { className: "relative border-muted border-1 border bg-card z-[10]", children: [
-            /* @__PURE__ */ jsx("thead", { className: "relative", children: /* @__PURE__ */ jsxs("tr", { className: "border border-secondary  border-2", children: [
+            /* @__PURE__ */ jsx("thead", { className: "relative", children: /* @__PURE__ */ jsxs("tr", { className: "border-secondary border-2", children: [
               /* @__PURE__ */ jsxs("th", { className: "w-1/2", children: [
-                useTrans("Type de logement"),
+                t("type"),
                 " "
               ] }),
               /* @__PURE__ */ jsxs("th", { children: [
-                useTrans("Nombre de lits"),
+                t("beeds"),
                 " "
               ] }),
               /* @__PURE__ */ jsxs("th", { className: "w-1/4", children: [
-                useTrans("Tarif"),
+                t("pricing"),
                 " "
               ] }),
-              /* @__PURE__ */ jsx("th", { className: "w-1/4", children: useTrans("Selectionner des chambres") })
+              /* @__PURE__ */ jsx("th", { className: "w-1/4", children: t("select") })
             ] }) }),
-            /* @__PURE__ */ jsx("tbody", { children: generateTableRows(rooms) })
+            /* @__PURE__ */ jsx("tbody", { children: generateTableRows(rooms2) })
           ] }) })
         ] }),
         /* @__PURE__ */ jsxs(AccordionItem, { value: "rooms-1", children: [
-          /* @__PURE__ */ jsx(AccordionTrigger, { className: "bg-card mb-2 p-3 rounded", children: useTrans("Consommations") }),
-          /* @__PURE__ */ jsx(AccordionContent, { children: /* @__PURE__ */ jsx("div", { className: "relative bg-card z-[10] p-4 rounded", children: services.map((service) => /* @__PURE__ */ jsxs("div", { className: "mb-2", children: [
+          /* @__PURE__ */ jsx(AccordionTrigger, { className: "bg-card mb-2 p-3 rounded", children: t("consumptions") }),
+          /* @__PURE__ */ jsx(AccordionContent, { children: /* @__PURE__ */ jsx("div", { className: "relative bg-card z-[10] p-4 rounded", children: services2.map((service) => /* @__PURE__ */ jsxs("div", { className: "mb-2", children: [
             /* @__PURE__ */ jsx("div", { className: "font-bold", children: service.service_name }),
             /* @__PURE__ */ jsx("div", { children: service.consomation.map((consomation) => /* @__PURE__ */ jsxs(
               "div",
@@ -14296,7 +12997,7 @@ function RoomsServces({
                     /* @__PURE__ */ jsxs("span", { className: "font-bold", children: [
                       consomation.consumption_price,
                       " ",
-                      "DA"
+                      t("da")
                     ] })
                   ] }),
                   /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-center border rounded p-1 bg-muted", children: [
@@ -14368,6 +13069,9 @@ function BookingsCard({
       return { ...prevData };
     });
   };
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.aviableRooms.bookingCard"
+  });
   return /* @__PURE__ */ jsx("div", { className: "w-1/4 rounded px-1 bg-card ", children: /* @__PURE__ */ jsxs("div", { className: "sticky top-10", children: [
     /* @__PURE__ */ jsxs(
       Button,
@@ -14378,18 +13082,18 @@ function BookingsCard({
         className: "my-4 w-full z-[1] justify-between",
         disabled: selectedRooms == false,
         children: [
-          useTrans("Dernière étape"),
+          t("btn"),
           " ",
           /* @__PURE__ */ jsx(ChevronRight, {})
         ]
       }
     ),
     total > 0 && /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs("p", { className: "text-lg font-bold", children: [
-      useTrans("Total"),
+      t("tot"),
       " : ",
       total,
       " ",
-      useTrans("DA"),
+      t("da"),
       " "
     ] }) }),
     /* @__PURE__ */ jsxs("div", { children: [
@@ -14400,28 +13104,27 @@ function BookingsCard({
           children: [
             /* @__PURE__ */ jsxs(Dialog, { children: [
               /* @__PURE__ */ jsxs(DialogTrigger, { className: "hover:underline", children: [
-                useTrans("Chambre N°"),
-                " :",
-                " ",
+                t("roomNumber"),
+                " : ",
                 room.room_number
               ] }),
               /* @__PURE__ */ jsx(DialogContent, { children: /* @__PURE__ */ jsxs(DialogHeader, { children: [
                 /* @__PURE__ */ jsxs(DialogTitle, { children: [
-                  useTrans("Chambre"),
+                  t("room"),
                   " ",
                   room.type.type_designation,
                   " ",
-                  useTrans("avec"),
+                  t("with"),
                   " ",
                   room.beeds_number,
                   " ",
                   useTrans("lits"),
                   " ",
-                  useTrans("Pour : "),
+                  t("for"),
                   " ",
                   room.room_price,
                   " ",
-                  useTrans("DA")
+                  t("da")
                 ] }),
                 room.assets.length > 0 && /* @__PURE__ */ jsxs(Carousel, { children: [
                   /* @__PURE__ */ jsx(CarouselContent, { children: room.assets.map(
@@ -14444,7 +13147,7 @@ function BookingsCard({
                   /* @__PURE__ */ jsx(CarouselNext, {})
                 ] }),
                 room.features.length > 0 && /* @__PURE__ */ jsxs("div", { className: "font-bold flex", children: [
-                  useTrans("Caractéristiques"),
+                  t("features"),
                   " :",
                   " "
                 ] }),
@@ -14517,9 +13220,9 @@ function BookingsCard({
   ] }) });
 }
 function AviableRooms({
-  rooms,
+  rooms: rooms2,
   booking_data,
-  services,
+  services: services2,
   promotion
 }) {
   const [selectedRooms, setSelectedRooms] = useState([]);
@@ -14527,7 +13230,7 @@ function AviableRooms({
   const [beedsNumber, setBeedsNumber] = useState(0);
   const [final, setFinal] = useState(false);
   const user = usePage().props.auth.user;
-  const { data, setData: setData2, post, errors } = useForm({
+  const { data, setData: setData2, post, errors, processing } = useForm({
     rooms: [],
     consomation: [],
     check_in: booking_data.check_in,
@@ -14540,6 +13243,9 @@ function AviableRooms({
     phone: user ? user.phone : "",
     promo_value: promotion ? promotion.promo_value : null
   });
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.aviableRooms"
+  });
   const handleSetData = (field, value) => {
     setData2((prevData) => ({
       ...prevData,
@@ -14551,8 +13257,11 @@ function AviableRooms({
     post(route("client.store.bookings"));
   };
   return /* @__PURE__ */ jsxs(ClientLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Aviable rooms" }),
-    /* @__PURE__ */ jsx("div", { className: "font-bold text-xl m-6 ", children: useTrans("Finaliser votre réservation") }),
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: t("title") }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: t("metaDescreption") })
+    ] }),
+    /* @__PURE__ */ jsx("div", { className: "font-bold text-xl m-6 ", children: t("pageHeader") }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-1/2 h-1/2 left-[0]  top-[10]  translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] min-w-1/2 w-[37rem] h-[27rem] left-[calc(60%-28.5rem)] top-[50%] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
@@ -14568,14 +13277,15 @@ function AviableRooms({
         data,
         submit,
         total,
-        promotion
+        promotion,
+        processing
       }
     ) : /* @__PURE__ */ jsxs("div", { className: "relative flex gap-2 m-6", children: [
       /* @__PURE__ */ jsx(
         RoomsServces,
         {
-          rooms,
-          services,
+          rooms: rooms2,
+          services: services2,
           booking_data,
           selectedRooms,
           setSelectedRooms,
@@ -14607,141 +13317,154 @@ function AviableRooms({
     ] })
   ] });
 }
-const __vite_glob_0_45 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_40 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AviableRooms
 }, Symbol.toStringTag, { value: "Module" }));
-function MyBookings$1({ booking }) {
+function MyBookings$1({ booking: booking2 }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.myBookings.booking"
+  });
+  const [processing, setProcessing] = React__default.useState(false);
   const totalPrice = () => {
     let total = 0;
-    let days = (new Date(booking.check_out) - new Date(booking.check_in)) / (1e3 * 60 * 60 * 24);
-    booking.rooms.map((room) => {
+    let days = (new Date(booking2.check_out) - new Date(booking2.check_in)) / (1e3 * 60 * 60 * 24);
+    booking2.rooms.map((room) => {
       total += room.pivot.room_price * days;
     });
-    booking.consomation.map((consomation) => {
+    booking2.consomation.map((consomation) => {
       total += consomation.consumption_price * consomation.pivot.quantity;
     });
     return total;
   };
   return /* @__PURE__ */ jsxs(ClientLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Mes Réservations" }),
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: t("title") }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: t("metaDescreption") })
+    ] }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[47rem] h-[47rem] left-[calc(40%-20rem)] top-[30rem] sm:translate-x-[10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[20rem] bottom-[5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
-    /* @__PURE__ */ jsx(
-      PageHeading,
-      {
-        title: useTrans("Réservation"),
-        className: "my-10 relative"
-      }
-    ),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title"), className: "my-10 relative" }),
     /* @__PURE__ */ jsxs("div", { className: "relative flex flex-col md:flex-row gap-2 m-6", children: [
       /* @__PURE__ */ jsxs("div", { className: "md:w-1/3 w-full flex md:flex-col gap-2", children: [
         /* @__PURE__ */ jsxs(Card, { children: [
-          /* @__PURE__ */ jsx(CardHeader, { className: "font-bold p-2", children: useTrans("Informations personnels") }),
+          /* @__PURE__ */ jsx(CardHeader, { className: "font-bold p-2", children: t("infoCard") }),
           /* @__PURE__ */ jsx(CardContent, { className: "flex justify-between p-2", children: /* @__PURE__ */ jsxs("div", { children: [
             /* @__PURE__ */ jsxs("div", { className: "font-bold", children: [
-              booking.user.first_name,
+              booking2.user.first_name,
               " ",
-              booking.user.last_name,
+              booking2.user.last_name,
               " "
             ] }),
-            /* @__PURE__ */ jsx("div", { children: booking.user.email }),
-            /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: booking.user.phone })
+            /* @__PURE__ */ jsx("div", { children: booking2.user.email }),
+            /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: booking2.user.phone })
           ] }) }),
           /* @__PURE__ */ jsx(CardFooter, { className: "flex-col items-end p-2", children: /* @__PURE__ */ jsx(
             Button,
             {
               variant: "link",
-              onClick: () => router.get(route("client.profile.edit")),
-              children: useTrans("Voir le profile")
+              disabled: processing,
+              onClick: () => router.get(
+                route("client.profile.edit"),
+                {},
+                {
+                  onStart: () => {
+                    setProcessing(true);
+                  },
+                  onFinish: () => {
+                    setProcessing(false);
+                  }
+                }
+              ),
+              children: t("showProfile")
             }
           ) })
         ] }),
         /* @__PURE__ */ jsxs(Card, { children: [
-          /* @__PURE__ */ jsx(CardHeader, { className: "font-bold p-2", children: useTrans("Détails de votre réservation") }),
+          /* @__PURE__ */ jsx(CardHeader, { className: "font-bold p-2", children: t("bookingDetails") }),
           /* @__PURE__ */ jsxs(CardContent, { className: "flex justify-between p-2", children: [
             /* @__PURE__ */ jsxs("div", { children: [
               /* @__PURE__ */ jsxs("div", { children: [
-                useTrans("Arrivée"),
+                t("checkIn"),
                 " "
               ] }),
-              /* @__PURE__ */ jsx("div", { className: "font-bold", children: booking.check_in }),
+              /* @__PURE__ */ jsx("div", { className: "font-bold", children: booking2.check_in }),
               /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: "12h00 - 23h00" })
             ] }),
             /* @__PURE__ */ jsxs("div", { children: [
               /* @__PURE__ */ jsxs("div", { children: [
-                useTrans("Départ"),
+                t("checkOut"),
                 " "
               ] }),
-              /* @__PURE__ */ jsx("div", { className: "font-bold", children: booking.check_out }),
+              /* @__PURE__ */ jsx("div", { className: "font-bold", children: booking2.check_out }),
               /* @__PURE__ */ jsx("div", { className: "text-sm text-muted-foreground", children: "07h00 - 12h00" })
             ] })
           ] }),
           /* @__PURE__ */ jsx(CardContent, { className: "flex justify-between p-2", children: /* @__PURE__ */ jsxs("div", { children: [
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Nombre des personnes"),
+              t("guestNumber"),
               " "
             ] }),
             /* @__PURE__ */ jsxs("span", { className: "font-bold", children: [
-              booking.guest_number,
+              booking2.guest_number,
               " "
             ] }),
-            /* @__PURE__ */ jsx("span", { className: "text-sm text-muted-foreground", children: useTrans("adult") }),
-            booking.kids_number ? /* @__PURE__ */ jsxs(Fragment, { children: [
+            /* @__PURE__ */ jsx("span", { className: "text-sm text-muted-foreground", children: t("adult") }),
+            booking2.kids_number ? /* @__PURE__ */ jsxs(Fragment, { children: [
               " ",
-              useTrans("et"),
+              t("and"),
               " ",
               /* @__PURE__ */ jsxs("span", { className: "font-bold", children: [
-                booking.kids_number,
+                booking2.kids_number,
                 " "
               ] }),
-              /* @__PURE__ */ jsx("span", { className: "text-sm text-muted-foreground", children: useTrans("bébés") })
+              /* @__PURE__ */ jsx("span", { className: "text-sm text-muted-foreground", children: t("babys") })
             ] }) : null
           ] }) }),
           /* @__PURE__ */ jsxs(CardFooter, { className: "flex-col items-start p-2", children: [
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Durée de séjour"),
+              t("time"),
               " "
             ] }),
             /* @__PURE__ */ jsxs("div", { className: "font-bold", children: [
-              (new Date(booking.check_out) - new Date(booking.check_in)) / (1e3 * 60 * 60 * 24),
+              (new Date(booking2.check_out) - new Date(booking2.check_in)) / (1e3 * 60 * 60 * 24),
               " ",
-              useTrans("nuit")
+              t("nights")
             ] })
           ] })
         ] }),
         /* @__PURE__ */ jsxs(Card, { children: [
-          /* @__PURE__ */ jsx(CardHeader, { className: "p-2 font-bold", children: useTrans("Récapitulatif du montant") }),
+          /* @__PURE__ */ jsx(CardHeader, { className: "p-2 font-bold", children: t("pricingCardHeader") }),
           /* @__PURE__ */ jsxs(CardContent, { className: "p-2 text-3xl font-bold text-primary", children: [
-            totalPrice(booking.rooms),
+            totalPrice(booking2.rooms),
             " ",
-            useTrans("DA")
+            t("da")
           ] }),
-          /* @__PURE__ */ jsx(CardFooter, { className: "p-2 text-muted-foreground", children: useTrans("Ce prix avec tout tax inclus") })
+          /* @__PURE__ */ jsx(CardFooter, { className: "p-2 text-muted-foreground", children: t("pricingCardFooter") })
         ] })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "md:w-2/3 w-full h-fit bg-card p-2 pb-6 rounded-lg", children: [
-        booking.rooms.map((room) => /* @__PURE__ */ jsxs(Card, { className: "w-full mb-2", children: [
+        booking2.rooms.map((room) => /* @__PURE__ */ jsxs(Card, { className: "w-full mb-2", children: [
           /* @__PURE__ */ jsxs(CardHeader, { className: "font-bold p-2 pb-0 flex-row items-center justify-between", children: [
             /* @__PURE__ */ jsxs("div", { children: [
-              useTrans("Chambre"),
+              t("room"),
               " ",
               room.type.type_designation,
               " ",
-              useTrans("avec"),
+              t("with"),
               " ",
               room.beeds_number,
               " ",
-              useTrans("lits")
+              t("beeds")
             ] }),
             /* @__PURE__ */ jsxs("div", { className: "text-xl text-primary", children: [
-              (new Date(booking.check_out) - new Date(booking.check_in)) / (1e3 * 60 * 60 * 24),
+              (new Date(booking2.check_out) - new Date(booking2.check_in)) / (1e3 * 60 * 60 * 24),
               " ",
               "x ",
               room.pivot.room_price,
               " ",
-              useTrans("DA")
+              t("da")
             ] })
           ] }),
           /* @__PURE__ */ jsx(CardContent, { className: "p-2 ", children: room.features.slice(0, 4).map((feature) => /* @__PURE__ */ jsxs(
@@ -14762,7 +13485,7 @@ function MyBookings$1({ booking }) {
                 className: buttonVariants({
                   variant: "link"
                 }),
-                children: useTrans("Voir Plus")
+                children: t("showMore")
               }
             ),
             /* @__PURE__ */ jsxs(DialogContent, { className: "p-0 mb-10 max-h-screen", children: [
@@ -14783,29 +13506,27 @@ function MyBookings$1({ booking }) {
               /* @__PURE__ */ jsxs(DialogDescription, { className: "p-4", children: [
                 /* @__PURE__ */ jsxs("div", { className: "font-bold text-foreground flex justify-between", children: [
                   /* @__PURE__ */ jsxs("div", { children: [
-                    useTrans("Chambre"),
+                    t("room"),
                     " ",
                     room.type.type_designation,
                     " ",
-                    useTrans("avec"),
+                    t("with"),
                     " ",
                     room.beeds_number,
                     " ",
-                    useTrans("lits")
+                    t("beeds")
                   ] }),
                   /* @__PURE__ */ jsxs("div", { className: "text-xl text-primary", children: [
                     " ",
                     room.pivot.room_price,
                     " ",
-                    useTrans("DA")
+                    t("da")
                   ] })
                 ] }),
                 room.features.length > 0 && /* @__PURE__ */ jsxs("div", { className: "my-2 ", children: [
                   /* @__PURE__ */ jsx(Separator, {}),
                   /* @__PURE__ */ jsxs("div", { className: "font-bold text-foreground pb-2 flex justify-start", children: [
-                    useTrans(
-                      "Caractéristiques"
-                    ),
+                    t("features"),
                     " ",
                     ":"
                   ] }),
@@ -14837,7 +13558,7 @@ function MyBookings$1({ booking }) {
             ] })
           ] }) })
         ] }, room.room_number)),
-        booking.consomation.map((consomation) => /* @__PURE__ */ jsx(
+        booking2.consomation.map((consomation) => /* @__PURE__ */ jsx(
           Card,
           {
             className: "w-full mb-2",
@@ -14848,7 +13569,10 @@ function MyBookings$1({ booking }) {
                 " x",
                 " ",
                 consomation.consumption_price,
-                " DA"
+                " ",
+                " ",
+                " ",
+                t("da")
               ] })
             ] })
           },
@@ -14858,147 +13582,90 @@ function MyBookings$1({ booking }) {
     ] })
   ] });
 }
-const __vite_glob_0_46 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_41 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: MyBookings$1
 }, Symbol.toStringTag, { value: "Module" }));
-function DataTableColumnHeader({
-  column,
-  title,
-  className
-}) {
-  if (!column.getCanSort()) {
-    return /* @__PURE__ */ jsx("div", { className: cn(className), children: title });
-  }
-  return /* @__PURE__ */ jsx("div", { className: cn("flex items-center space-x-2", className), children: /* @__PURE__ */ jsxs(DropdownMenu, { children: [
-    /* @__PURE__ */ jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(
-      Button,
-      {
-        variant: "ghost",
-        size: "sm",
-        className: "-ml-3 h-8 data-[state=open]:bg-accent",
-        children: [
-          /* @__PURE__ */ jsx("span", { children: title }),
-          column.getIsSorted() === "desc" ? /* @__PURE__ */ jsx(ArrowDownIcon, { className: "ml-2 h-4 w-4" }) : column.getIsSorted() === "asc" ? /* @__PURE__ */ jsx(ArrowUpIcon, { className: "ml-2 h-4 w-4" }) : /* @__PURE__ */ jsx(CaretSortIcon, { className: "ml-2 h-4 w-4" })
-        ]
-      }
-    ) }),
-    /* @__PURE__ */ jsxs(DropdownMenuContent, { align: "start", children: [
-      /* @__PURE__ */ jsxs(
-        DropdownMenuItem,
-        {
-          onClick: () => column.toggleSorting(false),
-          children: [
-            /* @__PURE__ */ jsx(ArrowUpIcon, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-            useTrans("Croissante")
-          ]
-        }
-      ),
-      /* @__PURE__ */ jsxs(
-        DropdownMenuItem,
-        {
-          onClick: () => column.toggleSorting(true),
-          children: [
-            /* @__PURE__ */ jsx(ArrowDownIcon, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-            useTrans("Décroissante")
-          ]
-        }
-      ),
-      /* @__PURE__ */ jsx(DropdownMenuSeparator, {}),
-      /* @__PURE__ */ jsxs(
-        DropdownMenuItem,
-        {
-          onClick: () => column.toggleVisibility(false),
-          children: [
-            /* @__PURE__ */ jsx(EyeNoneIcon, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
-            useTrans("Cacher")
-          ]
-        }
-      )
-    ] })
-  ] }) });
-}
 const mybookingscolumns = [
   {
-    accessorKey: "Ref",
+    accessorKey: "ref",
     cell: ({ row }) => {
-      const booking = row.original;
-      return /* @__PURE__ */ jsx("div", { className: "font-bold text-base", children: booking.booking_id });
+      const booking2 = row.original;
+      return /* @__PURE__ */ jsx("div", { className: "font-bold text-base", children: booking2.booking_id });
     },
-    header: ({ column }) => /* @__PURE__ */ jsx(DataTableColumnHeader, { column, title: useTrans("Ref") })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "ref" })
   },
   {
-    accessorKey: "Chambre",
+    accessorKey: "rooms",
     cell: ({ row }) => {
-      const booking = row.original;
-      console.log(booking.rooms);
-      return /* @__PURE__ */ jsxs("span", { children: [
-        booking.rooms.length,
-        " ",
-        useTrans("chambre"),
-        booking.rooms.length > 1 && "s",
-        " "
-      ] });
+      const booking2 = row.original;
+      return /* @__PURE__ */ jsx("span", { children: booking2.rooms.length });
     },
-    header: ({ column }) => /* @__PURE__ */ jsx(
-      DataTableColumnHeader,
-      {
-        column,
-        title: useTrans("Chambres")
-      }
-    )
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "rooms" })
   },
   {
-    accessorKey: "date d'entrée - date de sortie",
+    accessorKey: "dates",
     cell: ({ row }) => {
-      const booking = row.original;
+      const booking2 = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
-        booking.check_in,
+        booking2.check_in,
         " - ",
-        booking.check_out,
+        booking2.check_out,
         " "
       ] });
     },
-    header: ({ column }) => /* @__PURE__ */ jsx(
-      DataTableColumnHeader,
-      {
-        column,
-        title: useTrans("date d'entrée / sortie")
-      }
-    )
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "dates" })
   },
   {
-    accessorKey: "Date de réservation",
+    accessorKey: "bookingDate",
     cell: ({ row }) => {
-      const booking = row.original;
+      const booking2 = row.original;
       return /* @__PURE__ */ jsxs("span", { children: [
-        booking.created_at.split("T")[0],
+        booking2.created_at.split("T")[0],
         " "
       ] });
     },
-    header: ({ column }) => /* @__PURE__ */ jsx(
-      DataTableColumnHeader,
-      {
-        column,
-        title: useTrans("Date de réservation")
-      }
-    )
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "bookingDate" })
   },
   {
-    accessorKey: "Status",
+    accessorKey: "status",
     cell: ({ row }) => {
-      const booking = row.original;
-      return booking.booking_status == "confirmer" ? /* @__PURE__ */ jsx(Badge, { variant: "success", children: booking.booking_status }) : booking.booking_status == "en attente" ? /* @__PURE__ */ jsx(Badge, { variant: "warning", children: booking.booking_status }) : /* @__PURE__ */ jsx(Badge, { variant: "danger", children: booking.booking_status });
+      const booking2 = row.original;
+      return booking2.booking_status == "confirmer" ? /* @__PURE__ */ jsx(Badge, { variant: "success", children: booking2.booking_status }) : booking2.booking_status == "en attente" ? /* @__PURE__ */ jsx(Badge, { variant: "warning", children: booking2.booking_status }) : /* @__PURE__ */ jsx(Badge, { variant: "danger", children: booking2.booking_status });
     },
-    header: ({ column }) => /* @__PURE__ */ jsx(DataTableColumnHeader, { column, title: useTrans("Status") })
+    header: () => /* @__PURE__ */ jsx(ColumnHeader, { title: "status" })
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const booking = row.original;
+      const booking2 = row.original;
       const { width } = useWindowDimensions();
       const [open, setopen] = React__default.useState(false);
       const [isopen, setIsOpen] = React__default.useState(false);
+      const [processing, setProcessing] = React__default.useState(false);
+      const { t } = useTranslation("translation", {
+        keyPrefix: "client.myBookings"
+      });
+      const handleBookingStatus = () => {
+        router.post(
+          route("client.bookings.cancel", booking2.booking_id),
+          {},
+          {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
+              setopen(false);
+              setIsOpen(false);
+            },
+            onStart: () => {
+              setProcessing(true);
+            },
+            onFinish: () => {
+              setProcessing(false);
+            }
+          }
+        );
+      };
       return /* @__PURE__ */ jsxs(
         DropdownMenu,
         {
@@ -15022,50 +13689,51 @@ const mybookingscolumns = [
               /* @__PURE__ */ jsxs(
                 DropdownMenuItem,
                 {
+                  disabled: processing,
                   onClick: () => router.get(
                     route(
                       "client.bookings.show",
-                      booking.booking_id
-                    )
+                      booking2.booking_id
+                    ),
+                    {},
+                    {
+                      onStart: () => {
+                        setProcessing(true);
+                      },
+                      onFinish: () => {
+                        setProcessing(false);
+                      }
+                    }
                   ),
                   className: "cursor-pointer",
                   children: [
                     /* @__PURE__ */ jsx(Eye, { className: "mr-2 h-3.5 w-3.5 text-muted-foreground/70" }),
                     /* @__PURE__ */ jsxs("span", { children: [
-                      useTrans("Voir"),
+                      t("show"),
                       " "
                     ] })
                   ]
                 }
               ),
-              booking.booking_status == "en attente" || booking.booking_status == "confirmer" ? /* @__PURE__ */ jsx(DropdownMenuItem, { className: "cursor-pointer flex bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90", children: width >= 767 ? /* @__PURE__ */ jsxs(
+              booking2.booking_status == "en attente" || booking2.booking_status == "confirmer" ? /* @__PURE__ */ jsx(DropdownMenuItem, { className: "cursor-pointer flex bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90", children: width >= 767 ? /* @__PURE__ */ jsxs(
                 Dialog,
                 {
                   open: isopen,
                   onOpenChange: setIsOpen,
                   children: [
-                    /* @__PURE__ */ jsx(DialogTrigger, { className: "w-full", children: useTrans("Annuler") }),
+                    /* @__PURE__ */ jsx(DialogTrigger, { className: "w-full", children: t("cancel") }),
                     /* @__PURE__ */ jsxs(DialogContent, { children: [
                       /* @__PURE__ */ jsxs(DialogHeader, { children: [
-                        /* @__PURE__ */ jsx(DialogTitle, { children: useTrans(
-                          "Vous êtes sure?"
-                        ) }),
-                        /* @__PURE__ */ jsx(DialogDescription, { children: useTrans(
-                          "Vous êtes sur que vous voulez annuler cette réservation"
-                        ) })
+                        /* @__PURE__ */ jsx(DialogTitle, { children: t("dialogTitle") }),
+                        /* @__PURE__ */ jsx(DialogDescription, { children: t("dialogDescreption") })
                       ] }),
                       /* @__PURE__ */ jsxs(DialogFooter, { className: "gap-2 ", children: [
                         /* @__PURE__ */ jsx(
                           Button,
                           {
                             variant: "destructive",
-                            onClick: () => router.post(
-                              route(
-                                "client.bookings.cancel",
-                                booking.booking_id
-                              )
-                            ),
-                            children: useTrans("Oui")
+                            onClick: () => handleBookingStatus(),
+                            children: t("accept")
                           }
                         ),
                         /* @__PURE__ */ jsx(
@@ -15076,7 +13744,7 @@ const mybookingscolumns = [
                               setopen(false);
                               setIsOpen(false);
                             },
-                            children: useTrans("Non")
+                            children: t("deni")
                           }
                         )
                       ] })
@@ -15089,28 +13757,19 @@ const mybookingscolumns = [
                   open: isopen,
                   onOpenChange: setIsOpen,
                   children: [
-                    /* @__PURE__ */ jsx(DrawerTrigger, { className: "cursor-pointer flex", children: /* @__PURE__ */ jsx(Button, { variant: "destructive", children: "Annuler" }) }),
+                    /* @__PURE__ */ jsx(DrawerTrigger, { className: "cursor-pointer flex", children: /* @__PURE__ */ jsx(Button, { variant: "destructive", children: t("cancel") }) }),
                     /* @__PURE__ */ jsxs(DrawerContent, { children: [
                       /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
-                        /* @__PURE__ */ jsx(DrawerTitle, { children: useTrans(
-                          "Vous êtes sure?"
-                        ) }),
-                        /* @__PURE__ */ jsx(DrawerDescription, { children: useTrans(
-                          "Vous êtes sur que vous voulez annuler cette réservation"
-                        ) })
+                        /* @__PURE__ */ jsx(DrawerTitle, { children: t("dialogTitle") }),
+                        /* @__PURE__ */ jsx(DrawerDescription, { children: t("dialogDescreption") })
                       ] }),
                       /* @__PURE__ */ jsxs(DrawerFooter, { className: "pt-2", children: [
                         /* @__PURE__ */ jsx(
                           Button,
                           {
                             variant: "destructive",
-                            onClick: () => router.post(
-                              route(
-                                "client.bookings.cancel",
-                                booking.booking_id
-                              )
-                            ),
-                            children: useTrans("Oui")
+                            onClick: () => handleBookingStatus(),
+                            children: t("accept")
                           }
                         ),
                         /* @__PURE__ */ jsx(
@@ -15121,7 +13780,7 @@ const mybookingscolumns = [
                               setopen(false);
                               setIsOpen(false);
                             },
-                            children: useTrans("Non")
+                            children: t("deni")
                           }
                         )
                       ] })
@@ -15136,15 +13795,25 @@ const mybookingscolumns = [
     }
   }
 ];
-function MyBookings({ bookings }) {
+function MyBookings({ bookings: bookings2 }) {
+  const { t } = useTranslation("translation", { keyPrefix: "client.myBookings" });
   return /* @__PURE__ */ jsxs(ClientLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Mes Réservations" }),
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: t("title") }),
+      /* @__PURE__ */ jsx(
+        "meta",
+        {
+          name: "description",
+          content: t("metaDescreption")
+        }
+      )
+    ] }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[47rem] h-[47rem] left-[calc(40%-20rem)] top-[30rem] sm:translate-x-[10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx(
       PageHeading,
       {
-        title: useTrans("Mes réservations"),
+        title: t("title"),
         className: "my-10 relative"
       }
     ),
@@ -15152,761 +13821,26 @@ function MyBookings({ bookings }) {
       DataTable,
       {
         columns: mybookingscolumns,
-        data: bookings.data,
-        paginate: bookings,
+        data: bookings2.data,
+        paginate: bookings2,
         selection: false
       }
     ) })
   ] });
 }
-const __vite_glob_0_47 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_42 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: MyBookings
 }, Symbol.toStringTag, { value: "Module" }));
-function FormBook() {
-  const [arrivalDate, setArrivalDate] = useState("");
-  const [departureDate, setDepartureDate] = useState("");
-  const [rooms, setRooms] = useState([{ adults: 1, children: 0 }]);
-  const handleIncrementAdults = () => {
-    setRooms(
-      (prevRooms) => prevRooms.map((room) => ({ ...room, adults: room.adults + 1 }))
-    );
-  };
-  const handleDecrementAdults = () => {
-    setRooms(
-      (prevRooms) => prevRooms.map(
-        (room) => room.adults > 0 ? { ...room, adults: room.adults - 1 } : room
-      )
-    );
-  };
-  const handleIncrementChildren = () => {
-    setRooms(
-      (prevRooms) => prevRooms.map((room) => ({ ...room, children: room.children + 1 }))
-    );
-  };
-  const handleDecrementChildren = () => {
-    setRooms(
-      (prevRooms) => prevRooms.map(
-        (room) => room.children > 0 ? { ...room, children: room.children - 1 } : room
-      )
-    );
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({
-      arrivalDate,
-      departureDate,
-      rooms
-    });
-  };
-  return /* @__PURE__ */ jsxs("div", { className: "absolute bottom-16 left-28   backdrop-blur-sm bg-white/70   w-5/6 p-4  mx-auto text-lg rounded-lg  b", children: [
-    /* @__PURE__ */ jsx("h1", { className: "font-bold text-secondary text-4xl flex justify-center  py-4 font-serif italic mb-4", children: "Reserver maintente" }),
-    /* @__PURE__ */ jsxs(
-      "form",
-      {
-        onSubmit: handleSubmit,
-        className: " flex flex-row  items-start  text-secondary p-2",
-        children: [
-          /* @__PURE__ */ jsxs("div", { className: "flex-1 mr-6 w-auto text-xxl ", children: [
-            /* @__PURE__ */ jsx("label", { htmlFor: "arrivalDate", className: "block  font-medium", children: "Date D'arriver" }),
-            /* @__PURE__ */ jsx(
-              "input",
-              {
-                type: "date",
-                id: "arrivalDate",
-                value: arrivalDate,
-                onChange: (e) => setArrivalDate(e.target.value),
-                className: "mt-1 block w-full border border-gray-300 rounded-md",
-                required: true
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxs("div", { className: "flex-1 w-auto", children: [
-            /* @__PURE__ */ jsx(
-              "label",
-              {
-                htmlFor: "departureDate",
-                className: "block  font-medium  ",
-                children: "Date De Departe"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              "input",
-              {
-                type: "date",
-                id: "departureDate",
-                value: departureDate,
-                onChange: (e) => setDepartureDate(e.target.value),
-                className: "mt-1 block w-full border border-gray-300 rounded-md",
-                required: true
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsx("div", { className: "flex-1 ", children: /* @__PURE__ */ jsxs("div", { className: "flex items-center flex-row justify-around ", children: [
-            /* @__PURE__ */ jsxs("div", { className: "flex-col", children: [
-              /* @__PURE__ */ jsx("label", { className: "", children: "Adult(s):" }),
-              /* @__PURE__ */ jsxs("div", { className: "flex", children: [
-                /* @__PURE__ */ jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleDecrementAdults,
-                    className: "px-2 py-1  rounded-l",
-                    children: "-"
-                  }
-                ),
-                /* @__PURE__ */ jsx(
-                  "input",
-                  {
-                    type: "text",
-                    value: rooms[0].adults,
-                    readOnly: true,
-                    className: "w-12 text-center border border-gray-300"
-                  }
-                ),
-                /* @__PURE__ */ jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleIncrementAdults,
-                    className: "px-2 py-1  rounded-r",
-                    children: "+"
-                  }
-                )
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxs("div", { className: "flix-col", children: [
-              /* @__PURE__ */ jsx("label", { className: "", children: "enfant(s):" }),
-              /* @__PURE__ */ jsxs("div", { children: [
-                /* @__PURE__ */ jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleDecrementChildren,
-                    className: "px-2 py-1  rounded-l",
-                    children: "-"
-                  }
-                ),
-                /* @__PURE__ */ jsx(
-                  "input",
-                  {
-                    type: "text",
-                    value: rooms[0].children,
-                    readOnly: true,
-                    className: "w-12 text-center border border-gray-300"
-                  }
-                ),
-                /* @__PURE__ */ jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleIncrementChildren,
-                    className: "px-2 py-1  rounded-r",
-                    children: "+"
-                  }
-                )
-              ] })
-            ] })
-          ] }) }),
-          /* @__PURE__ */ jsx("div", { className: "flex-1 min-w-[200px]", children: /* @__PURE__ */ jsx(
-            "button",
-            {
-              type: "submit",
-              className: "w-48 bg-blue-500 text-white py-2  rounded mt-6",
-              children: "chercher"
-            }
-          ) })
-        ]
-      }
-    )
-  ] });
-}
-const __vite_glob_0_51 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: FormBook
-}, Symbol.toStringTag, { value: "Module" }));
-function AutoCarousel() {
-  const carouselItems = [
-    "https://scontent.forn2-1.fna.fbcdn.net/v/t39.30808-6/428611218_371702122462614_5065970390852309285_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGOnZKDwnVsoLUz7RbZzLNeVL8bcF0GllRUvxtwXQaWVFzvmY0gUy6F-i3PMMtINvVk1FfxuDEc3MBEUs_MF6Mb&_nc_ohc=Q_tripheACwQ7kNvgEYQgd4&_nc_zt=23&_nc_ht=scontent.forn2-1.fna&cb_e2o_trans=t&oh=00_AYB1NT2pGZSvaIu-xpPnvW9_XEpaCXlEPUUr3Km8gSSFCw&oe=66D02866",
-    "https://scontent.forn2-1.fna.fbcdn.net/v/t39.30808-6/428603936_371702929129200_1184689777793078171_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEHiAAqVe0aAEcUTslDNDdGtJAe-kvu90K0kB76S-73QrIcFe_6AE6c-AAUwmLsh7SfUsaDxlFQgxb-Dxy9MvCr&_nc_ohc=DY79bysyhJAQ7kNvgGpzgem&_nc_zt=23&_nc_ht=scontent.forn2-1.fna&cb_e2o_trans=t&oh=00_AYC8myNxY1jW5RiSTy_yZ7s7RKj5lx5ICTlAixi5TxWnjQ&oe=66D01039",
-    "https://scontent.forn2-1.fna.fbcdn.net/v/t39.30808-6/428603936_371702929129200_1184689777793078171_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEHiAAqVe0aAEcUTslDNDdGtJAe-kvu90K0kB76S-73QrIcFe_6AE6c-AAUwmLsh7SfUsaDxlFQgxb-Dxy9MvCr&_nc_ohc=DY79bysyhJAQ7kNvgGpzgem&_nc_zt=23&_nc_ht=scontent.forn2-1.fna&cb_e2o_trans=t&oh=00_AYC8myNxY1jW5RiSTy_yZ7s7RKj5lx5ICTlAixi5TxWnjQ&oe=66D01039"
-  ];
-  return /* @__PURE__ */ jsx("div", { className: "relative h-dvh lg:-mx-28", children: /* @__PURE__ */ jsxs(Carousel, { className: "h-min ", children: [
-    /* @__PURE__ */ jsx(CarouselContent, { children: carouselItems.map((asset, index) => /* @__PURE__ */ jsx(CarouselItem, { children: /* @__PURE__ */ jsx(
-      "img",
-      {
-        src: asset,
-        alt: `Selected ${index}`,
-        className: "rounded-md w-full h-dvh object-cover aspect-video"
-      }
-    ) }, index)) }),
-    /* @__PURE__ */ jsx(CarouselPrevious, { className: "bg-secondary left-0 text-secondary-foreground" }),
-    /* @__PURE__ */ jsx(CarouselNext, { className: "bg-secondary right-0 text-secondary-foreground" })
-  ] }) });
-}
-const __vite_glob_0_48 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: AutoCarousel
-}, Symbol.toStringTag, { value: "Module" }));
-const Mimg = "/build/assets/map--GxbgbOc.png";
-function ContactSection() {
-  return /* @__PURE__ */ jsx("div", { className: "text-black py-16 px-6 md:px-16", children: /* @__PURE__ */ jsxs("div", { className: "max-w-7xl mx-auto", children: [
-    /* @__PURE__ */ jsx("h2", { className: "text-4xl font-bold text-center mb-12", children: "Contacter Nous" }),
-    /* @__PURE__ */ jsxs("div", { className: "grid md:grid-cols-2 gap-8", children: [
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx("h3", { className: "text-2xl font-semibold mb-4", children: "Contact Information" }),
-        /* @__PURE__ */ jsxs("ul", { children: [
-          /* @__PURE__ */ jsxs("li", { className: "flex items-center mb-4", children: [
-            /* @__PURE__ */ jsx(FaMapMarkerAlt, { className: "text-2xl mr-4" }),
-            /* @__PURE__ */ jsx("span", { children: "Hotel sidi el noui cheraga ,alger,algerie" })
-          ] }),
-          /* @__PURE__ */ jsxs("li", { className: "flex items-center mb-4", children: [
-            /* @__PURE__ */ jsx(FaPhone, { className: "text-2xl mr-4" }),
-            /* @__PURE__ */ jsx("a", { href: "tel:+2130772444444", children: "+213 23 34 45 56" })
-          ] }),
-          /* @__PURE__ */ jsxs("li", { className: "flex items-center mb-4", children: [
-            /* @__PURE__ */ jsx(FaEnvelope, { className: "text-2xl mr-4" }),
-            /* @__PURE__ */ jsx("a", { href: "mailto:sidielnoui@gmail.com", children: "sidielnoui@gmail.com" })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsx("div", { className: "mt-8", children: /* @__PURE__ */ jsxs(
-          "div",
-          {
-            className: "w-full h-auto rounded-lg shadow-lg",
-            children: [
-              " ",
-              /* @__PURE__ */ jsx("a", { href: "https://maps.app.goo.gl/Ac5ueppFgW4HCXvG7", target: "blank", children: /* @__PURE__ */ jsx("img", { src: Mimg, alt: "google maps" }) })
-            ]
-          }
-        ) })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx("h3", { className: "text-2xl font-semibold mb-4", children: "envoyer nous un message" }),
-        /* @__PURE__ */ jsxs("form", { className: "space-y-6", children: [
-          /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4", children: [
-            /* @__PURE__ */ jsx(
-              "input",
-              {
-                type: "text",
-                placeholder: "nom",
-                className: "w-full p-3 rounded-md bg-white text-gray-900"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              "input",
-              {
-                type: "email",
-                placeholder: "Email",
-                className: "w-full p-3 rounded-md bg-white text-gray-900"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsx(
-            "input",
-            {
-              type: "text",
-              placeholder: "sujet",
-              className: "w-full p-3 rounded-md bg-white text-gray-900"
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            "textarea",
-            {
-              placeholder: "Message",
-              rows: "5",
-              className: "w-full p-3 rounded-md bg-white text-gray-900"
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            "button",
-            {
-              type: "submit",
-              className: "w-full py-3 bg-blue-600 rounded-md text-lg font-semibold hover:bg-blue-900 transition duration-300 text-white",
-              children: "Envoyer Message"
-            }
-          )
-        ] })
-      ] })
-    ] })
-  ] }) });
-}
-const __vite_glob_0_49 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: ContactSection
-}, Symbol.toStringTag, { value: "Module" }));
-function Event() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState(null);
-  const events = [
-    {
-      id: 1,
-      name: "Notre anniversiare hotel ",
-      price: "4000DA",
-      imageUrl: "https://media-cdn.tripadvisor.com/media/photo-s/1c/87/e9/c0/it-has-been-2-years-of.jpg",
-      detailsLink: "#",
-      description: "isjnclvabkvbnlshdbfanisubhvush ljsc vlkhaslhdkvakhscv bfvkuasbdfjaw vasvg asjdbakusbcausdvc awsgvajsbduckbsadvcasdgvkasdusd asudybuaysbcuasydv qweuasdbilawefcsdciaiwdhbqwiehfvssa dcisahcbawgfevwidsuc wefhsadouyerwef cbsbdyuwerbwyebdycsdy"
-    }
-    // Add more events as needed
-  ];
-  const openModal = (event) => {
-    setCurrentEvent(event);
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setCurrentEvent(null);
-  };
-  return /* @__PURE__ */ jsxs("div", { children: [
-    /* @__PURE__ */ jsxs("div", { className: "container mx-auto py-8", children: [
-      /* @__PURE__ */ jsx("h2", { className: "  text-5xl font-bold italic my-8 text-center text-primary font-serif mb-16", children: "Nos Evenments" }),
-      /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 md:grid-cols-1 gap-8", children: events.map((event) => /* @__PURE__ */ jsxs(
-        "div",
-        {
-          className: "relative h-96 w-full bg-cover bg-center rounded-lg shadow-lg",
-          style: {
-            backgroundImage: `url(${event.imageUrl})`
-          },
-          children: [
-            /* @__PURE__ */ jsx("div", { className: "absolute inset-0 bg-black bg-opacity-40 rounded-lg" }),
-            /* @__PURE__ */ jsx("div", { className: "absolute top-4 right-4 text-secondary bg-primary p-4 rounded-md", children: /* @__PURE__ */ jsx("h3", { className: "text-3xl font-semibold ", children: event.price }) }),
-            /* @__PURE__ */ jsx("div", { className: "absolute bottom-4 left-4 text-secondary  bg-primary p-2 rounded-md", children: /* @__PURE__ */ jsx("h3", { className: "text-3xl font-semibold", children: event.name }) }),
-            /* @__PURE__ */ jsx("div", { className: "absolute bottom-4 right-4 text-white text-xl", children: /* @__PURE__ */ jsx(
-              "a",
-              {
-                href: "#",
-                onClick: () => openModal(event),
-                className: "inline text-lg mt-2 underline mx-3",
-                children: "Details"
-              }
-            ) })
-          ]
-        },
-        event.id
-      )) })
-    ] }),
-    isModalOpen && /* @__PURE__ */ jsx(
-      "div",
-      {
-        className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50",
-        onClick: closeModal,
-        children: /* @__PURE__ */ jsxs(
-          "div",
-          {
-            className: "bg-secondary p-6 rounded-lg mw-auto mx-auto shadow-lg",
-            onClick: (e) => e.stopPropagation(),
-            children: [
-              /* @__PURE__ */ jsx("h2", { className: "text-3xl font-bold text-primary mb-4", children: currentEvent.name }),
-              /* @__PURE__ */ jsx("p", { className: "text-xl text-primary mb-4", children: currentEvent.description }),
-              /* @__PURE__ */ jsx(
-                "button",
-                {
-                  onClick: closeModal,
-                  className: "bg-red-500 text-white font-bold px-4 py-2 rounded hover:bg-red-700",
-                  children: "ferme"
-                }
-              )
-            ]
-          }
-        )
-      }
-    )
-  ] });
-}
-const __vite_glob_0_50 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: Event
-}, Symbol.toStringTag, { value: "Module" }));
-function ReservationForm() {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    arrivalDate: "",
-    departureDate: "",
-    numberOfPersons: 1,
-    roomType: "Single Room"
-  });
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-  };
-  return /* @__PURE__ */ jsxs("div", { className: "  w-5/6 mx-auto bg-gray-200 p-8 mt-8 rounded-lg shadow-lg", children: [
-    /* @__PURE__ */ jsx("h1", { className: " sm:text-5xl text-2xl font-bold text-center text-secondary mb-8", children: "Réservation" }),
-    /* @__PURE__ */ jsxs(
-      "form",
-      {
-        onSubmit: handleSubmit,
-        className: "space-y-6 w-auto ",
-        children: [
-          /* @__PURE__ */ jsxs("div", { children: [
-            /* @__PURE__ */ jsx(
-              "label",
-              {
-                htmlFor: "firstName",
-                className: "block text-lg font-medium text-gray-700",
-                children: "nom"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              "input",
-              {
-                type: "text",
-                id: "firstName",
-                name: "firstName",
-                value: formData.firstName,
-                onChange: handleChange,
-                required: true,
-                className: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxs("div", { children: [
-            /* @__PURE__ */ jsx(
-              "label",
-              {
-                htmlFor: "lastName",
-                className: "block text-lg font-medium text-gray-700",
-                children: "prenom"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              "input",
-              {
-                type: "text",
-                id: "lastName",
-                name: "lastName",
-                value: formData.lastName,
-                onChange: handleChange,
-                required: true,
-                className: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxs("div", { children: [
-            /* @__PURE__ */ jsx(
-              "label",
-              {
-                htmlFor: "email",
-                className: "block text-lg font-medium text-gray-700",
-                children: "Email"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              "input",
-              {
-                type: "email",
-                id: "email",
-                name: "email",
-                value: formData.email,
-                onChange: handleChange,
-                required: true,
-                className: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxs("div", { children: [
-            /* @__PURE__ */ jsx(
-              "label",
-              {
-                htmlFor: "phoneNumber",
-                className: "block text-lg font-medium text-gray-700",
-                children: "Numéro de Téléphone"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              "input",
-              {
-                type: "tel",
-                id: "phoneNumber",
-                name: "phoneNumber",
-                value: formData.phoneNumber,
-                onChange: handleChange,
-                required: true,
-                className: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxs("div", { children: [
-            /* @__PURE__ */ jsx(
-              "label",
-              {
-                htmlFor: "arrivalDate",
-                className: "block text-lg font-medium text-gray-700",
-                children: "Date d'arrivée"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              "input",
-              {
-                type: "date",
-                id: "arrivalDate",
-                name: "arrivalDate",
-                value: formData.arrivalDate,
-                onChange: handleChange,
-                required: true,
-                className: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxs("div", { children: [
-            /* @__PURE__ */ jsx(
-              "label",
-              {
-                htmlFor: "departureDate",
-                className: "block text-lg font-medium text-gray-700",
-                children: "Date de Départ"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              "input",
-              {
-                type: "date",
-                id: "departureDate",
-                name: "departureDate",
-                value: formData.departureDate,
-                onChange: handleChange,
-                required: true,
-                className: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxs("div", { children: [
-            /* @__PURE__ */ jsx(
-              "label",
-              {
-                htmlFor: "roomType",
-                className: "block text-lg font-medium text-gray-700",
-                children: "Type de Chambre"
-              }
-            ),
-            /* @__PURE__ */ jsxs(
-              "select",
-              {
-                id: "roomType",
-                name: "roomType",
-                value: formData.roomType,
-                onChange: handleChange,
-                required: true,
-                className: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary",
-                children: [
-                  /* @__PURE__ */ jsx("option", { children: "Single Room" }),
-                  /* @__PURE__ */ jsx("option", { children: "Double Room" }),
-                  /* @__PURE__ */ jsx("option", { children: "Triple Room" }),
-                  /* @__PURE__ */ jsx("option", { children: "Suite" })
-                ]
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxs("div", { children: [
-            /* @__PURE__ */ jsx(
-              "label",
-              {
-                htmlFor: "numberOfPersons",
-                className: "block text-lg font-medium text-gray-700",
-                children: "Nombre de Personnes"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              "input",
-              {
-                type: "number",
-                id: "numberOfPersons",
-                name: "numberOfPersons",
-                value: formData.numberOfPersons,
-                onChange: handleChange,
-                required: true,
-                min: "1",
-                className: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx(
-            "button",
-            {
-              type: "submit",
-              className: "w-full py-3 bg-secondary text-white font-semibold rounded-lg shadow-lg hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50",
-              children: "Réserver"
-            }
-          ) })
-        ]
-      }
-    )
-  ] });
-}
-const __vite_glob_0_52 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: ReservationForm
-}, Symbol.toStringTag, { value: "Module" }));
-function RoomCard$1() {
-  const rooms = [
-    {
-      id: 1,
-      name: "Chambre Single",
-      imageUrl: "https://www.hotelsbarriere.com/content/dam/hotels/visuels-site-national/suites/0121-47%281%29.jpg/jcr%3Acontent/renditions/cq5dam.web.1280.1280.jpeg",
-      features: ["tv", "bed"],
-      description: "Une chambre magnifique pour une seule personne avec un lit confortable et tous les services."
-    },
-    {
-      id: 2,
-      name: "Chambre Standard",
-      imageUrl: "https://static-otelico.com/cache/regina_berck/hotel_regina-berck_sur_mer-chambre_premium_1.jpg",
-      features: ["wifi", "bed", "tv"],
-      description: "Une chambre confortable avec des équipements essentiels."
-    },
-    {
-      id: 3,
-      name: "Chambre Standard",
-      imageUrl: "https://static-otelico.com/cache/regina_berck/hotel_regina-berck_sur_mer-chambre_premium_1.jpg",
-      features: ["wifi", "bed"],
-      description: "Une chambre confortable avec des équipements essentiels."
-    },
-    {
-      id: 4,
-      name: "Chambre Standard",
-      imageUrl: "https://static-otelico.com/cache/regina_berck/hotel_regina-berck_sur_mer-chambre_premium_1.jpg",
-      features: ["wifi", "bed"],
-      description: "Une chambre confortable avec des équipements essentiels."
-    }
-  ];
-  const handleClick = (roomId) => {
-  };
-  return /* @__PURE__ */ jsx("div", { className: "flex flex-wrap gap-8  justify-between", children: rooms.map((room) => /* @__PURE__ */ jsxs(
-    "div",
-    {
-      onClick: () => handleClick(room.id),
-      className: "w-full sm:w-1/2 md:w-1/3 lg:w-1/4 bg-white rounded-lg shadow-md overflow-hidden relative cursor-pointer",
-      children: [
-        /* @__PURE__ */ jsx(
-          "img",
-          {
-            className: "w-full h-48 object-cover",
-            src: room.imageUrl,
-            alt: room.name
-          }
-        ),
-        /* @__PURE__ */ jsxs("div", { className: "p-6 pb-16", children: [
-          /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold mb-2", children: room.name }),
-          /* @__PURE__ */ jsx("p", { className: "text-gray-700 text-base", children: room.description })
-        ] }),
-        /* @__PURE__ */ jsx(Button, { className: "absolute bottom-4 right-12 transform translate-x-1/2 bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-700", children: "Réserver" })
-      ]
-    },
-    room.id
-  )) });
-}
-const __vite_glob_0_53 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: RoomCard$1
-}, Symbol.toStringTag, { value: "Module" }));
-function RoomDetail({ room }) {
-  return /* @__PURE__ */ jsxs("div", { className: "container mx-auto p-8", children: [
-    /* @__PURE__ */ jsx(
-      "img",
-      {
-        className: "w-full h-96 object-cover rounded-lg shadow-md",
-        src: room.imageUrl,
-        alt: room.name
-      }
-    ),
-    /* @__PURE__ */ jsx("div", { className: "flex flex-wrap space-x-4 my-6", children: room.sliderImages.map((image, index) => /* @__PURE__ */ jsx(
-      "img",
-      {
-        className: "w-24 h-24 object-cover rounded-md shadow-sm",
-        src: image,
-        alt: `Slider ${index + 1}`
-      },
-      index
-    )) }),
-    /* @__PURE__ */ jsx("h2", { className: "text-4xl font-semibold mb-4", children: room.name }),
-    /* @__PURE__ */ jsxs("div", { className: "flex items-center space-x-4 mb-4", children: [
-      room.features.includes("wifi") && /* @__PURE__ */ jsx(FaWifi, { className: "text-gray-600" }),
-      room.features.includes("tv") && /* @__PURE__ */ jsx(FaTv, { className: "text-gray-600" }),
-      room.features.includes("bed") && /* @__PURE__ */ jsx(FaBed, { className: "text-gray-600" })
-    ] }),
-    /* @__PURE__ */ jsx("p", { className: "text-gray-700 text-lg mb-4", children: room.description }),
-    /* @__PURE__ */ jsx("p", { className: "text-2xl font-bold mb-4", children: `Price: ${room.price} €` }),
-    /* @__PURE__ */ jsx(Button, { className: "bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-700", children: "Reserver" })
-  ] });
-}
-const __vite_glob_0_54 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: RoomDetail
-}, Symbol.toStringTag, { value: "Module" }));
-function ServicesPage() {
-  const hotelServices = [
-    {
-      id: 1,
-      name: "Cafétéria",
-      description: "Profitez d'une large sélection de cafés et de pâtisseries dans notre cafétéria confortable.",
-      imageUrl: "https://media-cdn.tripadvisor.com/media/photo-s/18/06/3e/ac/ambiance-vintage-dans.jpg",
-      icon: /* @__PURE__ */ jsx(Coffee, {})
-    },
-    {
-      id: 2,
-      name: "Restaurant",
-      description: "Découvrez une cuisine gastronomique avec une variété de plats du monde entier.",
-      imageUrl: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3Vwd2s2MTY2MTU3Ny13aWtpbWVkaWEtaW1hZ2Uta293YXBlZWouanBn.jpg",
-      icon: /* @__PURE__ */ jsx(Utensils, {})
-    }
-  ];
-  const roomServices = [
-    { name: "WiFi Gratuit", icon: /* @__PURE__ */ jsx(Wifi, {}) },
-    { name: "Télévision     ", icon: /* @__PURE__ */ jsx(Tv, {}) },
-    { name: "Lits Confortables", icon: /* @__PURE__ */ jsx(Bed, {}) },
-    { name: "Salle de Bain ", icon: /* @__PURE__ */ jsx(Bath, {}) },
-    { name: "Coin Salon", icon: /* @__PURE__ */ jsx(Armchair, {}) },
-    { name: " petit dejunie ", icon: /* @__PURE__ */ jsx(Coffee, {}) },
-    { name: "chambre fumable", icon: /* @__PURE__ */ jsx(Cigarette, {}) }
-    // Add more services as needed
-  ];
-  return /* @__PURE__ */ jsxs("div", { className: "container mx-auto p-8", children: [
-    /* @__PURE__ */ jsx("h1", { className: "text-5xl font-bold text-center mb-12 text-primary italic font-serif  mb-28", children: "Nos Services" }),
-    /* @__PURE__ */ jsx("div", { className: "space-y-12 mb-16  ", children: hotelServices.map((service) => /* @__PURE__ */ jsxs(
-      "div",
-      {
-        className: "flex flex-col md:flex-row items-center",
-        children: [
-          /* @__PURE__ */ jsx(
-            "img",
-            {
-              src: service.imageUrl,
-              alt: service.name,
-              className: "w-full md:w-1/2 h-64 object-cover rounded-lg shadow-md"
-            }
-          ),
-          /* @__PURE__ */ jsxs("div", { className: "md:ml-8 mt-4 md:mt-0", children: [
-            /* @__PURE__ */ jsx("h2", { className: "text-4xl font-semibold mb-16", children: service.name }),
-            /* @__PURE__ */ jsx("p", { className: "text-gray-700 mt-4", children: service.description })
-          ] })
-        ]
-      },
-      service.id
-    )) }),
-    /* @__PURE__ */ jsxs("div", { className: "border-t border-gray-300 pt-8", children: [
-      /* @__PURE__ */ jsx("h2", { className: "text-3xl font-semibold text-center mb-8", children: "Services De Chambre" }),
-      /* @__PURE__ */ jsx("div", { className: "flex flex-wrap justify-center space-x-6 text-blue-500", children: roomServices.map((service, index) => /* @__PURE__ */ jsxs("div", { className: "text-center mb-4", children: [
-        /* @__PURE__ */ jsx(
-          "div",
-          {
-            className: "ml-8",
-            children: service.icon
-          }
-        ),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-blue-500", children: service.name })
-      ] }, index)) })
-    ] })
-  ] });
-}
-const __vite_glob_0_55 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: ServicesPage
-}, Symbol.toStringTag, { value: "Module" }));
 function Show$2({ event }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.event"
+  });
   return /* @__PURE__ */ jsxs(ClientLayout, { children: [
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: t("title") }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: t("metaDescreption") })
+    ] }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] left-[calc(30%-28.5rem)] top-[0] translate-x-[-10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[20rem] bottom-[5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
@@ -15933,19 +13867,19 @@ function Show$2({ event }) {
     /* @__PURE__ */ jsxs("div", { className: "p-4 rounded-lg my-4 relative bg-card ", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex justify-between itmes-center font-bold", children: [
         event.event_start_date == event.event_end_date ? /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
-          useTrans("Le"),
+          t("singleDate"),
           " :",
           " ",
           /* @__PURE__ */ jsx("span", { className: "text-lg", children: event.event_start_date })
         ] }) : /* @__PURE__ */ jsxs("div", { className: "flex flex-col sm:flex-row gap-2 justify-around mb-4", children: [
           /* @__PURE__ */ jsxs("div", { children: [
-            useTrans("De"),
+            t("multipleDateStart"),
             " :",
             " ",
             /* @__PURE__ */ jsx("span", { className: " text-lg", children: event.event_start_date })
           ] }),
           /* @__PURE__ */ jsxs("div", { children: [
-            useTrans("Jusqu'a"),
+            t("multipleDateEnd"),
             " :",
             " ",
             /* @__PURE__ */ jsx("span", { className: " text-lg", children: event.event_end_date })
@@ -15953,7 +13887,8 @@ function Show$2({ event }) {
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "text-xl text-primary", children: [
           event.event_price,
-          " DA"
+          " ",
+          t("da")
         ] })
       ] }),
       /* @__PURE__ */ jsx(
@@ -15968,11 +13903,15 @@ function Show$2({ event }) {
     ] })
   ] });
 }
-const __vite_glob_0_56 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_43 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Show$2
 }, Symbol.toStringTag, { value: "Module" }));
 function Promotion({ promotion }) {
+  const [processing, setProcessing] = React__default.useState(false);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.promotion"
+  });
   return /* @__PURE__ */ jsxs(Card, { className: "relative my-6 p-4 md:flex md:flex-row flex-col bg-transparent border-none shadow-none ", children: [
     /* @__PURE__ */ jsx("div", { className: "md:w-1/2 w-full  ", children: /* @__PURE__ */ jsx(
       "img",
@@ -15982,29 +13921,29 @@ function Promotion({ promotion }) {
       }
     ) }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-between md:w-1/2 w-full ", children: [
-      /* @__PURE__ */ jsx(CardHeader, { className: "text-lg font-bold text-xl flex flex-row items-center justify-end", children: /* @__PURE__ */ jsxs("div", { className: "text-primary text-2xl ", children: [
-        useTrans("Réduction de"),
+      /* @__PURE__ */ jsx(CardHeader, { className: "font-bold text-xl flex flex-row items-center justify-end", children: /* @__PURE__ */ jsxs("div", { className: "text-primary text-2xl ", children: [
+        t("cardHeader"),
         " ",
         promotion.promo_value,
         " ",
-        useTrans("DA"),
+        t("da"),
         " "
       ] }) }),
       /* @__PURE__ */ jsxs(CardContent, { className: "text-muted-foreground", children: [
         promotion.promo_start_date == promotion.promo_end_date ? /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
-          useTrans("Le"),
+          t("singleDate"),
           " :",
           " ",
           /* @__PURE__ */ jsx("span", { className: "text-lg", children: promotion.promo_start_date })
         ] }) : /* @__PURE__ */ jsxs("div", { className: "flex gap-2 justify-around mb-4", children: [
           /* @__PURE__ */ jsxs("div", { children: [
-            useTrans("De"),
+            t("multipleDateStart"),
             " :",
             " ",
             /* @__PURE__ */ jsx("span", { className: " text-lg", children: promotion.promo_start_date })
           ] }),
           /* @__PURE__ */ jsxs("div", { children: [
-            useTrans("Jusqu'a"),
+            t("multipleDateEnd"),
             " :",
             " ",
             /* @__PURE__ */ jsx("span", { className: " text-lg", children: promotion.promo_end_date })
@@ -16026,19 +13965,33 @@ function Promotion({ promotion }) {
         {
           variant: "secondary",
           size: "sm",
+          disabled: processing,
           onClick: () => router.get(
             route(
               "client.promotion.show",
               promotion.promotion_id
-            )
+            ),
+            {},
+            {
+              onStart: () => {
+                setProcessing(true);
+              },
+              onFinish: () => {
+                setProcessing(false);
+              }
+            }
           ),
-          children: useTrans("Voir Plus")
+          children: t("actionBtn")
         }
       ) })
     ] })
   ] });
 }
 function Events({ event }) {
+  const [processing, setProcessing] = React__default.useState(false);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.event"
+  });
   return /* @__PURE__ */ jsxs(Card, { className: "relative my-6 p-4 sm:flex sm:flex-row-reverse flex-col-reverse bg-transparent border-none shadow-none ", children: [
     /* @__PURE__ */ jsx("div", { className: "sm:w-1/2 w-full", children: /* @__PURE__ */ jsx(
       "img",
@@ -16049,30 +14002,30 @@ function Events({ event }) {
       }
     ) }),
     /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-between sm:w-1/2 w-full", children: [
-      /* @__PURE__ */ jsxs(CardHeader, { className: "text-lg font-bold text-xl flex flex-row items-center justify-between", children: [
+      /* @__PURE__ */ jsxs(CardHeader, { className: "font-bold text-xl flex flex-row items-center justify-between", children: [
         /* @__PURE__ */ jsx("div", { children: event.event_name }),
         /* @__PURE__ */ jsxs("div", { className: "text-primary text-2xl font-bold", children: [
           event.event_price,
           " ",
-          useTrans("DA"),
+          t("da"),
           " "
         ] })
       ] }),
       /* @__PURE__ */ jsxs(CardContent, { className: "text-muted-foreground flex-grow", children: [
         event.event_start_date == event.event_end_date ? /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
-          useTrans("Le"),
+          t("singleDate"),
           " :",
           " ",
           /* @__PURE__ */ jsx("span", { className: " text-lg", children: event.event_start_date })
         ] }) : /* @__PURE__ */ jsxs("div", { className: "flex gap-2 justify-between mb-4", children: [
           /* @__PURE__ */ jsxs("div", { children: [
-            useTrans("De"),
+            t("multipleDateStart"),
             " :",
             " ",
             /* @__PURE__ */ jsx("span", { className: " text-lg", children: event.event_start_date })
           ] }),
           /* @__PURE__ */ jsxs("div", { children: [
-            useTrans("Jusqu'a"),
+            t("multipleDateEnd"),
             " :",
             " ",
             /* @__PURE__ */ jsx("span", { className: " text-lg", children: event.event_end_date })
@@ -16094,10 +14047,20 @@ function Events({ event }) {
         {
           variant: "secondary",
           size: "sm",
+          disabled: processing,
           onClick: () => router.get(
-            route("client.event.show", event.event_id)
+            route("client.event.show", event.event_id),
+            {},
+            {
+              onStart: () => {
+                setProcessing(true);
+              },
+              onFinish: () => {
+                setProcessing(false);
+              }
+            }
           ),
-          children: useTrans("Voir Plus")
+          children: t("actionBtn")
         }
       ) })
     ] })
@@ -16105,6 +14068,9 @@ function Events({ event }) {
 }
 function RoomCard({ room }) {
   var _a, _b;
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.rooms.roomCard"
+  });
   return /* @__PURE__ */ jsxs(Card, { className: "relative my-6 p-4 w-full sm:flex sm:flex-row flex-col bg-transparent border-none shadow-none", children: [
     /* @__PURE__ */ jsx("div", { className: "sm:w-1/2 w-full", children: /* @__PURE__ */ jsx(
       "img",
@@ -16120,13 +14086,13 @@ function RoomCard({ room }) {
         /* @__PURE__ */ jsxs("div", { className: "text-primary text-3xl font-bold ", children: [
           room.room_price,
           " ",
-          useTrans("DA"),
+          t("da"),
           " "
         ] })
       ] }),
       /* @__PURE__ */ jsxs(CardContent, { className: "text-muted-foreground", children: [
         /* @__PURE__ */ jsxs("div", { className: "my-2", children: [
-          useTrans("Caractéristique de la chambre"),
+          t("features"),
           " :"
         ] }),
         /* @__PURE__ */ jsx(CardDescription, { className: "flex gap-2 flex-wrap", children: room.features.map((feature) => /* @__PURE__ */ jsxs(
@@ -16142,13 +14108,16 @@ function RoomCard({ room }) {
         )) })
       ] }),
       /* @__PURE__ */ jsx(CardFooter, { className: "justify-end", children: /* @__PURE__ */ jsx("a", { href: "#booking-form", children: /* @__PURE__ */ jsxs(Button, { variant: "secondary", size: "sm", children: [
-        useTrans("Réserver maintenant"),
+        t("actionBtn"),
         " "
       ] }) }) })
     ] })
   ] });
 }
-function Rooms({ rooms }) {
+function Rooms({ rooms: rooms2 }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.rooms"
+  });
   return /* @__PURE__ */ jsxs(
     "div",
     {
@@ -16156,18 +14125,16 @@ function Rooms({ rooms }) {
       id: "rooms-section",
       children: [
         /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
-        /* @__PURE__ */ jsx("div", { className: "font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: useTrans("Nos Chambres") }),
-        /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: useTrans(
-          "Découvrez nos chambres spacieuses et décorées avec, offrant tout le confort moderne pour un séjour des plus agréables. Que vous voyagiez seul, en couple ou en famille, nous avons la chambre parfaite pour vous."
-        ) }) }),
+        /* @__PURE__ */ jsx("div", { className: "font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: t("title") }),
+        /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: t("descreption") }) }),
         /* @__PURE__ */ jsxs(
           Tabs,
           {
-            defaultValue: rooms[0].room_number,
+            defaultValue: rooms2[0].room_number,
             className: "w-full flex flex-col",
             children: [
               /* @__PURE__ */ jsxs(ScrollArea, { className: "w-full ", children: [
-                /* @__PURE__ */ jsx(TabsList, { className: "flex justify-center bg-transparent h-fit", children: rooms.map((room) => /* @__PURE__ */ jsxs(
+                /* @__PURE__ */ jsx(TabsList, { className: "flex justify-center bg-transparent h-fit", children: rooms2.map((room) => /* @__PURE__ */ jsxs(
                   TabsTrigger,
                   {
                     value: room.room_number,
@@ -16176,7 +14143,8 @@ function Rooms({ rooms }) {
                       /* @__PURE__ */ jsx("div", { className: "font-bold uppercase ", children: room.type_designation }),
                       /* @__PURE__ */ jsxs("div", { className: "text-xs text-muted-foreground", children: [
                         room.rooms_count,
-                        " Chambre"
+                        " ",
+                        t("tabTrigger")
                       ] })
                     ]
                   },
@@ -16184,7 +14152,7 @@ function Rooms({ rooms }) {
                 )) }),
                 /* @__PURE__ */ jsx(ScrollBar, { orientation: "horizontal" })
               ] }),
-              rooms.map((room) => /* @__PURE__ */ jsxs(
+              rooms2.map((room) => /* @__PURE__ */ jsxs(
                 TabsContent,
                 {
                   value: room.room_number,
@@ -16204,6 +14172,10 @@ function Rooms({ rooms }) {
 }
 function ServiceCard({ service }) {
   var _a, _b;
+  const [processing, setProcessing] = React__default.useState(false);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.services"
+  });
   return /* @__PURE__ */ jsxs(Card, { className: "relative my-6 p-4 sm:flex sm:flex-row-reverse flex-col-reverse bg-transparent border-none shadow-none", children: [
     /* @__PURE__ */ jsx("div", { className: "sm:w-1/2 w-full", children: /* @__PURE__ */ jsx(
       "img",
@@ -16233,16 +14205,32 @@ function ServiceCard({ service }) {
         {
           variant: "secondary",
           size: "sm",
+          disabled: processing,
           onClick: () => router.get(
-            route("client.service.show", service.service_id)
+            route(
+              "client.service.show",
+              service.service_id
+            ),
+            {},
+            {
+              onStart: () => {
+                setProcessing(true);
+              },
+              onFinish: () => {
+                setProcessing(false);
+              }
+            }
           ),
-          children: useTrans("Voir Plus")
+          children: t("actionBtn")
         }
       ) })
     ] })
   ] });
 }
-function Services({ services }) {
+function Services({ services: services2 }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.services"
+  });
   return /* @__PURE__ */ jsxs(
     "div",
     {
@@ -16250,18 +14238,16 @@ function Services({ services }) {
       id: "services-section",
       children: [
         /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[-10%] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
-        /* @__PURE__ */ jsx("div", { className: "font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: useTrans("Services") }),
-        /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: useTrans(
-          "Nous offrons une gamme de services conçus pour rendre votre séjour aussi agréable que possible. Que vous souhaitiez vous détendre, savourer de délicieux repas, ou profiter de commodités supplémentaires, nous sommes là pour répondre à tous vos besoins."
-        ) }) }),
+        /* @__PURE__ */ jsx("div", { className: "font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: t("title") }),
+        /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: t("description") }) }),
         /* @__PURE__ */ jsxs(
           Tabs,
           {
-            defaultValue: services[0].service_id,
+            defaultValue: services2[0].service_id,
             className: "w-full flex flex-col",
             children: [
               /* @__PURE__ */ jsxs(ScrollArea, { className: "w-full ", children: [
-                /* @__PURE__ */ jsx(TabsList, { className: "flex justify-center bg-transparent h-fit", children: services.map((service) => /* @__PURE__ */ jsx(
+                /* @__PURE__ */ jsx(TabsList, { className: "flex justify-center bg-transparent h-fit", children: services2.map((service) => /* @__PURE__ */ jsx(
                   TabsTrigger,
                   {
                     value: service.service_id,
@@ -16272,7 +14258,7 @@ function Services({ services }) {
                 )) }),
                 /* @__PURE__ */ jsx(ScrollBar, { orientation: "horizontal" })
               ] }),
-              services.map((service) => /* @__PURE__ */ jsx(
+              services2.map((service) => /* @__PURE__ */ jsx(
                 TabsContent,
                 {
                   value: service.service_id,
@@ -16288,12 +14274,16 @@ function Services({ services }) {
   );
 }
 function BookingForm({ id }) {
-  const { data, setData: setData2, get, processing } = useForm({
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.banner.form"
+  });
+  const { data, setData: setData2, get, processing, errors } = useForm({
     check_in: "",
     check_out: "",
     guest_number: 0,
     kids_number: 0
   });
+  console.log(errors);
   const [dateRange, setDateRange] = useState({
     from: "",
     to: ""
@@ -16349,7 +14339,7 @@ function BookingForm({ id }) {
           /* @__PURE__ */ jsx(
             InputLabel,
             {
-              value: useTrans("dates"),
+              value: t("date"),
               htmlFor: "dates",
               className: "mb-3"
             }
@@ -16368,11 +14358,11 @@ function BookingForm({ id }) {
             InputLabel,
             {
               htmlFor: "guest_number",
-              value: useTrans("Nombre des personne"),
+              value: t("guestNumber"),
               className: "mb-3"
             }
           ),
-          /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between border rounded-md p-1 bg-muted", children: [
+          /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between border rounded-md p-1 bg-card", children: [
             /* @__PURE__ */ jsx(
               CircleMinus,
               {
@@ -16398,11 +14388,11 @@ function BookingForm({ id }) {
             InputLabel,
             {
               htmlFor: "kids_number",
-              value: useTrans("nombre des bébé"),
+              value: t("kidsNumber"),
               className: "mb-3"
             }
           ),
-          /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between border rounded-md p-1 bg-muted", children: [
+          /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between border rounded-md p-1 bg-card", children: [
             /* @__PURE__ */ jsx(
               CircleMinus,
               {
@@ -16429,7 +14419,8 @@ function BookingForm({ id }) {
             variant: "secondary",
             size: "sm",
             className: "md:w-1/12 sm:w-1/6 w-1/4",
-            children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : useTrans("Rechercher")
+            disabled: processing,
+            children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : t("search")
           }
         )
       ]
@@ -16438,19 +14429,18 @@ function BookingForm({ id }) {
 }
 function HomeHeading({ id }) {
   const { width } = useWindowDimensions();
+  const { t } = useTranslation("translation", { keyPrefix: "client.sections.banner" });
   return /* @__PURE__ */ jsxs("div", { id, children: [
     /* @__PURE__ */ jsxs("div", { className: "relative h-full z-10 p-4 flex md:flex-row flex-col justify-around", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-center md:w-1/2 w-full", children: [
-        /* @__PURE__ */ jsx("div", { className: "flex flex-col space-y-1.5 p-6", children: /* @__PURE__ */ jsx("div", { className: "font-bold text-5xl py-4", children: useTrans("Sidi El Noui") }) }),
-        /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 pt-0", children: /* @__PURE__ */ jsx("div", { children: useTrans(
-          "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable."
-        ) }) })
+        /* @__PURE__ */ jsx("div", { className: "flex flex-col space-y-1.5 p-6", children: /* @__PURE__ */ jsx("div", { className: "font-bold text-5xl py-4", children: t("title") }) }),
+        /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 pt-0", children: /* @__PURE__ */ jsx("div", { children: t("descreption") }) })
       ] }),
       width <= 767 && /* @__PURE__ */ jsx(BookingForm, {}),
       /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center  ", children: /* @__PURE__ */ jsx(
         "img",
         {
-          src: "http://localhost:8000/storage/sidi-el-noui-logo-removebg.png",
+          src: "/assets/sidi-el-noui-logo-removebg.png",
           className: "object-content w-1/3 md:w-2/3 rounded-xl relative z-10  hover:corsur-pointer  transition-transform duration-300 hover:scale-105 "
         }
       ) })
@@ -16460,6 +14450,9 @@ function HomeHeading({ id }) {
 }
 function Contact() {
   const user = usePage().props.auth.user;
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.contact"
+  });
   const { data, setData: setData2, errors, post, reset, processing, clearErrors } = useForm({
     client_email: user ? user.email : "",
     subject: "",
@@ -16482,15 +14475,15 @@ function Contact() {
       id: "contact-section",
       children: [
         /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
-        /* @__PURE__ */ jsx("div", { className: "font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: useTrans("contactez-nous") }),
+        /* @__PURE__ */ jsx("div", { className: "font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: t("title") }),
         /* @__PURE__ */ jsxs("form", { onSubmit: submit, className: "relative w-full px-10", children: [
           /* @__PURE__ */ jsxs("div", { className: "flex gap-4 flex-col-reverse sm:flex-row", children: [
-            /* @__PURE__ */ jsxs("div", { className: "sm:w-1/3 w-2/3", children: [
+            /* @__PURE__ */ jsxs("div", { className: "sm:w-1/3 w-full", children: [
               /* @__PURE__ */ jsxs("div", { className: "my-4 flex flex-col gap-2", children: [
                 /* @__PURE__ */ jsx(
                   InputLabel,
                   {
-                    value: useTrans("Email"),
+                    value: t("email"),
                     htmlFor: "client_email"
                   }
                 ),
@@ -16500,7 +14493,7 @@ function Contact() {
                     type: "email",
                     id: "client_email",
                     name: "client_email",
-                    placeholder: useTrans("Email"),
+                    placeholder: t("email"),
                     value: data.client_email,
                     disabled: user,
                     onChange: (e) => {
@@ -16516,7 +14509,7 @@ function Contact() {
                 /* @__PURE__ */ jsx(
                   InputLabel,
                   {
-                    value: useTrans("Sujet"),
+                    value: t("subject"),
                     htmlFor: "subject"
                   }
                 ),
@@ -16526,7 +14519,7 @@ function Contact() {
                     type: "text",
                     id: "subject",
                     name: "subject",
-                    placeholder: useTrans("Sujet"),
+                    placeholder: t("subject"),
                     value: data.subject,
                     onChange: (e) => {
                       setData2("subject", e.target.value);
@@ -16538,18 +14531,16 @@ function Contact() {
                 /* @__PURE__ */ jsx(InputError, { message: errors.subject })
               ] })
             ] }),
-            /* @__PURE__ */ jsx("div", { className: "sm:w-2/3 my-8 text-muted-foreground ", children: useTrans(
-              "Vous pouvez nous envoyer un message via ce formulaire de contact. Nous ferons de notre mieux pour répondre à toutes vos questions dans les plus brefs délais."
-            ) })
+            /* @__PURE__ */ jsx("div", { className: "sm:w-2/3 my-8 text-muted-foreground ", children: t("description") })
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "my-4 flex flex-col gap-2", children: [
-            /* @__PURE__ */ jsx(InputLabel, { value: useTrans("Message"), htmlFor: "message" }),
+            /* @__PURE__ */ jsx(InputLabel, { value: t("message"), htmlFor: "message" }),
             /* @__PURE__ */ jsx(
               Textarea,
               {
                 id: "message",
                 name: "message",
-                placeholder: useTrans("Message"),
+                placeholder: t("message"),
                 value: data.message,
                 onChange: (e) => {
                   setData2("message", e.target.value);
@@ -16560,14 +14551,15 @@ function Contact() {
             ),
             /* @__PURE__ */ jsx(InputError, { message: errors.message })
           ] }),
-          /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(Button, { variant: "secondary", size: "sm", className: "w-1/6", children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : useTrans("Envoyé") }) })
+          /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(Button, { variant: "secondary", size: "sm", className: "w-1/6", children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : t("submit") }) })
         ] })
       ]
     }
   );
 }
-function Home({ events, promotions, rooms, services }) {
+function Home({ events: events2, promotions: promotions2, rooms: rooms2, services: services2 }) {
   const { toast: toast2 } = useToast();
+  const { t } = useTranslation("translation", { keyPrefix: "client.home" });
   const flash = usePage().props.flash;
   useEffect(() => {
     var _a;
@@ -16576,7 +14568,10 @@ function Home({ events, promotions, rooms, services }) {
     }
   }, [flash.message, toast2]);
   return /* @__PURE__ */ jsxs(ClientLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Home" }),
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: t("title") }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: t("metaDescreption") })
+    ] }),
     /* @__PURE__ */ jsxs(
       "div",
       {
@@ -16588,33 +14583,32 @@ function Home({ events, promotions, rooms, services }) {
         ]
       }
     ),
-    promotions && /* @__PURE__ */ jsxs("div", { className: "my-6 relative min-h-screen max-h-sceen", children: [
+    promotions2 && /* @__PURE__ */ jsxs("div", { className: "my-6 relative min-h-screen max-h-sceen", children: [
       /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[0] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.2)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
-      /* @__PURE__ */ jsx("div", { className: "font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: useTrans("Promotions") }),
-      /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: useTrans(
-        "Offres Exclusives pour un Séjour Inoubliable Profitez de nos promotions exceptionnelles et réservez votre séjour à un prix avantageux. Découvrez nos offres spéciales et bénéficiez de réductions sur les chambres, les forfaits bien-être, et bien plus encore."
-      ) }) }),
-      /* @__PURE__ */ jsx(Promotion, { promotion: promotions })
+      /* @__PURE__ */ jsx("div", { className: "font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: t("promotions") }),
+      /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: t("promotionsDescreption") }) }),
+      /* @__PURE__ */ jsx(Promotion, { promotion: promotions2 })
     ] }),
-    events && /* @__PURE__ */ jsxs("div", { className: "my-6 relative min-h-screen max-h-sceen", children: [
+    events2 && /* @__PURE__ */ jsxs("div", { className: "my-6 relative min-h-screen max-h-sceen", children: [
       /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[0] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.5)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
-      /* @__PURE__ */ jsx("div", { className: "font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: useTrans("Evènements") }),
-      /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: useTrans(
-        "Des Événements Inoubliables au Cœur d'Alger, Vivez des moments uniques en participant à nos événements exclusifs. Que ce soit pour des soirées thématiques, des concerts, ou des festivals locaux, notre hôtel est le point de départ idéal pour toutes vosaventures."
-      ) }) }),
-      /* @__PURE__ */ jsx(Events, { event: events })
+      /* @__PURE__ */ jsx("div", { className: "font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: t("events") }),
+      /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: t("eventsDescreption") }) }),
+      /* @__PURE__ */ jsx(Events, { event: events2 })
     ] }),
-    rooms.length > 0 && /* @__PURE__ */ jsx(Rooms, { rooms }),
-    services.length > 0 && /* @__PURE__ */ jsx(Services, { services }),
-    /* @__PURE__ */ jsx(Contact, { rooms })
+    rooms2.length > 0 && /* @__PURE__ */ jsx(Rooms, { rooms: rooms2 }),
+    services2.length > 0 && /* @__PURE__ */ jsx(Services, { services: services2 }),
+    /* @__PURE__ */ jsx(Contact, { rooms: rooms2 })
   ] });
 }
-const __vite_glob_0_57 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_44 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Home
 }, Symbol.toStringTag, { value: "Module" }));
-function DeleteUserForm$1({ className = "" }) {
+function DeleteUserForm({ className = "" }) {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.profile.section3"
+  });
   const passwordInput = useRef();
   const { width } = useWindowDimensions();
   const {
@@ -16630,20 +14624,14 @@ function DeleteUserForm$1({ className = "" }) {
     e.preventDefault();
     destroy(route("client.profile.destroy"), {
       preserveScroll: true,
-      onSuccess: () => {
-        setOpen(false);
-        reset();
-      },
       onError: () => passwordInput.current.focus(),
       onFinish: () => reset()
     });
   };
   return /* @__PURE__ */ jsxs("section", { className: `space-y-6 ${className}`, children: [
     /* @__PURE__ */ jsxs("header", { children: [
-      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: useTrans("Supprimer le compte") }),
-      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: useTrans(
-        "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver."
-      ) })
+      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: t("title") }),
+      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: t("subtitle") })
     ] }),
     width >= 767 ? /* @__PURE__ */ jsxs(Dialog, { open, onOpenChange: setOpen, children: [
       /* @__PURE__ */ jsxs(
@@ -16652,22 +14640,18 @@ function DeleteUserForm$1({ className = "" }) {
           className: buttonVariants({ variant: "destructive" }),
           children: [
             /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-            useTrans("Supprimer le compte")
+            t("title")
           ]
         }
       ),
       /* @__PURE__ */ jsxs(DialogContent, { children: [
         /* @__PURE__ */ jsxs(DialogHeader, { children: [
           /* @__PURE__ */ jsxs(DialogTitle, { children: [
-            useTrans(
-              "Etes-vous sûr de vouloir supprimer votre compte ?"
-            ),
+            t("dialogTitle"),
             " "
           ] }),
           /* @__PURE__ */ jsxs(DialogDescription, { children: [
-            useTrans(
-              "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte."
-            ),
+            t("dialogDescreption"),
             " "
           ] })
         ] }),
@@ -16692,7 +14676,7 @@ function DeleteUserForm$1({ className = "" }) {
                 onChange: (e) => setData2("password", e.target.value),
                 className: "mt-1 ",
                 isFocused: true,
-                placeholder: useTrans("Mot de passe")
+                placeholder: t("placeholder")
               }
             ),
             /* @__PURE__ */ jsx(
@@ -16709,7 +14693,7 @@ function DeleteUserForm$1({ className = "" }) {
               {
                 variant: "outline",
                 onClick: () => setOpen(false),
-                children: useTrans("Annuler")
+                children: t("cancel")
               }
             ),
             /* @__PURE__ */ jsxs(
@@ -16722,7 +14706,7 @@ function DeleteUserForm$1({ className = "" }) {
                 className: "flex justify-center",
                 children: [
                   /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-                  useTrans("Supprimer")
+                  t("delete")
                 ]
               }
             )
@@ -16736,22 +14720,18 @@ function DeleteUserForm$1({ className = "" }) {
           className: buttonVariants({ variant: "destructive" }),
           children: [
             /* @__PURE__ */ jsx(Trash, { className: "mr-2 h-3.5 w-3.5 " }),
-            useTrans("Supprimer le compte")
+            t("title")
           ]
         }
       ),
       /* @__PURE__ */ jsxs(DrawerContent, { children: [
         /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
           /* @__PURE__ */ jsxs(DrawerTitle, { children: [
-            useTrans(
-              "Etes-vous sûr de vouloir supprimer votre compte ?"
-            ),
+            t("dialogTitle"),
             " "
           ] }),
           /* @__PURE__ */ jsxs(DrawerDescription, { children: [
-            useTrans(
-              "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte."
-            ),
+            t("dialogDescreption"),
             " "
           ] })
         ] }),
@@ -16776,7 +14756,7 @@ function DeleteUserForm$1({ className = "" }) {
                 onChange: (e) => setData2("password", e.target.value),
                 className: "mt-1",
                 isFocused: true,
-                placeholder: useTrans("Mot de passe")
+                placeholder: t("placeholder")
               }
             ),
             /* @__PURE__ */ jsx(
@@ -16798,22 +14778,22 @@ function DeleteUserForm$1({ className = "" }) {
                 className: "flex justify-center",
                 children: [
                   /* @__PURE__ */ jsx(Trash, { className: "mx-2 h-3.5 w-3.5" }),
-                  useTrans("Supprimer")
+                  t("delete")
                 ]
               }
             ),
-            /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) })
+            /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: t("cancel") }) })
           ] })
         ] })
       ] })
     ] })
   ] });
 }
-const __vite_glob_0_59 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_46 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: DeleteUserForm$1
+  default: DeleteUserForm
 }, Symbol.toStringTag, { value: "Module" }));
-function UpdatePasswordForm$1({ className = "" }) {
+function UpdatePasswordForm({ className = "" }) {
   const passwordInput = useRef();
   const currentPasswordInput = useRef();
   const {
@@ -16829,6 +14809,9 @@ function UpdatePasswordForm$1({ className = "" }) {
     current_password: "",
     password: "",
     password_confirmation: ""
+  });
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.profile.section2"
   });
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
@@ -16857,10 +14840,8 @@ function UpdatePasswordForm$1({ className = "" }) {
   };
   return /* @__PURE__ */ jsxs("section", { className, children: [
     /* @__PURE__ */ jsxs("header", { children: [
-      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: useTrans("Mettre à jour le mot de passe") }),
-      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: useTrans(
-        "Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester en sécurité"
-      ) })
+      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: t("title") }),
+      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: t("subtitle") })
     ] }),
     /* @__PURE__ */ jsxs("form", { onSubmit: updatePassword, children: [
       /* @__PURE__ */ jsx("div", { className: "md:flex my-4", children: /* @__PURE__ */ jsxs("div", { className: "w-full  bg-muted p-4 shadow", children: [
@@ -16868,7 +14849,7 @@ function UpdatePasswordForm$1({ className = "" }) {
           InputLabel,
           {
             htmlFor: "current_password",
-            value: useTrans("Mot de passe actuel")
+            value: t("password")
           }
         ),
         /* @__PURE__ */ jsx(
@@ -16901,7 +14882,7 @@ function UpdatePasswordForm$1({ className = "" }) {
             InputLabel,
             {
               htmlFor: "password",
-              value: useTrans("nouveau mot de passe")
+              value: t("newPassword")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -16933,7 +14914,7 @@ function UpdatePasswordForm$1({ className = "" }) {
             InputLabel,
             {
               htmlFor: "password_confirmation",
-              value: useTrans("Confirmez le mot de passe")
+              value: t("confirmPassword")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -16970,7 +14951,7 @@ function UpdatePasswordForm$1({ className = "" }) {
             type: "submit",
             className: "mt-2 w-1/4",
             variant: "secondary",
-            children: useTrans("Enregistrer")
+            children: t("submit")
           }
         ) }),
         /* @__PURE__ */ jsx(
@@ -16981,23 +14962,26 @@ function UpdatePasswordForm$1({ className = "" }) {
             enterFrom: "opacity-0",
             leave: "transition ease-in-out",
             leaveTo: "opacity-0",
-            children: /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 dark:text-gray-400", children: useTrans("Enregistrer") })
+            children: /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 dark:text-gray-400", children: t("submit") })
           }
         )
       ] })
     ] })
   ] });
 }
-const __vite_glob_0_60 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_47 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: UpdatePasswordForm$1
+  default: UpdatePasswordForm
 }, Symbol.toStringTag, { value: "Module" }));
-function UpdateProfileInformation$1({
+function UpdateProfileInformation({
   mustVerifyEmail,
   status,
   className = ""
 }) {
   const user = usePage().props.auth.user;
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.profile.section1"
+  });
   const { data, setData: setData2, patch, errors, processing, clearErrors } = useForm({
     first_name: user.first_name,
     last_name: user.last_name,
@@ -17009,7 +14993,7 @@ function UpdateProfileInformation$1({
     patch(route("client.profile.update"));
   };
   return /* @__PURE__ */ jsxs("section", { className, children: [
-    /* @__PURE__ */ jsx("header", { children: /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium", children: useTrans("Les informations personnelles") }) }),
+    /* @__PURE__ */ jsx("header", { children: /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium", children: t("title") }) }),
     /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4 gap-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/2 bg-muted p-4 shadow", children: [
@@ -17017,7 +15001,7 @@ function UpdateProfileInformation$1({
             InputLabel,
             {
               htmlFor: "first_name",
-              value: useTrans("Prénom")
+              value: t("firstName")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -17046,7 +15030,7 @@ function UpdateProfileInformation$1({
             InputLabel,
             {
               htmlFor: "last_name",
-              value: useTrans("Nom")
+              value: t("lastName")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -17073,13 +15057,11 @@ function UpdateProfileInformation$1({
       /* @__PURE__ */ jsx(Separator, {}),
       /* @__PURE__ */ jsxs("div", { className: "md:flex my-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-1/3 pb-2", children: [
-          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: useTrans("Email") }),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "L'email doit être unique pour chaque utilisateur"
-          ) })
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: t("email") }),
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("emailDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
-          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: useTrans("Email") }),
+          /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: t("email") }),
           /* @__PURE__ */ jsx(
             Input,
             {
@@ -17102,19 +15084,17 @@ function UpdateProfileInformation$1({
             InputLabel,
             {
               htmlFor: "phone",
-              value: useTrans("N° téléphone")
+              value: t("phone")
             }
           ),
-          /* @__PURE__ */ jsx(LabelDescreption, { children: useTrans(
-            "Le N° téléphone doit être unique pour chaque utilisateur"
-          ) })
+          /* @__PURE__ */ jsx(LabelDescreption, { children: t("phoneDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "w-full md:w-2/3 bg-muted p-4 shadow", children: [
           /* @__PURE__ */ jsx(
             InputLabel,
             {
               htmlFor: "phone",
-              value: useTrans("N° téléphone")
+              value: t("phone")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -17134,9 +15114,7 @@ function UpdateProfileInformation$1({
       ] }),
       mustVerifyEmail && user.email_verified_at === null && /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsxs("p", { className: "text-sm mt-2 text-gray-800 dark:text-gray-200", children: [
-          useTrans(
-            "Votre adresse email n'est pas vérifiée."
-          ),
+          t("emailValidation"),
           /* @__PURE__ */ jsxs(
             Link,
             {
@@ -17145,17 +15123,13 @@ function UpdateProfileInformation$1({
               as: "button",
               className: "underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800",
               children: [
-                useTrans(
-                  "Cliquez ici pour renvoyer l'e-mail de vérification."
-                ),
+                t("sendEmailVAlidation"),
                 " "
               ]
             }
           )
         ] }),
-        status === "verification-link-sent" && /* @__PURE__ */ jsx("div", { className: "mt-2 font-medium text-sm text-green-600 dark:text-green-400", children: useTrans(
-          "Un nouveau lien de vérification a été envoyé à votre adresse e-mail."
-        ) })
+        status === "verification-link-sent" && /* @__PURE__ */ jsx("div", { className: "mt-2 font-medium text-sm text-green-600 dark:text-green-400", children: t("validationSended") })
       ] }),
       /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
         Button,
@@ -17164,19 +15138,22 @@ function UpdateProfileInformation$1({
           type: "submit",
           className: "mt-2 w-1/4",
           variant: "secondary",
-          children: useTrans("Enregistrer")
+          children: t("submit")
         }
       ) })
     ] })
   ] });
 }
-const __vite_glob_0_61 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_48 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: UpdateProfileInformation$1
+  default: UpdateProfileInformation
 }, Symbol.toStringTag, { value: "Module" }));
-function Edit$1({ mustVerifyEmail, status }) {
+function Edit({ mustVerifyEmail, status }) {
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.profile"
+  });
   useEffect(() => {
     var _a;
     if (flash.message) {
@@ -17184,32 +15161,39 @@ function Edit$1({ mustVerifyEmail, status }) {
     }
   }, [flash.message, toast2]);
   return /* @__PURE__ */ jsxs(ClientLayout, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Profile" }),
+    /* @__PURE__ */ jsx(Head, { title: t("title") }),
     /* @__PURE__ */ jsx("div", { className: "py-12", children: /* @__PURE__ */ jsxs("div", { className: "max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6", children: [
       /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(
-        UpdateProfileInformation$1,
+        UpdateProfileInformation,
         {
           mustVerifyEmail,
           status
         }
       ) }),
-      /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(UpdatePasswordForm$1, {}) }),
-      /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(DeleteUserForm$1, { className: "max-w-xl" }) })
+      /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(UpdatePasswordForm, {}) }),
+      /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(DeleteUserForm, { className: "max-w-xl" }) })
     ] }) })
   ] });
 }
-const __vite_glob_0_58 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_45 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: Edit$1
+  default: Edit
 }, Symbol.toStringTag, { value: "Module" }));
 function Show$1({ promotion }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.promotion"
+  });
   return /* @__PURE__ */ jsxs(ClientLayout, { children: [
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: t("title") }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: t("metaDescription") })
+    ] }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] left-[calc(30%-28.5rem)] top-[0] translate-x-[-10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[20rem] bottom-[5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
-    /* @__PURE__ */ jsx(PageHeading, { title: "Promotion", className: "my-10 relative" }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title"), className: "my-10 relative" }),
     /* @__PURE__ */ jsx("div", { className: "rounded-lg my-4 relative", children: /* @__PURE__ */ jsxs(Carousel, { children: [
-      /* @__PURE__ */ jsx(CarouselContent, { children: promotion.assets.map((asset) => /* @__PURE__ */ jsx(
+      /* @__PURE__ */ jsx(CarouselContent, { children: promotion == null ? void 0 : promotion.assets.map((asset) => /* @__PURE__ */ jsx(
         CarouselItem,
         {
           className: "md:basis-1/2 lg:basis-1/3",
@@ -17230,19 +15214,19 @@ function Show$1({ promotion }) {
     /* @__PURE__ */ jsxs("div", { className: "p-4 rounded-lg my-4 relative bg-card ", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex justify-between itmes-center font-bold", children: [
         promotion.promo_start_date == promotion.promo_end_date ? /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
-          useTrans("Le"),
+          t("singleDate"),
           " :",
           " ",
           /* @__PURE__ */ jsx("span", { className: "text-lg", children: promotion.promo_start_date })
         ] }) : /* @__PURE__ */ jsxs("div", { className: "flex flex-col sm:flex-row gap-2 justify-around mb-4", children: [
           /* @__PURE__ */ jsxs("div", { children: [
-            useTrans("De"),
+            t("multipleDateStart"),
             " :",
             " ",
             /* @__PURE__ */ jsx("span", { className: " text-lg", children: promotion.promo_start_date })
           ] }),
           /* @__PURE__ */ jsxs("div", { children: [
-            useTrans("Jusqu'a"),
+            t("multipleDateEnd"),
             " :",
             " ",
             /* @__PURE__ */ jsx("span", { className: " text-lg", children: promotion.promo_end_date })
@@ -17266,12 +15250,19 @@ function Show$1({ promotion }) {
     ] })
   ] });
 }
-const __vite_glob_0_62 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_49 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Show$1
 }, Symbol.toStringTag, { value: "Module" }));
 function Show({ service }) {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.services"
+  });
   return /* @__PURE__ */ jsxs(ClientLayout, { children: [
+    /* @__PURE__ */ jsxs(Head, { children: [
+      /* @__PURE__ */ jsx("title", { children: t("title") }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: t("metaDescreption") })
+    ] }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] left-[calc(30%-28.5rem)] top-[0] translate-x-[-10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[20rem] bottom-[5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
@@ -17283,14 +15274,21 @@ function Show({ service }) {
       }
     ),
     /* @__PURE__ */ jsx("div", { className: "rounded-lg my-4 relative", children: /* @__PURE__ */ jsxs(Carousel, { children: [
-      /* @__PURE__ */ jsx(CarouselContent, { children: service.assets.map((asset) => /* @__PURE__ */ jsx(CarouselItem, { className: "md:basis-1/2 lg:basis-1/3", children: /* @__PURE__ */ jsx(
-        "img",
+      /* @__PURE__ */ jsx(CarouselContent, { children: service.assets.map((asset) => /* @__PURE__ */ jsx(
+        CarouselItem,
         {
-          src: asset.url,
-          alt: asset.name,
-          className: "rounded-md aspect-video object-cover w-full transition-transform duration-300 hover:scale-95"
-        }
-      ) }, asset.id)) }),
+          className: "md:basis-1/2 lg:basis-1/3",
+          children: /* @__PURE__ */ jsx(
+            "img",
+            {
+              src: asset.url,
+              alt: asset.name,
+              className: "rounded-md aspect-video object-cover w-full transition-transform duration-300 hover:scale-95"
+            }
+          )
+        },
+        asset.id
+      )) }),
       /* @__PURE__ */ jsx(CarouselPrevious, {}),
       /* @__PURE__ */ jsx(CarouselNext, {})
     ] }) }),
@@ -17305,7 +15303,7 @@ function Show({ service }) {
         }
       ),
       service.consomation.length > 0 && /* @__PURE__ */ jsxs(Fragment, { children: [
-        /* @__PURE__ */ jsx("div", { className: "font-bold", children: "Consommation disponible dans ce service :" }),
+        /* @__PURE__ */ jsx("div", { className: "font-bold", children: t("consumptions") }),
         /* @__PURE__ */ jsx("div", { className: "flex gap-2 my-2", children: service.consomation.map((consomation) => /* @__PURE__ */ jsx(
           Badge,
           {
@@ -17318,254 +15316,9 @@ function Show({ service }) {
     ] })
   ] });
 }
-const __vite_glob_0_63 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_50 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Show
-}, Symbol.toStringTag, { value: "Module" }));
-function ApplicationLogo(props) {
-  return /* @__PURE__ */ jsx("svg", { ...props, viewBox: "0 0 316 316", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsx("path", { d: "M305.8 81.125C305.77 80.995 305.69 80.885 305.65 80.755C305.56 80.525 305.49 80.285 305.37 80.075C305.29 79.935 305.17 79.815 305.07 79.685C304.94 79.515 304.83 79.325 304.68 79.175C304.55 79.045 304.39 78.955 304.25 78.845C304.09 78.715 303.95 78.575 303.77 78.475L251.32 48.275C249.97 47.495 248.31 47.495 246.96 48.275L194.51 78.475C194.33 78.575 194.19 78.725 194.03 78.845C193.89 78.955 193.73 79.045 193.6 79.175C193.45 79.325 193.34 79.515 193.21 79.685C193.11 79.815 192.99 79.935 192.91 80.075C192.79 80.285 192.71 80.525 192.63 80.755C192.58 80.875 192.51 80.995 192.48 81.125C192.38 81.495 192.33 81.875 192.33 82.265V139.625L148.62 164.795V52.575C148.62 52.185 148.57 51.805 148.47 51.435C148.44 51.305 148.36 51.195 148.32 51.065C148.23 50.835 148.16 50.595 148.04 50.385C147.96 50.245 147.84 50.125 147.74 49.995C147.61 49.825 147.5 49.635 147.35 49.485C147.22 49.355 147.06 49.265 146.92 49.155C146.76 49.025 146.62 48.885 146.44 48.785L93.99 18.585C92.64 17.805 90.98 17.805 89.63 18.585L37.18 48.785C37 48.885 36.86 49.035 36.7 49.155C36.56 49.265 36.4 49.355 36.27 49.485C36.12 49.635 36.01 49.825 35.88 49.995C35.78 50.125 35.66 50.245 35.58 50.385C35.46 50.595 35.38 50.835 35.3 51.065C35.25 51.185 35.18 51.305 35.15 51.435C35.05 51.805 35 52.185 35 52.575V232.235C35 233.795 35.84 235.245 37.19 236.025L142.1 296.425C142.33 296.555 142.58 296.635 142.82 296.725C142.93 296.765 143.04 296.835 143.16 296.865C143.53 296.965 143.9 297.015 144.28 297.015C144.66 297.015 145.03 296.965 145.4 296.865C145.5 296.835 145.59 296.775 145.69 296.745C145.95 296.655 146.21 296.565 146.45 296.435L251.36 236.035C252.72 235.255 253.55 233.815 253.55 232.245V174.885L303.81 145.945C305.17 145.165 306 143.725 306 142.155V82.265C305.95 81.875 305.89 81.495 305.8 81.125ZM144.2 227.205L100.57 202.515L146.39 176.135L196.66 147.195L240.33 172.335L208.29 190.625L144.2 227.205ZM244.75 114.995V164.795L226.39 154.225L201.03 139.625V89.825L219.39 100.395L244.75 114.995ZM249.12 57.105L292.81 82.265L249.12 107.425L205.43 82.265L249.12 57.105ZM114.49 184.425L96.13 194.995V85.305L121.49 70.705L139.85 60.135V169.815L114.49 184.425ZM91.76 27.425L135.45 52.585L91.76 77.745L48.07 52.585L91.76 27.425ZM43.67 60.135L62.03 70.705L87.39 85.305V202.545V202.555V202.565C87.39 202.735 87.44 202.895 87.46 203.055C87.49 203.265 87.49 203.485 87.55 203.695V203.705C87.6 203.875 87.69 204.035 87.76 204.195C87.84 204.375 87.89 204.575 87.99 204.745C87.99 204.745 87.99 204.755 88 204.755C88.09 204.905 88.22 205.035 88.33 205.175C88.45 205.335 88.55 205.495 88.69 205.635L88.7 205.645C88.82 205.765 88.98 205.855 89.12 205.965C89.28 206.085 89.42 206.225 89.59 206.325C89.6 206.325 89.6 206.325 89.61 206.335C89.62 206.335 89.62 206.345 89.63 206.345L139.87 234.775V285.065L43.67 229.705V60.135ZM244.75 229.705L148.58 285.075V234.775L219.8 194.115L244.75 179.875V229.705ZM297.2 139.625L253.49 164.795V114.995L278.85 100.395L297.21 89.825V139.625H297.2Z" }) });
-}
-const DropDownContext = createContext();
-const Dropdown = ({ children }) => {
-  const [open, setOpen] = useState(false);
-  const toggleOpen = () => {
-    setOpen((previousState) => !previousState);
-  };
-  return /* @__PURE__ */ jsx(DropDownContext.Provider, { value: { open, setOpen, toggleOpen }, children: /* @__PURE__ */ jsx("div", { className: "relative", children }) });
-};
-const Trigger = ({ children }) => {
-  const { open, setOpen, toggleOpen } = useContext(DropDownContext);
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx("div", { onClick: toggleOpen, children }),
-    open && /* @__PURE__ */ jsx("div", { className: "fixed inset-0 z-40", onClick: () => setOpen(false) })
-  ] });
-};
-const Content = ({ align = "right", width = "48", contentClasses = "py-1 bg-white dark:bg-gray-700", children }) => {
-  const { open, setOpen } = useContext(DropDownContext);
-  let alignmentClasses = "origin-top";
-  if (align === "left") {
-    alignmentClasses = "ltr:origin-top-left rtl:origin-top-right start-0";
-  } else if (align === "right") {
-    alignmentClasses = "ltr:origin-top-right rtl:origin-top-left end-0";
-  }
-  let widthClasses = "";
-  if (width === "48") {
-    widthClasses = "w-48";
-  }
-  return /* @__PURE__ */ jsx(Fragment, { children: /* @__PURE__ */ jsx(
-    Transition,
-    {
-      as: Fragment$1,
-      show: open,
-      enter: "transition ease-out duration-200",
-      enterFrom: "opacity-0 scale-95",
-      enterTo: "opacity-100 scale-100",
-      leave: "transition ease-in duration-75",
-      leaveFrom: "opacity-100 scale-100",
-      leaveTo: "opacity-0 scale-95",
-      children: /* @__PURE__ */ jsx(
-        "div",
-        {
-          className: `absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`,
-          onClick: () => setOpen(false),
-          children: /* @__PURE__ */ jsx("div", { className: `rounded-md ring-1 ring-black ring-opacity-5 ` + contentClasses, children })
-        }
-      )
-    }
-  ) });
-};
-const DropdownLink = ({ className = "", children, ...props }) => {
-  return /* @__PURE__ */ jsx(
-    Link,
-    {
-      ...props,
-      className: "block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out " + className,
-      children
-    }
-  );
-};
-Dropdown.Trigger = Trigger;
-Dropdown.Content = Content;
-Dropdown.Link = DropdownLink;
-function NavLink({ active = false, className = "", children, ...props }) {
-  return /* @__PURE__ */ jsx(
-    Link,
-    {
-      ...props,
-      className: "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none " + (active ? "border-indigo-400 dark:border-indigo-600 text-gray-900 dark:text-gray-100 focus:border-indigo-700 " : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 ") + className,
-      children
-    }
-  );
-}
-function ResponsiveNavLink({ active = false, className = "", children, ...props }) {
-  return /* @__PURE__ */ jsx(
-    Link,
-    {
-      ...props,
-      className: `w-full flex items-start ps-3 pe-4 py-2 border-l-4 ${active ? "border-indigo-400 dark:border-indigo-600 text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/50 focus:text-indigo-800 dark:focus:text-indigo-200 focus:bg-indigo-100 dark:focus:bg-indigo-900 focus:border-indigo-700 dark:focus:border-indigo-300" : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:text-gray-800 dark:focus:text-gray-200 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-gray-300 dark:focus:border-gray-600"} text-base font-medium focus:outline-none transition duration-150 ease-in-out ${className}`,
-      children
-    }
-  );
-}
-function AuthenticatedLayout({ user, header, children }) {
-  const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-  return /* @__PURE__ */ jsxs("div", { className: "min-h-screen bg-gray-100 dark:bg-gray-900", children: [
-    /* @__PURE__ */ jsxs("nav", { className: "bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700", children: [
-      /* @__PURE__ */ jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxs("div", { className: "flex justify-between h-16", children: [
-        /* @__PURE__ */ jsxs("div", { className: "flex", children: [
-          /* @__PURE__ */ jsx("div", { className: "shrink-0 flex items-center", children: /* @__PURE__ */ jsx(Link, { href: "/", children: /* @__PURE__ */ jsx(ApplicationLogo, { className: "block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" }) }) }),
-          /* @__PURE__ */ jsx("div", { className: "hidden space-x-8 sm:-my-px sm:ms-10 sm:flex", children: /* @__PURE__ */ jsx(
-            NavLink,
-            {
-              href: route("dashboard"),
-              active: route().current("dashboard"),
-              children: "Dashboard"
-            }
-          ) })
-        ] }),
-        /* @__PURE__ */ jsx("div", { className: "hidden sm:flex sm:items-center sm:ms-6", children: /* @__PURE__ */ jsx("div", { className: "ms-3 relative", children: /* @__PURE__ */ jsxs(Dropdown, { children: [
-          /* @__PURE__ */ jsx(Dropdown.Trigger, { children: /* @__PURE__ */ jsx("span", { className: "inline-flex rounded-md", children: /* @__PURE__ */ jsxs(
-            "button",
-            {
-              type: "button",
-              className: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150",
-              children: [
-                user.name,
-                /* @__PURE__ */ jsx(
-                  "svg",
-                  {
-                    className: "ms-2 -me-0.5 h-4 w-4",
-                    xmlns: "http://www.w3.org/2000/svg",
-                    viewBox: "0 0 20 20",
-                    fill: "currentColor",
-                    children: /* @__PURE__ */ jsx(
-                      "path",
-                      {
-                        fillRule: "evenodd",
-                        d: "M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z",
-                        clipRule: "evenodd"
-                      }
-                    )
-                  }
-                )
-              ]
-            }
-          ) }) }),
-          /* @__PURE__ */ jsxs(Dropdown.Content, { children: [
-            /* @__PURE__ */ jsx(
-              Dropdown.Link,
-              {
-                href: route("profile.edit"),
-                children: "Profile"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              Dropdown.Link,
-              {
-                href: route("logout"),
-                method: "post",
-                as: "button",
-                children: "Log Out"
-              }
-            )
-          ] })
-        ] }) }) }),
-        /* @__PURE__ */ jsx("div", { className: "-me-2 flex items-center sm:hidden", children: /* @__PURE__ */ jsx(
-          "button",
-          {
-            onClick: () => setShowingNavigationDropdown(
-              (previousState) => !previousState
-            ),
-            className: "inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out",
-            children: /* @__PURE__ */ jsxs(
-              "svg",
-              {
-                className: "h-6 w-6",
-                stroke: "currentColor",
-                fill: "none",
-                viewBox: "0 0 24 24",
-                children: [
-                  /* @__PURE__ */ jsx(
-                    "path",
-                    {
-                      className: !showingNavigationDropdown ? "inline-flex" : "hidden",
-                      strokeLinecap: "round",
-                      strokeLinejoin: "round",
-                      strokeWidth: "2",
-                      d: "M4 6h16M4 12h16M4 18h16"
-                    }
-                  ),
-                  /* @__PURE__ */ jsx(
-                    "path",
-                    {
-                      className: showingNavigationDropdown ? "inline-flex" : "hidden",
-                      strokeLinecap: "round",
-                      strokeLinejoin: "round",
-                      strokeWidth: "2",
-                      d: "M6 18L18 6M6 6l12 12"
-                    }
-                  )
-                ]
-              }
-            )
-          }
-        ) })
-      ] }) }),
-      /* @__PURE__ */ jsxs(
-        "div",
-        {
-          className: (showingNavigationDropdown ? "block" : "hidden") + " sm:hidden",
-          children: [
-            /* @__PURE__ */ jsx("div", { className: "pt-2 pb-3 space-y-1", children: /* @__PURE__ */ jsx(
-              ResponsiveNavLink,
-              {
-                href: route("dashboard"),
-                active: route().current("dashboard"),
-                children: "Dashboard"
-              }
-            ) }),
-            /* @__PURE__ */ jsxs("div", { className: "pt-4 pb-1 border-t border-gray-200 dark:border-gray-600", children: [
-              /* @__PURE__ */ jsxs("div", { className: "px-4", children: [
-                /* @__PURE__ */ jsx("div", { className: "font-medium text-base text-gray-800 dark:text-gray-200", children: user.name }),
-                /* @__PURE__ */ jsx("div", { className: "font-medium text-sm text-gray-500", children: user.email })
-              ] }),
-              /* @__PURE__ */ jsxs("div", { className: "mt-3 space-y-1", children: [
-                /* @__PURE__ */ jsx(ResponsiveNavLink, { href: route("profile.edit"), children: "Profile" }),
-                /* @__PURE__ */ jsx(
-                  ResponsiveNavLink,
-                  {
-                    method: "post",
-                    href: route("logout"),
-                    as: "button",
-                    children: "Log Out"
-                  }
-                )
-              ] })
-            ] })
-          ]
-        }
-      )
-    ] }),
-    header && /* @__PURE__ */ jsx("header", { className: "bg-white dark:bg-gray-800 shadow", children: /* @__PURE__ */ jsx("div", { className: "max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8", children: header }) }),
-    /* @__PURE__ */ jsx("main", { children })
-  ] });
-}
-function Dashboard({ auth }) {
-  return /* @__PURE__ */ jsxs(
-    AuthenticatedLayout,
-    {
-      user: auth.user,
-      header: /* @__PURE__ */ jsx("h2", { className: "font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight", children: "Dashboard" }),
-      children: [
-        /* @__PURE__ */ jsx(Head, { title: "Dashboard" }),
-        /* @__PURE__ */ jsx("div", { className: "py-12", children: /* @__PURE__ */ jsx("div", { className: "max-w-7xl mx-auto sm:px-6 lg:px-8", children: /* @__PURE__ */ jsx("div", { className: "bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg", children: /* @__PURE__ */ jsx("div", { className: "p-6 text-gray-900 dark:text-gray-100", children: "You're logged in!" }) }) }) })
-      ]
-    }
-  );
-}
-const __vite_glob_0_64 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: Dashboard
 }, Symbol.toStringTag, { value: "Module" }));
 function Error$1({ status }) {
   const title = {
@@ -17580,692 +15333,856 @@ function Error$1({ status }) {
     404: "Sorry, the page you are looking for could not be found.",
     403: "Sorry, you are forbidden from accessing this page."
   }[status];
-  return /* @__PURE__ */ jsxs("div", { children: [
-    /* @__PURE__ */ jsx("h1", { children: title }),
-    /* @__PURE__ */ jsx("div", { children: description })
+  return /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-center items-center h-screen w-full gap-2", children: [
+    /* @__PURE__ */ jsx(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "430",
+        height: "430",
+        fill: "none",
+        viewBox: "0 0 430 430",
+        children: /* @__PURE__ */ jsxs(
+          "g",
+          {
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            strokeMiterlimit: "10",
+            strokeWidth: "12",
+            children: [
+              /* @__PURE__ */ jsx(
+                "path",
+                {
+                  stroke: "#203d51",
+                  d: "m226.4 88.5 139 240.8c5 8.7-1.3 19.5-11.3 19.5h-278c-10 0-16.3-10.9-11.3-19.5l139-240.8c5-8.7 17.5-8.7 22.6 0"
+                }
+              ),
+              /* @__PURE__ */ jsx(
+                "path",
+                {
+                  stroke: "#e9c05b",
+                  d: "M217.8 259h-5.4c-7.4 0-13.5-5.8-13.8-13.2l-2.8-57.9c-.5-9.4 7-17.2 16.4-17.2h6c9.4 0 16.8 7.8 16.4 17.2l-2.8 57.9c-.6 7.4-6.6 13.2-14 13.2m-2.7 57.8c8.782 0 15.9-7.119 15.9-15.9s-7.118-15.9-15.9-15.9-15.9 7.119-15.9 15.9 7.119 15.9 15.9 15.9"
+                }
+              )
+            ]
+          }
+        )
+      }
+    ),
+    /* @__PURE__ */ jsx("h1", { className: "font-bold text-xl", children: title }),
+    /* @__PURE__ */ jsx("div", { className: "font-bold text-xl", children: description }),
+    /* @__PURE__ */ jsx(
+      Button,
+      {
+        variant: "secondary",
+        size: "sm",
+        className: "mt-3",
+        onClick: () => router.get(route("client.index")),
+        children: "Retournez vers la page d'accueil"
+      }
+    )
   ] });
 }
-const __vite_glob_0_65 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const __vite_glob_0_51 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Error$1
 }, Symbol.toStringTag, { value: "Module" }));
-function DeleteUserForm({ className = "" }) {
-  const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
-  const passwordInput = useRef();
-  const {
-    data,
-    setData: setData2,
-    delete: destroy,
-    processing,
-    reset,
-    errors
-  } = useForm({
-    password: ""
-  });
-  const confirmUserDeletion = () => {
-    setConfirmingUserDeletion(true);
-  };
-  const deleteUser = (e) => {
-    e.preventDefault();
-    destroy(route("profile.destroy"), {
-      preserveScroll: true,
-      onSuccess: () => closeModal(),
-      onError: () => passwordInput.current.focus(),
-      onFinish: () => reset()
-    });
-  };
-  const closeModal = () => {
-    setConfirmingUserDeletion(false);
-    reset();
-  };
-  return /* @__PURE__ */ jsxs("section", { className: `space-y-6 ${className}`, children: [
-    /* @__PURE__ */ jsxs("header", { children: [
-      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: "Delete Account" }),
-      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain." })
-    ] }),
-    /* @__PURE__ */ jsx(DangerButton, { onClick: confirmUserDeletion, children: "Delete Account" }),
-    /* @__PURE__ */ jsx(Modal, { show: confirmingUserDeletion, onClose: closeModal, children: /* @__PURE__ */ jsxs("form", { onSubmit: deleteUser, className: "p-6", children: [
-      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: "Are you sure you want to delete your account?" }),
-      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: "Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account." }),
-      /* @__PURE__ */ jsxs("div", { className: "mt-6", children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "password", value: "Password", className: "sr-only" }),
-        /* @__PURE__ */ jsx(
-          TextInput,
-          {
-            id: "password",
-            type: "password",
-            name: "password",
-            ref: passwordInput,
-            value: data.password,
-            onChange: (e) => setData2("password", e.target.value),
-            className: "mt-1 block w-3/4",
-            isFocused: true,
-            placeholder: "Password"
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { message: errors.password, className: "mt-2" })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "mt-6 flex justify-end", children: [
-        /* @__PURE__ */ jsx(SecondaryButton, { onClick: closeModal, children: "Cancel" }),
-        /* @__PURE__ */ jsx(DangerButton, { className: "ms-3", disabled: processing, children: "Delete Account" })
-      ] })
-    ] }) })
-  ] });
-}
-const __vite_glob_0_67 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: DeleteUserForm
-}, Symbol.toStringTag, { value: "Module" }));
-function UpdatePasswordForm({ className = "" }) {
-  const passwordInput = useRef();
-  const currentPasswordInput = useRef();
-  const { data, setData: setData2, errors, put, reset, processing, recentlySuccessful } = useForm({
-    current_password: "",
-    password: "",
-    password_confirmation: ""
-  });
-  const updatePassword = (e) => {
-    e.preventDefault();
-    put(route("password.update"), {
-      preserveScroll: true,
-      onSuccess: () => reset(),
-      onError: (errors2) => {
-        if (errors2.password) {
-          reset("password", "password_confirmation");
-          passwordInput.current.focus();
-        }
-        if (errors2.current_password) {
-          reset("current_password");
-          currentPasswordInput.current.focus();
-        }
+const welcome$1 = "mar7aban";
+const dashboard$1 = {
+  title: "لوحات المعلومات",
+  dataChart1: "تسجيلات الدخول اليوم",
+  dataChart2: "تسجيلات الخروج اليوم",
+  dataChart3: "حجوزات اليوم",
+  dataChart4: "حجوزات الشهر",
+  dataChartFooter1: "من اليوم الأخير",
+  dataChartFooter2: "من الشهر الأخير",
+  chartTitle: "أنواع الغرف الأكثر حجزاً في الشهر الماضي",
+  chartSubTitle: "وتشمل هذه الإحصائيات الحجوزات الملغاة والمرفوضة",
+  chartLabel: "الحجوزات"
+};
+const ar = {
+  welcome: welcome$1,
+  dashboard: dashboard$1
+};
+const welcome = "Bienvenue";
+const layout = {
+  navBar: {
+    addBooking: "Ajouter une réservation",
+    themeTolip: "Changer le thème",
+    dialog: {
+      dialogTitle: "Ajouter une réservation",
+      dialogDescreption: "Chercher des chambres disponible",
+      form: {
+        dates: "Date début et fin de réservation",
+        guestNumber: "Nombre des personne",
+        needValue: "Choisi cette option lors cette réservation est pour un société",
+        submit: "Recherche"
+      }
+    },
+    notifications: {
+      tolip: "Notifications",
+      "new": "Nouvelle réservation",
+      all: "Tout notifications"
+    },
+    userNav: {
+      tolip: "Profile",
+      dashboard: "Tableaux De Bord",
+      inbox: "Boîte de réception",
+      account: "Compte",
+      logout: "Se déconnecter"
+    }
+  },
+  sideBar: {
+    dashboard: "Tableaux De Bord",
+    bookingsGroupe: "Moteur de réservation",
+    bookings: "Réservations",
+    historical: "Historique",
+    rooms: "Chambres",
+    owner: "La propriétaire",
+    allRooms: "Tous Les Chambres",
+    features: "Caractéristiques",
+    services: "Services",
+    allServices: "Tous Les Services",
+    consumption: "Consommations",
+    bills: "Factures",
+    events: "Evènements",
+    promotions: "Promotions",
+    managment: "Management",
+    users: "Utilisateurs",
+    roles: "Rôles",
+    employs: "Employés"
+  }
+};
+const components = {
+  datePicker: {
+    title: "Choisis une date"
+  },
+  dataTable: {
+    viewOption: {
+      tolip: "Contrôler la visibilité des colonnes",
+      show: "Voir",
+      title: "Basculer les colonnes",
+      selection: "ligne(s) sélectionné(s).",
+      client: "Client",
+      checkIn: "Check in",
+      checkOut: "Check out",
+      bookingDate: "Date de réservation",
+      status: "Status",
+      roomNumber: "Numéro de chambre",
+      type: "Type",
+      price: "Prix",
+      featureName: "Nom de caractéristique",
+      needValue: "Besoin de valeur",
+      categorie: "Catégorie",
+      billNumber: "N° Facture",
+      email: "Email",
+      date: "Date",
+      role: "Rôle",
+      permissions: "Permissions",
+      utilisateurs: "Utilisateurs",
+      phone: "N° téléphone",
+      createdAtDate: "date d'inscription",
+      ref: "Ref",
+      rooms: "Chambres réservés",
+      dates: "date d'entrée / sortie"
+    },
+    pagination: {
+      footer: "ligne(s) afficher"
+    },
+    header: {
+      up: "Croissante",
+      down: "Décroissante",
+      hide: "Cacher"
+    }
+  },
+  fileUploader: "Télécharger ou déposer des images ici"
+};
+const dashboard = {
+  title: "Tableaux De Bord",
+  dataChart1: "Entrés d'aujourd'hui",
+  dataChart2: "Sorties d'aujourd'hui",
+  dataChart3: "Réservations de jour",
+  dataChart4: "Réservations de mois",
+  dataChartFooter1: "du dernier jour",
+  dataChartFooter2: "de mois dernier",
+  chartTitle: "Les types plus réservé le mois dernier",
+  chartSubTitle: "Ces statistique inclus les réservations annuléers et refusées",
+  chartLabel: "Réservations"
+};
+const notifications = {
+  title: "Notifications",
+  readAll: "Tout marquer comme lu",
+  deleteAll: "Supprimer Tous",
+  text1: "a fait une réservation de",
+  text2: "vers"
+};
+const messages = {
+  title: "Boîte de réception",
+  readAll: "Tout marquer comme lu",
+  deleteAll: "Supprimer Tous",
+  all: "Tous",
+  unread: "Non lu",
+  user: "Utilisateur",
+  replyToMail: "Reprendre avec votre adresse mail",
+  "delete": "Supprimer",
+  noMessage: "Aucun message a afficher",
+  subject: "Sujet",
+  replyTo: "Repondre à :",
+  message: "Message",
+  placeholder: "Répendre à CLIENT",
+  submit: "Envoyé"
+};
+const profile = {
+  section1: {
+    title: "Les informations personnelles",
+    form: {
+      firstName: "Prénom",
+      lastName: "Nom",
+      email: "Email",
+      emailDescreption: "L'email doit être unique pour chaque utilisateur",
+      phone: "N° téléphone d'employé",
+      phoneDescreption: "Le N° téléphone doit être unique pour chaque utilisateur",
+      emailValidation: "Votre adresse email n'est pas vérifiée.",
+      sendEmailValidation: "Cliquez ici pour renvoyer l'e-mail de vérification.",
+      validationSended: "Un nouveau lien de vérification a été envoyé à votre adresse e-mail.",
+      submit: "Enregistrer"
+    }
+  },
+  section2: {
+    title: "Mettre à jour le mot de passe",
+    subtitle: "Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester en sécurité",
+    form: {
+      password: "Mot de passe actuel",
+      newPassword: "nouveau mot de passe",
+      confirmPassword: "Confirmez le mot de passe",
+      submit: "Enregistrer"
+    }
+  },
+  section3: {
+    title: "Supprimer le compte",
+    subtitle: "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver.",
+    submit: "Supprimer le compte",
+    dialogTitle: "Etes-vous sûr de vouloir supprimer votre compte ?",
+    dialogDescreption: "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.",
+    placeholder: "Password",
+    cancel: "Annuler",
+    "delete": "Supprimer"
+  }
+};
+const bookings = {
+  title: "Réservations",
+  toastMessage: "Paramètre de facturation",
+  emptyPage: "Aucun réservations pour l'instant, essayez de créer une nouvelle",
+  historicalTitle: "Historique",
+  tableHeader: {
+    client: "Client",
+    checkIn: "Check in",
+    checkOut: "Check out",
+    bookingDate: "Date de réservation",
+    status: "Status",
+    bill: "Facture",
+    show: "Voir",
+    dialogTitle: "Mode de payment",
+    dialogDescreption: "Choisi le mode de payment pour cette facture",
+    opt1: "Espece",
+    opt2: "Chèque",
+    approve: "Confirmer",
+    cancel: "Refusé"
+  }
+};
+const booking = {
+  title: "Réservation",
+  pageHeading: "Réservation de ",
+  clientCard: "Informations de client",
+  bookingCard: "Détails de réservation",
+  checkIn: "Arrivée",
+  checkOut: "Départ",
+  guestNumber: "Nombre des personnes",
+  adult: "adult",
+  and: "et",
+  babys: "bébés",
+  nights: "nuit",
+  pricingCard: "Récapitulatif du montant",
+  pricingFooter: "Ce prix avec tout tax inclus",
+  da: "DA",
+  rooms: "Chambre",
+  "with": "avec",
+  beeds: "lits",
+  showMore: "Voir Plus",
+  features: "Caractéristiques"
+};
+const aviableRooms = {
+  title: "Chambres disponible",
+  metaDescreption: "Découvrez les chambres disponibles à l'hôtel Sidi El Noui et faites votre réservation en quelques clics.",
+  name: "Nom",
+  adress: "Adresse",
+  lastName: "Prénom",
+  nif: "Numéro d'Identification Fiscale",
+  nis: "Numéro d'Identification Statistique",
+  nrc: "Numéro  de registre de commerce",
+  na: "Numéro d'article",
+  email: "Email",
+  emailDescreption: "L'email doit être unique pour chaque utilisateur",
+  phone: "N° téléphone",
+  phoneDescreption: "Le N° téléphone doit être unique pour chaque utilisateur",
+  tableHeader: "Choisi un ou plusieur chambres à réserver",
+  roomNumber: "Numéro de chambre",
+  type: "Type de chambre",
+  ttc: "Prix TTC",
+  features: "Caractéristiques",
+  roomCode: "Chambre N°",
+  da: "DA",
+  cunsumptionHeader: "Ajouter les consommation de cetter réservation",
+  submit: "Réserver"
+};
+const rooms = {
+  title: "Chambres",
+  createTitle: "Chambre Création",
+  editTitle: "Chambre Modification",
+  show: "Voir",
+  edit: "Modifier",
+  aviable: "Marqué comme disponible",
+  inaviable: "Marqué comme hors service",
+  topButton: "Crée un chambre",
+  emptyText: "Aucun chambres pour l'instant, essayez de créer une nouvelle",
+  roomNumber: "La Chambre N°",
+  price: "Prix de chmabre",
+  da: "DA",
+  roomForm: {
+    roomNumber: "Numéro de chmabre",
+    roomNumberDescreption: "Quel est le numéro unique de cette chambre ?",
+    price: "Prix de chmabre",
+    priceDescreption: "Ce sont les prix de la chambre avec tous taxe inclus",
+    beedsNumber: "Nombre de lits",
+    beedsNumberDescreption: "Quel est le nombre de lits dans cette chambre",
+    type: "Type",
+    typeDescreption: "Quel est le type de cette chambre",
+    typeSelect: "Selectioner un Type...",
+    typeSearch: "Chercher un Type...",
+    emptyTypeMessage: "Il n'existe pas le type",
+    emptyTypeButton: "Ajouter un nouveau type",
+    descreption: "Descreption",
+    descreptionDescreption: "Entrer une description générale sur cette chambre",
+    features: "Caractéristiques",
+    featuresDescreption: "Choisis parmi ces caractéristiques, et ajouter des valeur aux caractéristiques qui'il besoin",
+    assets: "Photos",
+    assetsDescreption: "Ajouter des photos au chambres (ne dépasse pas 10 photos par chambres)",
+    fileUploader: "Télécharger ou déposer des images ici",
+    submit: "Crée",
+    edit: "Enregistrer"
+  },
+  room: {
+    title: "La Chambre N°:",
+    "with": "avec",
+    beeds: "lits",
+    price: "Prix de chmabre",
+    da: "DA",
+    description: "Description",
+    edit: "Modifier"
+  }
+};
+const features = {
+  title: "Caractéristiques",
+  categorie: "Catégories",
+  emptyFeatures: "Aucun caractéristiques pour l'instant, essayez de créer une nouvelle",
+  emptyCategories: "Aucun categories pour l'instant, essayez de créer une nouvelle",
+  form: {
+    create: "Créer un Caractéristique",
+    dialogHeader: "Ajouter un nouveau Caractéristique",
+    name: "Nom de caractéristique",
+    categorie: "Catégories",
+    placeholder: "Example : wifi, dimension",
+    selectInput: "Selectioner un categorie...",
+    searchInput: "Chercher un categorie...",
+    add: "Ajouter",
+    add2: "au categorie",
+    needValue: "Besoin de valeur",
+    createSubmit: "Créer",
+    cancel: "Annuler",
+    edit: "Modifier",
+    editHeader: "Modifier cette caractéristique",
+    save: "Enregistrer",
+    "delete": "Supprimer",
+    deleteHeader: "Vous êtes sure?",
+    deleteDescreption: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette caractéristique et chaque chambre avoir cette caractéristique va le perdre",
+    addCategorie: "Ajouter un categorie",
+    addCategorieHeader: "Ajouter un nouveau Catégorie",
+    editCategorietHeader: "Modifier cette Catégorie",
+    categorieName: "Nom de catégorie :",
+    categoriePlaceholder: "Example : Générale, Internet",
+    deleteCategorieDescreption: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce élément et chaque caractéristique de cette categorie va supprimé"
+  }
+};
+const services = {
+  title: "Services",
+  createBtn: "Créer un service",
+  emptyServices: "Aucun services pour l'instant, essayez de créer un nouveau",
+  listHeader: "List des services",
+  card: {
+    aviable: "Disponible",
+    inaviable: "Indisponible",
+    descreption: "Description",
+    toggleOff: "Marqué comme hors service",
+    toggleOn: "Marqué comme disponible",
+    editBtn: "Modifier",
+    deleteServiceDescreption: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce élément et chaque consommations de ce service va supprimé"
+  },
+  form: {
+    createTitle: "Service Création",
+    editTitle: "Service Modification",
+    name: "Nom de service",
+    nameDescreption: "Entrer un nom claire et simple pour le nom de service",
+    placeholder: "Exemple : Restaurant",
+    descreption: "Description",
+    descreptionDescreption: "Vous pouvez ajouter des titre ou bien des style au description",
+    assets: "Photos",
+    assetsDescreption: "Ajouter des photos au service (ne dépasse pas 10 photos par service)",
+    createBtn: "Créer",
+    editBtn: "Enregistrer"
+  }
+};
+const consumptions = {
+  title: "Consommations",
+  emptyConsumptions: "Aucun consommations pour l'instant, essayez de créer un nouveau",
+  listHeader: "List des consommations",
+  card: {
+    price: "Prix Unitaire:",
+    da: "DA",
+    deleteConsumptionDescreption: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette consommation"
+  },
+  form: {
+    createBtn: "Créer un consommation",
+    editBtn: "Modifier",
+    createDialogTitle: "Créer un nouveau consommation",
+    editDialogTitle: "Modifier cette consommation",
+    service: "Service",
+    servicePlaceholder: "Selectionner un service",
+    name: "Nom de consommation",
+    namePlaceholder: "Exemple : Diner",
+    price: "Prix de consommation",
+    createSubmit: "Créer",
+    editSubmit: "Enregistrer",
+    cancel: "Annuler"
+  }
+};
+const factures = {
+  title: "Factures",
+  topBtn: "Générer pour une réservation",
+  emptyBill: "Aucun factures pour l'instant, essayez de créer une nouvelle",
+  settings: {
+    title: "Parametre de facture",
+    descreption: "Modifier les constant de facturation içi",
+    tva: "La valeur de TVA en %",
+    taxes: "Taxe de séjour",
+    taxesDescreption: "la valeur de taxe de séjour en DA/personne",
+    timbre: "Droit de timbre",
+    timbreDescreption: "La valeur de tibmre en %",
+    save: "Enregistrer"
+  },
+  table: {
+    guestsList: "List des invités",
+    show: "Voir",
+    email: "Email",
+    print: "Imprimer",
+    download: "Télécharger",
+    factureTitle: "Facture"
+  }
+};
+const guests = {
+  addGuestsTitle: "Ajouter des invités",
+  guestsListTitle: "List d'invités",
+  addBtn: "Ajouter",
+  firstName: "Prénom",
+  lastName: "Nom",
+  saveBtn: "Enregistrer",
+  addGuestsBtn: "Ajouter des invités"
+};
+const events = {
+  title: "Evènements",
+  createLink: "Créer un évènement",
+  pageHeading: "List des évènements",
+  emptyEvents: "Aucun évènement pour l'instant, essayez de créer une nouvelle",
+  card: {
+    price: "Prix",
+    da: "DA",
+    eventDate: "Date d'évènement",
+    eventStartDate: "Date début d'évènement",
+    eventEndDate: "Date fin d'évènement",
+    descreption: "Descreption",
+    createdBy: "Créé par",
+    editBtn: "Modifier",
+    eventDeleteDescreption: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette évènement"
+  },
+  form: {
+    createTitle: "Création d'évènement",
+    editTitle: "Modification d'évènement",
+    eventDate: "Date d'évènement",
+    eventDateDescreption: "Entrer la date ou le range de date de début et fin d'évènement",
+    name: "Nom de l'évènement",
+    namePlaceholder: "Exemple : fête 16 Avrile",
+    nameDescreption: "Entrer un nom claire et simple pour le nom de l'évènement",
+    price: "Prix",
+    priceDescreption: "Quelle est le prix d'accés d'évènement",
+    descreption: "Descreption",
+    descreptionDescreption: "Vous pouvez ajouter des titre ou bien des style au description",
+    assets: "Photos",
+    assetsDescreption: "Ajouter des photos au l'évènement (ne dépasse pas 10 photos par évènement)",
+    createBtn: "Créer",
+    editBtn: "Enregistrer"
+  }
+};
+const promotions = {
+  title: "Promotions",
+  createBtn: "Créer un promotion",
+  pageHeading: "List des promotions",
+  emptyPromotions: "Aucun promotion pour l'instant, essayez de créer une nouvelle",
+  card: {
+    da: "DA",
+    activeState: "Active",
+    inactiveState: "Désactivé",
+    date: "Date de promotion",
+    startDate: "Date début de promotion",
+    endDate: "Date fin de promotion",
+    descreption: "Descreption",
+    createdBy: "Créé par",
+    swichOn: "Désactivé la promotion",
+    swichOff: "Activé la promotion",
+    edit: "Modifier",
+    deletePromotionDescreption: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette promotion"
+  },
+  form: {
+    createTitle: "Création de Promotion",
+    editTitle: "Modification de promotion",
+    date: "Date de promotion",
+    dateDescreption: "Entrer la date ou le range de date de début et fin de promotion",
+    value: "Valeur de promotion",
+    valueDescreption: "Entrer la Valeur de promotion en DA",
+    descreption: "Descreption",
+    descreptionDescreption: "Vous pouvez ajouter des titre ou bien des style au description",
+    assets: "Photos",
+    assetsDescreption: "Ajouter des photos au promotion (ne dépasse pas 10 photos par promotion)",
+    createBtn: "Créer",
+    editBtn: "Enregistrer"
+  }
+};
+const roles = {
+  title: "Rôles",
+  create: "Ajouter un rôle",
+  permissions: "Permissions",
+  dialogHeader: "List des permissions pour le rôle",
+  cancel: "Annuler",
+  edit: "Modifier",
+  deleteRoleDescreption: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions",
+  "delete": "Supprimer",
+  deleteDialogHeader: "Vous êtes sure?",
+  form: {
+    createTitle: "Rôle Creation",
+    editTitle: "Rôle Modification",
+    name: "Nom de rôle",
+    nameDescreption: "Le nom de rôle doit être unique",
+    promotions: "List des permissions",
+    promotionsDescreption: "Assigner des permissions a ce rôle",
+    createBtn: "Créer",
+    editBtn: "Enregistrer"
+  }
+};
+const users = {
+  title: "Employés",
+  createBtn: "Ajouter un employé",
+  edit: "Modifier",
+  "delete": "Supprimer",
+  dialogHeader: "Vous êtes sure?",
+  dialogDescreption: "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce utilisateur",
+  cancel: "Annuler",
+  form: {
+    createTitle: "Créer un employé",
+    editTitle: "Modifier un employé",
+    firstName: "Prénom d'employé",
+    lastName: "Nom d'employé",
+    email: "Email d'employé",
+    emailDescreption: "L'email doit être unique pour chaque utilisateur",
+    phone: "N° téléphone d'employé",
+    phoneDescreption: "Le N° téléphone doit être unique pour chaque utilisateur",
+    role: "Rôle",
+    roleDescreption: "Assigne un rôle au ce employé",
+    rolePlaceholder: "Sélectionner un rôle...",
+    rolePlaceholder2: "Chercher un rôle...",
+    emptyRole: "Auccun rôle",
+    editBtn: "Enregistrer",
+    createBtn: "Créer"
+  }
+};
+const client = {
+  navbar: {
+    home: "Accueil",
+    rooms: "Nos Chambres",
+    services: "Services",
+    contactUs: "contactez-nous",
+    login: "Se connecter",
+    swichLang: "Changer la langue",
+    userNav: {
+      profile: "Profile",
+      compte: "Compte",
+      myBookings: "Mes réservations",
+      logOut: "Se déconnecter"
+    }
+  },
+  home: {
+    title: "Accueil",
+    metaDescreption: "Bienvenue sur le site officiel de l'hôtel Sidi El Noui. Découvrez nos chambres, services, promotions et réservez dès maintenant pour un séjour inoubliable.",
+    promotions: "Promotions",
+    promotionsDescreption: "Offres Exclusives pour un Séjour Inoubliable Profitez de nos promotions exceptionnelles et réservez votre séjour à un prix avantageux. Découvrez nos offres spéciales et bénéficiez de réductions sur les chambres, les forfaits bien-être, et bien plus encore.",
+    events: "Evènements",
+    eventsDescreption: "Des Événements Inoubliables au Cœur d'Alger, Vivez des moments uniques en participant à nos événements exclusifs. Que ce soit pour des soirées thématiques, des concerts, ou des festivals locaux, notre hôtel est le point de départ idéal pour toutes vosaventures."
+  },
+  sections: {
+    banner: {
+      title: "Sidi El Noui",
+      descreption: "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable.",
+      form: {
+        date: "dates",
+        guestNumber: "Nombre des personne",
+        kidsNumber: "Nombre des bébé",
+        search: "Rechercher"
+      }
+    },
+    promotion: {
+      cardHeader: "Réduction de",
+      da: "DA",
+      singleDate: "Le",
+      multipleDateStart: "De",
+      multipleDateEnd: "Jusqu'a",
+      actionBtn: "Voir Plus",
+      title: "Promotion",
+      metaDescription: "Profitez des promotions exclusives de l'hôtel Sidi El Noui et réservez votre séjour à prix réduit."
+    },
+    event: {
+      da: "DA",
+      singleDate: "Le",
+      multipleDateStart: "De",
+      multipleDateEnd: "Jusqu'a",
+      actionBtn: "Voir Plus",
+      title: "Événement",
+      metaDescreption: "Découvrez nos événements à l'hôtel Sidi El Noui et participez à des expériences inoubliables."
+    },
+    rooms: {
+      title: "Nos Chambres",
+      descreption: "Découvrez nos chambres spacieuses et décorées avec, offrant tout le confort moderne pour un séjour des plus agréables. Que vous voyagiez seul, en couple ou en famille, nous avons la chambre parfaite pour vous.",
+      tabTrigger: "Chambres",
+      roomCard: {
+        da: "DA",
+        features: "Caractéristique de la chambre",
+        actionBtn: "Réserver maintenant"
+      }
+    },
+    services: {
+      title: "Services",
+      description: "Nous offrons une gamme de services conçus pour rendre votre séjour aussi agréable que possible. Que vous souhaitiez vous détendre, savourer de délicieux repas, ou profiter de commodités supplémentaires, nous sommes là pour répondre à tous vos besoins.",
+      metaDescreption: "Découvrez les services offerts par l'hôtel Sidi El Noui pour rendre votre séjour encore plus agréable.",
+      actionBtn: "Voir Plus",
+      consumptions: "Consommation disponible dans ce service :"
+    },
+    contact: {
+      title: "contactez-nous",
+      description: "Vous pouvez nous envoyer un message via ce formulaire de contact. Nous ferons de notre mieux pour répondre à toutes vos questions dans les plus brefs délais.",
+      email: "Email",
+      subject: "Sujet",
+      message: "Message",
+      submit: "Envoyé"
+    }
+  },
+  profile: {
+    title: "Profile",
+    section1: {
+      title: "Les informations personnelles",
+      firstName: "Prénom",
+      lastName: "Nom",
+      email: "Email",
+      emailDescreption: "L'email doit être unique pour chaque utilisateur",
+      phone: "N° téléphone d'employé",
+      phoneDescreption: "Le N° téléphone doit être unique pour chaque utilisateur",
+      emailValidation: "Votre adresse email n'est pas vérifiée.",
+      sendEmailValidation: "Cliquez ici pour renvoyer l'e-mail de vérification.",
+      validationSended: "Un nouveau lien de vérification a été envoyé à votre adresse e-mail.",
+      submit: "Enregistrer"
+    },
+    section2: {
+      title: "Mettre à jour le mot de passe",
+      subtitle: "Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester en sécurité",
+      password: "Mot de passe actuel",
+      newPassword: "nouveau mot de passe",
+      confirmPassword: "Confirmez le mot de passe",
+      submit: "Enregistrer"
+    },
+    section3: {
+      title: "Supprimer le compte",
+      subtitle: "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver.",
+      submit: "Supprimer le compte",
+      dialogTitle: "Etes-vous sûr de vouloir supprimer votre compte ?",
+      dialogDescreption: "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.",
+      placeholder: "Password",
+      cancel: "Annuler",
+      "delete": "Supprimer"
+    }
+  },
+  myBookings: {
+    title: "Mes Réservations",
+    metaDescreption: "Consultez et gérez toutes vos réservations à l'hôtel Sidi El Noui depuis cette page.",
+    show: "Voir",
+    cancel: "Annuler",
+    dialogTitle: "Vous êtes sure?",
+    dialogDescreption: "Vous êtes sur que vous voulez annuler cette réservation",
+    accept: "Oui",
+    deni: "Non",
+    booking: {
+      title: "Réservation",
+      metaDescreption: "Effectuez votre réservation à l'hôtel Sidi El Noui en quelques étapes simples.",
+      infoCard: "Informations personnels",
+      showProfile: "Voir le profile",
+      bookingDetails: "Détails de votre réservation",
+      checkIn: "Arrivée",
+      checkOut: "Départ",
+      guestNumber: "Nombre des personnes",
+      adult: "adult",
+      and: "et",
+      babys: "bébés",
+      nights: "nuit",
+      time: "Durée de séjour",
+      pricingCardHeader: "Récapitulatif du montant",
+      pricingCardFooter: "Ce prix avec tout tax inclus",
+      da: "DA",
+      room: "Chambre",
+      "with": "avec",
+      beeds: "lits",
+      showMore: "Voir Plus",
+      features: "Caractéristiques"
+    }
+  },
+  aviableRooms: {
+    title: "Chambres disponibles",
+    metaDescreption: "Consultez les chambres disponibles à l'hôtel Sidi El Noui et choisissez celle qui vous convient pour un séjour confortable.",
+    pageHeader: "Finaliser votre réservation",
+    da: "DA",
+    detailsCard: {
+      header: "Détails de votre réservation",
+      checkIn: "Arrivée",
+      checkOut: "Départ",
+      time: "Durée de séjour",
+      nights: "nuit"
+    },
+    selectionCard: {
+      header: "Vous avez sélectionné pour",
+      and: "et",
+      babys: "bébés",
+      adult: "adult",
+      rooms: "chambre",
+      nights: "nuits",
+      btn: "Modifier la selection"
+    },
+    pricingCard: {
+      header: "Récapitulatif du montant",
+      footer: "Ce prix avec tout tax inclus"
+    },
+    form: {
+      firstName: "Prénom",
+      lastName: "Nom",
+      email: "Email",
+      phone: "N° téléphone",
+      submit: "Réserver"
+    },
+    roomServce: {
+      title: "Service de chambre",
+      rooms: "Chambres",
+      type: "Type de logement",
+      beeds: "Nombre de lits",
+      pricing: "Tarif",
+      select: "Selectionner des chambres",
+      consumptions: "Consommations",
+      da: "DA"
+    },
+    bookingCard: {
+      btn: "Dernière étape",
+      tot: "Total",
+      da: "DA",
+      roomNumber: "Chambre N°",
+      room: "Chambre",
+      "with": "avec",
+      beeds: "lits",
+      "for": "pour",
+      features: "Caractéristiques"
+    }
+  },
+  footer: {
+    phone: "N° téléphone",
+    email: "Email",
+    address: "Adresse",
+    links: "Liens",
+    socialMedia: "Réseaux Sociaux",
+    description: "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable."
+  }
+};
+const fr = {
+  welcome,
+  layout,
+  components,
+  dashboard,
+  notifications,
+  messages,
+  profile,
+  bookings,
+  booking,
+  aviableRooms,
+  rooms,
+  features,
+  services,
+  consumptions,
+  factures,
+  guests,
+  events,
+  promotions,
+  roles,
+  users,
+  client
+};
+const resources = {
+  fr: {
+    translation: fr
+  },
+  ar: {
+    translation: ar
+  }
+};
+const initI18n = (initialLang) => {
+  if (!i18n.isInitialized) {
+    i18n.use(initReactI18next).init({
+      resources,
+      lng: initialLang,
+      fallbackLng: "ar",
+      interpolation: {
+        escapeValue: false
       }
     });
-  };
-  return /* @__PURE__ */ jsxs("section", { className, children: [
-    /* @__PURE__ */ jsxs("header", { children: [
-      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: "Update Password" }),
-      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: "Ensure your account is using a long, random password to stay secure." })
-    ] }),
-    /* @__PURE__ */ jsxs("form", { onSubmit: updatePassword, className: "mt-6 space-y-6", children: [
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "current_password", value: "Current Password" }),
-        /* @__PURE__ */ jsx(
-          TextInput,
-          {
-            id: "current_password",
-            ref: currentPasswordInput,
-            value: data.current_password,
-            onChange: (e) => setData2("current_password", e.target.value),
-            type: "password",
-            className: "mt-1 block w-full",
-            autoComplete: "current-password"
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { message: errors.current_password, className: "mt-2" })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "password", value: "New Password" }),
-        /* @__PURE__ */ jsx(
-          TextInput,
-          {
-            id: "password",
-            ref: passwordInput,
-            value: data.password,
-            onChange: (e) => setData2("password", e.target.value),
-            type: "password",
-            className: "mt-1 block w-full",
-            autoComplete: "new-password"
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { message: errors.password, className: "mt-2" })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "password_confirmation", value: "Confirm Password" }),
-        /* @__PURE__ */ jsx(
-          TextInput,
-          {
-            id: "password_confirmation",
-            value: data.password_confirmation,
-            onChange: (e) => setData2("password_confirmation", e.target.value),
-            type: "password",
-            className: "mt-1 block w-full",
-            autoComplete: "new-password"
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { message: errors.password_confirmation, className: "mt-2" })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-4", children: [
-        /* @__PURE__ */ jsx(PrimaryButton, { disabled: processing, children: "Save" }),
-        /* @__PURE__ */ jsx(
-          Transition,
-          {
-            show: recentlySuccessful,
-            enter: "transition ease-in-out",
-            enterFrom: "opacity-0",
-            leave: "transition ease-in-out",
-            leaveTo: "opacity-0",
-            children: /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 dark:text-gray-400", children: "Saved." })
-          }
-        )
-      ] })
-    ] })
-  ] });
-}
-const __vite_glob_0_68 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: UpdatePasswordForm
-}, Symbol.toStringTag, { value: "Module" }));
-function UpdateProfileInformation({ mustVerifyEmail, status, className = "" }) {
-  const user = usePage().props.auth.user;
-  const { data, setData: setData2, patch, errors, processing, recentlySuccessful } = useForm({
-    name: user.name,
-    email: user.email
-  });
-  const submit = (e) => {
-    e.preventDefault();
-    patch(route("profile.update"));
-  };
-  return /* @__PURE__ */ jsxs("section", { className, children: [
-    /* @__PURE__ */ jsxs("header", { children: [
-      /* @__PURE__ */ jsx("h2", { className: "text-lg font-medium text-gray-900 dark:text-gray-100", children: "Profile Information" }),
-      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-gray-600 dark:text-gray-400", children: "Update your account's profile information and email address." })
-    ] }),
-    /* @__PURE__ */ jsxs("form", { onSubmit: submit, className: "mt-6 space-y-6", children: [
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "name", value: "Name" }),
-        /* @__PURE__ */ jsx(
-          TextInput,
-          {
-            id: "name",
-            className: "mt-1 block w-full",
-            value: data.name,
-            onChange: (e) => setData2("name", e.target.value),
-            required: true,
-            isFocused: true,
-            autoComplete: "name"
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { className: "mt-2", message: errors.name })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "email", value: "Email" }),
-        /* @__PURE__ */ jsx(
-          TextInput,
-          {
-            id: "email",
-            type: "email",
-            className: "mt-1 block w-full",
-            value: data.email,
-            onChange: (e) => setData2("email", e.target.value),
-            required: true,
-            autoComplete: "username"
-          }
-        ),
-        /* @__PURE__ */ jsx(InputError, { className: "mt-2", message: errors.email })
-      ] }),
-      mustVerifyEmail && user.email_verified_at === null && /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsxs("p", { className: "text-sm mt-2 text-gray-800 dark:text-gray-200", children: [
-          "Your email address is unverified.",
-          /* @__PURE__ */ jsx(
-            Link,
-            {
-              href: route("verification.send"),
-              method: "post",
-              as: "button",
-              className: "underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800",
-              children: "Click here to re-send the verification email."
-            }
-          )
-        ] }),
-        status === "verification-link-sent" && /* @__PURE__ */ jsx("div", { className: "mt-2 font-medium text-sm text-green-600 dark:text-green-400", children: "A new verification link has been sent to your email address." })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-4", children: [
-        /* @__PURE__ */ jsx(PrimaryButton, { disabled: processing, children: "Save" }),
-        /* @__PURE__ */ jsx(
-          Transition,
-          {
-            show: recentlySuccessful,
-            enter: "transition ease-in-out",
-            enterFrom: "opacity-0",
-            leave: "transition ease-in-out",
-            leaveTo: "opacity-0",
-            children: /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 dark:text-gray-400", children: "Saved." })
-          }
-        )
-      ] })
-    ] })
-  ] });
-}
-const __vite_glob_0_69 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: UpdateProfileInformation
-}, Symbol.toStringTag, { value: "Module" }));
-function Edit({ auth, mustVerifyEmail, status }) {
-  return /* @__PURE__ */ jsxs(
-    AuthenticatedLayout,
-    {
-      user: auth.user,
-      header: /* @__PURE__ */ jsx("h2", { className: "font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight", children: "Profile" }),
-      children: [
-        /* @__PURE__ */ jsx(Head, { title: "Profile" }),
-        /* @__PURE__ */ jsx("div", { className: "py-12", children: /* @__PURE__ */ jsxs("div", { className: "max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6", children: [
-          /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(
-            UpdateProfileInformation,
-            {
-              mustVerifyEmail,
-              status,
-              className: "max-w-xl"
-            }
-          ) }),
-          /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(UpdatePasswordForm, { className: "max-w-xl" }) }),
-          /* @__PURE__ */ jsx("div", { className: "p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg", children: /* @__PURE__ */ jsx(DeleteUserForm, { className: "max-w-xl" }) })
-        ] }) })
-      ]
-    }
-  );
-}
-const __vite_glob_0_66 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: Edit
-}, Symbol.toStringTag, { value: "Module" }));
-function Welcome({ auth, laravelVersion, phpVersion }) {
-  const handleImageError = () => {
-    var _a, _b, _c, _d;
-    (_a = document.getElementById("screenshot-container")) == null ? void 0 : _a.classList.add("!hidden");
-    (_b = document.getElementById("docs-card")) == null ? void 0 : _b.classList.add("!row-span-1");
-    (_c = document.getElementById("docs-card-content")) == null ? void 0 : _c.classList.add("!flex-row");
-    (_d = document.getElementById("background")) == null ? void 0 : _d.classList.add("!hidden");
-  };
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx(Head, { title: "Welcome" }),
-    /* @__PURE__ */ jsxs("div", { className: "bg-gray-50 text-black/50 dark:bg-black dark:text-white/50", children: [
-      /* @__PURE__ */ jsx(
-        "img",
-        {
-          id: "background",
-          className: "absolute -left-20 top-0 max-w-[877px]",
-          src: "https://laravel.com/assets/img/welcome/background.svg"
-        }
-      ),
-      /* @__PURE__ */ jsx("div", { className: "relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white", children: /* @__PURE__ */ jsxs("div", { className: "relative w-full max-w-2xl px-6 lg:max-w-7xl", children: [
-        /* @__PURE__ */ jsxs("header", { className: "grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3", children: [
-          /* @__PURE__ */ jsx("div", { className: "flex lg:justify-center lg:col-start-2", children: /* @__PURE__ */ jsx(
-            "svg",
-            {
-              className: "h-12 w-auto text-white lg:h-16 lg:text-[#FF2D20]",
-              viewBox: "0 0 62 65",
-              fill: "none",
-              xmlns: "http://www.w3.org/2000/svg",
-              children: /* @__PURE__ */ jsx(
-                "path",
-                {
-                  d: "M61.8548 14.6253C61.8778 14.7102 61.8895 14.7978 61.8897 14.8858V28.5615C61.8898 28.737 61.8434 28.9095 61.7554 29.0614C61.6675 29.2132 61.5409 29.3392 61.3887 29.4265L49.9104 36.0351V49.1337C49.9104 49.4902 49.7209 49.8192 49.4118 49.9987L25.4519 63.7916C25.3971 63.8227 25.3372 63.8427 25.2774 63.8639C25.255 63.8714 25.2338 63.8851 25.2101 63.8913C25.0426 63.9354 24.8666 63.9354 24.6991 63.8913C24.6716 63.8838 24.6467 63.8689 24.6205 63.8589C24.5657 63.8389 24.5084 63.8215 24.456 63.7916L0.501061 49.9987C0.348882 49.9113 0.222437 49.7853 0.134469 49.6334C0.0465019 49.4816 0.000120578 49.3092 0 49.1337L0 8.10652C0 8.01678 0.0124642 7.92953 0.0348998 7.84477C0.0423783 7.8161 0.0598282 7.78993 0.0697995 7.76126C0.0884958 7.70891 0.105946 7.65531 0.133367 7.6067C0.152063 7.5743 0.179485 7.54812 0.20192 7.51821C0.230588 7.47832 0.256763 7.43719 0.290416 7.40229C0.319084 7.37362 0.356476 7.35243 0.388883 7.32751C0.425029 7.29759 0.457436 7.26518 0.498568 7.2415L12.4779 0.345059C12.6296 0.257786 12.8015 0.211853 12.9765 0.211853C13.1515 0.211853 13.3234 0.257786 13.475 0.345059L25.4531 7.2415H25.4556C25.4955 7.26643 25.5292 7.29759 25.5653 7.32626C25.5977 7.35119 25.6339 7.37362 25.6625 7.40104C25.6974 7.43719 25.7224 7.47832 25.7523 7.51821C25.7735 7.54812 25.8021 7.5743 25.8196 7.6067C25.8483 7.65656 25.8645 7.70891 25.8844 7.76126C25.8944 7.78993 25.9118 7.8161 25.9193 7.84602C25.9423 7.93096 25.954 8.01853 25.9542 8.10652V33.7317L35.9355 27.9844V14.8846C35.9355 14.7973 35.948 14.7088 35.9704 14.6253C35.9792 14.5954 35.9954 14.5692 36.0053 14.5405C36.0253 14.4882 36.0427 14.4346 36.0702 14.386C36.0888 14.3536 36.1163 14.3274 36.1375 14.2975C36.1674 14.2576 36.1923 14.2165 36.2272 14.1816C36.2559 14.1529 36.292 14.1317 36.3244 14.1068C36.3618 14.0769 36.3942 14.0445 36.4341 14.0208L48.4147 7.12434C48.5663 7.03694 48.7383 6.99094 48.9133 6.99094C49.0883 6.99094 49.2602 7.03694 49.4118 7.12434L61.3899 14.0208C61.4323 14.0457 61.4647 14.0769 61.5021 14.1055C61.5333 14.1305 61.5694 14.1529 61.5981 14.1803C61.633 14.2165 61.6579 14.2576 61.6878 14.2975C61.7103 14.3274 61.7377 14.3536 61.7551 14.386C61.7838 14.4346 61.8 14.4882 61.8199 14.5405C61.8312 14.5692 61.8474 14.5954 61.8548 14.6253ZM59.893 27.9844V16.6121L55.7013 19.0252L49.9104 22.3593V33.7317L59.8942 27.9844H59.893ZM47.9149 48.5566V37.1768L42.2187 40.4299L25.953 49.7133V61.2003L47.9149 48.5566ZM1.99677 9.83281V48.5566L23.9562 61.199V49.7145L12.4841 43.2219L12.4804 43.2194L12.4754 43.2169C12.4368 43.1945 12.4044 43.1621 12.3682 43.1347C12.3371 43.1097 12.3009 43.0898 12.2735 43.0624L12.271 43.0586C12.2386 43.0275 12.2162 42.9888 12.1887 42.9539C12.1638 42.9203 12.1339 42.8916 12.114 42.8567L12.1127 42.853C12.0903 42.8156 12.0766 42.7707 12.0604 42.7283C12.0442 42.6909 12.023 42.656 12.013 42.6161C12.0005 42.5688 11.998 42.5177 11.9931 42.4691C11.9881 42.4317 11.9781 42.3943 11.9781 42.3569V15.5801L6.18848 12.2446L1.99677 9.83281ZM12.9777 2.36177L2.99764 8.10652L12.9752 13.8513L22.9541 8.10527L12.9752 2.36177H12.9777ZM18.1678 38.2138L23.9574 34.8809V9.83281L19.7657 12.2459L13.9749 15.5801V40.6281L18.1678 38.2138ZM48.9133 9.14105L38.9344 14.8858L48.9133 20.6305L58.8909 14.8846L48.9133 9.14105ZM47.9149 22.3593L42.124 19.0252L37.9323 16.6121V27.9844L43.7219 31.3174L47.9149 33.7317V22.3593ZM24.9533 47.987L39.59 39.631L46.9065 35.4555L36.9352 29.7145L25.4544 36.3242L14.9907 42.3482L24.9533 47.987Z",
-                  fill: "currentColor"
-                }
-              )
-            }
-          ) }),
-          /* @__PURE__ */ jsx("nav", { className: "-mx-3 flex flex-1 justify-end", children: auth.user ? /* @__PURE__ */ jsx(
-            Link,
-            {
-              href: route("dashboard"),
-              className: "rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white",
-              children: "Dashboard"
-            }
-          ) : /* @__PURE__ */ jsxs(Fragment, { children: [
-            /* @__PURE__ */ jsx(
-              Link,
-              {
-                href: route("login"),
-                className: "rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white",
-                children: "Log in"
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              Link,
-              {
-                href: route("register"),
-                className: "rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white",
-                children: "Register"
-              }
-            )
-          ] }) })
-        ] }),
-        /* @__PURE__ */ jsx("main", { className: "mt-6", children: /* @__PURE__ */ jsxs("div", { className: "grid gap-6 lg:grid-cols-2 lg:gap-8", children: [
-          /* @__PURE__ */ jsxs(
-            "a",
-            {
-              href: "https://laravel.com/docs",
-              id: "docs-card",
-              className: "flex flex-col items-start gap-6 overflow-hidden rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] md:row-span-3 lg:p-10 lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]",
-              children: [
-                /* @__PURE__ */ jsxs(
-                  "div",
-                  {
-                    id: "screenshot-container",
-                    className: "relative flex w-full flex-1 items-stretch",
-                    children: [
-                      /* @__PURE__ */ jsx(
-                        "img",
-                        {
-                          src: "https://laravel.com/assets/img/welcome/docs-light.svg",
-                          alt: "Laravel documentation screenshot",
-                          className: "aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.06)] dark:hidden",
-                          onError: handleImageError
-                        }
-                      ),
-                      /* @__PURE__ */ jsx(
-                        "img",
-                        {
-                          src: "https://laravel.com/assets/img/welcome/docs-dark.svg",
-                          alt: "Laravel documentation screenshot",
-                          className: "hidden aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.25)] dark:block"
-                        }
-                      ),
-                      /* @__PURE__ */ jsx("div", { className: "absolute -bottom-16 -left-16 h-40 w-[calc(100%+8rem)] bg-gradient-to-b from-transparent via-white to-white dark:via-zinc-900 dark:to-zinc-900" })
-                    ]
-                  }
-                ),
-                /* @__PURE__ */ jsxs("div", { className: "relative flex items-center gap-6 lg:items-end", children: [
-                  /* @__PURE__ */ jsxs("div", { id: "docs-card-content", className: "flex items-start gap-6 lg:flex-col", children: [
-                    /* @__PURE__ */ jsx("div", { className: "flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16", children: /* @__PURE__ */ jsxs(
-                      "svg",
-                      {
-                        className: "size-5 sm:size-6",
-                        xmlns: "http://www.w3.org/2000/svg",
-                        fill: "none",
-                        viewBox: "0 0 24 24",
-                        children: [
-                          /* @__PURE__ */ jsx(
-                            "path",
-                            {
-                              fill: "#FF2D20",
-                              d: "M23 4a1 1 0 0 0-1.447-.894L12.224 7.77a.5.5 0 0 1-.448 0L2.447 3.106A1 1 0 0 0 1 4v13.382a1.99 1.99 0 0 0 1.105 1.79l9.448 4.728c.14.065.293.1.447.1.154-.005.306-.04.447-.105l9.453-4.724a1.99 1.99 0 0 0 1.1-1.789V4ZM3 6.023a.25.25 0 0 1 .362-.223l7.5 3.75a.251.251 0 0 1 .138.223v11.2a.25.25 0 0 1-.362.224l-7.5-3.75a.25.25 0 0 1-.138-.22V6.023Zm18 11.2a.25.25 0 0 1-.138.224l-7.5 3.75a.249.249 0 0 1-.329-.099.249.249 0 0 1-.033-.12V9.772a.251.251 0 0 1 .138-.224l7.5-3.75a.25.25 0 0 1 .362.224v11.2Z"
-                            }
-                          ),
-                          /* @__PURE__ */ jsx(
-                            "path",
-                            {
-                              fill: "#FF2D20",
-                              d: "m3.55 1.893 8 4.048a1.008 1.008 0 0 0 .9 0l8-4.048a1 1 0 0 0-.9-1.785l-7.322 3.706a.506.506 0 0 1-.452 0L4.454.108a1 1 0 0 0-.9 1.785H3.55Z"
-                            }
-                          )
-                        ]
-                      }
-                    ) }),
-                    /* @__PURE__ */ jsxs("div", { className: "pt-3 sm:pt-5 lg:pt-0", children: [
-                      /* @__PURE__ */ jsx("h2", { className: "text-xl font-semibold text-black dark:text-white", children: "Documentation" }),
-                      /* @__PURE__ */ jsx("p", { className: "mt-4 text-sm/relaxed", children: "Laravel has wonderful documentation covering every aspect of the framework. Whether you are a newcomer or have prior experience with Laravel, we recommend reading our documentation from beginning to end." })
-                    ] })
-                  ] }),
-                  /* @__PURE__ */ jsx(
-                    "svg",
-                    {
-                      className: "size-6 shrink-0 stroke-[#FF2D20]",
-                      xmlns: "http://www.w3.org/2000/svg",
-                      fill: "none",
-                      viewBox: "0 0 24 24",
-                      strokeWidth: "1.5",
-                      children: /* @__PURE__ */ jsx(
-                        "path",
-                        {
-                          strokeLinecap: "round",
-                          strokeLinejoin: "round",
-                          d: "M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
-                        }
-                      )
-                    }
-                  )
-                ] })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxs(
-            "a",
-            {
-              href: "https://laracasts.com",
-              className: "flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]",
-              children: [
-                /* @__PURE__ */ jsx("div", { className: "flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16", children: /* @__PURE__ */ jsx(
-                  "svg",
-                  {
-                    className: "size-5 sm:size-6",
-                    xmlns: "http://www.w3.org/2000/svg",
-                    fill: "none",
-                    viewBox: "0 0 24 24",
-                    children: /* @__PURE__ */ jsx("g", { fill: "#FF2D20", children: /* @__PURE__ */ jsx("path", { d: "M24 8.25a.5.5 0 0 0-.5-.5H.5a.5.5 0 0 0-.5.5v12a2.5 2.5 0 0 0 2.5 2.5h19a2.5 2.5 0 0 0 2.5-2.5v-12Zm-7.765 5.868a1.221 1.221 0 0 1 0 2.264l-6.626 2.776A1.153 1.153 0 0 1 8 18.123v-5.746a1.151 1.151 0 0 1 1.609-1.035l6.626 2.776ZM19.564 1.677a.25.25 0 0 0-.177-.427H15.6a.106.106 0 0 0-.072.03l-4.54 4.543a.25.25 0 0 0 .177.427h3.783c.027 0 .054-.01.073-.03l4.543-4.543ZM22.071 1.318a.047.047 0 0 0-.045.013l-4.492 4.492a.249.249 0 0 0 .038.385.25.25 0 0 0 .14.042h5.784a.5.5 0 0 0 .5-.5v-2a2.5 2.5 0 0 0-1.925-2.432ZM13.014 1.677a.25.25 0 0 0-.178-.427H9.101a.106.106 0 0 0-.073.03l-4.54 4.543a.25.25 0 0 0 .177.427H8.4a.106.106 0 0 0 .073-.03l4.54-4.543ZM6.513 1.677a.25.25 0 0 0-.177-.427H2.5A2.5 2.5 0 0 0 0 3.75v2a.5.5 0 0 0 .5.5h1.4a.106.106 0 0 0 .073-.03l4.54-4.543Z" }) })
-                  }
-                ) }),
-                /* @__PURE__ */ jsxs("div", { className: "pt-3 sm:pt-5", children: [
-                  /* @__PURE__ */ jsx("h2", { className: "text-xl font-semibold text-black dark:text-white", children: "Laracasts" }),
-                  /* @__PURE__ */ jsx("p", { className: "mt-4 text-sm/relaxed", children: "Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript development. Check them out, see for yourself, and massively level up your development skills in the process." })
-                ] }),
-                /* @__PURE__ */ jsx(
-                  "svg",
-                  {
-                    className: "size-6 shrink-0 self-center stroke-[#FF2D20]",
-                    xmlns: "http://www.w3.org/2000/svg",
-                    fill: "none",
-                    viewBox: "0 0 24 24",
-                    strokeWidth: "1.5",
-                    children: /* @__PURE__ */ jsx(
-                      "path",
-                      {
-                        strokeLinecap: "round",
-                        strokeLinejoin: "round",
-                        d: "M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
-                      }
-                    )
-                  }
-                )
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxs(
-            "a",
-            {
-              href: "https://laravel-news.com",
-              className: "flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]",
-              children: [
-                /* @__PURE__ */ jsx("div", { className: "flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16", children: /* @__PURE__ */ jsx(
-                  "svg",
-                  {
-                    className: "size-5 sm:size-6",
-                    xmlns: "http://www.w3.org/2000/svg",
-                    fill: "none",
-                    viewBox: "0 0 24 24",
-                    children: /* @__PURE__ */ jsxs("g", { fill: "#FF2D20", children: [
-                      /* @__PURE__ */ jsx("path", { d: "M8.75 4.5H5.5c-.69 0-1.25.56-1.25 1.25v4.75c0 .69.56 1.25 1.25 1.25h3.25c.69 0 1.25-.56 1.25-1.25V5.75c0-.69-.56-1.25-1.25-1.25Z" }),
-                      /* @__PURE__ */ jsx("path", { d: "M24 10a3 3 0 0 0-3-3h-2V2.5a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2V20a3.5 3.5 0 0 0 3.5 3.5h17A3.5 3.5 0 0 0 24 20V10ZM3.5 21.5A1.5 1.5 0 0 1 2 20V3a.5.5 0 0 1 .5-.5h14a.5.5 0 0 1 .5.5v17c0 .295.037.588.11.874a.5.5 0 0 1-.484.625L3.5 21.5ZM22 20a1.5 1.5 0 1 1-3 0V9.5a.5.5 0 0 1 .5-.5H21a1 1 0 0 1 1 1v10Z" }),
-                      /* @__PURE__ */ jsx("path", { d: "M12.751 6.047h2a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-2A.75.75 0 0 1 12 7.3v-.5a.75.75 0 0 1 .751-.753ZM12.751 10.047h2a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-2A.75.75 0 0 1 12 11.3v-.5a.75.75 0 0 1 .751-.753ZM4.751 14.047h10a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-10A.75.75 0 0 1 4 15.3v-.5a.75.75 0 0 1 .751-.753ZM4.75 18.047h7.5a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-7.5A.75.75 0 0 1 4 19.3v-.5a.75.75 0 0 1 .75-.753Z" })
-                    ] })
-                  }
-                ) }),
-                /* @__PURE__ */ jsxs("div", { className: "pt-3 sm:pt-5", children: [
-                  /* @__PURE__ */ jsx("h2", { className: "text-xl font-semibold text-black dark:text-white", children: "Laravel News" }),
-                  /* @__PURE__ */ jsx("p", { className: "mt-4 text-sm/relaxed", children: "Laravel News is a community driven portal and newsletter aggregating all of the latest and most important news in the Laravel ecosystem, including new package releases and tutorials." })
-                ] }),
-                /* @__PURE__ */ jsx(
-                  "svg",
-                  {
-                    className: "size-6 shrink-0 self-center stroke-[#FF2D20]",
-                    xmlns: "http://www.w3.org/2000/svg",
-                    fill: "none",
-                    viewBox: "0 0 24 24",
-                    strokeWidth: "1.5",
-                    children: /* @__PURE__ */ jsx(
-                      "path",
-                      {
-                        strokeLinecap: "round",
-                        strokeLinejoin: "round",
-                        d: "M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
-                      }
-                    )
-                  }
-                )
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxs("div", { className: "flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800", children: [
-            /* @__PURE__ */ jsx("div", { className: "flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16", children: /* @__PURE__ */ jsx(
-              "svg",
-              {
-                className: "size-5 sm:size-6",
-                xmlns: "http://www.w3.org/2000/svg",
-                fill: "none",
-                viewBox: "0 0 24 24",
-                children: /* @__PURE__ */ jsx("g", { fill: "#FF2D20", children: /* @__PURE__ */ jsx("path", { d: "M16.597 12.635a.247.247 0 0 0-.08-.237 2.234 2.234 0 0 1-.769-1.68c.001-.195.03-.39.084-.578a.25.25 0 0 0-.09-.267 8.8 8.8 0 0 0-4.826-1.66.25.25 0 0 0-.268.181 2.5 2.5 0 0 1-2.4 1.824.045.045 0 0 0-.045.037 12.255 12.255 0 0 0-.093 3.86.251.251 0 0 0 .208.214c2.22.366 4.367 1.08 6.362 2.118a.252.252 0 0 0 .32-.079 10.09 10.09 0 0 0 1.597-3.733ZM13.616 17.968a.25.25 0 0 0-.063-.407A19.697 19.697 0 0 0 8.91 15.98a.25.25 0 0 0-.287.325c.151.455.334.898.548 1.328.437.827.981 1.594 1.619 2.28a.249.249 0 0 0 .32.044 29.13 29.13 0 0 0 2.506-1.99ZM6.303 14.105a.25.25 0 0 0 .265-.274 13.048 13.048 0 0 1 .205-4.045.062.062 0 0 0-.022-.07 2.5 2.5 0 0 1-.777-.982.25.25 0 0 0-.271-.149 11 11 0 0 0-5.6 2.815.255.255 0 0 0-.075.163c-.008.135-.02.27-.02.406.002.8.084 1.598.246 2.381a.25.25 0 0 0 .303.193 19.924 19.924 0 0 1 5.746-.438ZM9.228 20.914a.25.25 0 0 0 .1-.393 11.53 11.53 0 0 1-1.5-2.22 12.238 12.238 0 0 1-.91-2.465.248.248 0 0 0-.22-.187 18.876 18.876 0 0 0-5.69.33.249.249 0 0 0-.179.336c.838 2.142 2.272 4 4.132 5.353a.254.254 0 0 0 .15.048c1.41-.01 2.807-.282 4.117-.802ZM18.93 12.957l-.005-.008a.25.25 0 0 0-.268-.082 2.21 2.21 0 0 1-.41.081.25.25 0 0 0-.217.2c-.582 2.66-2.127 5.35-5.75 7.843a.248.248 0 0 0-.09.299.25.25 0 0 0 .065.091 28.703 28.703 0 0 0 2.662 2.12.246.246 0 0 0 .209.037c2.579-.701 4.85-2.242 6.456-4.378a.25.25 0 0 0 .048-.189 13.51 13.51 0 0 0-2.7-6.014ZM5.702 7.058a.254.254 0 0 0 .2-.165A2.488 2.488 0 0 1 7.98 5.245a.093.093 0 0 0 .078-.062 19.734 19.734 0 0 1 3.055-4.74.25.25 0 0 0-.21-.41 12.009 12.009 0 0 0-10.4 8.558.25.25 0 0 0 .373.281 12.912 12.912 0 0 1 4.826-1.814ZM10.773 22.052a.25.25 0 0 0-.28-.046c-.758.356-1.55.635-2.365.833a.25.25 0 0 0-.022.48c1.252.43 2.568.65 3.893.65.1 0 .2 0 .3-.008a.25.25 0 0 0 .147-.444c-.526-.424-1.1-.917-1.673-1.465ZM18.744 8.436a.249.249 0 0 0 .15.228 2.246 2.246 0 0 1 1.352 2.054c0 .337-.08.67-.23.972a.25.25 0 0 0 .042.28l.007.009a15.016 15.016 0 0 1 2.52 4.6.25.25 0 0 0 .37.132.25.25 0 0 0 .096-.114c.623-1.464.944-3.039.945-4.63a12.005 12.005 0 0 0-5.78-10.258.25.25 0 0 0-.373.274c.547 2.109.85 4.274.901 6.453ZM9.61 5.38a.25.25 0 0 0 .08.31c.34.24.616.561.8.935a.25.25 0 0 0 .3.127.631.631 0 0 1 .206-.034c2.054.078 4.036.772 5.69 1.991a.251.251 0 0 0 .267.024c.046-.024.093-.047.141-.067a.25.25 0 0 0 .151-.23A29.98 29.98 0 0 0 15.957.764a.25.25 0 0 0-.16-.164 11.924 11.924 0 0 0-2.21-.518.252.252 0 0 0-.215.076A22.456 22.456 0 0 0 9.61 5.38Z" }) })
-              }
-            ) }),
-            /* @__PURE__ */ jsxs("div", { className: "pt-3 sm:pt-5", children: [
-              /* @__PURE__ */ jsx("h2", { className: "text-xl font-semibold text-black dark:text-white", children: "Vibrant Ecosystem" }),
-              /* @__PURE__ */ jsxs("p", { className: "mt-4 text-sm/relaxed", children: [
-                "Laravel's robust library of first-party tools and libraries, such as",
-                " ",
-                /* @__PURE__ */ jsx(
-                  "a",
-                  {
-                    href: "https://forge.laravel.com",
-                    className: "rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white dark:focus-visible:ring-[#FF2D20]",
-                    children: "Forge"
-                  }
-                ),
-                ",",
-                " ",
-                /* @__PURE__ */ jsx(
-                  "a",
-                  {
-                    href: "https://vapor.laravel.com",
-                    className: "rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white",
-                    children: "Vapor"
-                  }
-                ),
-                ",",
-                " ",
-                /* @__PURE__ */ jsx(
-                  "a",
-                  {
-                    href: "https://nova.laravel.com",
-                    className: "rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white",
-                    children: "Nova"
-                  }
-                ),
-                ",",
-                " ",
-                /* @__PURE__ */ jsx(
-                  "a",
-                  {
-                    href: "https://envoyer.io",
-                    className: "rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white",
-                    children: "Envoyer"
-                  }
-                ),
-                ", and",
-                " ",
-                /* @__PURE__ */ jsx(
-                  "a",
-                  {
-                    href: "https://herd.laravel.com",
-                    className: "rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white",
-                    children: "Herd"
-                  }
-                ),
-                " ",
-                "help you take your projects to the next level. Pair them with powerful open source libraries like",
-                " ",
-                /* @__PURE__ */ jsx(
-                  "a",
-                  {
-                    href: "https://laravel.com/docs/billing",
-                    className: "rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white",
-                    children: "Cashier"
-                  }
-                ),
-                ",",
-                " ",
-                /* @__PURE__ */ jsx(
-                  "a",
-                  {
-                    href: "https://laravel.com/docs/dusk",
-                    className: "rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white",
-                    children: "Dusk"
-                  }
-                ),
-                ",",
-                " ",
-                /* @__PURE__ */ jsx(
-                  "a",
-                  {
-                    href: "https://laravel.com/docs/broadcasting",
-                    className: "rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white",
-                    children: "Echo"
-                  }
-                ),
-                ",",
-                " ",
-                /* @__PURE__ */ jsx(
-                  "a",
-                  {
-                    href: "https://laravel.com/docs/horizon",
-                    className: "rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white",
-                    children: "Horizon"
-                  }
-                ),
-                ",",
-                " ",
-                /* @__PURE__ */ jsx(
-                  "a",
-                  {
-                    href: "https://laravel.com/docs/sanctum",
-                    className: "rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white",
-                    children: "Sanctum"
-                  }
-                ),
-                ",",
-                " ",
-                /* @__PURE__ */ jsx(
-                  "a",
-                  {
-                    href: "https://laravel.com/docs/telescope",
-                    className: "rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white",
-                    children: "Telescope"
-                  }
-                ),
-                ", and more."
-              ] })
-            ] })
-          ] })
-        ] }) }),
-        /* @__PURE__ */ jsxs("footer", { className: "py-16 text-center text-sm text-black dark:text-white/70", children: [
-          "Laravel v",
-          laravelVersion,
-          " (PHP v",
-          phpVersion,
-          ")"
-        ] })
-      ] }) })
-    ] })
-  ] });
-}
-const __vite_glob_0_70 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: Welcome
-}, Symbol.toStringTag, { value: "Module" }));
+  }
+  return i18n;
+};
 createServer(
   (page) => createInertiaApp({
     page,
-    render: ReactDOMServer.renderToString,
+    render: (element) => ReactDOMServer.renderToString(element),
     resolve: (name) => {
-      const pages = /* @__PURE__ */ Object.assign({ "./Pages/Admin/Bookings/AviableRooms.jsx": __vite_glob_0_0, "./Pages/Admin/Bookings/Booking.jsx": __vite_glob_0_1, "./Pages/Admin/Bookings/Bookings.jsx": __vite_glob_0_2, "./Pages/Admin/Bookings/Calendar.jsx": __vite_glob_0_3, "./Pages/Admin/Bookings/Historique.jsx": __vite_glob_0_4, "./Pages/Admin/Dashboard.jsx": __vite_glob_0_5, "./Pages/Admin/Employes/CreateEmployes.jsx": __vite_glob_0_6, "./Pages/Admin/Employes/EditEmployes.jsx": __vite_glob_0_7, "./Pages/Admin/Employes/Employees.jsx": __vite_glob_0_8, "./Pages/Admin/Events/CreateEvent.jsx": __vite_glob_0_9, "./Pages/Admin/Events/EditEvent.jsx": __vite_glob_0_10, "./Pages/Admin/Events/Events.jsx": __vite_glob_0_11, "./Pages/Admin/Factures/CreateFacture.jsx": __vite_glob_0_12, "./Pages/Admin/Factures/CreateGuests.jsx": __vite_glob_0_13, "./Pages/Admin/Factures/Facture.jsx": __vite_glob_0_14, "./Pages/Admin/Factures/Factures.jsx": __vite_glob_0_15, "./Pages/Admin/Factures/GuestList.jsx": __vite_glob_0_16, "./Pages/Admin/Messages/Messages.jsx": __vite_glob_0_17, "./Pages/Admin/Notifications/Notifications.jsx": __vite_glob_0_18, "./Pages/Admin/Profile/Edit.jsx": __vite_glob_0_19, "./Pages/Admin/Profile/Partials/DeleteUserForm.jsx": __vite_glob_0_20, "./Pages/Admin/Profile/Partials/UpdatePasswordForm.jsx": __vite_glob_0_21, "./Pages/Admin/Profile/Partials/UpdateProfileInformationForm.jsx": __vite_glob_0_22, "./Pages/Admin/Promotions/CreatePromotion.jsx": __vite_glob_0_23, "./Pages/Admin/Promotions/EditPromotion.jsx": __vite_glob_0_24, "./Pages/Admin/Promotions/Promotions.jsx": __vite_glob_0_25, "./Pages/Admin/Roles/CreateRole.jsx": __vite_glob_0_26, "./Pages/Admin/Roles/EditRole.jsx": __vite_glob_0_27, "./Pages/Admin/Roles/Roles.jsx": __vite_glob_0_28, "./Pages/Admin/Rooms/Features.jsx": __vite_glob_0_29, "./Pages/Admin/Rooms/Room.jsx": __vite_glob_0_30, "./Pages/Admin/Rooms/RoomCreate.jsx": __vite_glob_0_31, "./Pages/Admin/Rooms/RoomEdit.jsx": __vite_glob_0_32, "./Pages/Admin/Rooms/Rooms.jsx": __vite_glob_0_33, "./Pages/Admin/Services/Consumptions.jsx": __vite_glob_0_34, "./Pages/Admin/Services/CreateService.jsx": __vite_glob_0_35, "./Pages/Admin/Services/EditService.jsx": __vite_glob_0_36, "./Pages/Admin/Services/Services.jsx": __vite_glob_0_37, "./Pages/Auth/AdminLogin.jsx": __vite_glob_0_38, "./Pages/Auth/ConfirmPassword.jsx": __vite_glob_0_39, "./Pages/Auth/ForgotPassword.jsx": __vite_glob_0_40, "./Pages/Auth/Login.jsx": __vite_glob_0_41, "./Pages/Auth/Register.jsx": __vite_glob_0_42, "./Pages/Auth/ResetPassword.jsx": __vite_glob_0_43, "./Pages/Auth/VerifyEmail.jsx": __vite_glob_0_44, "./Pages/Client/AviableRooms.jsx": __vite_glob_0_45, "./Pages/Client/Bookings/Booking.jsx": __vite_glob_0_46, "./Pages/Client/Bookings/MyBookings.jsx": __vite_glob_0_47, "./Pages/Client/Component/Caro.jsx": __vite_glob_0_48, "./Pages/Client/Component/ContactSection.jsx": __vite_glob_0_49, "./Pages/Client/Component/Event.jsx": __vite_glob_0_50, "./Pages/Client/Component/FormBook.jsx": __vite_glob_0_51, "./Pages/Client/Component/ReservationForm.jsx": __vite_glob_0_52, "./Pages/Client/Component/RoomCard.jsx": __vite_glob_0_53, "./Pages/Client/Component/RoomDetail.jsx": __vite_glob_0_54, "./Pages/Client/Component/Service.jsx": __vite_glob_0_55, "./Pages/Client/Events/Show.jsx": __vite_glob_0_56, "./Pages/Client/Home.jsx": __vite_glob_0_57, "./Pages/Client/Profile/Edit.jsx": __vite_glob_0_58, "./Pages/Client/Profile/Partials/DeleteUserForm.jsx": __vite_glob_0_59, "./Pages/Client/Profile/Partials/UpdatePasswordForm.jsx": __vite_glob_0_60, "./Pages/Client/Profile/Partials/UpdateProfileInformationForm.jsx": __vite_glob_0_61, "./Pages/Client/Promotions/Show.jsx": __vite_glob_0_62, "./Pages/Client/Services/Show.jsx": __vite_glob_0_63, "./Pages/Dashboard.jsx": __vite_glob_0_64, "./Pages/Error.jsx": __vite_glob_0_65, "./Pages/Profile/Edit.jsx": __vite_glob_0_66, "./Pages/Profile/Partials/DeleteUserForm.jsx": __vite_glob_0_67, "./Pages/Profile/Partials/UpdatePasswordForm.jsx": __vite_glob_0_68, "./Pages/Profile/Partials/UpdateProfileInformationForm.jsx": __vite_glob_0_69, "./Pages/Welcome.jsx": __vite_glob_0_70 });
+      const pages = /* @__PURE__ */ Object.assign({ "./Pages/Admin/Bookings/AviableRooms.jsx": __vite_glob_0_0, "./Pages/Admin/Bookings/Booking.jsx": __vite_glob_0_1, "./Pages/Admin/Bookings/Bookings.jsx": __vite_glob_0_2, "./Pages/Admin/Bookings/Calendar.jsx": __vite_glob_0_3, "./Pages/Admin/Bookings/Historique.jsx": __vite_glob_0_4, "./Pages/Admin/Dashboard.jsx": __vite_glob_0_5, "./Pages/Admin/Employes/EmployeForm.jsx": __vite_glob_0_6, "./Pages/Admin/Employes/Employees.jsx": __vite_glob_0_7, "./Pages/Admin/Events/EventForm.jsx": __vite_glob_0_8, "./Pages/Admin/Events/Events.jsx": __vite_glob_0_9, "./Pages/Admin/Factures/CreateFacture.jsx": __vite_glob_0_10, "./Pages/Admin/Factures/CreateGuests.jsx": __vite_glob_0_11, "./Pages/Admin/Factures/Facture.jsx": __vite_glob_0_12, "./Pages/Admin/Factures/Factures.jsx": __vite_glob_0_13, "./Pages/Admin/Factures/GuestList.jsx": __vite_glob_0_14, "./Pages/Admin/Messages/Messages.jsx": __vite_glob_0_15, "./Pages/Admin/Notifications/Notifications.jsx": __vite_glob_0_16, "./Pages/Admin/Profile/Edit.jsx": __vite_glob_0_17, "./Pages/Admin/Profile/Partials/DeleteUserForm.jsx": __vite_glob_0_18, "./Pages/Admin/Profile/Partials/UpdatePasswordForm.jsx": __vite_glob_0_19, "./Pages/Admin/Profile/Partials/UpdateProfileInformationForm.jsx": __vite_glob_0_20, "./Pages/Admin/Promotions/PromotionForm.jsx": __vite_glob_0_21, "./Pages/Admin/Promotions/Promotions.jsx": __vite_glob_0_22, "./Pages/Admin/Roles/RoleForm.jsx": __vite_glob_0_23, "./Pages/Admin/Roles/Roles.jsx": __vite_glob_0_24, "./Pages/Admin/Rooms/Features.jsx": __vite_glob_0_25, "./Pages/Admin/Rooms/Room.jsx": __vite_glob_0_26, "./Pages/Admin/Rooms/RoomCreate.jsx": __vite_glob_0_27, "./Pages/Admin/Rooms/RoomEdit.jsx": __vite_glob_0_28, "./Pages/Admin/Rooms/Rooms.jsx": __vite_glob_0_29, "./Pages/Admin/Services/Consumptions.jsx": __vite_glob_0_30, "./Pages/Admin/Services/CreateService.jsx": __vite_glob_0_31, "./Pages/Admin/Services/ServiceForm.jsx": __vite_glob_0_32, "./Pages/Admin/Services/Services.jsx": __vite_glob_0_33, "./Pages/Auth/AdminLogin.jsx": __vite_glob_0_34, "./Pages/Auth/ConfirmPassword.jsx": __vite_glob_0_35, "./Pages/Auth/ForgotPassword.jsx": __vite_glob_0_36, "./Pages/Auth/Login.jsx": __vite_glob_0_37, "./Pages/Auth/ResetPassword.jsx": __vite_glob_0_38, "./Pages/Auth/VerifyEmail.jsx": __vite_glob_0_39, "./Pages/Client/AviableRooms.jsx": __vite_glob_0_40, "./Pages/Client/Bookings/Booking.jsx": __vite_glob_0_41, "./Pages/Client/Bookings/MyBookings.jsx": __vite_glob_0_42, "./Pages/Client/Events/Show.jsx": __vite_glob_0_43, "./Pages/Client/Home.jsx": __vite_glob_0_44, "./Pages/Client/Profile/Edit.jsx": __vite_glob_0_45, "./Pages/Client/Profile/Partials/DeleteUserForm.jsx": __vite_glob_0_46, "./Pages/Client/Profile/Partials/UpdatePasswordForm.jsx": __vite_glob_0_47, "./Pages/Client/Profile/Partials/UpdateProfileInformationForm.jsx": __vite_glob_0_48, "./Pages/Client/Promotions/Show.jsx": __vite_glob_0_49, "./Pages/Client/Services/Show.jsx": __vite_glob_0_50, "./Pages/Error.jsx": __vite_glob_0_51 });
       return pages[`./Pages/${name}.jsx`];
     },
-    setup: ({ App, props }) => React__default.createElement(App, props)
+    setup: ({ App, props }) => {
+      const { locale } = props.initialPage.props;
+      initI18n(locale);
+      return /* @__PURE__ */ jsx(I18nextProvider, { i18n, children: /* @__PURE__ */ jsx(App, { ...props }) });
+    }
   })
 );
 export {
   Card as C,
   CardContent as a,
   CardFooter as b,
-  cn as c,
-  useTrans as u
+  cn as c
 };

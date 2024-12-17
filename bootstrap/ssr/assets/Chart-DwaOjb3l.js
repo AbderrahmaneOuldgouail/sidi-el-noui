@@ -2,7 +2,8 @@ import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 import { BarChart, CartesianGrid, XAxis, Bar } from "recharts";
-import { c as cn, C as Card, a as CardContent, b as CardFooter, u as useTrans } from "../ssr.js";
+import { c as cn, C as Card, a as CardContent, b as CardFooter } from "../ssr.js";
+import { useTranslation } from "react-i18next";
 import "@inertiajs/react";
 import "clsx";
 import "tailwind-merge";
@@ -16,9 +17,9 @@ import "@radix-ui/react-tooltip";
 import "@radix-ui/react-dropdown-menu";
 import "@radix-ui/react-collapsible";
 import "@radix-ui/react-icons";
-import "@radix-ui/react-radio-group";
 import "@radix-ui/react-dialog";
 import "@radix-ui/react-avatar";
+import "@radix-ui/react-radio-group";
 import "vaul";
 import "date-fns";
 import "date-fns/locale";
@@ -50,9 +51,9 @@ import "@headlessui/react";
 import "@radix-ui/react-switch";
 import "@radix-ui/react-tabs";
 import "@radix-ui/react-select";
-import "react-icons/fa";
 import "@inertiajs/react/server";
 import "react-dom/server";
+import "i18next";
 const THEMES = {
   light: "",
   dark: ".dark"
@@ -278,6 +279,7 @@ function getPayloadConfigFromPayload(config, payload, key) {
   return configLabelKey in config ? config[configLabelKey] : config[key];
 }
 function Chart({ bookingCounts }) {
+  const { t } = useTranslation();
   const dataChart = [
     bookingCounts.map((type) => {
       return {
@@ -288,11 +290,11 @@ function Chart({ bookingCounts }) {
   ];
   const configChart = {
     bookings: {
-      label: "Réservations",
+      label: t("dashboard.chartLabel"),
       color: "hsl(var(--chart-1))"
     }
   };
-  return /* @__PURE__ */ jsxs(Card, { className: "w-full md:w-1/2   mt-4", children: [
+  return /* @__PURE__ */ jsxs(Card, { className: "w-full md:w-1/2 mt-4", children: [
     /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsx(
       ChartContainer,
       {
@@ -331,10 +333,8 @@ function Chart({ bookingCounts }) {
       }
     ) }),
     /* @__PURE__ */ jsxs(CardFooter, { className: "flex-col items-start", children: [
-      /* @__PURE__ */ jsx("span", { className: "font-medium", children: useTrans("Les types plus réservé le mois dernier") }),
-      /* @__PURE__ */ jsx("span", { className: "text-sm text-muted-foreground", children: useTrans(
-        "Ces statistique inclus les réservations annuléers et refusées"
-      ) })
+      /* @__PURE__ */ jsx("span", { className: "font-medium", children: t("dashboard.chartTitle") }),
+      /* @__PURE__ */ jsx("span", { className: "text-sm text-muted-foreground", children: t("dashboard.chartSubTitle") })
     ] })
   ] });
 }

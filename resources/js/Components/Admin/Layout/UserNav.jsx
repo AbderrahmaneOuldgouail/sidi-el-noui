@@ -21,9 +21,11 @@ import {
 import { LangSwitch } from "./LangSwitch";
 import { RedBeadge } from "@/Components/ui/red-badge";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 export function UserNav() {
     const user = usePage().props.auth.user;
+    const [processing, setProcessing] = React.useState(false);
     const message_permission = usePage().props.auth.permissions.message;
     const hasUnreadMessages = usePage().props.hasUnreadMessages;
     const { t } = useTranslation("translation", {
@@ -69,10 +71,16 @@ export function UserNav() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem className="hover:cursor-pointer" asChild>
+                    <DropdownMenuItem
+                        className="hover:cursor-pointer"
+                        disabled={processing}
+                        asChild
+                    >
                         <Link
                             href={route("admin.dashboard")}
                             className="flex items-center"
+                            onStart={() => setProcessing(true)}
+                            onFinish={() => setProcessing(false)}
                         >
                             <LayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
                             {t("dashboard")}
@@ -85,10 +93,13 @@ export function UserNav() {
                         <DropdownMenuItem
                             className="hover:cursor-pointer"
                             asChild
+                            disabled={processing}
                         >
                             <Link
                                 href={route("messages.index")}
                                 className="flex items-center"
+                                onStart={() => setProcessing(true)}
+                                onFinish={() => setProcessing(false)}
                             >
                                 {hasUnreadMessages ? (
                                     <div className="relative">
@@ -102,10 +113,16 @@ export function UserNav() {
                             </Link>
                         </DropdownMenuItem>
                     )}
-                    <DropdownMenuItem className="hover:cursor-pointer" asChild>
+                    <DropdownMenuItem
+                        className="hover:cursor-pointer"
+                        asChild
+                        disabled={processing}
+                    >
                         <Link
                             href={route("admin.profile.edit")}
                             className="flex items-center"
+                            onStart={() => setProcessing(true)}
+                            onFinish={() => setProcessing(false)}
                         >
                             <User className="w-4 h-4 mr-3 text-muted-foreground" />
                             {t("account")}
@@ -115,16 +132,20 @@ export function UserNav() {
                         <Languages className="w-4 h-4 mr-3 text-muted-foreground" />
                         <LangSwitch />
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Languages className="w-4 h-4 mr-3 text-muted-foreground" />
-                        {/* <LanguageSwitcher /> */}
-                    </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     className="hover:cursor-pointer"
+                    disabled={processing}
                     onClick={() => {
-                        router.post(route("admin.logout"));
+                        router.post(
+                            route("admin.logout"),
+                            {},
+                            {
+                                onStart: () => setProcessing(true),
+                                onFinish: () => setProcessing(false),
+                            }
+                        );
                     }}
                 >
                     <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
