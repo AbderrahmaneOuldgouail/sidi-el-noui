@@ -4,7 +4,6 @@ import PlaceholderContent from "@/Components/Admin/Layout/PlaceholderContent";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout";
 import PageHeading from "@/Components/ui/PageHeading";
 import { Button } from "@/Components/ui/button";
-import { useTrans } from "@/Hooks/useTrans";
 import { DataTable } from "@/Components/Admin/DataTable";
 import { roleColumns } from "@/Components/Admin/Roles/RolesColumns";
 import { useToast } from "@/Components/ui/use-toast";

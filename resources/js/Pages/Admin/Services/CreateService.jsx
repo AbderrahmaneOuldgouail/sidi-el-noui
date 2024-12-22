@@ -12,7 +12,6 @@ import InputError from "@/Components/InputError";
 import MyFileUploader from "@/Components/Admin/Shared/MyFileUploader";
 import { ImagesViewer } from "@/Components/Admin/Shared/ImagesViewer";
 import { Input } from "@/Components/ui/input";
-import { useTrans } from "@/Hooks/useTrans";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Separator } from "@/Components/ui/separator";
 import { Editor } from "@/Components/Admin/Shared/Editor";

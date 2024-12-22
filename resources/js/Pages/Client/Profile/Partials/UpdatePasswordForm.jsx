@@ -4,7 +4,6 @@ import InputLabel from "@/Components/InputLabel";
 import { useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 import { Input } from "@/Components/ui/input";
-import { useTrans } from "@/Hooks/useTrans";
 import { Separator } from "@/Components/ui/separator";
 import { Button } from "@/Components/ui/button";
 import { useToast } from "@/Components/ui/use-toast";

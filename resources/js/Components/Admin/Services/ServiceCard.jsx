@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Badge } from "@/Components/ui/badge";
-import { useTrans } from "@/Hooks/useTrans";
 import {
     Card,
     CardContent,

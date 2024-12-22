@@ -37,7 +37,6 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
 import { Checkbox } from "@/Components/ui/checkbox";
-import { useTrans } from "@/Hooks/useTrans";
 import { router, useForm } from "@inertiajs/react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";

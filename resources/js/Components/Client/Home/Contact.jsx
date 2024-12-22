@@ -34,7 +34,7 @@ export default function Contact() {
             className="relative flex flex-col justify-center items-center min-h-screen max-h-sceen"
             id="contact-section"
         >
-            <div className="absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
+            <div className="absolute z-[0] w-2/3 h-full rounded-full inset-0 bg-gradient-to-r from-secondarybg from-10% via-secondarybg via-30% to-primarybg to-90% blur-2xl opacity-60"></div>
             <div className="font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ">
                 {t("title")}
             </div>

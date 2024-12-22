@@ -8,7 +8,6 @@ import {
 import { Badge } from "@/Components/ui/badge";
 import { BedSingle, CircleMinus, CirclePlus } from "lucide-react";
 import { Button } from "@/Components/ui/button";
-import { useTrans } from "@/Hooks/useTrans";
 import { useTranslation } from "react-i18next";
 
 export default function RoomsServces({

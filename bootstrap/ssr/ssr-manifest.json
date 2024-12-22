@@ -115,6 +115,7 @@
   "resources/js/Components/ui/use-toast.js": [],
   "resources/js/Hooks/useSidebarToggle.js": [],
   "resources/js/Hooks/useStore.js": [],
+  "resources/js/Hooks/useThemeStore.js": [],
   "resources/js/Hooks/useWindowDimensions.js": [],
   "resources/js/Layouts/AdminPanelLayout.jsx": [],
   "resources/js/Layouts/ClientLayout.jsx": [],

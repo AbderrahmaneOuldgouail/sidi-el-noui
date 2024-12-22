@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
-import { useTrans } from "@/Hooks/useTrans";
 import {
     Card,
     CardContent,

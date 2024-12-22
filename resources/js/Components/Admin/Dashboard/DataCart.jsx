@@ -5,7 +5,6 @@ import {
     CardFooter,
     CardHeader,
 } from "@/Components/ui/card";
-import { useTrans } from "@/Hooks/useTrans";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 

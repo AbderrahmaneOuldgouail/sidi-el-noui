@@ -3,7 +3,6 @@ import InputLabel from "@/Components/InputLabel";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import LabelDescreption from "@/Components/LabelDescreption";
 import { Input } from "@/Components/ui/input";
-import { useTrans } from "@/Hooks/useTrans";
 import { Separator } from "@/Components/ui/separator";
 import { Button } from "@/Components/ui/button";
 import { useTranslation } from "react-i18next";

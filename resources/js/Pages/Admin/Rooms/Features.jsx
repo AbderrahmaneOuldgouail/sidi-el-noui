@@ -9,7 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import PageHeading from "@/Components/ui/PageHeading";
 import { useToast } from "@/Components/ui/use-toast";
 import FeatureCreateDialog from "@/Components/Admin/Rooms/FeatureCreateDialog";
-import { useTrans } from "@/Hooks/useTrans";
 import CategoryDialog from "@/Components/Admin/Rooms/CategoryDialog";
 import CategoryCard from "@/Components/Admin/Rooms/CategoryCard";
 import { Hotel } from "lucide-react";

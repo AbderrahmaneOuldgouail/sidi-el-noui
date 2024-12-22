@@ -6,7 +6,6 @@ import PageHeading from "@/Components/ui/PageHeading";
 import { useToast } from "@/Components/ui/use-toast";
 import ConsommationDialog from "@/Components/Admin/Services/ConsommationDialog";
 import ConsommationCard from "@/Components/Admin/Services/ConsommationCard";
-import { useTrans } from "@/Hooks/useTrans";
 import { HandPlatter } from "lucide-react";
 import EmptyPage from "@/Components/Admin/Shared/EmptyPage";
 import { useTranslation } from "react-i18next";

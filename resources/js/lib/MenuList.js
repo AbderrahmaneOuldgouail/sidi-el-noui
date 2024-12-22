@@ -1,4 +1,3 @@
-import { useTrans } from "@/Hooks/useTrans";
 import { usePage } from "@inertiajs/react";
 import {
     Users,

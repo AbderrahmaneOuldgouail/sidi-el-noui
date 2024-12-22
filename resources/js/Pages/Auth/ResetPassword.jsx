@@ -4,7 +4,6 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
-import { useTrans } from "@/Hooks/useTrans";
 import { Button } from "@/Components/ui/button";
 import { useTranslation } from "react-i18next";
 

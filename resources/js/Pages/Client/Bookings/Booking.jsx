@@ -28,7 +28,6 @@ import { Button, buttonVariants } from "@/Components/ui/button";
 import { Head, router } from "@inertiajs/react";
 import { Badge } from "@/Components/ui/badge";
 import { Separator } from "@/Components/ui/separator";
-import { useTrans } from "@/Hooks/useTrans";
 import { useTranslation } from "react-i18next";
 
 export default function MyBookings({ booking }) {

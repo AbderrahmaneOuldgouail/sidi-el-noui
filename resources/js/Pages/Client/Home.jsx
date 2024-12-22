@@ -27,7 +27,7 @@ export default function Home({ events, promotions, rooms, services }) {
             </Head>
 
             <div className="relative h-dvh f " id="home-section">
-                <div className="absolute size-1/2 translate-x-full rounded-full z-[0] inset-0 bg-gradient-to-r from-primarybg from-10% via-primarybg via-30% to-primarybg to-90% blur-2xl opacity-70"></div>
+                <div className="absolute size-1/2 ltr:translate-x-full -translate-x-full rounded-full z-[0] inset-0 bg-gradient-to-r from-primarybg from-10% via-primarybg via-30% to-primarybg to-90% blur-2xl opacity-70"></div>
                 <HomeHeading id="booking-form" />
             </div>
             {promotions && (

@@ -1,6 +1,6 @@
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import * as React from "react";
-import React__default, { useState, useEffect, createContext, useContext, useMemo, useCallback, useRef, forwardRef } from "react";
+import React__default, { useState, useEffect, useMemo, useCallback, useRef, forwardRef } from "react";
 import { usePage, Link, router, useForm, Head, createInertiaApp } from "@inertiajs/react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -1150,42 +1150,22 @@ function UserNav$1() {
     ] })
   ] });
 }
-const ThemeProviderContext = createContext({
-  theme: "light",
-  setTheme: () => null
-});
-function ThemeProvider({
-  children,
-  defaultTheme = "light",
-  storageKey = "vite-ui-theme",
-  ...props
-}) {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem(storageKey) || defaultTheme;
-  });
-  useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(theme);
-  }, [theme]);
-  const value = {
-    theme,
-    setTheme: (theme2) => {
-      localStorage.setItem(storageKey, theme2);
-      setTheme(theme2);
+const useThemeStore = create(
+  persist(
+    (set, get) => ({
+      theme: "light",
+      setTheme: () => {
+        set({ theme: get().theme == "light" ? "dark" : "light" });
+      }
+    }),
+    {
+      name: "theme",
+      storage: createJSONStorage(() => localStorage)
     }
-  };
-  return /* @__PURE__ */ jsx(ThemeProviderContext.Provider, { ...props, value, children });
-}
-const useTheme = () => {
-  const context = useContext(ThemeProviderContext);
-  if (context === void 0) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
-};
+  )
+);
 function ThemeToggle() {
-  const { setTheme, theme } = useTheme();
+  const theme = useStore(useThemeStore, (state) => state);
   const { t } = useTranslation();
   return /* @__PURE__ */ jsx(TooltipProvider, { disableHoverableContent: true, children: /* @__PURE__ */ jsxs(Tooltip, { delayDuration: 100, children: [
     /* @__PURE__ */ jsx(TooltipTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(
@@ -1194,7 +1174,10 @@ function ThemeToggle() {
         className: "rounded-full w-8 h-8 bg-background",
         variant: "outline",
         size: "icon",
-        onClick: () => setTheme(theme === "dark" ? "light" : "dark"),
+        onClick: () => {
+          var _a;
+          return (_a = theme == null ? void 0 : theme.setTheme) == null ? void 0 : _a.call(theme);
+        },
         children: [
           /* @__PURE__ */ jsx(SunIcon, { className: "w-[1.2rem] h-[1.2rem] rotate-90 scale-0 transition-transform ease-in-out duration-500 dark:rotate-0 dark:scale-100" }),
           /* @__PURE__ */ jsx(MoonIcon, { className: "absolute w-[1.2rem] h-[1.2rem] rotate-0 scale-1000 transition-transform ease-in-out duration-500 dark:-rotate-90 dark:scale-0" }),
@@ -2032,6 +2015,15 @@ function Navbar({ isOpen }) {
       ] }) })
     }
   );
+}
+function ThemeProvider({ children }) {
+  const theme = useStore(useThemeStore, (state) => state);
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(theme == null ? void 0 : theme.theme);
+  }, [theme]);
+  return /* @__PURE__ */ jsx(Fragment, { children });
 }
 const ToastProvider = ToastPrimitives.Provider;
 const ToastViewport = React.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsx(
@@ -14034,7 +14026,7 @@ function Contact() {
       className: "relative flex flex-col justify-center items-center min-h-screen max-h-sceen",
       id: "contact-section",
       children: [
-        /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
+        /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-2/3 h-full rounded-full inset-0 bg-gradient-to-r from-secondarybg from-10% via-secondarybg via-30% to-primarybg to-90% blur-2xl opacity-60" }),
         /* @__PURE__ */ jsx("div", { className: "font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: t("title") }),
         /* @__PURE__ */ jsxs("form", { onSubmit: submit, className: "relative w-full px-10", children: [
           /* @__PURE__ */ jsxs("div", { className: "flex gap-4 flex-col-reverse sm:flex-row", children: [
@@ -14133,7 +14125,7 @@ function Home({ events: events2, promotions: promotions2, rooms: rooms2, service
       /* @__PURE__ */ jsx("meta", { name: "description", content: t("metaDescreption") })
     ] }),
     /* @__PURE__ */ jsxs("div", { className: "relative h-dvh f ", id: "home-section", children: [
-      /* @__PURE__ */ jsx("div", { className: "absolute size-1/2 translate-x-full rounded-full z-[0] inset-0 bg-gradient-to-r from-primarybg from-10% via-primarybg via-30% to-primarybg to-90% blur-2xl opacity-70" }),
+      /* @__PURE__ */ jsx("div", { className: "absolute size-1/2 ltr:translate-x-full -translate-x-full rounded-full z-[0] inset-0 bg-gradient-to-r from-primarybg from-10% via-primarybg via-30% to-primarybg to-90% blur-2xl opacity-70" }),
       /* @__PURE__ */ jsx(HomeHeading, { id: "booking-form" })
     ] }),
     promotions2 && /* @__PURE__ */ jsxs("div", { className: "my-6 relative min-h-screen max-h-sceen", children: [

@@ -19,7 +19,6 @@ import {
 import { Badge } from "@/Components/ui/badge";
 import { Editor } from "@/Components/Admin/Shared/Editor";
 
-import { useTrans } from "@/Hooks/useTrans";
 import { useTranslation } from "react-i18next";
 
 export default function BookingsCard({

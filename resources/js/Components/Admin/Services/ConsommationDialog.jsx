@@ -29,7 +29,6 @@ import { Input } from "@/Components/ui/input";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
-import { useTrans } from "@/Hooks/useTrans";
 import { useForm } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 
