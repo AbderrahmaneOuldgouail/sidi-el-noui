@@ -6,7 +6,7 @@ export default function Guest({ children }) {
         <div className="min-h-screen flex items-center bg-muted">
             <div className="hidden md:flex w-1/2 h-screen flex-col sm:justify-center items-center bg-secondary">
                 <img
-                    src="http://localhost:8000/storage/sidi-el-noui-logo-removebg.png"
+                    src="/assets/sidi-el-noui-logo-removebg.png"
                     className="object-content w-1/3 md:w-2/3 rounded-xl relative z-10  hover:corsur-pointer  transition-transform duration-300 hover:scale-105 "
                 />
             </div>

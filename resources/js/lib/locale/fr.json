@@ -1,5 +1,4 @@
 {
-  "welcome" : "Bienvenue",
   "layout" : {
     "navBar" : {
       "addBooking" : "Ajouter une réservation",
@@ -46,7 +45,21 @@
       "users" : "Utilisateurs",
       "roles" : "Rôles",
       "employs" : "Employés"
-    }
+    },
+    "notif" : "à fait un nouveaux réservation"
+  },
+  "auth" : {
+    "auth" : "Email ou N° téléphone",
+    "password" : "Mot de passe",
+    "remember" : "Souviens moi",
+    "forget" : "Mot de passe oublié ?",
+    "submit" : "Se Connecter",
+    "confirmText" : "Il s'agit d'une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer.",
+    "confirm" : "Confirmer",
+    "forgetText" : "Vous avez oublié votre mot de passe ? Aucun problème. Indiquez-nous simplement votre adresse e-mail et nous vous enverrons par e-mail un lien de réinitialisation de mot de passe qui vous permettra de choisir un nouveau mot de passe.",
+    "resetLink" : "Lien de réinitialisation du mot de passe par e-mail",
+    "confirmPassword" : "Confirmez le mot de passe",
+    "reset" : "Réinitialiser le mot de passe"
   },
   "components" : {
     "datePicker" : {

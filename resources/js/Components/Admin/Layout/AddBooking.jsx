@@ -26,10 +26,8 @@ import { useForm } from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import { useWindowDimensions } from "@/Hooks/useWindowDimensions";
-
 import { DatePickerWithRange } from "@/Components/ui/DatePickerWithRange";
 import { Input } from "@/Components/ui/input";
-import { useTrans } from "@/Hooks/useTrans";
 import { Checkbox } from "@/Components/ui/checkbox";
 import { useTranslation } from "react-i18next";
 
@@ -38,17 +36,19 @@ export function AddBooking() {
         from: "",
         to: "",
     });
-    const { data, get, setData, errors } = useForm({
-        check_in: "",
-        check_out: "",
-        guest_number: 0,
-        is_company: 0,
-    });
+    const { data, get, setData, processing, setError, errors, clearErrors } =
+        useForm({
+            check_in: "",
+            check_out: "",
+            guest_number: 0,
+            is_company: 0,
+        });
     const [open, setOpen] = useState(false);
     const { width } = useWindowDimensions();
     const { toast } = useToast();
     const flash = usePage().props.flash;
     const { t } = useTranslation("translation", { keyPrefix: "layout.navBar" });
+    const e = usePage().props.errors;
 
     useEffect(() => {
         if (flash.message) {
@@ -56,6 +56,15 @@ export function AddBooking() {
             toast({ description: flash.message?.message });
         }
     }, [flash.message, toast]);
+
+    useEffect(() => {
+        if (Object.keys(e).length !== 0) {
+            setError("check_in", e.check_in);
+            setError("check_out", e.check_out);
+            setError("guest_number", e.guest_number);
+            setOpen(true);
+        }
+    }, [e]);
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -67,16 +76,20 @@ export function AddBooking() {
     }
 
     const incriment = () => {
+        clearErrors("guest_number");
         setData("guest_number", data.guest_number + 1);
     };
 
     const dicriment = () => {
+        clearErrors("guest_number");
         if (data.guest_number > 0) {
             setData("guest_number", data.guest_number - 1);
         }
     };
 
     const handleDateChange = (range) => {
+        clearErrors("check_in");
+        clearErrors("check_out");
         if (range?.from) {
             const formattedDate = formatDate(range.from);
             setData("check_in", formattedDate);
@@ -95,7 +108,7 @@ export function AddBooking() {
 
     if (width >= 767) {
         return (
-            <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+            <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     <Button variant="link">
                         <CalendarPlus size={18} className="mx-2" />
@@ -104,9 +117,7 @@ export function AddBooking() {
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>
-                            {t("dialog.dialogDescreption")}
-                        </DialogTitle>
+                        <DialogTitle>{t("addBooking")}</DialogTitle>
                         <DialogDescription>
                             {t("dialog.dialogDescreption")}
                         </DialogDescription>
@@ -173,7 +184,11 @@ export function AddBooking() {
                             />
                         </div>
                         <DialogFooter>
-                            <Button variant="secondary" type="submit">
+                            <Button
+                                variant="secondary"
+                                type="submit"
+                                disabled={processing}
+                            >
                                 {t("dialog.form.submit")}
                             </Button>
                         </DialogFooter>
@@ -191,19 +206,17 @@ export function AddBooking() {
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader className="text-left">
-                    <DrawerTitle>
-                        {useTrans("Ajouter une réservation")}
-                    </DrawerTitle>
+                    <DrawerTitle>{t("addBooking")}</DrawerTitle>
                     <DrawerDescription>
                         {" "}
-                        {useTrans("Chercher des chambres disponible")}
+                        {t("dialog.dialogDescreption")}
                     </DrawerDescription>
                 </DrawerHeader>
                 <form onSubmit={submit} className="grid items-start gap-4 px-4">
                     <div className="grid gap-2">
                         <InputLabel
                             htmlFor="dates"
-                            value={useTrans("Date début et fin de réservation")}
+                            value={t("dialog.form.dates")}
                         />
                         <DatePickerWithRange
                             date={dateRange}
@@ -221,7 +234,7 @@ export function AddBooking() {
                     <div className="grid gap-2">
                         <InputLabel
                             htmlFor="guest_number"
-                            value={useTrans("Nombre des personne")}
+                            value={t("dialog.form.guestNumber")}
                         />
                         <Input
                             type="number"
@@ -247,9 +260,7 @@ export function AddBooking() {
                         />
                         <InputLabel
                             htmlFor="need_value"
-                            value={useTrans(
-                                "Choisi cette option lors cette réservation est pour un société"
-                            )}
+                            value={t("dialog.form.needValue")}
                         />
                     </div>
                     <DialogFooter>
@@ -257,14 +268,18 @@ export function AddBooking() {
                             variant="secondary"
                             className="w-full"
                             type="submit"
+                            disabled={processing}
                         >
-                            {useTrans("Recherche")}
+                            {t("dialog.form.submit")}
                         </Button>
                     </DialogFooter>
                 </form>
                 <DrawerFooter className="pt-2">
                     <DrawerClose asChild>
-                        <Button variant="outline">{useTrans("Annuler")}</Button>
+                        <Button variant="outline">
+                            {" "}
+                            {t("dialog.form.cancel")}
+                        </Button>
                     </DrawerClose>
                 </DrawerFooter>
             </DrawerContent>

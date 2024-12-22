@@ -3,13 +3,14 @@ import InputError from "@/Components/InputError";
 import { Head, useForm } from "@inertiajs/react";
 import { Input } from "@/Components/ui/input";
 import { Button } from "@/Components/ui/button";
-import { useTrans } from "@/Hooks/useTrans";
 import { LoaderCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
         email: "",
     });
+    const { t } = useTranslation("translation", { keyPrefix: "auth" });
 
     const submit = (e) => {
         e.preventDefault();
@@ -22,9 +23,7 @@ export default function ForgotPassword({ status }) {
             <Head title="Forgot Password" />
 
             <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                {useTrans(
-                    "Vous avez oublié votre mot de passe ? Aucun problème. Indiquez-nous simplement votre adresse e-mail et nous vous enverrons par e-mail un lien de réinitialisation de mot de passe qui vous permettra de choisir un nouveau mot de passe."
-                )}
+                {t("forgetText")}
             </div>
 
             {status && (
@@ -51,9 +50,7 @@ export default function ForgotPassword({ status }) {
                         {processing ? (
                             <LoaderCircle className="animate-spin" />
                         ) : (
-                            useTrans(
-                                "Lien de réinitialisation du mot de passe par e-mail"
-                            )
+                            t("resetLink")
                         )}
                     </Button>
                 </div>

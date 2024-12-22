@@ -1,4 +1,6 @@
 import Echo from "laravel-echo";
+const appKey = import.meta.env.VITE_PUSHER_APP_KEY || "key";
+const appCluster = import.meta.env.VITE_PUSHER_APP_CLUSTER || "key";
 
 import Pusher from "pusher-js";
 window.Pusher = Pusher;
@@ -9,8 +11,8 @@ var csrfToken = document
 
 const options = {
     broadcaster: "pusher",
-    key: "94e1925c34d130d44e27",
-    cluster: "eu",
+    key: appKey,
+    cluster: appCluster,
     forceTLS: true,
     channelAuthorization: {
         transport: "jsonp",

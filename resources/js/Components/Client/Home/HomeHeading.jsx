@@ -5,7 +5,9 @@ import { useTranslation } from "react-i18next";
 
 export default function HomeHeading({ id }) {
     const { width } = useWindowDimensions();
-    const {t} = useTranslation("translation", {keyPrefix: "client.sections.banner"})
+    const { t } = useTranslation("translation", {
+        keyPrefix: "client.sections.banner",
+    });
     return (
         <div id={id}>
             <div className="relative h-full z-10 p-4 flex md:flex-row flex-col justify-around">
@@ -15,14 +17,12 @@ export default function HomeHeading({ id }) {
                             {t("title")}
                         </div>
                     </div>
-                    <div className="text-muted-foreground p-6 pt-0">
-                        <div>
-                            {t("descreption")}
-                        </div>
+                    <div className="text-muted-foreground  text-sm md:text-base p-6 pt-0">
+                        <div>{t("descreption")}</div>
                     </div>
                 </div>
                 {width <= 767 && <BookingForm />}
-                <div className="flex justify-center items-center  ">
+                <div className="flex justify-center items-center">
                     <img
                         src="/assets/sidi-el-noui-logo-removebg.png"
                         className="object-content w-1/3 md:w-2/3 rounded-xl relative z-10  hover:corsur-pointer  transition-transform duration-300 hover:scale-105 "

@@ -26,16 +26,13 @@ export default function Home({ events, promotions, rooms, services }) {
                 <meta name="description" content={t("metaDescreption")} />
             </Head>
 
-            <div
-                className="relative md:h-[600px] h-dvh flex items-center justify-center "
-                id="home-section"
-            >
-                <div className="absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.6)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
+            <div className="relative h-dvh f " id="home-section">
+                <div className="absolute size-1/2 translate-x-full rounded-full z-[0] inset-0 bg-gradient-to-r from-primarybg from-10% via-primarybg via-30% to-primarybg to-90% blur-2xl opacity-70"></div>
                 <HomeHeading id="booking-form" />
             </div>
             {promotions && (
                 <div className="my-6 relative min-h-screen max-h-sceen">
-                    <div className="absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[0] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.2)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
+                    <div className="absolute w-3/4 h-1/2 sm:rotate-45 top-20 rounded-full z-[0] inset-0 bg-gradient-to-r from-secondarybg from-10% via-secondarybg via-30% to-secondarybg to-90% blur-2xl opacity-70"></div>
                     <div className="font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ">
                         {t("promotions")}
                     </div>
@@ -49,7 +46,8 @@ export default function Home({ events, promotions, rooms, services }) {
             )}
             {events && (
                 <div className="my-6 relative min-h-screen max-h-sceen">
-                    <div className="absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[0] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.5)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
+                    <div className="absolute w-3/4 h-1/2 -rotate-12 top-20 rounded-full z-[0] inset-0 bg-gradient-to-r from-secondarybg from-10% via-secondarybg via-30% to-primarybg to-0% blur-2xl opacity-70"></div>
+
                     <div className="font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ">
                         {t("events")}
                     </div>

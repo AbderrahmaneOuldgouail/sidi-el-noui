@@ -219,10 +219,8 @@ export const mybookingscolumns: ColumnDef<Bookings>[] = [
                                         open={isopen}
                                         onOpenChange={setIsOpen}
                                     >
-                                        <DrawerTrigger className="cursor-pointer flex">
-                                            <Button variant="destructive">
+                                        <DrawerTrigger className="w-full">
                                                 {t("cancel")}
-                                            </Button>
                                         </DrawerTrigger>
                                         <DrawerContent>
                                             <DrawerHeader className="text-left">

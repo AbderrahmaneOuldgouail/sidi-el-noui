@@ -8,7 +8,7 @@ import { Input } from "@/Components/ui/input";
 import { Checkbox } from "@/Components/ui/checkbox";
 import { Button } from "@/Components/ui/button";
 import { LoaderCircle } from "lucide-react";
-import { useTrans } from "@/Hooks/useTrans";
+import { useTranslation } from "react-i18next";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -16,6 +16,7 @@ export default function Login({ status, canResetPassword }) {
         password: "",
         remember: false,
     });
+    const { t } = useTranslation("translation", { keyPrefix: "auth" });
     const { toast } = useToast();
     const flash = usePage().props.flash;
     useEffect(() => {
@@ -47,10 +48,7 @@ export default function Login({ status, canResetPassword }) {
             )}
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel
-                        htmlFor="auth"
-                        value={useTrans("Email ou N° téléphone")}
-                    />
+                    <InputLabel htmlFor="auth" value={t("auth")} />
 
                     <Input
                         id="auth"
@@ -67,10 +65,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password"
-                        value={useTrans("Mot de passe")}
-                    />
+                    <InputLabel htmlFor="password" value={t("password")} />
 
                     <Input
                         id="password"
@@ -95,7 +90,7 @@ export default function Login({ status, canResetPassword }) {
                             }
                         />
                         <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                            {useTrans("Souviens moi")}
+                            {t("remember")}
                         </span>
                     </label>
                 </div>
@@ -106,7 +101,7 @@ export default function Login({ status, canResetPassword }) {
                             href={route("password.request")}
                             className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                         >
-                            {useTrans("Mot de passe oublié ?")}
+                            {t("forget")}
                         </Link>
                     )}
                     <Button
@@ -118,7 +113,7 @@ export default function Login({ status, canResetPassword }) {
                         {processing ? (
                             <LoaderCircle className="animate-spin" />
                         ) : (
-                            useTrans("Se Connecter")
+                            tt("submit")
                         )}
                     </Button>
                 </div>

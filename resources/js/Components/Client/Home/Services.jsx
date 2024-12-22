@@ -2,7 +2,6 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/Components/ui/scroll-area";
 import ServiceCard from "./ServiceCard";
-import { useTrans } from "@/Hooks/useTrans";
 import { useTranslation } from "react-i18next";
 
 export default function Services({ services }) {
@@ -14,7 +13,7 @@ export default function Services({ services }) {
             className="relative flex flex-col justify-center items-center min-h-screen max-h-sceen"
             id="services-section"
         >
-            <div className="absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[-10%] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
+            <div className="absolute w-3/4 h-1/2 -rotate-12 top-40 rounded-full z-[0] inset-0 bg-gradient-to-r from-primarybg from-10% via-primarybg via-30% to-primarybg to-0% blur-2xl opacity-70"></div>
             <div className="font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ">
                 {t("title")}
             </div>

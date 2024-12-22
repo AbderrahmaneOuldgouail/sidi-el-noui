@@ -1,7 +1,6 @@
 import React from "react";
-import { Ellipsis, LogOut } from "lucide-react";
+import { Ellipsis } from "lucide-react";
 import { Link } from "@inertiajs/react";
-
 import { cn } from "@/lib/utils";
 import { getMenuList } from "@/lib/MenuList";
 import { Button } from "@/Components/ui/button";

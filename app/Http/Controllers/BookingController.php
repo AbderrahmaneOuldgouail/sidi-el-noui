@@ -62,7 +62,7 @@ class BookingController extends Controller
         $request->validate([
             'check_in' => 'required',
             'check_out' => 'required',
-            'guest_number' => 'required|numeric',
+            'guest_number' => 'required|numeric|min:1',
         ]);
 
         $date_check_in = $request->check_in;
@@ -115,8 +115,6 @@ class BookingController extends Controller
         if ($request->user()->cannot('create', Booking::class)) {
             return abort(403);
         }
-
-        // dd($request->is_company ? Roles::COMPANY->value : Roles::CLIENT->value);
 
         $request->validate([
             'first_name' => 'required|string|max:30',
@@ -178,13 +176,6 @@ class BookingController extends Controller
             }
         }
         DB::commit();
-
-        // $booking = Booking::with('user')->where('booking_id', $booking->booking_id)->first();
-        // event(new NewBooking($booking));
-        // $users = User::where("role_id", 1)->get();
-        // foreach ($users as $user) {
-        //     $user->notify(new NewBookingNotif($booking));
-        // }
 
         Cache::forget('check_ins');
         Cache::forget('check_outs');

@@ -7,6 +7,7 @@ import { useSidebarToggle } from "@/Hooks/useSidebarToggle";
 import { SidebarToggle } from "./SideBareToggle";
 import { Menu } from "./Menu";
 import { AppLogo } from "@/Components/ui/app-logo";
+const appName = import.meta.env.VITE_APP_NAME || "Brand";
 
 export default function SideBar() {
     const sidebar = useStore(useSidebarToggle, (state) => state);
@@ -48,7 +49,7 @@ export default function SideBar() {
                                     : "translate-x-0 opacity-100"
                             )}
                         >
-                            Sidi El Noui
+                            {appName}
                         </h1>
                     </Link>
                 </Button>

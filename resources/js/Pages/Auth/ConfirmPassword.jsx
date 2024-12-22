@@ -1,28 +1,29 @@
-import { useEffect } from 'react';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import { Head, useForm } from '@inertiajs/react';
-import { Input } from '@/Components/ui/input';
-import { Button } from '@/Components/ui/button';
-import { LoaderCircle } from 'lucide-react';
-import { useTrans } from '@/Hooks/useTrans';
+import { useEffect } from "react";
+import GuestLayout from "@/Layouts/GuestLayout";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import { Head, useForm } from "@inertiajs/react";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
+import { LoaderCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function ConfirmPassword() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        password: '',
+        password: "",
     });
+    const { t } = useTranslation("translation", { keyPrefix: "auth" });
 
     useEffect(() => {
         return () => {
-            reset('password');
+            reset("password");
         };
     }, []);
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('password.confirm'));
+        post(route("password.confirm"));
     };
 
     return (
@@ -30,14 +31,12 @@ export default function ConfirmPassword() {
             <Head title="Confirm Password" />
 
             <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                {useTrans(
-                    "Il s'agit d'une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer."
-                )}
+                {t("confirmText")}
             </div>
 
             <form onSubmit={submit}>
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value={useTrans("Mot de passe")} />
+                    <InputLabel htmlFor="password" value={t("password")} />
 
                     <Input
                         id="password"
@@ -57,9 +56,7 @@ export default function ConfirmPassword() {
                         {processing ? (
                             <LoaderCircle className="animate-spin" />
                         ) : (
-                            useTrans(
-                                "Confirmer"
-                            )
+                            t("confirm")
                         )}
                     </Button>
                 </div>

@@ -6,6 +6,7 @@ import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
 import { useTrans } from "@/Hooks/useTrans";
 import { Button } from "@/Components/ui/button";
+import { useTranslation } from "react-i18next";
 
 export default function ResetPassword({ token, email }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -14,6 +15,7 @@ export default function ResetPassword({ token, email }) {
         password: "",
         password_confirmation: "",
     });
+    const { t } = useTranslation("translation", { keyPrefix: "auth" });
 
     useEffect(() => {
         return () => {
@@ -49,10 +51,7 @@ export default function ResetPassword({ token, email }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password"
-                        value={useTrans("Mot de passe")}
-                    />
+                    <InputLabel htmlFor="password" value={t("password")} />
 
                     <TextInput
                         id="password"
@@ -71,7 +70,7 @@ export default function ResetPassword({ token, email }) {
                 <div className="mt-4">
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value={useTrans("Confirmez le mot de passe")}
+                        value={t("confirmPassword")}
                     />
 
                     <TextInput
@@ -94,7 +93,7 @@ export default function ResetPassword({ token, email }) {
 
                 <div className="flex items-center justify-end mt-4">
                     <Button disabled={processing} variant="secondary">
-                        {useTrans("Réinitialiser le mot de passe")}
+                        {t("reset")}
                     </Button>
                 </div>
             </form>

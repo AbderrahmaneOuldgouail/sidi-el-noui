@@ -8,7 +8,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { ChevronLeft, Hotel, HandPlatter, ReceiptText, Megaphone, TicketMinus, Users, LayoutGrid, BookmarkCheck, Archive, ChevronDown, Dot, Ellipsis, MenuIcon, PanelsTopLeft, Inbox, User, Languages, LogOut, Bell, CalendarPlus, CircleMinus, CirclePlus, Bold, Italic, Underline, Strikethrough, List, ListOrdered, Minus, WrapText, Undo, Redo, Heading1, Heading2, Heading3, Pilcrow, Link2, MoreHorizontal, HandCoins, Ticket, Eye, ArrowLeft, ArrowRight, Pencil, Trash, ImagePlus, ChevronUp, Send, Printer, FileDown, ClipboardList, Settings2, MessageSquareX, Check, X, LoaderCircle, Phone, Mail, MapPin, Facebook, Instagram, BedSingle, ChevronRight } from "lucide-react";
+import { ChevronLeft, Hotel, HandPlatter, ReceiptText, Megaphone, TicketMinus, Users, LayoutGrid, BookmarkCheck, Archive, ChevronDown, Dot, Ellipsis, MenuIcon, Inbox, User, Languages, LogOut, Bell, CalendarPlus, CircleMinus, CirclePlus, Bold, Italic, Underline, Strikethrough, List, ListOrdered, Minus, WrapText, Undo, Redo, Heading1, Heading2, Heading3, Pilcrow, Link2, MoreHorizontal, HandCoins, Ticket, Eye, ArrowLeft, ArrowRight, Pencil, Trash, ImagePlus, ChevronUp, Send, Printer, FileDown, ClipboardList, Settings2, MessageSquareX, Check, X, LoaderCircle, Phone, Mail, MapPin, Facebook, Instagram, BedSingle, ChevronRight } from "lucide-react";
 import { useTranslation, initReactI18next, I18nextProvider } from "react-i18next";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
@@ -136,397 +136,6 @@ function SidebarToggle({ isOpen, setIsOpen }) {
       )
     }
   ) });
-}
-const Chambres = "الغرف";
-const Management = "إدارة";
-const Type = "النوع";
-const Description = "الوصف";
-const Photos = "الصور";
-const Enregistrer = "حفظ";
-const avec = "مع";
-const lits = "أسرة";
-const DA = "دج";
-const Supprimer = "حذف";
-const Annuler = "إلغاء";
-const Services$2 = "الخدمات";
-const Disponible = "متوفره";
-const Indisponible = "غير متوفره";
-const Service = "الخدمة";
-const Prix = "السعر";
-const Promotions$1 = "التخفيضات";
-const Active = "نشطة";
-const Inactive = "غير نشط";
-const Utilisateurs = "المستخدمين";
-const Email = "البريد الإلكتروني";
-const Permissions = "الأذونات";
-const Recherche = "بحث";
-const Client = "الزبون";
-const Facture$1 = "فاتورة";
-const Historique$1 = "سجل الحجوزات";
-const personnes = "اشخاص";
-const Nom = "اللقب";
-const Adresse = "العنوان";
-const Compte = "الحساب";
-const Notifications$1 = "إشعارات";
-const Profile = "الملف الشخصي";
-const vers = "إلى";
-const Factures$1 = "الفواتير";
-const Imprimer = "طباعة";
-const Ajouter = "إضافة";
-const Tous = "الكل";
-const Cacher = "إخفاء";
-const Croissante = "تزايد";
-const Voir = "رؤية";
-const Status = "الحالة";
-const Modifier = "تعديل";
-const De = "من";
-const Le = "";
-const Rechercher = "بحث";
-const dates = "تاريخ الدخول و الخروج";
-const Sujet = "الموضوع";
-const Message = "الرسالة";
-const Liens = "روابط";
-const Accueil = "الرئيسية";
-const Ref = "رقم الحجز";
-const Chambre = "غرفة";
-const chambre = "غرفة";
-const nuit = "ليلة";
-const adult = "بالغين";
-const et = "و";
-const Consommations = "الاستهلاكات";
-const Tarif = "السعر";
-const Total = "المجموع";
-const Confirmer = "تأكيد";
-const translation = {
-  "Tableaux De Bord": "لوحات المعلومات",
-  "Entrés d'aujourd'hui": "تسجيلات الدخول اليوم",
-  "Sorties d'aujourd'hui": "تسجيلات الخروج اليوم",
-  "Réservations de jour": "حجوزات اليوم",
-  "du dernier jour": "من اليوم الأخير",
-  "Réservations de mois": "حجوزات الشهر",
-  "du mois dernier": "من الشهر الأخير",
-  "Les types plus réservé le mois dernier": "أنواع الغرف الأكثر حجزاً في الشهر الماضي",
-  "Ces statistique inclus les réservations annuléers et refusées": "وتشمل هذه الإحصائيات الحجوزات الملغاة والمرفوضة",
-  "Moteur de réservation": "محرك الحجز",
-  Chambres,
-  "Tous Les Chambre": "جميع الغرف",
-  "Tous Les Services": "جميع الخدمات",
-  Management,
-  "Créé par": "تم إنشاؤها بواسطة",
-  "Crée un chambre": "إنشاء غرفة",
-  "Chambre Création": "إنشاء الغرف",
-  "Numéro de chmabre": "رقم الغرفة",
-  "Quel est le numéro unique de cette chambre ?": "ما هو الرقم الفريد لهذه الغرفة؟",
-  "Prix de chmabre": "سعر الغرفة",
-  "Prix de chambre": "سعر الغرفة",
-  "Ce sont les prix de la chambre avec tous taxe inclus": "هذه هي أسعار الغرف شاملة جميع الضرائب",
-  "Nombre de lits": "عدد الأسرة",
-  "Quel est le nombre de lits dans cette chambre": "كم سرير في هذه الغرفة؟",
-  Type,
-  "Quel est le type de cette chambre": "ما هو نوع هذه الغرفة",
-  "Selectioner un Type...": "اختر النوع...",
-  "Chercher un Type...": "البحث عن نوع...",
-  Description,
-  "Entrer une description générale sur cette chambre": "أدخل وصفًا عامًا لهذه الغرفة",
-  "Description sur la chambre": "وصف الغرفة",
-  "Caractéristiques": "الخصائص",
-  "Choisis parmi ces caractéristiques, et ajouter des valeur aux caractéristiques qui'il besoin": "اختر من بين هذه الخصائص، وأضف قيمًا إلى الخصائص التي تحتاجها",
-  Photos,
-  "Ajouter des photos au chambres (ne dépasse pas 10 photos par chambres)": "إضافة صور إلى الغرف (لا تتجاوز 10 صور لكل غرفة)",
-  "Télécharger ou déposer des images ici": "قم بتنزيل أو إسقاط الصور هنا",
-  "Créer": "إنشاء",
-  Enregistrer,
-  "Chambre Modification": "تعديل الغرفة",
-  "La Chambre N°": "الغرفة رقم",
-  avec,
-  lits,
-  DA,
-  "Aucun chambres pour l'instant, essayez de créer une nouvelle": "لا توجد غرف حتى الآن، حاول إنشاء واحدة جديدة",
-  "Catégories": "الفئات",
-  "Ajouter un categorie": "إضافة فئة",
-  "Ajouter un nouveau Catégorie": "أضف فئة جديدة",
-  "Example : wifi, dimension": "على سبيل المثال: واي فاي، البعد",
-  "Nom de catégorie :": "اسم التصنيف:",
-  "Modifier cette catégorie": "تحرير هذه الفئة",
-  Supprimer,
-  "Vous êtes sure?": "هل أنت متأكد؟",
-  "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce élément et chaque caractéristique de cette categorie va supprimé": "لا يمكن إلغاء هذا الإجراء. لقد قمت بحذف هذا العنصر وكل سمة من سمات هذه الفئة التي تم حذفها بشكل نهائي",
-  Annuler,
-  "Créer un Caractéristique": "إضافة خاصية",
-  "Ajouter un nouveau Caractéristique": "أضف خاصية جديدة",
-  "Nom de caractéristique": "اسم الميزة:",
-  "Catégorie": "الفئة",
-  "Selectionner un catégorie": "اختر تصنيف",
-  "Besoin de valeur": "بحاجة إلى قيمة",
-  "Supprimer tous": "حذف الكل",
-  "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette caractéristique et chaque chambre avoir cette caractéristique va le perdre": "لا يمكن التراجع عن هذا الإجراء. سوف تقوم بحذف هذه الخاصية نهائياً وكل غرفة بها هذه الخاصية سوف تفقدها",
-  "Modifier cette caractéristique": "تعديل هذه الخاصية",
-  "Aucun categories pour l'instant, essayez de créer une nouvelle": "لا توجد فئات حتى الآن، حاول إنشاء واحدة جديدة",
-  "Aucun caractéristiques pour l'instant, essayez de créer une nouvelle": "لا توجد خاصيات حتى الآن، حاول إنشاء واحدة جديدة",
-  Services: Services$2,
-  "Créer un service": "إنشاء خدمة",
-  "Créer un nouveau service": "إنشاء خدمة جديدة",
-  "Nom de service": "اسم الخدمة",
-  "Exemple : Restaurant": "مثال: مطعم",
-  "List des services": "قائمة الخدمات",
-  Disponible,
-  Indisponible,
-  "Modifier ce service": "تحرير هذه الخدمة",
-  "Service Création": "إنشاء خدمة",
-  "Entrer un nom claire et simple pour le nom de service": "أدخل اسمًا واضحًا وبسيطًا لاسم الخدمة",
-  "Vous pouvez ajouter des titre ou bien des style au desciption": "يمكنك إضافة عناوين أو أنماط إلى الوصف",
-  "Ajouter des photos au service (ne dépasse pas 10 photos par service)": "إضافة صور إلى الخدمات (لا تتجاوز 10 صور لكل خدمة)",
-  "Créer un consommation": "إنشاء استهلاك",
-  "Créer un nouveau consommation": "إنشاء استهلاك جديد",
-  "Nom de consommation": "اسم الاستهلاك",
-  "Exemple : Diner": "مثال: العشاء",
-  "Prix de consommation": "سعر الاستهلاك",
-  "Selectionner un service": "اختر خدمة",
-  Service,
-  "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette consommation": "لا يمكن التراجع عن هذا الإجراء. سوف تقوم بحذف هذا الاستهلاك بشكل دائم",
-  "Modifier cette consommation": "تعديل هذا الاستهلاك",
-  "List des consommations": "قائمة الاستهلاكات",
-  "Prix Unitaire:": "سعر الوحدة:",
-  "Service Modification": "تحرير الخدمة",
-  "Aucun services pour l'instant, essayez de créer un nouveau": "لا توجد خدمات حتى الآن، حاول إنشاء واحدة جديدة",
-  "Aucun consommations pour l'instant, essayez de créer un nouveau": "لا توجد الاستهلاكات حتى الآن، حاول إنشاء واحد جديد",
-  "Evènements": "الأحداث",
-  "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette évènement": "لا يمكن التراجع عن هذا الإجراء. سوف تقوم بحذف هذا الحدث نهائيًا",
-  "List des évènements": "قائمة الأحداث",
-  "Créer un évènement": "إنشاء حدث",
-  Prix,
-  "Date début d'évènement": "تاريخ بدء الحدث",
-  "Date fin d'évènement": "تاريخ انتهاء الحدث",
-  "Date d'évènement": "تاريخ الحدث",
-  "Création d'évènement": "إنشاء حدث",
-  "Nom de l'évènement": "اسم الحدث",
-  "Entrer un nom claire et simple pour le nom de l'évènement": "أدخل اسمًا واضحًا وبسيطًا لاسم الحدث",
-  "Exemple : fête 16 Avrile": "مثال: حفلة 16 أبريل",
-  "Quelle est le prix d'accés d'évènement": "ما هو سعر دخول الحدث؟",
-  "Ajouter des photos au l'évènement (ne dépasse pas 10 photos par évènement)": "إضافة صور إلى الحدث (لا تتجاوز 10 صور لكل حدث)",
-  "Entrer la date ou le range de date de début et fin d'évènement": "أدخل التاريخ أو النطاق الزمني لبداية الحدث ونهايته",
-  "Choisis une date": "اختر تاريخا",
-  "Modification d'évènement": "تعديل الحدث",
-  "Créer un nouveau évènement": "إنشاء حدث جديد",
-  "Modifier ce évènement": "تعديل هذا الحدث",
-  "Aucun évènement pour l'instant, essayez de créer une nouvelle": "لا توجد أحداث حتى الآن، حاول إنشاء واحد جديد",
-  Promotions: Promotions$1,
-  "Créer un promotion": "إنشاء تخفيض",
-  "List des promotions": "قائمة التخفيضات",
-  Active,
-  Inactive,
-  "Cette action ne peut pas être annulée. Vous allez supprimé définitivement cette promotion": "لا يمكن التراجع عن هذا الإجراء. سوف تقوم بحذف هذا التخفيض نهائيًا",
-  "Date de promotion": "تاريخ التخفيض",
-  "Date début de promotion": "تاريخ بدء التخفيض",
-  "Date fin de promotion": "تاريخ انتهاء التخفيض",
-  "Valeur de promotion": "قيمة التخفيض",
-  "Création de promotion": "إنشاء تخفيض",
-  "Entrer la Valeur de promotion en DA": "أدخل قيمة التخفيض ب دج",
-  "Ajouter des photos au promotion (ne dépasse pas 10 photos par promotion)": "إضافة صور إلى التخفيض (لا تتجاوز 10 صور لكل تخفيض)",
-  "Modification de promotion": "تعديل التخفيض",
-  "Aucun promotion pour l'instant, essayez de créer une nouvelle": "لا توجد تخفيضات حتى الآن، حاول إنشاء واحد جديد",
-  Utilisateurs,
-  "List des utilisateurs": "قائمة المستخدمين",
-  "Créer un utilisateur": "إنشاء مستخدم",
-  "Nom de l'utilisateur": "اسم المستخدم",
-  Email,
-  "N° téléphone": "رقم الهاتف",
-  "Employés": "الموظفون",
-  "Ajouter un employé": "إضافة موظف",
-  "Rôle": "الدور",
-  "date d'inscription": "تاريخ التسجيل",
-  "Inscription d'employé": "تسجيل موظف",
-  "Nom d'employé": "اسم الموظف",
-  "Prénom d'employé": "لقب الموظف",
-  "Email d'employé": "البريد الإلكتروني للموظف",
-  "N° téléphone d'employé": "رقم هاتف الموظف",
-  "L'email doit être unique pour chaque utilisateur": "يجب أن يكون البريد الإلكتروني فريدًا لكل مستخدم",
-  "Le N° téléphone doit être unique pour chaque utilisateur": "يجب أن يكون رقم الهاتف فريدًا لكل مستخدم",
-  "Assigne un role au ce employé": "عين دور لهذا الموظف",
-  "Sélectionner un role...": "حدد الدور...",
-  "Modification les informations d'employé": "تعديل معلومات الموظف",
-  "Rôles": "الأدوار",
-  "Ajouter un rôle": "أضف دورًا",
-  Permissions,
-  "List des permissions pour le rôle": "قائمة الأذونات للدور",
-  "date de création": "تاريخ الإنشاء",
-  "Cette action ne peut pas être annulée. Vous allez supprimé définitivement ce rôle, les utilisateur avec ce rôle sera prendre le rôle de simple admin et perdre tous leur permissions": "لا يمكن التراجع عن هذا الإجراء. ستحذف هذا الدور نهائيًا، وسيتولى المستخدمون الذين لديهم هذا الدور دور المسؤول البسيط وسيفقدون جميع أذوناتهم",
-  "Nom de rôle": "اسم الدور",
-  "Le nom de rôle doit être unique": "يجب أن يكون اسم الدور فريدًا",
-  "Assigner des permissions a ce rôle": "تعيين الأذونات لهذا الدور",
-  "List des permissions": "قائمة الأذونات",
-  "Réservations": "الحجوزات",
-  "Ajouter une réservation": "أضف حجزًا",
-  "Chercher des chambres disponible": "البحث عن الغرف المتاحة",
-  Recherche,
-  "Date début et fin de réservation": "تاريخ بداية ونهاية الحجز",
-  "Nombre des personne": "عدد الاشخاص",
-  "Nombre des chambres": "عدد الغرف",
-  Client,
-  "Check in": "تاريخ الدخول",
-  "Check out": "تاريخ الخروج",
-  "Date de réservation": "تاريخ الحجز",
-  Facture: Facture$1,
-  Historique: Historique$1,
-  "Réservation": "الحجز",
-  "Arrivée : ": "الوصول :",
-  "Départ : ": "الانطلاق :",
-  "Réserver le : ": "تاريخ الحجز :",
-  "Pour : ": "ل :",
-  personnes,
-  Nom,
-  "Prénom": "الإ سم",
-  "Chambre N°": "الغرفة رقم",
-  "Capacité": "قدرة",
-  "List Des Consommations": "قائمة الاستهلاكات",
-  "Réservation de ": "حجز ",
-  "Choisi un ou plusieur chambres à réserver": "اختر غرفة واحدة أو أكثر للحجز",
-  "Numéro de chambre": "رقم الغرفة",
-  "Type de chambre": "نوع الغرفة",
-  "Prix TTC": "السعر شامل الضريبة",
-  "Ajouter les consommation de cetter réservation": "أضف استهلاكات هذا الحجز",
-  Adresse,
-  "Numéro d'Identification Fiscale": "رقم التعريف الضريبي",
-  "Numéro d'Identification Statistique": "رقم التعريف الإحصائي",
-  "Numéro  de registre de commerce": "رقم السجل التجاري",
-  "Numéro d'article": "رقم السلعة",
-  "Réserver": "حجز",
-  "Chambres disponible": "الغرف متوفرة",
-  "Choisi cette option lors cette réservation est pour un société": "اختر هذا الخيار عندما يكون هذا الحجز خاصًا بشركة",
-  "Informations de client": "معلومات الزبون",
-  "Détails de réservation": "تفاصيل الحجز",
-  "Aucun réservations pour l'instant, essayez de créer une nouvelle": "لا توجد حجوزات حتى الآن، حاول إنشاء واحد جديد",
-  Compte,
-  "Se déconnecter": "تسجيل الخروج",
-  Notifications: Notifications$1,
-  "Nouvelle réservation": "حجز جديد",
-  "Tout notifications": "جميع الإشعارات",
-  "Boîte de réception": "صندوق الوارد",
-  Profile,
-  "tableau de bord": "لوحة القيادة",
-  "Changer le thème": "تبديل الوضع",
-  "Tout marquer comme lu": "وضع علامة على الكل كمقروءة",
-  "Supprimer Tous": "حذف الكل",
-  "a fait une réservation de": "قام بالحجز من",
-  vers,
-  "Votre adresse email n'est pas vérifiée.": "لم يتم التحقق من عنوان بريدك الإلكتروني.",
-  "Cliquez ici pour renvoyer l'e-mail de vérification.": "انقر هنا لإعادة إرسال رسالة التحقق عبر البريد الإلكتروني.",
-  "Un nouveau lien de vérification a été envoyé à votre adresse e-mail.": "لقد تم إرسال رابط تحقق جديد إلى عنوان بريدك الإلكتروني.",
-  "Les informations personnelles": "المعلومات الشخصية",
-  "Mot de passe actuel": "كلمة السر الحالية",
-  "nouveau mot de passe": "كلمة المرور الجديدة",
-  "Confirmez le mot de passe": "تأكيد كلمة المرور",
-  "Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester en sécurité": "تأكد من أن حسابك يستخدم كلمة مرور طويلة وعشوائية للحفاظ على الأمان",
-  "Mettre à jour le mot de passe": "تطوير كلمة السر",
-  "Supprimer le compte": "حذف الحساب",
-  "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger toutes les données ou informations que vous souhaitez conserver.": "بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته نهائيًا. قبل حذف حسابك، يرجى تنزيل أي بيانات أو معلومات ترغب في الاحتفاظ بها.",
-  "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.": "بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته بشكل دائم. يُرجى إدخال كلمة المرور الخاصة بك لتأكيد رغبتك في حذف حسابك بشكل دائم.",
-  "Etes-vous sûr de vouloir supprimer votre compte ?": "هل انت متأكد انك تريد حذف حسابك؟",
-  Factures: Factures$1,
-  "Date": "التاريخ",
-  "Générer pour une réservation": "إنشاء للحجز",
-  Imprimer,
-  "Télécharger": "تحميل",
-  "Parametre de facture": "إعدادات الفاتورة",
-  "Modifier les constant de facturation içi": "تعديل ثوابت الفوترة هنا",
-  "La valeur de TVA en %": "قيمة ضريبة القيمة المضافة ب %",
-  "Taxe de séjour": "الضريبة السياحية",
-  "la valeur de taxe de séjour en DA/personne": "قيمة الضريبة السياحية بـ دج/شخص",
-  "La valeur de tibmre en %": " قيمة الطوابع بـ %",
-  "Droit de timbre": "واجب الطوابع",
-  "N° Facture": "رقم الفاتورة",
-  "List des invités": "قائمة الضيوف",
-  Ajouter,
-  "Ajouter des invités": "إضافة الضيوف",
-  "Aucun factures pour l'instant, essayez de créer une nouvelle": "لا توجد فواتير حتى الآن، حاول إنشاء واحدة جديدة",
-  Tous,
-  "Non lu": "الغير المقروءة",
-  "Reprendre avec votre adresse mail": "استئناف مع عنوان البريد الإلكتروني الخاص بك",
-  "Aucun message a afficher": "لا توجد رسائل لعرضها",
-  "Repondre à :": "الرد على:",
-  "Envoyé": "إرسال",
-  "Contrôler la visibilité des colonnes": "التحكم في رؤية الأعمدة",
-  Cacher,
-  Croissante,
-  "Décroissante": "متناقص",
-  "Basculer les colonnes": "تبديل الأعمدة",
-  Voir,
-  Status,
-  Modifier,
-  "Marqué comme disponible": "وضع علامة على أنها متاحة",
-  "Marqué comme hors service": "وضع علامة خارج الخدمة",
-  "ligne(s) afficher": "سطر (سطور) معروضة.",
-  "Lignes par page": "صفوف لكل صفحة",
-  "ligne(s) sélectionné(s).": "سطر (سطور) محددة.",
-  "à fait un nouveaux réservation": "قام بحجز جديد",
-  "Changer la langue": "تغيير اللغة",
-  "Mes réservations": "حجوزاتي",
-  De,
-  "Jusqu'a": "إلى",
-  Le,
-  "Sidi El Noui": "سيدي النوي",
-  "Bienvenue à SIDI EL NOUI - Votre refuge luxueux au cœur de Chéraga Découvrez un confort inégalé et une élégance raffinée en plein centre d'Alger. Notre hôtel offre des vues à couper le souffle, des équipements haut de gamme, et un service exceptionnel pour rendre votre séjour inoubliable.": "مرحبًا بكم في سيدي النوي - ملجأكم الفاخر في قلب مدينة شراقة اكتشف راحة لا مثيل لها وأناقة راقية في قلب الجزائر العاصمة. يوفر فندقنا إطلالات خلابة ووسائل راحة متميزة وخدمة استثنائية لجعل إقامتك لا تُنسى.",
-  "nombre des bébé": "عدد الأطفال",
-  Rechercher,
-  dates,
-  "Offres Exclusives pour un Séjour Inoubliable Profitez de nos promotions exceptionnelles et réservez votre séjour à un prix avantageux. Découvrez nos offres spéciales et bénéficiez de réductions sur les chambres, les forfaits bien-être, et bien plus encore.": "عروض حصرية لإقامة لا تُنسى استفد من عروضنا الترويجية الاستثنائية واحجز إقامتك بسعر مناسب. اكتشف عروضنا الخاصة واستفد من الخصومات على الغرف وباقات الصحة وغير ذلك الكثير.",
-  "Réduction de": "تخفيض بقيمة ",
-  "Voir Plus": "رؤية المزيد",
-  "Des Événements Inoubliables au Cœur d'Alger, Vivez des moments uniques en participant à nos événements exclusifs. Que ce soit pour des soirées thématiques, des concerts, ou des festivals locaux, notre hôtel est le point de départ idéal pour toutes vosaventures.": "أحداث لا تُنسى في قلب الجزائر العاصمة، استمتع بلحظات فريدة من خلال المشاركة في فعالياتنا الحصرية. سواء كانت الأمسيات ذات الطابع الخاص، أو الحفلات الموسيقية، أو المهرجانات المحلية، فإن فندقنا هو نقطة الانطلاق المثالية لجميع مغامراتك.",
-  "Nos Chambres": "غرفنا",
-  "Découvrez nos chambres spacieuses et décorées avec, offrant tout le confort moderne pour un séjour des plus agréables. Que vous voyagiez seul, en couple ou en famille, nous avons la chambre parfaite pour vous.": "اكتشف غرفنا الفسيحة والمزينة، والتي توفر جميع وسائل الراحة الحديثة لإقامة ممتعة. سواء كنت مسافرًا بمفردك أو كزوجين أو مع العائلة، فلدينا الغرفة المثالية لك.",
-  "Caractéristique de la chambre": "مميزات الغرفة",
-  "Réserver maintenant": "احجز الآن",
-  "Nous offrons une gamme de services conçus pour rendre votre séjour aussi agréable que possible. Que vous souhaitiez vous détendre, savourer de délicieux repas, ou profiter de commodités supplémentaires, nous sommes là pour répondre à tous vos besoins.": "نحن نقدم مجموعة من الخدمات المصممة لجعل إقامتك ممتعة قدر الإمكان. سواء كنت ترغب في الاسترخاء، أو الاستمتاع بوجبات لذيذة، أو الاستمتاع بوسائل الراحة الإضافية، فنحن هنا لتلبية جميع احتياجاتك.",
-  "contactez-nous": "اتصل بنا",
-  Sujet,
-  Message,
-  "Vous pouvez nous envoyer un message via ce formulaire de contact. Nous ferons de notre mieux pour répondre à toutes vos questions dans les plus brefs délais.": "يمكنك أن ترسل لنا رسالة عبر نموذج الاتصال هذا. سنبذل قصارى جهدنا للإجابة على جميع أسئلتك في أسرع وقت ممكن.",
-  Liens,
-  "Réseaux Sociaux": "الشبكات الاجتماعية",
-  Accueil,
-  Ref,
-  Chambre,
-  chambre,
-  "date d'entrée / sortie": "تاريخ الدخول / الخروج",
-  "Vous êtes sur que vous voulez annuler cette réservation": "أنت متأكد من أنك تريد إلغاء هذا الحجز",
-  "Informations personnels": "معلومات شخصية",
-  "Voir le profile": "عرض الملف الشخصي",
-  "Détails de votre réservation": "تفاصيل الحجز الخاص بك",
-  "Arrivée": "الوصول",
-  "Départ": "المغادرة",
-  "Durée de séjour": "مدة الإقامة",
-  nuit,
-  "Récapitulatif du montant": "ملخص المبلغ",
-  "Ce prix avec tout tax inclus": "هذا السعر شامل الضريبة",
-  "Nombre des personnes": "عدد المقيمين",
-  "Vous avez sélectionné pour": "لقد اخترت ل",
-  adult,
-  "bébés": "أطفال",
-  et,
-  "Modifier la selection": "تغيير التحديد",
-  "Finaliser votre réservation": "إنهاء الحجز الخاص بك",
-  Consommations,
-  "Type de logement": "نوع الغرفة",
-  Tarif,
-  "Selectionner des chambres": "حدد الغرف",
-  "Dernière étape": "الخطوة الأخيرة",
-  Total,
-  "Email ou N° téléphone": "البريد الإلكتروني أو رقم الهاتف",
-  "Souviens moi": "تذكرنى",
-  "Mot de passe oublié ?": "هل نسيت كلمة المرور؟",
-  "Se Connecter": "تسجيل الدخول",
-  "Mot de passe": "كلمة المرور",
-  "Lien de réinitialisation du mot de passe par e-mail": "رابط إعادة تعيين كلمة المرور للبريد الإلكتروني",
-  "Vous avez oublié votre mot de passe ? Aucun problème. Indiquez-nous simplement votre adresse e-mail et nous vous enverrons par e-mail un lien de réinitialisation de mot de passe qui vous permettra de choisir un nouveau mot de passe.": "هل نسيت كلمة مرورك؟ لا مشكلة. ما عليك سوى إخبارنا بعنوان بريدك الإلكتروني وسنرسل إليك رابط إعادة تعيين كلمة المرور عبر البريد الإلكتروني الذي سيسمح لك باختيار كلمة مرور جديدة.",
-  "Il s'agit d'une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer.": "هذه منطقة آمنة للتطبيق. يرجى تأكيد كلمة المرور الخاصة بك قبل الاستمرار.",
-  Confirmer,
-  "Réinitialiser le mot de passe": "إعادة تعيين كلمة المرور",
-  "": ""
-};
-function useTrans(value) {
-  const locale = localStorage.getItem("locale") || "fr";
-  return locale == "fr" ? value : translation[value];
 }
 function getMenuList(pathname) {
   const { t } = useTranslation("translation", {
@@ -1122,6 +731,7 @@ function AppLogo({ className }) {
     }
   );
 }
+const appName$1 = "Sidi El Noui";
 function SideBar() {
   const sidebar = useStore(useSidebarToggle, (state) => state);
   if (!sidebar)
@@ -1165,7 +775,7 @@ function SideBar() {
                           "font-bold text-lg whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300",
                           (sidebar == null ? void 0 : sidebar.isOpen) === false ? "-translate-x-96 opacity-0 hidden" : "translate-x-0 opacity-100"
                         ),
-                        children: "Sidi El Noui"
+                        children: appName$1
                       }
                     )
                   ]
@@ -1256,34 +866,41 @@ const SheetDescription = React.forwardRef(({ className, ...props }, ref) => /* @
   }
 ));
 SheetDescription.displayName = SheetPrimitive.Description.displayName;
+const appName = "Sidi El Noui";
 function SheetMenu() {
   return /* @__PURE__ */ jsxs(Sheet, { children: [
-    /* @__PURE__ */ jsx(SheetTrigger, { className: "lg:hidden", asChild: true, children: /* @__PURE__ */ jsx(Button, { className: "h-8", variant: "outline", size: "icon", children: /* @__PURE__ */ jsx(MenuIcon, { size: 20 }) }) }),
+    /* @__PURE__ */ jsx(
+      SheetTrigger,
+      {
+        className: cn(
+          buttonVariants({ variant: "outline", size: "icon" }),
+          "lg:hidden h-8"
+        ),
+        children: /* @__PURE__ */ jsx(MenuIcon, { size: 20 })
+      }
+    ),
     /* @__PURE__ */ jsxs(
       SheetContent,
       {
         className: "sm:w-72 px-3 h-full flex flex-col",
         side: "left",
+        "aria-describedby": void 0,
         children: [
-          /* @__PURE__ */ jsx(SheetHeader, { children: /* @__PURE__ */ jsx(
+          /* @__PURE__ */ jsx(SheetHeader, { children: /* @__PURE__ */ jsx(SheetTitle, { children: /* @__PURE__ */ jsxs(
             Button,
             {
-              className: "flex justify-center items-center pb-2 pt-1",
+              className: "flex justify-center items-center w-full gap-2 pt-1",
               variant: "link",
-              asChild: true,
-              children: /* @__PURE__ */ jsxs(
-                Link,
-                {
-                  href: route("admin.dashboard"),
-                  className: "flex items-center gap-2",
-                  children: [
-                    /* @__PURE__ */ jsx(PanelsTopLeft, { className: "w-6 h-6 mr-1" }),
-                    /* @__PURE__ */ jsx("h1", { className: "font-bold text-lg", children: "Brand" })
-                  ]
-                }
-              )
+              onClick: () => router.get(route("admin.dashboard")),
+              children: [
+                /* @__PURE__ */ jsx(AppLogo, { className: "h-10 w-10" }),
+                /* @__PURE__ */ jsxs("h1", { className: "font-bold text-lg", children: [
+                  appName,
+                  " "
+                ] })
+              ]
             }
-          ) }),
+          ) }) }),
           /* @__PURE__ */ jsx(Menu, { isOpen: true })
         ]
       }
@@ -1342,15 +959,13 @@ RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 function InputLabel({ value, className = "", children, ...props }) {
   return /* @__PURE__ */ jsx("label", { ...props, className: `block font-medium text-sm text-gray-700 dark:text-gray-300 ` + className, children: value ? value : children });
 }
-function LangSwitch$1() {
-  const locale = localStorage.getItem("locale") || "fr";
-  const [lang, setLang] = React__default.useState(locale);
-  const switchLang = () => {
-    const newLang = lang === "ar" ? "fr" : "ar";
-    setLang(newLang);
-    localStorage.setItem("locale", newLang);
+const LanguageSwitcher = () => {
+  const { i18n: i18n2 } = useTranslation();
+  const { locale } = usePage().props;
+  const changeLanguage = (lng) => {
+    i18n2.changeLanguage(lng);
     router.visit(route("switch.lang"), {
-      data: { lang: newLang },
+      data: { lang: lng },
       preserveState: true,
       preserveScroll: true
     });
@@ -1358,8 +973,8 @@ function LangSwitch$1() {
   return /* @__PURE__ */ jsxs(
     RadioGroup,
     {
-      value: lang,
-      onValueChange: switchLang,
+      value: locale,
+      onValueChange: changeLanguage,
       className: "flex gap-2",
       children: [
         /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
@@ -1387,7 +1002,7 @@ function LangSwitch$1() {
       ]
     }
   );
-}
+};
 function RedBeadge({ className }) {
   return /* @__PURE__ */ jsx(
     "span",
@@ -1507,7 +1122,7 @@ function UserNav$1() {
         ),
         /* @__PURE__ */ jsxs(DropdownMenuItem, { children: [
           /* @__PURE__ */ jsx(Languages, { className: "w-4 h-4 mr-3 text-muted-foreground" }),
-          /* @__PURE__ */ jsx(LangSwitch$1, {})
+          /* @__PURE__ */ jsx(LanguageSwitcher, {})
         ] })
       ] }),
       /* @__PURE__ */ jsx(DropdownMenuSeparator, {}),
@@ -2118,7 +1733,7 @@ function AddBooking() {
     from: "",
     to: ""
   });
-  const { data, get, setData: setData2, errors } = useForm({
+  const { data, get, setData: setData2, processing, setError, errors, clearErrors } = useForm({
     check_in: "",
     check_out: "",
     guest_number: 0,
@@ -2129,6 +1744,7 @@ function AddBooking() {
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
   const { t } = useTranslation("translation", { keyPrefix: "layout.navBar" });
+  const e = usePage().props.errors;
   useEffect(() => {
     var _a;
     if (flash.message) {
@@ -2136,6 +1752,14 @@ function AddBooking() {
       toast2({ description: (_a = flash.message) == null ? void 0 : _a.message });
     }
   }, [flash.message, toast2]);
+  useEffect(() => {
+    if (Object.keys(e).length !== 0) {
+      setError("check_in", e.check_in);
+      setError("check_out", e.check_out);
+      setError("guest_number", e.guest_number);
+      setOpen(true);
+    }
+  }, [e]);
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -2145,14 +1769,18 @@ function AddBooking() {
     return formattedDate;
   }
   const incriment = () => {
+    clearErrors("guest_number");
     setData2("guest_number", data.guest_number + 1);
   };
   const dicriment = () => {
+    clearErrors("guest_number");
     if (data.guest_number > 0) {
       setData2("guest_number", data.guest_number - 1);
     }
   };
   const handleDateChange = (range) => {
+    clearErrors("check_in");
+    clearErrors("check_out");
     if (range == null ? void 0 : range.from) {
       const formattedDate = formatDate(range.from);
       setData2("check_in", formattedDate);
@@ -2163,19 +1791,19 @@ function AddBooking() {
     }
     setDateRange(range);
   };
-  const submit = (e) => {
-    e.preventDefault();
+  const submit = (e2) => {
+    e2.preventDefault();
     get(route("bookings.searchAviableRoom"));
   };
   if (width >= 767) {
-    return /* @__PURE__ */ jsxs(Dialog, { open, onOpenChange: () => setOpen(!open), children: [
+    return /* @__PURE__ */ jsxs(Dialog, { open, onOpenChange: setOpen, children: [
       /* @__PURE__ */ jsx(DialogTrigger, { asChild: true, children: /* @__PURE__ */ jsxs(Button, { variant: "link", children: [
         /* @__PURE__ */ jsx(CalendarPlus, { size: 18, className: "mx-2" }),
         t("addBooking")
       ] }) }),
       /* @__PURE__ */ jsxs(DialogContent, { children: [
         /* @__PURE__ */ jsxs(DialogHeader, { children: [
-          /* @__PURE__ */ jsx(DialogTitle, { children: t("dialog.dialogDescreption") }),
+          /* @__PURE__ */ jsx(DialogTitle, { children: t("addBooking") }),
           /* @__PURE__ */ jsx(DialogDescription, { children: t("dialog.dialogDescreption") })
         ] }),
         /* @__PURE__ */ jsxs("form", { onSubmit: submit, className: "grid items-start gap-4", children: [
@@ -2265,7 +1893,15 @@ function AddBooking() {
               }
             )
           ] }),
-          /* @__PURE__ */ jsx(DialogFooter, { children: /* @__PURE__ */ jsx(Button, { variant: "secondary", type: "submit", children: t("dialog.form.submit") }) })
+          /* @__PURE__ */ jsx(DialogFooter, { children: /* @__PURE__ */ jsx(
+            Button,
+            {
+              variant: "secondary",
+              type: "submit",
+              disabled: processing,
+              children: t("dialog.form.submit")
+            }
+          ) })
         ] })
       ] })
     ] });
@@ -2274,10 +1910,10 @@ function AddBooking() {
     /* @__PURE__ */ jsx(DrawerTrigger, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "link", children: /* @__PURE__ */ jsx(CalendarPlus, { size: 18, className: "mx-2" }) }) }),
     /* @__PURE__ */ jsxs(DrawerContent, { children: [
       /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
-        /* @__PURE__ */ jsx(DrawerTitle, { children: useTrans("Ajouter une réservation") }),
+        /* @__PURE__ */ jsx(DrawerTitle, { children: t("addBooking") }),
         /* @__PURE__ */ jsxs(DrawerDescription, { children: [
           " ",
-          useTrans("Chercher des chambres disponible")
+          t("dialog.dialogDescreption")
         ] })
       ] }),
       /* @__PURE__ */ jsxs("form", { onSubmit: submit, className: "grid items-start gap-4 px-4", children: [
@@ -2286,7 +1922,7 @@ function AddBooking() {
             InputLabel,
             {
               htmlFor: "dates",
-              value: useTrans("Date début et fin de réservation")
+              value: t("dialog.form.dates")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -2316,7 +1952,7 @@ function AddBooking() {
             InputLabel,
             {
               htmlFor: "guest_number",
-              value: useTrans("Nombre des personne")
+              value: t("dialog.form.guestNumber")
             }
           ),
           /* @__PURE__ */ jsx(
@@ -2326,7 +1962,7 @@ function AddBooking() {
               min: 1,
               id: "guest_number",
               value: data.guest_number,
-              onChange: (e) => setData2("guest_number", e.target.value)
+              onChange: (e2) => setData2("guest_number", e2.target.value)
             }
           ),
           /* @__PURE__ */ jsx(
@@ -2350,9 +1986,7 @@ function AddBooking() {
             InputLabel,
             {
               htmlFor: "need_value",
-              value: useTrans(
-                "Choisi cette option lors cette réservation est pour un société"
-              )
+              value: t("dialog.form.needValue")
             }
           )
         ] }),
@@ -2362,59 +1996,18 @@ function AddBooking() {
             variant: "secondary",
             className: "w-full",
             type: "submit",
-            children: useTrans("Recherche")
+            disabled: processing,
+            children: t("dialog.form.submit")
           }
         ) })
       ] }),
-      /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsx(Button, { variant: "outline", children: useTrans("Annuler") }) }) })
+      /* @__PURE__ */ jsx(DrawerFooter, { className: "pt-2", children: /* @__PURE__ */ jsx(DrawerClose, { asChild: true, children: /* @__PURE__ */ jsxs(Button, { variant: "outline", children: [
+        " ",
+        t("dialog.form.cancel")
+      ] }) }) })
     ] })
   ] });
 }
-const LanguageSwitcher = () => {
-  const { i18n: i18n2 } = useTranslation();
-  const { locale } = usePage().props;
-  const changeLanguage = (lng) => {
-    i18n2.changeLanguage(lng);
-    document.documentElement.dir = lng == "ar" ? "rtl" : "ltr";
-    router.visit(route("switch.lang"), {
-      data: { lang: lng },
-      preserveState: true,
-      preserveScroll: true
-    });
-  };
-  return /* @__PURE__ */ jsxs(
-    RadioGroup,
-    {
-      value: locale,
-      onValueChange: changeLanguage,
-      className: "flex gap-2",
-      children: [
-        /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
-          /* @__PURE__ */ jsx(RadioGroupItem, { value: "fr", id: "fr" }),
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "fr",
-              value: "Français",
-              className: "cursor-pointer"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
-          /* @__PURE__ */ jsx(RadioGroupItem, { value: "ar", id: "ar" }),
-          /* @__PURE__ */ jsx(
-            InputLabel,
-            {
-              htmlFor: "ar",
-              value: "العربية",
-              className: "cursor-pointer"
-            }
-          )
-        ] })
-      ]
-    }
-  );
-};
 function Navbar({ isOpen }) {
   const { t } = useTranslation();
   const booking_permission = usePage().props.auth.permissions.booking;
@@ -2432,7 +2025,6 @@ function Navbar({ isOpen }) {
         ] }),
         /* @__PURE__ */ jsx("div", { children: booking_permission.create && /* @__PURE__ */ jsx(AddBooking, {}) }),
         /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 justify-end", children: [
-          /* @__PURE__ */ jsx(LanguageSwitcher, {}),
           /* @__PURE__ */ jsx(NotificationsNav, {}),
           /* @__PURE__ */ jsx(ThemeToggle, {}),
           /* @__PURE__ */ jsx(UserNav$1, {})
@@ -2536,20 +2128,23 @@ function AdminPanelLayout({ children }) {
   const sidebar = useStore(useSidebarToggle, (state) => state);
   const { toast: toast2 } = useToast();
   const { locale } = usePage().props;
+  const { t } = useTranslation("translation", { keyPrefix: "layout" });
   React__default.useEffect(() => {
     document.documentElement.dir = locale == "ar" ? "rtl" : "ltr";
   }, [locale]);
-  Echo.channel(`booking-channel`).listen("NewBooking", (e) => {
-    toast2({
-      description: e.booking.user.first_name + " " + useTrans("à fait un nouveaux réservation")
-    });
-    if (route().current() == "admin.dashboard") {
-      router.reload({
-        preserveScroll: true,
-        preserveState: true
+  React__default.useEffect(() => {
+    if (typeof Echo !== void 0) {
+      const channel = Echo.channel(`booking-channel`);
+      channel.listen("NewBooking", (e) => {
+        toast2({
+          description: e.booking.user.first_name + " " + t("notif")
+        });
       });
+      return () => {
+        channel.stopListening("NewBooking");
+      };
     }
-  });
+  }, [toast2]);
   if (!sidebar)
     return null;
   return /* @__PURE__ */ jsxs(ThemeProvider, { children: [
@@ -6672,7 +6267,7 @@ const Textarea = React.forwardRef(({ className, ...props }, ref) => {
   );
 });
 Textarea.displayName = "Textarea";
-function messages$1({ messages: messages2, filter }) {
+function messages$2({ messages: messages2, filter }) {
   var _a, _b, _c, _d, _e, _f, _g;
   const [selectedMessage, setSelectedMessage] = useState(0);
   const { toast: toast2 } = useToast();
@@ -6998,7 +6593,7 @@ function messages$1({ messages: messages2, filter }) {
 }
 const __vite_glob_0_15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: messages$1
+  default: messages$2
 }, Symbol.toStringTag, { value: "Module" }));
 function Notifications({ notifications: notifications2 }) {
   const { t } = useTranslation("translation", { keyPrefix: "notifications" });
@@ -11679,7 +11274,7 @@ function Guest({ children }) {
     /* @__PURE__ */ jsx("div", { className: "hidden md:flex w-1/2 h-screen flex-col sm:justify-center items-center bg-secondary", children: /* @__PURE__ */ jsx(
       "img",
       {
-        src: "http://localhost:8000/storage/sidi-el-noui-logo-removebg.png",
+        src: "/assets/sidi-el-noui-logo-removebg.png",
         className: "object-content w-1/3 md:w-2/3 rounded-xl relative z-10  hover:corsur-pointer  transition-transform duration-300 hover:scale-105 "
       }
     ) }),
@@ -11695,6 +11290,7 @@ function AdminLogin({ status, canResetPassword }) {
     password: "",
     remember: false
   });
+  const { t } = useTranslation("translation", { keyPrefix: "auth" });
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
   useEffect(() => {
@@ -11721,7 +11317,7 @@ function AdminLogin({ status, canResetPassword }) {
           InputLabel,
           {
             htmlFor: "auth",
-            value: useTrans("Email ou N° téléphone")
+            value: t("auth")
           }
         ),
         /* @__PURE__ */ jsx(
@@ -11744,7 +11340,7 @@ function AdminLogin({ status, canResetPassword }) {
           InputLabel,
           {
             htmlFor: "password",
-            value: useTrans("Mot de passe")
+            value: t("password")
           }
         ),
         /* @__PURE__ */ jsx(
@@ -11770,7 +11366,7 @@ function AdminLogin({ status, canResetPassword }) {
             onCheckedChange: (e) => setData2("remember", !data.remember)
           }
         ),
-        /* @__PURE__ */ jsx("span", { className: "ms-2 text-sm text-gray-600 dark:text-gray-400", children: useTrans("Souviens moi") })
+        /* @__PURE__ */ jsx("span", { className: "ms-2 text-sm text-gray-600 dark:text-gray-400", children: t("remember") })
       ] }) }),
       /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-end mt-4", children: [
         canResetPassword && /* @__PURE__ */ jsx(
@@ -11778,7 +11374,7 @@ function AdminLogin({ status, canResetPassword }) {
           {
             href: route("password.request"),
             className: "underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800",
-            children: useTrans("Mot de passe oublié ?")
+            children: t("forget")
           }
         ),
         /* @__PURE__ */ jsx(
@@ -11788,7 +11384,7 @@ function AdminLogin({ status, canResetPassword }) {
             size: "sm",
             className: "ms-4 w-1/4",
             disabled: processing,
-            children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : useTrans("Se Connecter")
+            children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : t("submit")
           }
         )
       ] })
@@ -11803,6 +11399,7 @@ function ConfirmPassword() {
   const { data, setData: setData2, post, processing, errors, reset } = useForm({
     password: ""
   });
+  const { t } = useTranslation("translation", { keyPrefix: "auth" });
   useEffect(() => {
     return () => {
       reset("password");
@@ -11814,12 +11411,10 @@ function ConfirmPassword() {
   };
   return /* @__PURE__ */ jsxs(Guest, { children: [
     /* @__PURE__ */ jsx(Head, { title: "Confirm Password" }),
-    /* @__PURE__ */ jsx("div", { className: "mb-4 text-sm text-gray-600 dark:text-gray-400", children: useTrans(
-      "Il s'agit d'une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer."
-    ) }),
+    /* @__PURE__ */ jsx("div", { className: "mb-4 text-sm text-gray-600 dark:text-gray-400", children: t("confirmText") }),
     /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
       /* @__PURE__ */ jsxs("div", { className: "mt-4", children: [
-        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "password", value: useTrans("Mot de passe") }),
+        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "password", value: t("password") }),
         /* @__PURE__ */ jsx(
           Input,
           {
@@ -11834,9 +11429,7 @@ function ConfirmPassword() {
         ),
         /* @__PURE__ */ jsx(InputError, { message: errors.password, className: "mt-2" })
       ] }),
-      /* @__PURE__ */ jsx("div", { className: "flex items-center justify-end mt-4", children: /* @__PURE__ */ jsx(Button, { className: "ms-4", variant: "secondary", size: "sm", children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : useTrans(
-        "Confirmer"
-      ) }) })
+      /* @__PURE__ */ jsx("div", { className: "flex items-center justify-end mt-4", children: /* @__PURE__ */ jsx(Button, { className: "ms-4", variant: "secondary", size: "sm", children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : t("confirm") }) })
     ] })
   ] });
 }
@@ -11848,15 +11441,14 @@ function ForgotPassword({ status }) {
   const { data, setData: setData2, post, processing, errors } = useForm({
     email: ""
   });
+  const { t } = useTranslation("translation", { keyPrefix: "auth" });
   const submit = (e) => {
     e.preventDefault();
     post(route("password.email"));
   };
   return /* @__PURE__ */ jsxs(Guest, { children: [
     /* @__PURE__ */ jsx(Head, { title: "Forgot Password" }),
-    /* @__PURE__ */ jsx("div", { className: "mb-4 text-sm text-gray-600 dark:text-gray-400", children: useTrans(
-      "Vous avez oublié votre mot de passe ? Aucun problème. Indiquez-nous simplement votre adresse e-mail et nous vous enverrons par e-mail un lien de réinitialisation de mot de passe qui vous permettra de choisir un nouveau mot de passe."
-    ) }),
+    /* @__PURE__ */ jsx("div", { className: "mb-4 text-sm text-gray-600 dark:text-gray-400", children: t("forgetText") }),
     status && /* @__PURE__ */ jsx("div", { className: "mb-4 font-medium text-sm text-green-600 dark:text-green-400", children: status }),
     /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
       /* @__PURE__ */ jsx(
@@ -11872,9 +11464,7 @@ function ForgotPassword({ status }) {
         }
       ),
       /* @__PURE__ */ jsx(InputError, { message: errors.email, className: "mt-2" }),
-      /* @__PURE__ */ jsx("div", { className: "flex items-center justify-end mt-4", children: /* @__PURE__ */ jsx(Button, { className: "ms-4", variant: "secondary", size: "sm", children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : useTrans(
-        "Lien de réinitialisation du mot de passe par e-mail"
-      ) }) })
+      /* @__PURE__ */ jsx("div", { className: "flex items-center justify-end mt-4", children: /* @__PURE__ */ jsx(Button, { className: "ms-4", variant: "secondary", size: "sm", children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : t("resetLink") }) })
     ] })
   ] });
 }
@@ -11888,6 +11478,7 @@ function Login({ status, canResetPassword }) {
     password: "",
     remember: false
   });
+  const { t } = useTranslation("translation", { keyPrefix: "auth" });
   const { toast: toast2 } = useToast();
   const flash = usePage().props.flash;
   useEffect(() => {
@@ -11910,13 +11501,7 @@ function Login({ status, canResetPassword }) {
     status && /* @__PURE__ */ jsx("div", { className: "mb-4 font-medium text-sm text-green-600", children: status }),
     /* @__PURE__ */ jsxs("form", { onSubmit: submit, children: [
       /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "auth",
-            value: useTrans("Email ou N° téléphone")
-          }
-        ),
+        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "auth", value: t("auth") }),
         /* @__PURE__ */ jsx(
           Input,
           {
@@ -11933,13 +11518,7 @@ function Login({ status, canResetPassword }) {
         /* @__PURE__ */ jsx(InputError, { message: errors.auth, className: "mt-2" })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "mt-4", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "password",
-            value: useTrans("Mot de passe")
-          }
-        ),
+        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "password", value: t("password") }),
         /* @__PURE__ */ jsx(
           Input,
           {
@@ -11963,7 +11542,7 @@ function Login({ status, canResetPassword }) {
             onCheckedChange: (e) => setData2("remember", !data.remember)
           }
         ),
-        /* @__PURE__ */ jsx("span", { className: "ms-2 text-sm text-gray-600 dark:text-gray-400", children: useTrans("Souviens moi") })
+        /* @__PURE__ */ jsx("span", { className: "ms-2 text-sm text-gray-600 dark:text-gray-400", children: t("remember") })
       ] }) }),
       /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-end mt-4", children: [
         canResetPassword && /* @__PURE__ */ jsx(
@@ -11971,7 +11550,7 @@ function Login({ status, canResetPassword }) {
           {
             href: route("password.request"),
             className: "underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800",
-            children: useTrans("Mot de passe oublié ?")
+            children: t("forget")
           }
         ),
         /* @__PURE__ */ jsx(
@@ -11981,7 +11560,7 @@ function Login({ status, canResetPassword }) {
             size: "sm",
             className: "ms-4 w-1/4",
             disabled: processing,
-            children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : useTrans("Se Connecter")
+            children: processing ? /* @__PURE__ */ jsx(LoaderCircle, { className: "animate-spin" }) : tt("submit")
           }
         )
       ] })
@@ -12016,6 +11595,7 @@ function ResetPassword({ token, email: email2 }) {
     password: "",
     password_confirmation: ""
   });
+  const { t } = useTranslation("translation", { keyPrefix: "auth" });
   useEffect(() => {
     return () => {
       reset("password", "password_confirmation");
@@ -12045,13 +11625,7 @@ function ResetPassword({ token, email: email2 }) {
         /* @__PURE__ */ jsx(InputError, { message: errors.email, className: "mt-2" })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "mt-4", children: [
-        /* @__PURE__ */ jsx(
-          InputLabel,
-          {
-            htmlFor: "password",
-            value: useTrans("Mot de passe")
-          }
-        ),
+        /* @__PURE__ */ jsx(InputLabel, { htmlFor: "password", value: t("password") }),
         /* @__PURE__ */ jsx(
           TextInput,
           {
@@ -12072,7 +11646,7 @@ function ResetPassword({ token, email: email2 }) {
           InputLabel,
           {
             htmlFor: "password_confirmation",
-            value: useTrans("Confirmez le mot de passe")
+            value: t("confirmPassword")
           }
         ),
         /* @__PURE__ */ jsx(
@@ -12095,7 +11669,7 @@ function ResetPassword({ token, email: email2 }) {
           }
         )
       ] }),
-      /* @__PURE__ */ jsx("div", { className: "flex items-center justify-end mt-4", children: /* @__PURE__ */ jsx(Button, { disabled: processing, variant: "secondary", children: useTrans("Réinitialiser le mot de passe") }) })
+      /* @__PURE__ */ jsx("div", { className: "flex items-center justify-end mt-4", children: /* @__PURE__ */ jsx(Button, { disabled: processing, variant: "secondary", children: t("reset") }) })
     ] })
   ] });
 }
@@ -12610,7 +12184,7 @@ function UserDataForm({
   promotion,
   processing
 }) {
-  const auth = usePage().props.auth;
+  const auth2 = usePage().props.auth;
   const { t } = useTranslation("translation", {
     keyPrefix: "client.aviableRooms"
   });
@@ -12722,7 +12296,7 @@ function UserDataForm({
             data: data.first_name,
             setData: handleSetData,
             fieldName: "first_name",
-            disabled: auth.user != null
+            disabled: auth2.user != null
           }
         ),
         /* @__PURE__ */ jsx(
@@ -12734,7 +12308,7 @@ function UserDataForm({
             data: data.last_name,
             setData: handleSetData,
             fieldName: "last_name",
-            disabled: auth.user != null
+            disabled: auth2.user != null
           }
         )
       ] }),
@@ -12748,7 +12322,7 @@ function UserDataForm({
           data: data.email,
           setData: handleSetData,
           fieldName: "email",
-          disabled: auth.user != null
+          disabled: auth2.user != null
         }
       ),
       /* @__PURE__ */ jsx(Separator, {}),
@@ -12761,7 +12335,7 @@ function UserDataForm({
           data: data.phone,
           setData: handleSetData,
           fieldName: "phone",
-          disabled: auth.user != null
+          disabled: auth2.user != null
         }
       ),
       /* @__PURE__ */ jsx("div", { className: "flex justify-end", children: /* @__PURE__ */ jsx(
@@ -12858,22 +12432,21 @@ function RoomsServces({
                   /* @__PURE__ */ jsxs("span", { className: "line-through", children: [
                     price,
                     " ",
-                    useTrans("DA")
+                    t("da")
                   ] }),
                   /* @__PURE__ */ jsxs("span", { children: [
                     " ",
                     price - promotion.promo_value,
                     " ",
-                    useTrans("DA")
+                    t("da")
                   ] })
-                ] }) : price + useTrans("DA"),
+                ] }) : price + t("da"),
                 " "
               ] }),
               /* @__PURE__ */ jsxs("td", { className: "boreder-b border-2 border-b-secondary px-3 flex justify-between items-center", children: [
                 rooms22.length,
                 " ",
-                useTrans("Chambre"),
-                rooms22.length == 1 ? "" : useTrans("s"),
+                t("rooms"),
                 /* @__PURE__ */ jsx(
                   Button,
                   {
@@ -13118,7 +12691,7 @@ function BookingsCard({
                   " ",
                   room.beeds_number,
                   " ",
-                  useTrans("lits"),
+                  t("beeds"),
                   " ",
                   t("for"),
                   " ",
@@ -13343,11 +12916,11 @@ function MyBookings$1({ booking: booking2 }) {
       /* @__PURE__ */ jsx("meta", { name: "description", content: t("metaDescreption") })
     ] }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
-    /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[47rem] h-[47rem] left-[calc(40%-20rem)] top-[30rem] sm:translate-x-[10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
+    /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-1/2 h-[47rem] left-[calc(40%-20rem)] top-[30rem] sm:translate-x-[10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[20rem] bottom-[5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
     /* @__PURE__ */ jsx(PageHeading, { title: t("title"), className: "my-10 relative" }),
     /* @__PURE__ */ jsxs("div", { className: "relative flex flex-col md:flex-row gap-2 m-6", children: [
-      /* @__PURE__ */ jsxs("div", { className: "md:w-1/3 w-full flex md:flex-col gap-2", children: [
+      /* @__PURE__ */ jsxs("div", { className: "md:w-1/3 md:flex-col w-full flex flex-col gap-2", children: [
         /* @__PURE__ */ jsxs(Card, { children: [
           /* @__PURE__ */ jsx(CardHeader, { className: "font-bold p-2", children: t("infoCard") }),
           /* @__PURE__ */ jsx(CardContent, { className: "flex justify-between p-2", children: /* @__PURE__ */ jsxs("div", { children: [
@@ -13527,8 +13100,7 @@ function MyBookings$1({ booking: booking2 }) {
                   /* @__PURE__ */ jsx(Separator, {}),
                   /* @__PURE__ */ jsxs("div", { className: "font-bold text-foreground pb-2 flex justify-start", children: [
                     t("features"),
-                    " ",
-                    ":"
+                    " :"
                   ] }),
                   room.features.slice(0, 4).map((feature) => /* @__PURE__ */ jsxs(
                     Badge,
@@ -13569,8 +13141,6 @@ function MyBookings$1({ booking: booking2 }) {
                 " x",
                 " ",
                 consomation.consumption_price,
-                " ",
-                " ",
                 " ",
                 t("da")
               ] })
@@ -13757,7 +13327,7 @@ const mybookingscolumns = [
                   open: isopen,
                   onOpenChange: setIsOpen,
                   children: [
-                    /* @__PURE__ */ jsx(DrawerTrigger, { className: "cursor-pointer flex", children: /* @__PURE__ */ jsx(Button, { variant: "destructive", children: t("cancel") }) }),
+                    /* @__PURE__ */ jsx(DrawerTrigger, { className: "w-full", children: t("cancel") }),
                     /* @__PURE__ */ jsxs(DrawerContent, { children: [
                       /* @__PURE__ */ jsxs(DrawerHeader, { className: "text-left", children: [
                         /* @__PURE__ */ jsx(DrawerTitle, { children: t("dialogTitle") }),
@@ -13800,23 +13370,11 @@ function MyBookings({ bookings: bookings2 }) {
   return /* @__PURE__ */ jsxs(ClientLayout, { children: [
     /* @__PURE__ */ jsxs(Head, { children: [
       /* @__PURE__ */ jsx("title", { children: t("title") }),
-      /* @__PURE__ */ jsx(
-        "meta",
-        {
-          name: "description",
-          content: t("metaDescreption")
-        }
-      )
+      /* @__PURE__ */ jsx("meta", { name: "description", content: t("metaDescreption") })
     ] }),
     /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
-    /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[47rem] h-[47rem] left-[calc(40%-20rem)] top-[30rem] sm:translate-x-[10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
-    /* @__PURE__ */ jsx(
-      PageHeading,
-      {
-        title: t("title"),
-        className: "my-10 relative"
-      }
-    ),
+    /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
+    /* @__PURE__ */ jsx(PageHeading, { title: t("title"), className: "my-10 relative" }),
     /* @__PURE__ */ jsx("div", { className: "bg-card p-4 rounded-lg my-4 relative", children: /* @__PURE__ */ jsx(
       DataTable,
       {
@@ -14124,7 +13682,7 @@ function Rooms({ rooms: rooms2 }) {
       className: "relative flex flex-col justify-center items-center min-h-screen max-h-sceen",
       id: "rooms-section",
       children: [
-        /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
+        /* @__PURE__ */ jsx("div", { className: "absolute w-1/2 sm:w-11/12 h-1/2 rotate-12 top-1/3 rounded-t-full z-[0] inset-0 bg-gradient-to-r from-secondarybg from-10% via-secondarybg via-30% to-secondarybg to-0% blur-2xl opacity-70" }),
         /* @__PURE__ */ jsx("div", { className: "font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: t("title") }),
         /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: t("descreption") }) }),
         /* @__PURE__ */ jsxs(
@@ -14237,7 +13795,7 @@ function Services({ services: services2 }) {
       className: "relative flex flex-col justify-center items-center min-h-screen max-h-sceen",
       id: "services-section",
       children: [
-        /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[-10%] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
+        /* @__PURE__ */ jsx("div", { className: "absolute w-3/4 h-1/2 -rotate-12 top-40 rounded-full z-[0] inset-0 bg-gradient-to-r from-primarybg from-10% via-primarybg via-30% to-primarybg to-0% blur-2xl opacity-70" }),
         /* @__PURE__ */ jsx("div", { className: "font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: t("title") }),
         /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: t("description") }) }),
         /* @__PURE__ */ jsxs(
@@ -14429,15 +13987,17 @@ function BookingForm({ id }) {
 }
 function HomeHeading({ id }) {
   const { width } = useWindowDimensions();
-  const { t } = useTranslation("translation", { keyPrefix: "client.sections.banner" });
+  const { t } = useTranslation("translation", {
+    keyPrefix: "client.sections.banner"
+  });
   return /* @__PURE__ */ jsxs("div", { id, children: [
     /* @__PURE__ */ jsxs("div", { className: "relative h-full z-10 p-4 flex md:flex-row flex-col justify-around", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-center md:w-1/2 w-full", children: [
         /* @__PURE__ */ jsx("div", { className: "flex flex-col space-y-1.5 p-6", children: /* @__PURE__ */ jsx("div", { className: "font-bold text-5xl py-4", children: t("title") }) }),
-        /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 pt-0", children: /* @__PURE__ */ jsx("div", { children: t("descreption") }) })
+        /* @__PURE__ */ jsx("div", { className: "text-muted-foreground  text-sm md:text-base p-6 pt-0", children: /* @__PURE__ */ jsx("div", { children: t("descreption") }) })
       ] }),
       width <= 767 && /* @__PURE__ */ jsx(BookingForm, {}),
-      /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center  ", children: /* @__PURE__ */ jsx(
+      /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center", children: /* @__PURE__ */ jsx(
         "img",
         {
           src: "/assets/sidi-el-noui-logo-removebg.png",
@@ -14572,25 +14132,18 @@ function Home({ events: events2, promotions: promotions2, rooms: rooms2, service
       /* @__PURE__ */ jsx("title", { children: t("title") }),
       /* @__PURE__ */ jsx("meta", { name: "description", content: t("metaDescreption") })
     ] }),
-    /* @__PURE__ */ jsxs(
-      "div",
-      {
-        className: "relative md:h-[600px] h-dvh flex items-center justify-center ",
-        id: "home-section",
-        children: [
-          /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.6)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
-          /* @__PURE__ */ jsx(HomeHeading, { id: "booking-form" })
-        ]
-      }
-    ),
+    /* @__PURE__ */ jsxs("div", { className: "relative h-dvh f ", id: "home-section", children: [
+      /* @__PURE__ */ jsx("div", { className: "absolute size-1/2 translate-x-full rounded-full z-[0] inset-0 bg-gradient-to-r from-primarybg from-10% via-primarybg via-30% to-primarybg to-90% blur-2xl opacity-70" }),
+      /* @__PURE__ */ jsx(HomeHeading, { id: "booking-form" })
+    ] }),
     promotions2 && /* @__PURE__ */ jsxs("div", { className: "my-6 relative min-h-screen max-h-sceen", children: [
-      /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[0] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.2)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
+      /* @__PURE__ */ jsx("div", { className: "absolute w-3/4 h-1/2 sm:rotate-45 top-20 rounded-full z-[0] inset-0 bg-gradient-to-r from-secondarybg from-10% via-secondarybg via-30% to-secondarybg to-90% blur-2xl opacity-70" }),
       /* @__PURE__ */ jsx("div", { className: "font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: t("promotions") }),
       /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: t("promotionsDescreption") }) }),
       /* @__PURE__ */ jsx(Promotion, { promotion: promotions2 })
     ] }),
     events2 && /* @__PURE__ */ jsxs("div", { className: "my-6 relative min-h-screen max-h-sceen", children: [
-      /* @__PURE__ */ jsx("div", { className: "absolute z-[0] w-[57rem] h-[57rem] left-[calc(50%-28.5rem)] bottom-[0] translate-x-[-10%] translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.5)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]" }),
+      /* @__PURE__ */ jsx("div", { className: "absolute w-3/4 h-1/2 -rotate-12 top-20 rounded-full z-[0] inset-0 bg-gradient-to-r from-secondarybg from-10% via-secondarybg via-30% to-primarybg to-0% blur-2xl opacity-70" }),
       /* @__PURE__ */ jsx("div", { className: "font-bold border-b w-3/5 mx-auto p-4 text-4xl flex justify-center ", children: t("events") }),
       /* @__PURE__ */ jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsx("div", { className: "text-muted-foreground p-6 sm:w-2/3  text-center", children: t("eventsDescreption") }) }),
       /* @__PURE__ */ jsx(Events, { event: events2 })
@@ -15387,7 +14940,107 @@ const __vite_glob_0_51 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
   __proto__: null,
   default: Error$1
 }, Symbol.toStringTag, { value: "Module" }));
-const welcome$1 = "mar7aban";
+const layout$1 = {
+  navBar: {
+    addBooking: "إضافة حجز",
+    themeTolip: "تغيير السمة",
+    dialog: {
+      dialogTitle: "إضافة حجز",
+      dialogDescreption: "البحث عن الغرف المتاحة",
+      form: {
+        dates: "تاريخ بداية ونهاية الحجز",
+        guestNumber: "عدد الأشخاص",
+        needValue: "اختر هذا الخيار إذا كان الحجز لشركة",
+        submit: "بحث"
+      }
+    },
+    notifications: {
+      tolip: "الإشعارات",
+      "new": "حجز جديد",
+      all: "كل الإشعارات"
+    },
+    userNav: {
+      tolip: "الملف الشخصي",
+      dashboard: "لوحات المعلومات",
+      inbox: "علبة الوارد",
+      account: "الحساب",
+      logout: "تسجيل الخروج"
+    }
+  },
+  sideBar: {
+    dashboard: "لوحات المعلومات",
+    bookingsGroupe: "محرك الحجز",
+    bookings: "الحجوزات",
+    historical: "السجل",
+    rooms: "الغرف",
+    owner: "المالك",
+    allRooms: "كل الغرف",
+    features: "الميزات",
+    services: "الخدمات",
+    allServices: "كل الخدمات",
+    consumption: "الاستهلاكات",
+    bills: "الفواتير",
+    events: "الفعاليات",
+    promotions: "العروض الترويجية",
+    managment: "الإدارة",
+    users: "المستخدمين",
+    roles: "الأدوار",
+    employs: "الموظفين"
+  },
+  notif: "قام بحجز جديد"
+};
+const auth$1 = {
+  auth: "Email ou N° téléphone",
+  password: "Mot de passe",
+  remember: "Souviens moi",
+  forget: "Mot de passe oublié ?",
+  submit: "Se Connecter",
+  confirmPassword: "هذه منطقة آمنة للتطبيق. يرجى تأكيد كلمة المرور الخاصة بك قبل الاستمرار."
+};
+const components$1 = {
+  datePicker: {
+    title: "اختر تاريخًا"
+  },
+  dataTable: {
+    viewOption: {
+      tolip: "التحكم في ظهور الأعمدة",
+      show: "عرض",
+      title: "تبديل الأعمدة",
+      selection: "صف(وف) محدد.",
+      client: "العميل",
+      checkIn: "تسجيل الوصول",
+      checkOut: "تسجيل المغادرة",
+      bookingDate: "تاريخ الحجز",
+      status: "الحالة",
+      roomNumber: "رقم الغرفة",
+      type: "النوع",
+      price: "السعر",
+      featureName: "اسم الميزة",
+      needValue: "يتطلب قيمة",
+      categorie: "الفئة",
+      billNumber: "رقم الفاتورة",
+      email: "البريد الإلكتروني",
+      date: "التاريخ",
+      role: "الدور",
+      permissions: "الأذونات",
+      utilisateurs: "المستخدمين",
+      phone: "رقم الهاتف",
+      createdAtDate: "تاريخ التسجيل",
+      ref: "Ref",
+      rooms: "الغرف المحجوزة",
+      dates: "تاريخ الدخول / الخروج"
+    },
+    pagination: {
+      footer: "صف(وف) معروض"
+    },
+    header: {
+      up: "تصاعدي",
+      down: "تنازلي",
+      hide: "إخفاء"
+    }
+  },
+  fileUploader: "تحميل أو إسقاط الصور هنا"
+};
 const dashboard$1 = {
   title: "لوحات المعلومات",
   dataChart1: "تسجيلات الدخول اليوم",
@@ -15400,11 +15053,641 @@ const dashboard$1 = {
   chartSubTitle: "وتشمل هذه الإحصائيات الحجوزات الملغاة والمرفوضة",
   chartLabel: "الحجوزات"
 };
-const ar = {
-  welcome: welcome$1,
-  dashboard: dashboard$1
+const notifications$1 = {
+  title: "الإشعارات",
+  readAll: "وضع الكل كمقروء",
+  deleteAll: "حذف الكل",
+  text1: "قام بحجز",
+  text2: "إلى"
 };
-const welcome = "Bienvenue";
+const messages$1 = {
+  title: "علبة الوارد",
+  readAll: "وضع الكل كمقروء",
+  deleteAll: "حذف الكل",
+  all: "الكل",
+  unread: "غير مقروء",
+  user: "المستخدم",
+  replyToMail: "الرد باستخدام بريدك الإلكتروني",
+  "delete": "حذف",
+  noMessage: "لا توجد رسائل للعرض",
+  subject: "الموضوع",
+  replyTo: "الرد على:",
+  message: "الرسالة",
+  placeholder: "الرد على العميل",
+  submit: "إرسال"
+};
+const profile$1 = {
+  section1: {
+    title: "المعلومات الشخصية",
+    form: {
+      firstName: "الاسم الأول",
+      lastName: "اللقب",
+      email: "البريد الإلكتروني",
+      emailDescreption: "يجب أن يكون البريد الإلكتروني فريدًا لكل مستخدم",
+      phone: "رقم هاتف الموظف",
+      phoneDescreption: "يجب أن يكون رقم الهاتف فريدًا لكل مستخدم",
+      emailValidation: "عنوان بريدك الإلكتروني غير مُحقق.",
+      sendEmailValidation: "انقر هنا لإعادة إرسال بريد التحقق.",
+      validationSended: "تم إرسال رابط تحقق جديد إلى عنوان بريدك الإلكتروني.",
+      submit: "حفظ"
+    }
+  },
+  section2: {
+    title: "تحديث كلمة المرور",
+    subtitle: "تأكد من أن حسابك يستخدم كلمة مرور طويلة وعشوائية للحفاظ على الأمان",
+    form: {
+      password: "كلمة المرور الحالية",
+      newPassword: "كلمة المرور الجديدة",
+      confirmPassword: "تأكيد كلمة المرور",
+      submit: "حفظ"
+    }
+  },
+  section3: {
+    title: "حذف الحساب",
+    subtitle: "بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته نهائيًا. قبل حذف حسابك، يرجى تنزيل جميع البيانات أو المعلومات التي ترغب في الاحتفاظ بها.",
+    submit: "حذف الحساب",
+    dialogTitle: "هل أنت متأكد أنك تريد حذف حسابك؟",
+    dialogDescreption: "بمجرد حذف حسابك، سيتم حذف جميع موارده وبياناته نهائيًا. يرجى إدخال كلمة المرور الخاصة بك لتأكيد أنك تريد حذف حسابك نهائيًا.",
+    placeholder: "كلمة المرور",
+    cancel: "إلغاء",
+    "delete": "حذف"
+  }
+};
+const bookings$1 = {
+  title: "الحجوزات",
+  toastMessage: "إعدادات الفاتورة",
+  emptyPage: "لا توجد حجوزات حاليًا، جرب إنشاء حجز جديد",
+  historicalTitle: "السجل",
+  tableHeader: {
+    client: "العميل",
+    checkIn: "تسجيل الدخول",
+    checkOut: "تسجيل الخروج",
+    bookingDate: "تاريخ الحجز",
+    status: "الحالة",
+    bill: "الفاتورة",
+    show: "عرض",
+    dialogTitle: "طريقة الدفع",
+    dialogDescreption: "اختر طريقة الدفع لهذه الفاتورة",
+    opt1: "نقدًا",
+    opt2: "شيك",
+    approve: "تأكيد",
+    cancel: "رفض"
+  }
+};
+const booking$1 = {
+  title: "الحجز",
+  pageHeading: "حجز لـ ",
+  clientCard: "معلومات العميل",
+  bookingCard: "تفاصيل الحجز",
+  checkIn: "الوصول",
+  checkOut: "المغادرة",
+  guestNumber: "عدد الأشخاص",
+  adult: "بالغ",
+  and: "و",
+  babys: "رضع",
+  nights: "ليلة",
+  pricingCard: "ملخص التكلفة",
+  pricingFooter: "هذا السعر يشمل جميع الضرائب",
+  da: "دج",
+  rooms: "غرفة",
+  "with": "مع",
+  beeds: "أسرة",
+  showMore: "عرض المزيد",
+  features: "المميزات"
+};
+const aviableRooms$1 = {
+  title: "الغرف المتاحة",
+  metaDescreption: "اكتشف الغرف المتاحة في فندق سيدي النوي وقم بإجراء حجزك ببضع نقرات.",
+  name: "الاسم",
+  adress: "العنوان",
+  lastName: "اللقب",
+  nif: "رقم التعريف الضريبي",
+  nis: "رقم التعريف الإحصائي",
+  nrc: "رقم السجل التجاري",
+  na: "رقم المقال",
+  email: "البريد الإلكتروني",
+  emailDescreption: "يجب أن يكون البريد الإلكتروني فريدًا لكل مستخدم",
+  phone: "رقم الهاتف",
+  phoneDescreption: "يجب أن يكون رقم الهاتف فريدًا لكل مستخدم",
+  tableHeader: "اختر غرفة أو أكثر للحجز",
+  roomNumber: "رقم الغرفة",
+  type: "نوع الغرفة",
+  ttc: "السعر شامل جميع الضرائب",
+  features: "المميزات",
+  roomCode: "غرفة رقم",
+  da: "دج",
+  cunsumptionHeader: "إضافة استهلاك لهذه الحجز",
+  submit: "احجز"
+};
+const rooms$1 = {
+  title: "الغرف",
+  createTitle: "إنشاء غرفة",
+  editTitle: "تعديل غرفة",
+  show: "عرض",
+  edit: "تعديل",
+  aviable: "تم تحديدها كمتاحة",
+  inaviable: "تم تحديدها كغير متاحة",
+  topButton: "إنشاء غرفة",
+  emptyText: "لا توجد غرف حالياً، حاول إنشاء غرفة جديدة",
+  roomNumber: "الغرفة رقم",
+  price: "سعر الغرفة",
+  da: "دج",
+  roomForm: {
+    roomNumber: "رقم الغرفة",
+    roomNumberDescreption: "ما هو الرقم الفريد لهذه الغرفة؟",
+    price: "سعر الغرفة",
+    priceDescreption: "هذه هي أسعار الغرفة مع جميع الضرائب شاملًا",
+    beedsNumber: "عدد الأسرّة",
+    beedsNumberDescreption: "كم عدد الأسرّة في هذه الغرفة؟",
+    type: "النوع",
+    typeDescreption: "ما هو نوع هذه الغرفة؟",
+    typeSelect: "اختر نوعًا...",
+    typeSearch: "ابحث عن نوع...",
+    emptyTypeMessage: "لا يوجد هذا النوع",
+    emptyTypeButton: "إضافة نوع جديد",
+    descreption: "الوصف",
+    descreptionDescreption: "أدخل وصفًا عامًا لهذه الغرفة",
+    features: "المميزات",
+    featuresDescreption: "اختر من بين هذه المميزات، وأضف قيمًا للمميزات التي تحتاج لذلك",
+    assets: "الصور",
+    assetsDescreption: "أضف صورًا للغرف (لا تتجاوز 10 صور لكل غرفة)",
+    fileUploader: "تحميل أو إلقاء الصور هنا",
+    submit: "إنشاء",
+    edit: "حفظ"
+  },
+  room: {
+    title: "الغرفة رقم:",
+    "with": "مع",
+    beeds: "أسرة",
+    price: "سعر الغرفة",
+    da: "دج",
+    description: "الوصف",
+    edit: "تعديل"
+  }
+};
+const features$1 = {
+  title: "المميزات",
+  categorie: "الفئات",
+  emptyFeatures: "لا توجد مميزات حالياً، حاول إنشاء ميزة جديدة",
+  emptyCategories: "لا توجد فئات حالياً، حاول إنشاء فئة جديدة",
+  form: {
+    create: "إنشاء ميزة",
+    dialogHeader: "إضافة ميزة جديدة",
+    name: "اسم الميزة",
+    categorie: "الفئات",
+    placeholder: "مثال: واي فاي، الأبعاد",
+    selectInput: "اختر فئة...",
+    searchInput: "ابحث عن فئة...",
+    add: "إضافة",
+    add2: "إلى الفئة",
+    needValue: "يحتاج إلى قيمة",
+    createSubmit: "إنشاء",
+    cancel: "إلغاء",
+    edit: "تعديل",
+    editHeader: "تعديل هذه الميزة",
+    save: "حفظ",
+    "delete": "حذف",
+    deleteHeader: "هل أنت متأكد؟",
+    deleteDescreption: "هذه العملية لا يمكن التراجع عنها. سيتم حذف هذه الميزة بشكل دائم وكل غرفة تحتوي على هذه الميزة ستفقدها.",
+    addCategorie: "إضافة فئة",
+    addCategorieHeader: "إضافة فئة جديدة",
+    editCategorietHeader: "تعديل هذه الفئة",
+    categorieName: "اسم الفئة:",
+    categoriePlaceholder: "مثال: عام، إنترنت",
+    deleteCategorieDescreption: "هذه العملية لا يمكن التراجع عنها. سيتم حذف هذا العنصر بشكل دائم وكل ميزة تتعلق بهذه الفئة سيتم حذفها."
+  }
+};
+const services$1 = {
+  title: "الخدمات",
+  createBtn: "إنشاء خدمة",
+  emptyServices: "لا توجد خدمات حالياً، حاول إنشاء خدمة جديدة",
+  listHeader: "قائمة الخدمات",
+  card: {
+    aviable: "متاح",
+    inaviable: "غير متاح",
+    descreption: "الوصف",
+    toggleOff: "تم وضعه خارج الخدمة",
+    toggleOn: "تم وضعه في الخدمة",
+    editBtn: "تعديل",
+    deleteServiceDescreption: "هذه العملية لا يمكن التراجع عنها. سيتم حذف هذا العنصر بشكل دائم وكل استهلاك متعلق بهذه الخدمة سيتم حذفه."
+  },
+  form: {
+    createTitle: "إنشاء خدمة",
+    editTitle: "تعديل خدمة",
+    name: "اسم الخدمة",
+    nameDescreption: "أدخل اسم واضح وبسيط للخدمة",
+    placeholder: "مثال: مطعم",
+    descreption: "الوصف",
+    descreptionDescreption: "يمكنك إضافة عناوين أو تنسيق النص في الوصف",
+    assets: "الصور",
+    assetsDescreption: "إضافة صور للخدمة (لا تتجاوز 10 صور لكل خدمة)",
+    createBtn: "إنشاء",
+    editBtn: "حفظ"
+  }
+};
+const consumptions$1 = {
+  title: "الاستهلاكات",
+  emptyConsumptions: "لا توجد استهلاكات حالياً، حاول إنشاء استهلاك جديد",
+  listHeader: "قائمة الاستهلاكات",
+  card: {
+    price: "السعر الوحدة:",
+    da: "دج",
+    deleteConsumptionDescreption: "هذه العملية لا يمكن التراجع عنها. سيتم حذف هذا الاستهلاك بشكل دائم"
+  },
+  form: {
+    createBtn: "إنشاء استهلاك",
+    editBtn: "تعديل",
+    createDialogTitle: "إنشاء استهلاك جديد",
+    editDialogTitle: "تعديل هذا الاستهلاك",
+    service: "الخدمة",
+    servicePlaceholder: "اختيار خدمة",
+    name: "اسم الاستهلاك",
+    namePlaceholder: "مثال: عشاء",
+    price: "سعر الاستهلاك",
+    createSubmit: "إنشاء",
+    editSubmit: "حفظ",
+    cancel: "إلغاء"
+  }
+};
+const factures$1 = {
+  title: "الفواتير",
+  topBtn: "إنشاء لفاتورة حجز",
+  emptyBill: "لا توجد فواتير حالياً، حاول إنشاء فاتورة جديدة",
+  settings: {
+    title: "إعدادات الفاتورة",
+    descreption: "تعديل إعدادات الفوترة هنا",
+    tva: "قيمة ضريبة القيمة المضافة (%)",
+    taxes: "ضريبة الإقامة",
+    taxesDescreption: "قيمة ضريبة الإقامة بالدينار الجزائري لكل شخص",
+    timbre: "طابع الجمارك",
+    timbreDescreption: "قيمة الطابع (%)",
+    save: "حفظ"
+  },
+  table: {
+    guestsList: "قائمة الضيوف",
+    show: "عرض",
+    email: "البريد الإلكتروني",
+    print: "طباعة",
+    download: "تنزيل",
+    factureTitle: "الفاتورة"
+  }
+};
+const guests$1 = {
+  addGuestsTitle: "إضافة ضيوف",
+  guestsListTitle: "قائمة الضيوف",
+  addBtn: "إضافة",
+  firstName: "الاسم الأول",
+  lastName: "الاسم الأخير",
+  saveBtn: "حفظ",
+  addGuestsBtn: "إضافة ضيوف"
+};
+const events$1 = {
+  title: "الفعاليات",
+  createLink: "إنشاء فعالية",
+  pageHeading: "قائمة الفعاليات",
+  emptyEvents: "لا توجد فعاليات حالياً، حاول إنشاء فعالية جديدة",
+  card: {
+    price: "السعر",
+    da: "دج",
+    eventDate: "تاريخ الفعالية",
+    eventStartDate: "تاريخ بداية الفعالية",
+    eventEndDate: "تاريخ نهاية الفعالية",
+    descreption: "الوصف",
+    createdBy: "تم الإنشاء بواسطة",
+    editBtn: "تعديل",
+    eventDeleteDescreption: "لا يمكن التراجع عن هذا الإجراء. ستقوم بحذف هذه الفعالية نهائيًا"
+  },
+  form: {
+    createTitle: "إنشاء فعالية",
+    editTitle: "تعديل فعالية",
+    eventDate: "تاريخ الفعالية",
+    eventDateDescreption: "أدخل تاريخ أو نطاق تاريخ بداية ونهاية الفعالية",
+    name: "اسم الفعالية",
+    namePlaceholder: "مثال: حفلة 16 إبريل",
+    nameDescreption: "أدخل اسم واضح وبسيط للفعالية",
+    price: "السعر",
+    priceDescreption: "ما هو سعر دخول الفعالية؟",
+    descreption: "الوصف",
+    descreptionDescreption: "يمكنك إضافة عنوان أو تنسيق للوصف",
+    assets: "الصور",
+    assetsDescreption: "إضافة صور للفعالية (لا تتجاوز 10 صور لكل فعالية)",
+    createBtn: "إنشاء",
+    editBtn: "حفظ"
+  }
+};
+const promotions$1 = {
+  title: "العروض الترويجية",
+  createBtn: "إنشاء عرض ترويجي",
+  pageHeading: "قائمة العروض الترويجية",
+  emptyPromotions: "لا توجد عروض ترويجية حالياً، حاول إنشاء عرض جديد",
+  card: {
+    da: "دج",
+    activeState: "نشط",
+    inactiveState: "غير نشط",
+    date: "تاريخ العرض الترويجي",
+    startDate: "تاريخ بداية العرض الترويجي",
+    endDate: "تاريخ نهاية العرض الترويجي",
+    descreption: "الوصف",
+    createdBy: "تم الإنشاء بواسطة",
+    swichOn: "إيقاف العرض الترويجي",
+    swichOff: "تشغيل العرض الترويجي",
+    edit: "تعديل",
+    deletePromotionDescreption: "لا يمكن التراجع عن هذا الإجراء. ستقوم بحذف هذا العرض الترويجي نهائيًا"
+  },
+  form: {
+    createTitle: "إنشاء عرض ترويجي",
+    editTitle: "تعديل عرض ترويجي",
+    date: "تاريخ العرض الترويجي",
+    dateDescreption: "أدخل تاريخ أو نطاق تاريخ بداية ونهاية العرض الترويجي",
+    value: "قيمة العرض الترويجي",
+    valueDescreption: "أدخل قيمة العرض الترويجي بالدينار الجزائري",
+    descreption: "الوصف",
+    descreptionDescreption: "يمكنك إضافة عنوان أو تنسيق للوصف",
+    assets: "الصور",
+    assetsDescreption: "إضافة صور للعرض الترويجي (لا تتجاوز 10 صور لكل عرض)",
+    createBtn: "إنشاء",
+    editBtn: "حفظ"
+  }
+};
+const roles$1 = {
+  title: "الأدوار",
+  create: "إضافة دور",
+  permissions: "الأذونات",
+  dialogHeader: "قائمة الأذونات لهذا الدور",
+  cancel: "إلغاء",
+  edit: "تعديل",
+  deleteRoleDescreption: "لا يمكن التراجع عن هذا الإجراء. ستقوم بحذف هذا الدور نهائيًا، سيحصل المستخدمون الذين يمتلكون هذا الدور على دور المدير العادي ويفقدون جميع أذوناتهم",
+  "delete": "حذف",
+  deleteDialogHeader: "هل أنت متأكد؟",
+  form: {
+    createTitle: "إنشاء دور",
+    editTitle: "تعديل دور",
+    name: "اسم الدور",
+    nameDescreption: "يجب أن يكون اسم الدور فريدًا",
+    promotions: "قائمة الأذونات",
+    promotionsDescreption: "تعيين الأذونات لهذا الدور",
+    createBtn: "إنشاء",
+    editBtn: "حفظ"
+  }
+};
+const users$1 = {
+  title: "الموظفون",
+  createBtn: "إضافة موظف",
+  edit: "تعديل",
+  "delete": "حذف",
+  dialogHeader: "هل أنت متأكد؟",
+  dialogDescreption: "لا يمكن التراجع عن هذا الإجراء. ستقوم بحذف هذا المستخدم نهائيًا",
+  cancel: "إلغاء",
+  form: {
+    createTitle: "إنشاء موظف",
+    editTitle: "تعديل موظف",
+    firstName: "الاسم الأول للموظف",
+    lastName: "اسم العائلة للموظف",
+    email: "البريد الإلكتروني للموظف",
+    emailDescreption: "يجب أن يكون البريد الإلكتروني فريدًا لكل مستخدم",
+    phone: "رقم هاتف الموظف",
+    phoneDescreption: "يجب أن يكون رقم الهاتف فريدًا لكل مستخدم",
+    role: "الدور",
+    roleDescreption: "تعيين دور لهذا الموظف",
+    rolePlaceholder: "اختيار دور...",
+    rolePlaceholder2: "ابحث عن دور...",
+    emptyRole: "لا يوجد دور",
+    editBtn: "حفظ",
+    createBtn: "إنشاء"
+  }
+};
+const client$1 = {
+  navbar: {
+    home: "الصفحة الرئيسية",
+    rooms: "غرفنا",
+    services: "الخدمات",
+    contactUs: "اتصل بنا",
+    login: "تسجيل الدخول",
+    swichLang: "تغيير اللغة",
+    userNav: {
+      profile: "الملف الشخصي",
+      compte: "الحساب",
+      myBookings: "حجوزاتي",
+      logOut: "تسجيل الخروج"
+    }
+  },
+  home: {
+    title: "الصفحة الرئيسية",
+    metaDescreption: "مرحبًا بكم في الموقع الرسمي لفندق سيدي النووي. اكتشفوا غرفنا، خدماتنا، العروض الترويجية وحجزوا الآن لإقامة لا تُنسى.",
+    promotions: "العروض الترويجية",
+    promotionsDescreption: "عروض حصرية لإقامة لا تُنسى. استفيدوا من عروضنا الاستثنائية واحجزوا إقامتكم بأسعار مميزة. اكتشفوا عروضنا الخاصة واحصلوا على تخفيضات على الغرف، حزم العافية، وأكثر من ذلك.",
+    events: "الفعاليات",
+    eventsDescreption: "فعاليات لا تُنسى في قلب الجزائر. عيشوا لحظات فريدة من خلال المشاركة في فعالياتنا الحصرية. سواء كانت أمسيات موضوعية، حفلات موسيقية، أو مهرجانات محلية، يعد فندقنا المكان المثالي للانطلاق في جميع مغامراتكم."
+  },
+  sections: {
+    banner: {
+      title: "سيدي النووي",
+      descreption: "مرحبًا بكم في سيدي النووي - ملاذكم الفاخر في قلب الشراقة. اكتشفوا الراحة التي لا مثيل لها والأناقة الرفيعة في وسط الجزائر. يوفر فندقنا إطلالات خلابة، ومرافق عالية الجودة، وخدمة استثنائية لجعل إقامتكم لا تُنسى.",
+      form: {
+        date: "التواريخ",
+        guestNumber: "عدد الأشخاص",
+        kidsNumber: "عدد الأطفال",
+        search: "ابحث"
+      }
+    },
+    promotion: {
+      cardHeader: "خصم بنسبة",
+      da: "دينار جزائري",
+      singleDate: "في",
+      multipleDateStart: "من",
+      multipleDateEnd: "حتى",
+      actionBtn: "عرض المزيد",
+      title: "عروض ترويجية",
+      metaDescription: "استفيدوا من العروض الحصرية لفندق سيدي النووي واحجزوا إقامتكم بأسعار مخفضة."
+    },
+    event: {
+      da: "دينار جزائري",
+      singleDate: "في",
+      multipleDateStart: "من",
+      multipleDateEnd: "حتى",
+      actionBtn: "عرض المزيد",
+      title: "فعالية",
+      metaDescreption: "اكتشفوا فعاليات فندق سيدي النووي وشاركوا في تجارب لا تُنسى."
+    },
+    rooms: {
+      title: "غرفنا",
+      descreption: "اكتشفوا غرفنا الواسعة والمزخرفة التي توفر جميع وسائل الراحة الحديثة لإقامة ممتعة. سواء كنتم تسافرون بمفردكم أو مع العائلة أو الأصدقاء، لدينا الغرفة المثالية لكم.",
+      tabTrigger: "الغرف",
+      roomCard: {
+        da: "دينار جزائري",
+        features: "ميزات الغرفة",
+        actionBtn: "احجز الآن"
+      }
+    },
+    services: {
+      title: "الخدمات",
+      description: "نقدم مجموعة من الخدمات المصممة لجعل إقامتكم أكثر راحة. سواء كنتم ترغبون في الاسترخاء، أو تناول وجبات لذيذة، أو الاستمتاع بمرافق إضافية، نحن هنا لتلبية جميع احتياجاتكم.",
+      metaDescreption: "اكتشفوا الخدمات التي يقدمها فندق سيدي النووي لجعل إقامتكم أكثر راحة.",
+      actionBtn: "عرض المزيد",
+      consumptions: "الاستهلاك المتاح في هذه الخدمة:"
+    },
+    contact: {
+      title: "اتصل بنا",
+      description: "يمكنكم إرسال رسالة لنا عبر هذا النموذج. سنبذل قصارى جهدنا للرد على جميع استفساراتكم في أقرب وقت ممكن.",
+      email: "البريد الإلكتروني",
+      subject: "الموضوع",
+      message: "الرسالة",
+      submit: "إرسال"
+    }
+  },
+  profile: {
+    title: "الملف الشخصي",
+    section1: {
+      title: "المعلومات الشخصية",
+      firstName: "الاسم الأول",
+      lastName: "الاسم الأخير",
+      email: "البريد الإلكتروني",
+      emailDescreption: "يجب أن يكون البريد الإلكتروني فريدًا لكل مستخدم",
+      phone: "رقم هاتف الموظف",
+      phoneDescreption: "يجب أن يكون رقم الهاتف فريدًا لكل مستخدم",
+      emailValidation: "عنوان بريدك الإلكتروني غير مُحقق.",
+      sendEmailValidation: "اضغط هنا لإعادة إرسال بريد التحقق.",
+      validationSended: "تم إرسال رابط تحقق جديد إلى عنوان بريدك الإلكتروني.",
+      submit: "حفظ"
+    },
+    section2: {
+      title: "تحديث كلمة المرور",
+      subtitle: "تأكد من أن حسابك يستخدم كلمة مرور طويلة وعشوائية للبقاء آمنًا",
+      password: "كلمة المرور الحالية",
+      newPassword: "كلمة المرور الجديدة",
+      confirmPassword: "تأكيد كلمة المرور",
+      submit: "حفظ"
+    },
+    section3: {
+      title: "حذف الحساب",
+      subtitle: "بمجرد حذف حسابك، ستتم إزالة جميع موارده وبياناته بشكل دائم. قبل حذف حسابك، يرجى تنزيل جميع البيانات أو المعلومات التي ترغب في الاحتفاظ بها.",
+      submit: "حذف الحساب",
+      dialogTitle: "هل أنت متأكد أنك تريد حذف حسابك؟",
+      dialogDescreption: "بمجرد حذف حسابك، ستتم إزالة جميع موارده وبياناته بشكل دائم. يرجى إدخال كلمة المرور الخاصة بك لتأكيد رغبتك في حذف حسابك بشكل دائم.",
+      placeholder: "كلمة المرور",
+      cancel: "إلغاء",
+      "delete": "حذف"
+    }
+  },
+  myBookings: {
+    title: "حجوزاتي",
+    metaDescreption: "قم بمراجعة وإدارة جميع حجوزاتك في فندق سيدي النووي من هذه الصفحة.",
+    show: "عرض",
+    cancel: "إلغاء",
+    dialogTitle: "هل أنت متأكد؟",
+    dialogDescreption: "هل أنت متأكد أنك تريد إلغاء هذه الحجز؟",
+    accept: "نعم",
+    deni: "لا",
+    booking: {
+      title: "حجز",
+      metaDescreption: "قم بحجز إقامتك في فندق سيدي النووي في بضع خطوات بسيطة.",
+      infoCard: "المعلومات الشخصية",
+      showProfile: "عرض الملف الشخصي",
+      bookingDetails: "تفاصيل حجزك",
+      checkIn: "الوصول",
+      checkOut: "المغادرة",
+      guestNumber: "عدد الأشخاص",
+      adult: "بالغ",
+      and: "و",
+      babys: "أطفال",
+      nights: "ليلة",
+      time: "مدة الإقامة",
+      pricingCardHeader: "ملخص المبلغ",
+      pricingCardFooter: "يشمل هذا السعر جميع الضرائب",
+      da: "د.ج",
+      room: "غرفة",
+      "with": "مع",
+      beeds: "أسرة",
+      showMore: "عرض المزيد",
+      features: "المميزات"
+    }
+  },
+  aviableRooms: {
+    title: "الغرف المتاحة",
+    metaDescreption: "اطلع على الغرف المتاحة في فندق سيدي النووي واختر الغرفة التي تناسبك لإقامة مريحة.",
+    pageHeader: "أكمل حجزك",
+    da: "د.ج",
+    detailsCard: {
+      header: "تفاصيل حجزك",
+      checkIn: "الوصول",
+      checkOut: "المغادرة",
+      time: "مدة الإقامة",
+      nights: "ليلة"
+    },
+    selectionCard: {
+      header: "لقد اخترت لـ",
+      and: "و",
+      babys: "أطفال",
+      adult: "بالغ",
+      rooms: "غرفة",
+      nights: "ليال",
+      btn: "تعديل الاختيار"
+    },
+    pricingCard: {
+      header: "ملخص المبلغ",
+      footer: "يشمل هذا السعر جميع الضرائب"
+    },
+    form: {
+      firstName: "الاسم الأول",
+      lastName: "اللقب",
+      email: "البريد الإلكتروني",
+      phone: "رقم الهاتف",
+      submit: "احجز الآن"
+    },
+    roomServce: {
+      title: "خدمة الغرف",
+      rooms: "الغرف",
+      type: "نوع الإقامة",
+      beeds: "عدد الأسرة",
+      pricing: "السعر",
+      select: "اختر الغرف",
+      consumptions: "المستهلكات",
+      da: "د.ج"
+    },
+    bookingCard: {
+      btn: "الخطوة الأخيرة",
+      tot: "المجموع",
+      da: "د.ج",
+      roomNumber: "الغرفة رقم",
+      room: "غرفة",
+      "with": "مع",
+      beeds: "أسرة",
+      "for": "لـ",
+      features: "المميزات"
+    }
+  },
+  footer: {
+    phone: "رقم الهاتف",
+    email: "البريد الإلكتروني",
+    address: "العنوان",
+    links: "الروابط",
+    socialMedia: "وسائل التواصل الاجتماعي",
+    description: "مرحبًا بكم في سيدي النووي - ملاذكم الفاخر في قلب الشراقة. اكتشفوا الراحة غير المسبوقة والأناقة الرفيعة في قلب الجزائر. يقدم فندقنا إطلالات خلابة ومرافق من الدرجة الأولى، وخدمة استثنائية لجعل إقامتكم لا تُنسى."
+  }
+};
+const ar = {
+  layout: layout$1,
+  auth: auth$1,
+  components: components$1,
+  dashboard: dashboard$1,
+  notifications: notifications$1,
+  messages: messages$1,
+  profile: profile$1,
+  bookings: bookings$1,
+  booking: booking$1,
+  aviableRooms: aviableRooms$1,
+  rooms: rooms$1,
+  features: features$1,
+  services: services$1,
+  consumptions: consumptions$1,
+  factures: factures$1,
+  guests: guests$1,
+  events: events$1,
+  promotions: promotions$1,
+  roles: roles$1,
+  users: users$1,
+  client: client$1
+};
 const layout = {
   navBar: {
     addBooking: "Ajouter une réservation",
@@ -15451,7 +15734,21 @@ const layout = {
     users: "Utilisateurs",
     roles: "Rôles",
     employs: "Employés"
-  }
+  },
+  notif: "à fait un nouveaux réservation"
+};
+const auth = {
+  auth: "Email ou N° téléphone",
+  password: "Mot de passe",
+  remember: "Souviens moi",
+  forget: "Mot de passe oublié ?",
+  submit: "Se Connecter",
+  confirmText: "Il s'agit d'une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer.",
+  confirm: "Confirmer",
+  forgetText: "Vous avez oublié votre mot de passe ? Aucun problème. Indiquez-nous simplement votre adresse e-mail et nous vous enverrons par e-mail un lien de réinitialisation de mot de passe qui vous permettra de choisir un nouveau mot de passe.",
+  resetLink: "Lien de réinitialisation du mot de passe par e-mail",
+  confirmPassword: "Confirmez le mot de passe",
+  reset: "Réinitialiser le mot de passe"
 };
 const components = {
   datePicker: {
@@ -16122,8 +16419,8 @@ const client = {
   }
 };
 const fr = {
-  welcome,
   layout,
+  auth,
   components,
   dashboard,
   notifications,

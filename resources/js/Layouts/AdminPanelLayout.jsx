@@ -7,32 +7,36 @@ import { Navbar } from "@/Components/Admin/Layout/NavBar";
 import { ThemeProvider } from "@/Providers/ThemeProvider";
 import { Toaster } from "@/Components/ui/toaster";
 import { useToast } from "@/Components/ui/use-toast";
-import { useTrans } from "@/Hooks/useTrans";
-import { router, usePage } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
+import { useTranslation } from "react-i18next";
 
 export default function AdminPanelLayout({ children }) {
     const sidebar = useStore(useSidebarToggle, (state) => state);
     const { toast } = useToast();
     const { locale } = usePage().props;
+    const { t } = useTranslation("translation", { keyPrefix: "layout" });
 
     React.useEffect(() => {
         document.documentElement.dir = locale == "ar" ? "rtl" : "ltr";
     }, [locale]);
 
-    Echo.channel(`booking-channel`).listen("NewBooking", (e) => {
-        toast({
-            description:
-                e.booking.user.first_name +
-                " " +
-                useTrans("à fait un nouveaux réservation"),
-        });
-        if (route().current() == "admin.dashboard") {
-            router.reload({
-                preserveScroll: true,
-                preserveState: true,
+    React.useEffect(() => {
+        if (typeof Echo !== undefined) {
+            const channel = Echo.channel(`booking-channel`);
+
+            channel.listen("NewBooking", (e) => {
+                toast({
+                    description:
+                        e.booking.user.first_name +
+                        " " +
+                        t("notif"),
+                });
             });
+            return () => {
+                channel.stopListening("NewBooking");
+            };
         }
-    });
+    }, [toast]);
 
     if (!sidebar) return null;
 

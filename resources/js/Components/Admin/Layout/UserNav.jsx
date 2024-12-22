@@ -18,7 +18,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-import { LangSwitch } from "./LangSwitch";
+import LanguageSwitcher from "../Shared/LanguageSwitcher";
 import { RedBeadge } from "@/Components/ui/red-badge";
 import { useTranslation } from "react-i18next";
 import React from "react";
@@ -130,7 +130,7 @@ export function UserNav() {
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <Languages className="w-4 h-4 mr-3 text-muted-foreground" />
-                        <LangSwitch />
+                        <LanguageSwitcher />
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

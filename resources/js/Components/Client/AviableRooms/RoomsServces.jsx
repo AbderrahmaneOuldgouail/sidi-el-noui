@@ -111,21 +111,20 @@ export default function RoomsServces({
                                 {promotion ? (
                                     <>
                                         <span className="line-through">
-                                            {price} {useTrans("DA")}
+                                            {price} {t("da")}
                                         </span>
                                         <span>
                                             {" "}
                                             {price - promotion.promo_value}{" "}
-                                            {useTrans("DA")}
+                                            {t("da")}
                                         </span>
                                     </>
                                 ) : (
-                                    price + useTrans("DA")
+                                    price + t("da")
                                 )}{" "}
                             </td>
                             <td className="boreder-b border-2 border-b-secondary px-3 flex justify-between items-center">
-                                {rooms.length} {useTrans("Chambre")}
-                                {rooms.length == 1 ? "" : useTrans("s")}
+                                {rooms.length} {t("rooms")}
                                 <Button
                                     size="icon"
                                     variant="outline"

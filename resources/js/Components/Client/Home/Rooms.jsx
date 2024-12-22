@@ -13,7 +13,7 @@ export default function Rooms({ rooms }) {
             className="relative flex flex-col justify-center items-center min-h-screen max-h-sceen"
             id="rooms-section"
         >
-            <div className="absolute z-[0] w-[57rem] h-[57rem] right-[0] bottom-[10%] lg:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.4)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
+            <div className="absolute w-1/2 sm:w-11/12 h-1/2 rotate-12 top-1/3 rounded-t-full z-[0] inset-0 bg-gradient-to-r from-secondarybg from-10% via-secondarybg via-30% to-secondarybg to-0% blur-2xl opacity-70"></div>
             <div className="font-bold border-b mb-4 w-3/5 mx-auto p-4 text-4xl flex justify-center ">
                 {t("title")}
             </div>

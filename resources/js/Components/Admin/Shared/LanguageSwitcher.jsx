@@ -10,7 +10,7 @@ const LanguageSwitcher = () => {
     
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng);
-        document.documentElement.dir = lng == "ar" ? "rtl" : "ltr";
+        // document.documentElement.dir = lng == "ar" ? "rtl" : "ltr";
         router.visit(route("switch.lang"), {
             data: { lang: lng },
             preserveState: true,

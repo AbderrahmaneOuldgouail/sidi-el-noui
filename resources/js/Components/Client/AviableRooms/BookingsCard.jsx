@@ -109,7 +109,7 @@ export default function BookingsCard({
                                             {room.type.type_designation}{" "}
                                             {t("with")}{" "}
                                             {room.beeds_number}{" "}
-                                            {useTrans("lits")}{" "}
+                                            {t("beeds")}{" "}
                                             {t("for")}{" "}
                                             {room.room_price} {t("da")}
                                         </DialogTitle>

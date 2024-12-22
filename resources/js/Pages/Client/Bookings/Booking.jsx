@@ -59,11 +59,12 @@ export default function MyBookings({ booking }) {
             </Head>
 
             <div className="absolute z-[0] w-[20rem] h-[20rem] right-[10rem] top-[-5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(108,_207,_250,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
-            <div className="absolute z-[0] w-[47rem] h-[47rem] left-[calc(40%-20rem)] top-[30rem] sm:translate-x-[10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
+            <div className="absolute z-[0] w-1/2 h-[47rem] left-[calc(40%-20rem)] top-[30rem] sm:translate-x-[10%] translate-y-[-42%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
+
             <div className="absolute z-[0] w-[20rem] h-[20rem] right-[20rem] bottom-[5rem] sm:translate-x-28 translate-y-[22%] bg-[radial-gradient(circle,_rgba(224,_136,_100,_0.3)_0,_hsla(0,_0%,_100%,_0)_70%,_hsla(0,_0%,_100%,_0)_100%)]"></div>
             <PageHeading title={t("title")} className="my-10 relative" />
             <div className="relative flex flex-col md:flex-row gap-2 m-6">
-                <div className="md:w-1/3 w-full flex md:flex-col gap-2">
+                <div className="md:w-1/3 md:flex-col w-full flex flex-col gap-2">
                     <Card>
                         <CardHeader className="font-bold p-2">
                             {t("infoCard")}
@@ -93,8 +94,8 @@ export default function MyBookings({ booking }) {
                                                 setProcessing(true);
                                             },
                                             onFinish: () => {
-                                                setProcessing(false)
-                                            }
+                                                setProcessing(false);
+                                            },
                                         }
                                     )
                                 }
@@ -177,10 +178,8 @@ export default function MyBookings({ booking }) {
                         <Card className="w-full mb-2" key={room.room_number}>
                             <CardHeader className="font-bold p-2 pb-0 flex-row items-center justify-between">
                                 <div>
-                                    {t("room")}{" "}
-                                    {room.type.type_designation}{" "}
-                                    {t("with")} {room.beeds_number}{" "}
-                                    {t("beeds")}
+                                    {t("room")} {room.type.type_designation}{" "}
+                                    {t("with")} {room.beeds_number} {t("beeds")}
                                 </div>
                                 <div className="text-xl text-primary">
                                     {(new Date(booking.check_out) -
@@ -255,8 +254,7 @@ export default function MyBookings({ booking }) {
                                                 <div className="my-2 ">
                                                     <Separator />
                                                     <div className="font-bold text-foreground pb-2 flex justify-start">
-                                                        {t("features")}{" "}
-                                                        :
+                                                        {t("features")} :
                                                     </div>
                                                     {room.features
                                                         .slice(0, 4)
@@ -306,7 +304,7 @@ export default function MyBookings({ booking }) {
                                 <div>{consomation.consumption_name}</div>
                                 <div className="text-xl text-primary">
                                     {consomation.pivot.quantity} x{" "}
-                                    {consomation.consumption_price} {" "} {t("da")}
+                                    {consomation.consumption_price} {t("da")}
                                 </div>
                             </CardHeader>
                         </Card>

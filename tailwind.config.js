@@ -62,6 +62,8 @@ export default {
                     DEFAULT: "hsl(var(--danger))",
                     foreground: "hsl(var(--danger-foreground))",
                 },
+                primarybg: "var(--primary-bg)",
+                secondarybg: "var(--secondary-bg)",
             },
             borderRadius: {
                 lg: `var(--radius)`,

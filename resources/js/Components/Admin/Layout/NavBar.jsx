@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { NotificationsNav } from "./NotificationsNav";
 import { AddBooking } from "./AddBooking";
 import { usePage } from "@inertiajs/react";
-import LanguageSwitcher from "../Shared/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 
 export function Navbar({ isOpen }) {
@@ -26,7 +25,6 @@ export function Navbar({ isOpen }) {
                     </div>
                     <div>{booking_permission.create && <AddBooking />}</div>
                     <div className="flex items-center gap-2 justify-end">
-                        <LanguageSwitcher />
                         <NotificationsNav />
                         <ThemeToggle />
                         <UserNav />
